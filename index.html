@@ -452,6 +452,87 @@ select.f-inp{cursor:pointer;}
 .cat-vis-row:last-child{border-bottom:none;}
 .cat-vis-cb{width:20px;height:20px;border-radius:6px;border:2.5px solid var(--border);background:var(--card);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s;}
 .cat-vis-cb.on{background:var(--g2);border-color:var(--g2);color:#fff;}
+
+/* ── MINI (minimalistyczny) VIEW ── */
+.mini-list{display:flex;flex-direction:column;gap:2px;}
+.mini-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:8px;background:var(--inp);cursor:pointer;transition:background .15s;}
+.mini-item:active{background:var(--gp);}
+.mini-item.done-m{background:var(--gp);opacity:.7;}
+.mini-ico-s{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+.mini-name{font-size:12px;font-weight:700;color:var(--text);flex:1;}
+.mini-item.done-m .mini-name{text-decoration:line-through;color:var(--soft);}
+.mini-pts{font-size:10px;font-weight:800;color:var(--o);}
+.mini-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+.mini-check.done{background:var(--g2);border-color:var(--g2);color:#fff;}
+.mini-cat-row{font-size:9px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.5px;padding:6px 2px 2px;display:flex;align-items:center;justify-content:space-between;}
+
+/* ── SHOPPING WEEK ── */
+.sw-bar{display:flex;gap:3px;margin-bottom:9px;overflow-x:auto;scrollbar-width:none;}
+.sw-bar::-webkit-scrollbar{display:none;}
+.sw-day{flex-shrink:0;padding:5px 9px;border-radius:8px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);min-width:38px;text-align:center;}
+.sw-day.tod{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+.sw-day.act{background:var(--g2);border-color:var(--g2);color:#fff;}
+.si{display:flex;align-items:center;gap:6px;padding:7px 9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);margin-bottom:5px;}
+.si.bought{opacity:.65;}
+.si.bought .si-txt{text-decoration:line-through;color:var(--soft);}
+.si-cb{width:19px;height:19px;border-radius:5px;border:2.5px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--card);}
+.si-cb.will{background:var(--b);border-color:var(--b);color:#fff;}
+.si-cb.done{background:var(--g2);border-color:var(--g2);color:#fff;}
+.si-txt{flex:1;font-size:12px;font-weight:700;color:var(--text);}
+.si-lbl{font-size:8px;font-weight:800;color:var(--soft);}
+/* ── STICKY ── */
+.sticky-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.sticky{border-radius:12px;padding:11px;position:relative;min-height:76px;box-shadow:var(--sh);}
+.sc-y{background:#fef08a;}.sc-g{background:#bbf7d0;}.sc-b{background:#bae6fd;}.sc-p{background:#e9d5ff;}.sc-o{background:#fed7aa;}
+.sticky-txt{font-size:12px;font-weight:700;color:#1a1a1a;line-height:1.5;white-space:pre-wrap;word-break:break-word;}
+.sticky-meta{font-size:9px;color:rgba(0,0,0,.4);margin-top:5px;}
+.sticky-x{position:absolute;top:5px;right:7px;font-size:12px;cursor:pointer;color:rgba(0,0,0,.25);}
+.sticky-x:hover{color:rgba(0,0,0,.6);}
+.scolor-row{display:flex;gap:5px;margin-bottom:9px;}
+.scolor-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;}
+.scolor-dot.sel{border-color:#1a1a1a;}
+/* ── MESSENGER CHAT ── */
+.chat-rooms{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:8px 10px;background:var(--inp);border-bottom:1px solid var(--border);}
+.chat-rooms::-webkit-scrollbar{display:none;}
+.chat-rm-btn{flex-shrink:0;padding:5px 11px;border-radius:20px;border:2px solid var(--border);background:var(--card);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);white-space:nowrap;}
+.chat-rm-btn.sel{background:var(--g2);border-color:var(--g2);color:#fff;}
+.chat-wrap{display:flex;flex-direction:column;height:370px;background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);overflow:hidden;margin-bottom:10px;}
+.chat-feed{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px;}
+.cm{display:flex;align-items:flex-end;gap:5px;max-width:100%;}
+.cm.mine{flex-direction:row-reverse;}
+.cm-av{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--inp);}
+.cm-av img{width:24px;height:24px;border-radius:50%;object-fit:cover;}
+.cm-col{max-width:75%;display:flex;flex-direction:column;}
+.cm.mine .cm-col{align-items:flex-end;}
+.cm-who{font-size:9px;font-weight:800;color:var(--soft);padding:0 6px;margin-bottom:1px;}
+.cm-bbl{padding:8px 12px;border-radius:18px;font-size:13px;font-weight:600;line-height:1.4;word-break:break-word;}
+.cm:not(.mine) .cm-bbl{background:var(--card);border:1.5px solid var(--border);color:var(--text);border-bottom-left-radius:4px;}
+.cm.mine .cm-bbl{background:var(--g2);color:#fff;border-bottom-right-radius:4px;}
+.cm-ts{font-size:9px;color:var(--soft);padding:1px 6px;}
+.chat-dsep{text-align:center;font-size:9px;font-weight:800;color:var(--soft);margin:4px 0;}
+.chat-bar{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--border);}
+.chat-bar-inp{flex:1;padding:9px 13px;border-radius:22px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;color:var(--text);outline:none;}
+.chat-bar-inp:focus{border-color:var(--g2);}
+.chat-bar-btn{width:38px;height:38px;border-radius:50%;border:none;background:var(--g2);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+/* ── EVENTS ── */
+.ev-card{background:var(--card);border-radius:var(--rr);padding:10px;margin-bottom:7px;box-shadow:var(--sh);border-left:4px solid var(--b);display:flex;align-items:center;gap:9px;}
+.ev-card.today{border-left-color:var(--g2);}
+.ev-card.soon{border-left-color:var(--y);}
+.ev-card.past{opacity:.55;}
+.ev-badge{display:flex;flex-direction:column;align-items:center;padding:5px 8px;border-radius:8px;background:var(--b);color:#fff;flex-shrink:0;min-width:38px;}
+.ev-badge.gs{background:var(--g2);}.ev-badge.yn{background:var(--y);color:#1a1a1a;}
+.ev-bd{font-size:16px;font-weight:900;line-height:1.1;}
+.ev-bm{font-size:8px;font-weight:800;text-transform:uppercase;}
+.ev-info{flex:1;min-width:0;}
+.ev-title{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ev-loc{font-size:10px;color:var(--soft);margin-top:1px;}
+.ev-cnt{font-size:10px;font-weight:800;margin-top:2px;}
+/* ── GIFTS ── */
+.gp-tabs{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-bottom:9px;}
+.gp-tabs::-webkit-scrollbar{display:none;}
+.gp-tb{flex-shrink:0;padding:6px 12px;border-radius:20px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);}
+.gp-tb.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+.gift-hid{background:rgba(139,92,246,.05);border:2px dashed rgba(139,92,246,.3);border-radius:10px;padding:9px;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -559,6 +640,7 @@ select.f-inp{cursor:pointer;}
   <div class="sec on" id="sec-today">
     <div id="joinRequestsPanel"></div>
     <div id="bdayPanel"></div>
+    <div id="eventsTopPanel"></div>
     <div id="curfewPanel"></div>
     <div class="card">
       <div class="card-ttl">🌐 Rodzina online</div>
@@ -573,6 +655,7 @@ select.f-inp{cursor:pointer;}
     <div class="view-toggle">
       <button class="vt-btn sel" id="vt-normal" onclick="setView('normal')">📋 Normalny</button>
       <button class="vt-btn" id="vt-compact" onclick="setView('compact')">⊞ Kompaktowy</button>
+      <button class="vt-btn" id="vt-mini" onclick="setView('mini')">— Mini</button>
     </div>
     <div id="choreContainer"></div>
   </div>
@@ -635,6 +718,11 @@ select.f-inp{cursor:pointer;}
       <div id="catVisSettings"></div>
     </div>
     <div class="card">
+      <div class="card-ttl">☑️ Widoczność zadań</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Odznacz konkretne zadania do ukrycia</div>
+      <div id="choreVisSettings"></div>
+    </div>
+    <div class="card">
       <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📂 Zarządzanie kategoriami</span><button class="card-act" onclick="openCategoryModal()">➕</button></div>
       <div id="categoryMgmt"></div>
     </div>
@@ -692,6 +780,31 @@ select.f-inp{cursor:pointer;}
     <div id="weatherFull"></div>
   </div>
 </div>
+
+<!-- EVENT MODAL -->
+<div class="overlay" id="eventOverlay">
+  <div class="modal">
+    <div class="modal-ttl">📅 Nowe wydarzenie <span class="modal-close" onclick="closeOverlay('eventOverlay')">×</span></div>
+    <div class="f-lbl">Tytuł</div>
+    <input class="f-inp" id="evTitle" placeholder="np. Komunia Marka">
+    <div class="f-lbl">Typ</div>
+    <select class="f-inp" id="evType">
+      <option value="urodziny">🎂 Urodziny</option>
+      <option value="komunia">⛪ Komunia</option>
+      <option value="swieta">🎄 Święta</option>
+      <option value="wakacje">🏖️ Wakacje</option>
+      <option value="sylwester">🎆 Sylwester</option>
+      <option value="wyjazd">🚗 Wyjazd</option>
+      <option value="inne">📅 Inne</option>
+    </select>
+    <div class="f-lbl">Data</div>
+    <input class="f-inp" id="evDate" type="date">
+    <div class="f-lbl">Miejsce (opcjonalnie)</div>
+    <input class="f-inp" id="evLoc" placeholder="np. Kościół św. Jana, Warszawa">
+    <button class="modal-btn" onclick="submitEvent()">📅 Dodaj wydarzenie</button>
+  </div>
+</div>
+
 
 <button class="fab" id="fabBtn" onclick="openAssignModal()">＋</button>
 
@@ -774,7 +887,13 @@ select.f-inp{cursor:pointer;}
     <input class="f-inp" id="wishPrice" placeholder="np. 299 zł">
     <div class="f-lbl">Dla kogo</div>
     <select class="f-inp" id="wishWho"></select>
-    <button class="modal-btn" onclick="submitWish()">💾 Zapisz</button>
+    <div class="f-lbl">Okazja (opcjonalnie)</div>
+    <input class="f-inp" id="wishOcc" placeholder="np. Urodziny, Mikołaj, Gwiazdka">
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px;background:rgba(139,92,246,.07);border-radius:9px;">
+      <input type="checkbox" id="wishHidden" style="width:18px;height:18px;cursor:pointer;">
+      <label for="wishHidden" style="font-size:12px;font-weight:800;color:var(--pu);cursor:pointer;">🤫 Ukryty pomysł (niewidoczny dla obdarowywanego)</label>
+    </div>
+    <button class="modal-btn" onclick="submitWishV2()">💾 Zapisz</button>
   </div>
 </div>
 
@@ -812,7 +931,8 @@ const GCAL_CLIENT_ID="71160418880-plh2nv7rg31t1ski2m03euqp7f0eofjv.apps.googleus
 let gcalToken=sessionStorage.getItem('dp-gcal')||null; // token wygasa po ~1h
 let collapsedCats=JSON.parse(localStorage.getItem('dp-collapsed')||'{}');
 let sortMode=localStorage.getItem('dp-sort')||'default';
-let catVisibility=JSON.parse(localStorage.getItem('dp-cat-vis')||'{}'); // {catId: true/false}
+let catVisibility=JSON.parse(localStorage.getItem('dp-cat-vis')||'{}');
+let choreVisibility=JSON.parse(localStorage.getItem('dp-chore-vis')||'{}'); // {catId: true/false}
 function saveState(){
   // gcalToken celowo nie jest zapisywany długoterminowo — wygasa
 }
@@ -826,6 +946,32 @@ const LANGS=[['pl','🇵🇱 PL'],['en','🇬🇧 EN'],['de','🇩🇪 DE'],['fr
 let curLang=localStorage.getItem('dp-lang')||'pl';
 const langRow=document.getElementById('langRow');
 LANGS.forEach(([c,l])=>{const b=document.createElement('button');b.className='lang-btn'+(c===curLang?' sel':'');b.textContent=l;b.onclick=()=>{curLang=c;localStorage.setItem('dp-lang',c);document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};langRow.appendChild(b);});
+// Rozszerzenie: applyLang() tłumaczy zakładki po zmianie języka
+const LANG_TAB_NAMES={
+  pl:{today:'Dziś',tasks:'Zlecone',family:'Rodzina',scores:'Wyniki',settings:'Opcje'},
+  en:{today:'Today',tasks:'Tasks',family:'Family',scores:'Scores',settings:'Options'},
+  de:{today:'Heute',tasks:'Aufgaben',family:'Familie',scores:'Punkte',settings:'Optionen'},
+  fr:{today:"Auj.",tasks:'Tâches',family:'Famille',scores:'Scores',settings:'Options'},
+  pt:{today:'Hoje',tasks:'Tarefas',family:'Família',scores:'Pontos',settings:'Opções'},
+  zh:{today:'今天',tasks:'任务',family:'家庭',scores:'积分',settings:'选项'},
+};
+function applyLang(){
+  const L=LANG_TAB_NAMES[curLang]||LANG_TAB_NAMES.pl;
+  const tabSpans=document.querySelectorAll('.tab span:not(.ti):not(.ndot)');
+  const names=[L.today,L.tasks,L.family,L.scores,L.settings];
+  tabSpans.forEach((el,i)=>{if(names[i])el.textContent=names[i];});
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    // find which lang this button is
+    const txt=b.textContent;
+    const found=LANGS.find(([code,label])=>label===txt);
+    if(found) b.className='lang-btn'+(found[0]===curLang?' sel':'');
+  });
+}
+// Re-apply on lang change — patch existing onclick
+document.querySelectorAll('.lang-btn').forEach(b=>{
+  const orig=b.onclick;
+  b.onclick=()=>{orig&&orig.call(b);applyLang();};
+});
 
 /* ── THEMES ── */
 const THEMES=[{id:'light',ico:'☀️',nm:'Jasny'},{id:'dark',ico:'🌙',nm:'Ciemny'},{id:'win',ico:'🪟',nm:'Win'},{id:'android',ico:'🤖',nm:'Droid'},{id:'ios',ico:'🍎',nm:'iOS'}];
@@ -942,7 +1088,7 @@ const REWARDS=[{id:'r1',ico:'🎮',name:'Dodatkowa godzina gier',cost:30},{id:'r
 
 /* ── STATE ── */
 let isDemo=false,demoRole='parent',currentUser=null,myProfile=null,fCode='';
-let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},joinReqs:{},chat:[],notes:{},wishes:[],birthdays:{}};
+let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},joinReqs:{},chat:[],notes:{},wishes:[],birthdays:{},events:[]};
 let selectedRole='parent',selectedAvatar=AVATARS[0],curfewChildId=null;
 let returnTimers=[],reminderInterval=parseInt(localStorage.getItem('dp-reminder-int'))||15,curfewModalInterval=15;
 let viewMode=localStorage.getItem('dp-view')||'normal';
@@ -952,6 +1098,10 @@ let weatherCache=null,weatherCity=localStorage.getItem('dp-weather-city')||'';
 let pendingFamilyCode='';
 let inviteFamilyCode='';
 let activeFamilyTab='chat';
+let activeShopDay=new Date().getDay()||1;
+let activeChatRoom='family';
+let activeStickyColor='sc-y';
+let activeGiftPerson='';
 
 const today=new Date(),todayKey=fmt(today);
 const MS={min:60000,hr:3600000,day:86400000};
@@ -1146,12 +1296,17 @@ function buildDemo(){
     {id:'w4',ico:'🔧',name:'Nowy zestaw narzędzi',price:'180 zł',who:'Tata',forUid:'uid_tata',reserved:false,ts:now-1*MS.day},
   ];
   const birthdays={'uid_kacper':{name:'Kacper',date:'2011-04-20'},'uid_zosia':{name:'Zosia',date:'2013-07-15'},'uid_mama':{name:'Mama',date:'1980-10-03'}};
-  return{members,done,history,assigned,curfews,locations,joinReqs:{},chat,notes,wishes,birthdays};
+  const events=[
+    {id:'ev1',title:'Komunia Marka',type:'komunia',ico:'⛪',date:new Date(new Date().getTime()+12*86400000).toISOString().split('T')[0],loc:'Kościół św. Jana, Warszawa',who:'Mama',ts:Date.now()},
+    {id:'ev2',title:'Wakacje nad morzem',type:'wakacje',ico:'🏖️',date:new Date(new Date().getTime()+45*86400000).toISOString().split('T')[0],loc:'Łeba',who:'Tata',ts:Date.now()},
+    {id:'ev3',title:'Urodziny Babci',type:'urodziny',ico:'🎂',date:new Date(new Date().getTime()+3*86400000).toISOString().split('T')[0],loc:'Kraków',who:'Mama',ts:Date.now()},
+  ];
+  return{members,done,history,assigned,curfews,locations,joinReqs:{},chat,notes,wishes,birthdays,events};
 }
 function startDemo(role){
   isDemo=true;demoRole=role;
   const d=buildDemo();
-  live={done:d.done,members:d.members,history:d.history,assigned:d.assigned,curfews:d.curfews,locations:d.locations,joinReqs:d.joinReqs,chat:d.chat,notes:d.notes,wishes:d.wishes,birthdays:d.birthdays};
+  live={done:d.done,members:d.members,history:d.history,assigned:d.assigned,curfews:d.curfews,locations:d.locations,joinReqs:d.joinReqs,chat:d.chat,notes:d.notes,wishes:d.wishes,birthdays:d.birthdays,events:d.events||[]};
   const uid=role==='parent'?'uid_tata':'uid_kacper';
   myProfile={uid,name:role==='parent'?'Tata':'Kacper',avatar:role==='parent'?'🧔':'👦',role,code:'KOWALSKI2025',points:live.members[uid]?.points||0,photoURL:''};
   window._myUid=uid;
@@ -1216,12 +1371,13 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);});
     onValue(ref(db,`families/${fCode}/wishes`),s=>{const r=s.val()||{};live.wishes=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));if(activeFamilyTab==='wishes')renderWishes();});
     onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
+    onValue(ref(db,`families/${fCode}/events`),s=>{const r=s.val()||{};live.events=Object.values(r).sort((a,b)=>a.date>b.date?1:-1);renderEventsTopPanel();if(activeFamilyTab==='events')renderEventsTab();});
     if(myProfile.role==='child') startLocationSharing();
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   }
-  checkAfter19();updateReturnBanner();renderBdayPanel();
+  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
@@ -1245,7 +1401,7 @@ async function doSignOut(){if(!confirm('Wylogować się?'))return;if(isDemo){exi
 window.doSignOut=doSignOut;
 
 /* ══════ FAMILY TAB (CHAT + NOTES + WISHLIST + BIRTHDAYS) ══════ */
-const FAMILY_TABS=[{id:'chat',ico:'💬',nm:'Czat'},{id:'shopping',ico:'🛒',nm:'Zakupy'},{id:'important',ico:'📌',nm:'Ważne'},{id:'misc',ico:'📝',nm:'Notatki'},{id:'wishes',ico:'🎁',nm:'Prezenty'}];
+const FAMILY_TABS=[{id:'chat',ico:'💬',nm:'Czat'},{id:'shopping',ico:'🛒',nm:'Zakupy'},{id:'important',ico:'📌',nm:'Ważne'},{id:'misc',ico:'📝',nm:'Notatki'},{id:'wishes',ico:'🎁',nm:'Prezenty'},{id:'events',ico:'📅',nm:'Wydarzenia'}];
 function renderFamilyTabs(){
   document.getElementById('familyTabs').innerHTML=FAMILY_TABS.map(t=>`<button class="note-tab ${activeFamilyTab===t.id?'sel':''}" onclick="switchFamilyTab('${t.id}')">${t.ico} ${t.nm}</button>`).join('');
   renderFamilyContent();
@@ -1253,9 +1409,12 @@ function renderFamilyTabs(){
 function switchFamilyTab(id){activeFamilyTab=id;renderFamilyTabs();}
 window.switchFamilyTab=switchFamilyTab;
 function renderFamilyContent(){
-  if(activeFamilyTab==='chat') renderChat();
-  else if(activeFamilyTab==='wishes') renderWishes();
-  else renderNotes(activeFamilyTab);
+  if(activeFamilyTab==='chat') renderChatV2();
+  else if(activeFamilyTab==='wishes') renderWishesV2();
+  else if(activeFamilyTab==='shopping') renderShoppingWeek();
+  else if(activeFamilyTab==='misc') renderStickyNotes();
+  else if(activeFamilyTab==='events') renderEventsTab();
+  else renderNotes(activeFamilyTab); // 'important' uses original
 }
 
 /* ── CHAT ── */
@@ -1532,7 +1691,7 @@ async function loadPastDay(k){
 }
 function renderPastDay(dayKey,doneData){
   let html=`<div style="background:rgba(59,130,246,.06);border:2px solid var(--b);border-radius:10px;padding:8px;margin-bottom:8px;font-size:11px;font-weight:800;color:var(--b);">📅 Edytujesz: ${new Date(dayKey).getDate()}.${d2(new Date(dayKey).getMonth()+1)} — zmiany zapisują się natychmiast</div>`;
-  cats.forEach(cat=>{if(!cat.chores.length) return;html+=`<div class="cat-lbl"><span>${cat.label}</span></div><div class="chore-list">`;cat.chores.forEach(ch=>{const dn=doneData[ch.id];const done=!!dn;html+=`<div class="chore ${done?'done-past':''}"><div class="chore-ico">${ch.ico}</div><div class="chore-info"><div class="chore-name">${ch.name}</div><div class="chore-meta">${done?`${dn.avatar||''} ${dn.who} · ${getAgo(dn.ts)}`:ch.desc}</div></div><div class="chore-right">${done?`<div class="done-badge">✓</div><button class="undo-btn" onclick="togglePast('${dayKey}','${ch.id}',${ch.pts},true)">↩️</button>`:`<div class="chore-pts">+${ch.pts}⭐</div><button style="padding:3px 7px;border-radius:6px;border:none;background:var(--g2);color:#fff;font-size:9px;font-weight:800;cursor:pointer;font-family:var(--font);" onclick="togglePast('${dayKey}','${ch.id}',${ch.pts},false)">✓</button>`}</div></div>`;});html+=`</div>`;});
+  cats.forEach(cat=>{if(!cat.chores.length) return;html+=`<div class="cat-lbl"><span>${cat.label}</span></div><div class="chore-list">`;cat.chores.filter(ch=>choreVisibility[ch.id]!==false).forEach(ch=>{const dn=doneData[ch.id];const done=!!dn;html+=`<div class="chore ${done?'done-past':''}"><div class="chore-ico">${ch.ico}</div><div class="chore-info"><div class="chore-name">${ch.name}</div><div class="chore-meta">${done?`${dn.avatar||''} ${dn.who} · ${getAgo(dn.ts)}`:ch.desc}</div></div><div class="chore-right">${done?`<div class="done-badge">✓</div><button class="undo-btn" onclick="togglePast('${dayKey}','${ch.id}',${ch.pts},true)">↩️</button>`:`<div class="chore-pts">+${ch.pts}⭐</div><button style="padding:3px 7px;border-radius:6px;border:none;background:var(--g2);color:#fff;font-size:9px;font-weight:800;cursor:pointer;font-family:var(--font);" onclick="togglePast('${dayKey}','${ch.id}',${ch.pts},false)">✓</button>`}</div></div>`;});html+=`</div>`;});
   document.getElementById('choreContainer').innerHTML=html;
 }
 async function togglePast(dayKey,choreId,pts,isDone){
@@ -1547,6 +1706,7 @@ window.togglePast=togglePast;
 function renderChores(){
   if(selectedDay&&selectedDay!==todayKey){loadPastDay(selectedDay);return;}
   if(viewMode==='compact'){renderChoresCompact();return;}
+  if(viewMode==='mini'){renderChoresMini();return;}
   let html='';
   cats.forEach(cat=>{
     if(catVisibility[cat.id]===false) return;
@@ -1563,7 +1723,7 @@ function renderChores(){
     </div>`;
     if(isCollapsed){html+=``;return;}
     html+=`<div class="chore-list">`;
-    cat.chores.forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
+    cat.chores.filter(ch=>choreVisibility[ch.id]!==false).forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
     html+=`<div class="chore ${done?'done':''}" onclick="${!done?`doToggleChore('${ch.id}',${ch.pts})`:''}">
       <div class="chore-ico">${ch.ico}</div>
       <div class="chore-info">
@@ -1591,7 +1751,7 @@ async function repeatChore(e,choreId,pts){e.stopPropagation();const uid=getMyUid
 window.repeatChore=repeatChore;
 
 /* ── VIEW TOGGLE ── */
-function setView(v){viewMode=v;localStorage.setItem('dp-view',v);document.getElementById('vt-normal').className='vt-btn'+(v==='normal'?' sel':'');document.getElementById('vt-compact').className='vt-btn'+(v==='compact'?' sel':'');renderChores();}
+function setView(v){viewMode=v;localStorage.setItem('dp-view',v);['normal','compact','mini'].forEach(m=>{const el=document.getElementById('vt-'+m);if(el)el.className='vt-btn'+(v===m?' sel':'');});renderChores();}
 window.setView=setView;
 document.getElementById('vt-'+viewMode).classList.add('sel');
 
@@ -1663,7 +1823,7 @@ function toggleGCal(){
   if(gcalToken){gcalToken=null;document.getElementById('gcalStatus').textContent='Kliknij, aby połączyć';showToast('📅 Odłączono');return;}
   if(GCAL_CLIENT_ID.includes('WKLEJ')){showToast('⚠️ Wklej GCAL_CLIENT_ID w kodzie');return;}
   // The redirect_uri MUST match exactly what you added in Google Cloud Console
-  const redirectUri=encodeURIComponent(location.origin+location.pathname.replace(/\/$/,''));
+  const redirectUri=encodeURIComponent(location.origin); // tylko origin, bez ścieżki
   const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GCAL_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=token&scope=${encodeURIComponent("https://www.googleapis.com/auth/calendar.events")}&prompt=consent`;
   const pop=window.open(url,'gcal','width=500,height=600');
   const t=setInterval(()=>{try{if(pop.closed){clearInterval(t);return;}const h=pop.location.hash;if(h&&h.includes('access_token')){gcalToken=new URLSearchParams(h.slice(1)).get('access_token');sessionStorage.setItem('dp-gcal',gcalToken);pop.close();clearInterval(t);document.getElementById('gcalStatus').textContent='✅ Połączono';const gs2=document.getElementById('gcalStatus2');if(gs2)gs2.textContent='✅ Połączono';showToast('📅 Połączono z Google Calendar!');}}catch(e){}},500);
@@ -1705,6 +1865,362 @@ function toggleCatVis(catId){
 }
 window.toggleCatVis=toggleCatVis;
 
+/* ── CHORE VISIBILITY (per zadanie) ── */
+function renderChoreVisSettings(){
+  const el=document.getElementById('choreVisSettings');if(!el)return;
+  let html='';
+  cats.forEach(cat=>{
+    if(!cat.chores.length) return;
+    html+=`<div style="margin-bottom:10px;">
+      <div style="font-size:9px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;padding:4px 0;border-bottom:1px solid var(--border);">${cat.label}</div>`;
+    cat.chores.forEach(ch=>{
+      const vis=choreVisibility[ch.id]!==false;
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+        <div style="width:18px;height:18px;border-radius:5px;border:2px solid var(--border);background:${vis?'var(--g2)':'var(--card)'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0;" onclick="toggleChoreVis('${ch.id}')">${vis?'✓':''}</div>
+        <span style="font-size:13px;">${ch.ico}</span>
+        <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;">${ch.name}</span>
+        <span style="font-size:10px;color:var(--o);font-weight:700;">${ch.pts}⭐</span>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  el.innerHTML=html;
+}
+function toggleChoreVis(id){
+  choreVisibility[id]=choreVisibility[id]===false?true:false;
+  localStorage.setItem('dp-chore-vis',JSON.stringify(choreVisibility));
+  renderChoreVisSettings();renderChores();
+}
+window.toggleChoreVis=toggleChoreVis;
+
+
+/* ── MINI VIEW (nowy, nie rusza istniejących) ── */
+function renderChoresMini(){
+  let html='';
+  cats.forEach(cat=>{
+    if(catVisibility[cat.id]===false) return;
+    if(!cat.chores.length&&!cat.editable) return;
+    const isCollapsed=!!collapsedCats[cat.id];
+    const doneCount=cat.chores.filter(ch=>Object.keys(live.done).some(k=>k===ch.id||k.startsWith(ch.id+'_'))).length;
+    html+=`<div class="mini-cat-row">
+      <span>${cat.label.split(' ')[0]} ${cat.label.split(' ').slice(1).join(' ')}${doneCount>0?` <span style="color:var(--g2)">${doneCount}/${cat.chores.length}</span>`:''}</span>
+      <button style="border:none;background:none;cursor:pointer;font-size:11px;color:var(--soft);" onclick="toggleCatCollapse('${cat.id}')">${isCollapsed?'▶':'▼'}</button>
+    </div>`;
+    if(isCollapsed) return;
+    html+=`<div class="mini-list">`;
+    cat.chores.forEach(ch=>{
+      if(catVisibility[cat.id+'_'+ch.id]===false) return;
+      const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));
+      const done=allKeys.length>0;
+      html+=`<div class="mini-item ${done?'done-m':''}" onclick="doToggleChore('${ch.id}',${ch.pts})">
+        <span class="mini-ico-s">${ch.ico}</span>
+        <span class="mini-name">${ch.name}</span>
+        ${done?`<span class="mini-pts">✓</span>`:`<span class="mini-pts">+${ch.pts}⭐</span>`}
+        <div class="mini-check ${done?'done':''}">${done?'✓':''}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('choreContainer').innerHTML=html;
+}
+
+
+/* ════════════════════════════════════════════════════
+   NOWE FUNKCJE v11 — nie ruszają starych
+   ════════════════════════════════════════════════════ */
+const MO_SHORT=['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+const DN_SHORT=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+const DN_FULL=['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
+function daysLeft(dateStr){const d=new Date(dateStr);d.setHours(0,0,0,0);const n=new Date();n.setHours(0,0,0,0);return Math.round((d-n)/86400000);}
+function fmtHM(ts){const d=new Date(ts);return`${d2(d.getHours())}:${d2(d.getMinutes())}`;}
+function fmtDMY(ts){const d=new Date(ts);return`${d.getDate()}.${d.getMonth()+1}`;}
+
+/* ── CHAT V2 — Messenger pokoje ── */
+function getChatRooms(){
+  const children=Object.entries(live.members).filter(([,m])=>m.role==='child');
+  return [{id:'family',icon:'🏠',label:'Rodzina'},...children.map(([uid,m])=>({id:'room_'+uid,icon:m.avatar||'👦',label:m.name,childUid:uid}))];
+}
+function renderChatV2(){
+  const uid=getMyUid();
+  const rooms=getChatRooms();
+  const allMsgs=live.chat||[];
+  const msgs=activeChatRoom==='family'?allMsgs.filter(m=>!m.room||m.room==='family'):allMsgs.filter(m=>m.room===activeChatRoom);
+  const roomBar=rooms.map(r=>`<button class="chat-rm-btn ${activeChatRoom===r.id?'sel':''}" onclick="setChatRoom('${r.id}')">${r.icon} ${r.label}</button>`).join('');
+  let feed='';let lastD='';
+  msgs.forEach(m=>{
+    const mine=m.uid===uid;
+    const mem=live.members[m.uid]||{avatar:m.avatar||'👤',photoURL:''};
+    const ds=fmtDMY(m.ts);if(ds!==lastD){feed+=`<div class="chat-dsep">${ds}</div>`;lastD=ds;}
+    const av=mem.photoURL?`<img src="${mem.photoURL}" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=cm-av>${mem.avatar||'👤'}</div>'">`:`<div class="cm-av">${mem.avatar||'👤'}</div>`;
+    feed+=`<div class="cm ${mine?'mine':''}">
+      ${av}
+      <div class="cm-col">
+        ${!mine?`<div class="cm-who">${m.who}</div>`:''}
+        <div class="cm-bbl">${(m.msg||'').replace(/</g,'&lt;')}</div>
+        <div class="cm-ts">${fmtHM(m.ts)}</div>
+      </div>
+    </div>`;
+  });
+  if(!feed) feed=`<div class="empty"><div class="big">💬</div><p>Napisz coś!</p></div>`;
+  document.getElementById('familyTabContent').innerHTML=`
+    <div class="chat-wrap">
+      <div class="chat-rooms">${roomBar}</div>
+      <div class="chat-feed" id="chatMsgs">${feed}</div>
+      <div class="chat-bar">
+        <input class="chat-bar-inp" id="chatInput" placeholder="Napisz…" onkeydown="if(event.key==='Enter')sendChatV2()" autocomplete="off">
+        <button class="chat-bar-btn" onclick="sendChatV2()">➤</button>
+      </div>
+    </div>`;
+  setTimeout(()=>{const el=document.getElementById('chatMsgs');if(el)el.scrollTop=el.scrollHeight;},50);
+}
+function setChatRoom(id){activeChatRoom=id;renderChatV2();}
+window.setChatRoom=setChatRoom;
+async function sendChatV2(){
+  const inp=document.getElementById('chatInput');const msg=inp?.value?.trim();if(!msg)return;inp.value='';
+  const entry={uid:getMyUid(),who:myProfile.name,avatar:myProfile.avatar,photoURL:myProfile.photoURL||currentUser?.photoURL||'',msg,room:activeChatRoom,ts:Date.now()};
+  if(isDemo){live.chat=[...(live.chat||[]),entry];renderChatV2();return;}
+  await push(ref(db,`families/${fCode}/chat`),entry);
+}
+window.sendChatV2=sendChatV2;
+
+/* ── SHOPPING WEEK ── */
+function renderShoppingWeek(){
+  const todayDow=new Date().getDay()||7; // 1=Mon..7=Sun, JS: 0=Sun
+  const days=[1,2,3,4,5,6,0]; // Mon-Sun
+  const bar=days.map(d=>`<button class="sw-day ${d===new Date().getDay()?'tod':''} ${d===activeShopDay?'act':''}" onclick="setShopDay(${d})">${DN_SHORT[d]}</button>`).join('');
+  const key='shop_'+activeShopDay;
+  const items=(live.notes[key]||[]);
+  const bought=items.filter(i=>i.done).length;
+  let rows='';
+  items.forEach(n=>{
+    rows+=`<div class="si ${n.done?'bought':''}">
+      <div class="si-cb ${n.will&&!n.done?'will':''}" onclick="shopWill('${key}','${n.id}')" title="Kupię">${n.will&&!n.done?'✓':''}</div>
+      <div class="si-txt">${n.text}</div>
+      <div class="si-lbl">Kupię</div>
+      <div class="si-cb ${n.done?'done':''}" onclick="shopDone('${key}','${n.id}')" title="Kupione" style="margin-left:3px;">${n.done?'✓':''}</div>
+      <div class="si-lbl">Kupione</div>
+      <div style="font-size:9px;font-weight:800;color:var(--o);margin-left:3px;">+1⭐</div>
+      <div onclick="deleteNote('${key}','${n.id}')" style="font-size:11px;cursor:pointer;color:var(--soft);padding:2px 5px;">✕</div>
+    </div>`;
+  });
+  if(!items.length) rows=`<div class="empty"><div class="big">🛒</div><p>Brak zakupów na ${DN_FULL[activeShopDay]||DN_FULL[0]}</p></div>`;
+  document.getElementById('familyTabContent').innerHTML=`
+    <div class="card">
+      <div class="sw-bar">${bar}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--soft);margin-bottom:8px;">${DN_FULL[activeShopDay]||DN_FULL[0]} · ${bought}/${items.length} kupionych</div>
+      ${rows}
+      <div class="note-add-row" style="margin-top:8px;">
+        <input class="note-add-inp" id="shopInp" placeholder="Co kupić?" onkeydown="if(event.key==='Enter')addShopItem()">
+        <button class="note-add-btn" onclick="addShopItem()">+</button>
+      </div>
+    </div>`;
+}
+function setShopDay(d){activeShopDay=d;renderShoppingWeek();}
+window.setShopDay=setShopDay;
+async function addShopItem(){
+  const inp=document.getElementById('shopInp');const text=inp?.value?.trim();if(!text)return;inp.value='';
+  const key='shop_'+activeShopDay;
+  const item={id:'s'+Date.now(),text,will:false,done:false,who:myProfile.name,ts:Date.now()};
+  if(!live.notes[key]) live.notes[key]=[];
+  live.notes[key].push(item);
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),live.notes[key]);
+  renderShoppingWeek();
+}
+window.addShopItem=addShopItem;
+async function shopWill(key,id){
+  const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
+  n.will=!n.will;if(n.will)n.done=false;
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
+  renderShoppingWeek();
+}
+window.shopWill=shopWill;
+async function shopDone(key,id){
+  const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
+  n.done=!n.done;
+  if(n.done&&!n.pointed){
+    n.pointed=true;n.will=false;
+    const uid=getMyUid();if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+1;
+    if(!isDemo){const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+1});}
+    showToast('+1⭐ zakupy!');
+  }
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
+  renderShoppingWeek();
+}
+window.shopDone=shopDone;
+
+/* ── STICKY NOTES ── */
+const SCOLORS=[{id:'sc-y',bg:'#fef08a'},{id:'sc-g',bg:'#bbf7d0'},{id:'sc-b',bg:'#bae6fd'},{id:'sc-p',bg:'#e9d5ff'},{id:'sc-o',bg:'#fed7aa'}];
+function renderStickyNotes(){
+  const notes=(live.notes['misc']||[]);
+  const colorPicker=SCOLORS.map((sc,i)=>`<div class="scolor-dot ${sc.id} ${activeStickyColor===sc.id?'sel':''}" style="background:${sc.bg};" onclick="setStickyColor('${sc.id}')"></div>`).join('');
+  let grid=notes.map(n=>`<div class="sticky ${n.color||'sc-y'}">
+    <div class="sticky-txt">${(n.text||'').replace(/</g,'&lt;')}</div>
+    <div class="sticky-meta">${n.who||''} · ${getAgo(n.ts)}</div>
+    <div class="sticky-x" onclick="deleteNote('misc','${n.id}')">✕</div>
+  </div>`).join('');
+  if(!grid) grid=`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--soft);font-size:12px;font-weight:700;">📝 Brak kartek</div>`;
+  document.getElementById('familyTabContent').innerHTML=`
+    <div class="scolor-row">${colorPicker}</div>
+    <div class="sticky-grid">${grid}</div>
+    <div class="note-add-row">
+      <input class="note-add-inp" id="stickyInp" placeholder="Nowa karteczka…" onkeydown="if(event.key==='Enter')addStickyNote()">
+      <button class="note-add-btn" onclick="addStickyNote()">+</button>
+    </div>`;
+}
+function setStickyColor(id){activeStickyColor=id;renderStickyNotes();}
+window.setStickyColor=setStickyColor;
+async function addStickyNote(){
+  const inp=document.getElementById('stickyInp');const text=inp?.value?.trim();if(!text)return;inp.value='';
+  const note={id:'n'+Date.now(),text,color:activeStickyColor,who:myProfile.name,ts:Date.now()};
+  if(!live.notes.misc) live.notes.misc=[];
+  live.notes.misc.push(note);
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
+  renderStickyNotes();
+}
+window.addStickyNote=addStickyNote;
+
+/* ── EVENTS ── */
+const EV_TYPES=[{id:'urodziny',ico:'🎂',label:'Urodziny'},{id:'komunia',ico:'⛪',label:'Komunia'},{id:'swieta',ico:'🎄',label:'Święta'},{id:'wakacje',ico:'🏖️',label:'Wakacje'},{id:'sylwester',ico:'🎆',label:'Sylwester'},{id:'wyjazd',ico:'🚗',label:'Wyjazd'},{id:'inne',ico:'📅',label:'Inne'}];
+function renderEventsTopPanel(){
+  const el=document.getElementById('eventsTopPanel');if(!el)return;
+  const upco=(live.events||[]).filter(e=>daysLeft(e.date)>=0).slice(0,3);
+  if(!upco.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="card"><div class="card-ttl">📅 Nadchodzące wydarzenia</div>`+
+    upco.map(e=>{const dl=daysLeft(e.date);const badge=dl===0?'Dziś!':dl===1?'Jutro':`za ${dl} dni`;
+    return`<div style="display:flex;align-items:center;gap:8px;padding:7px;background:var(--inp);border-radius:9px;margin-bottom:5px;cursor:pointer;" onclick="goTab('family');setTimeout(()=>switchFamilyTab('events'),80)">
+      <div style="font-size:20px;">${e.ico||'📅'}</div>
+      <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.title}</div><div style="font-size:10px;color:${dl<=3?'var(--r)':dl<=7?'var(--o)':'var(--soft)'};">${badge}${e.loc?' · '+e.loc:''}</div></div>
+    </div>`;}).join('')+`</div>`;
+}
+function renderEventsTab(){
+  const events=(live.events||[]);
+  const upco=events.filter(e=>daysLeft(e.date)>=0);
+  const past=events.filter(e=>daysLeft(e.date)<0);
+  let html=`<div style="display:flex;justify-content:flex-end;margin-bottom:8px;"><button class="card-act" style="padding:7px 14px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;" onclick="openEventModal()">➕ Dodaj</button></div>`;
+  if(!upco.length&&!past.length) html+=`<div class="empty"><div class="big">📅</div><p>Brak wydarzeń. Dodaj pierwsze!</p></div>`;
+  upco.forEach(e=>{
+    const dl=daysLeft(e.date);const d=new Date(e.date);
+    const badge=dl===0?'Dziś!':dl===1?'Jutro':`za ${dl} dni`;
+    const cls=dl===0?'today':dl<=7?'soon':'';
+    html+=`<div class="ev-card ${cls}">
+      <div class="ev-badge ${dl===0?'gs':dl<=7?'yn':''}"><div class="ev-bd">${d.getDate()}</div><div class="ev-bm">${MO_SHORT[d.getMonth()]}</div></div>
+      <div class="ev-info"><div class="ev-title">${e.ico||'📅'} ${e.title}</div>${e.loc?`<div class="ev-loc">📍 ${e.loc}</div>`:''}<div class="ev-cnt" style="color:${dl<=3?'var(--r)':dl<=7?'var(--o)':'var(--soft)'};">${badge}</div></div>
+      ${myProfile?.role==='parent'?`<button onclick="delEvent('${e.id}')" style="border:none;background:none;cursor:pointer;font-size:13px;color:var(--soft);">🗑️</button>`:''}
+    </div>`;
+  });
+  if(past.length){
+    html+=`<div style="font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 5px;">📁 Przeszłe</div>`;
+    past.slice(-3).reverse().forEach(e=>{const d=new Date(e.date);html+=`<div class="ev-card past"><div class="ev-badge"><div class="ev-bd">${d.getDate()}</div><div class="ev-bm">${MO_SHORT[d.getMonth()]}</div></div><div class="ev-info"><div class="ev-title">${e.ico||'📅'} ${e.title}</div></div></div>`;});
+  }
+  document.getElementById('familyTabContent').innerHTML=html;
+}
+function openEventModal(){document.getElementById('eventOverlay').classList.add('show');}
+window.openEventModal=openEventModal;
+async function submitEvent(){
+  const title=document.getElementById('evTitle').value.trim();if(!title){showToast('⚠️ Wpisz tytuł');return;}
+  const date=document.getElementById('evDate').value;if(!date){showToast('⚠️ Wybierz datę');return;}
+  const type=document.getElementById('evType').value;
+  const loc=document.getElementById('evLoc').value.trim();
+  const ico=EV_TYPES.find(t=>t.id===type)?.ico||'📅';
+  const ev={id:'ev'+Date.now(),title,date,type,loc,ico,who:myProfile.name,ts:Date.now()};
+  if(isDemo){live.events=[...(live.events||[]),ev].sort((a,b)=>a.date>b.date?1:-1);renderEventsTab();renderEventsTopPanel();}
+  else await push(ref(db,`families/${fCode}/events`),ev);
+  showToast('📅 Dodano!');closeOverlay('eventOverlay');
+  document.getElementById('evTitle').value='';document.getElementById('evLoc').value='';
+}
+window.submitEvent=submitEvent;
+async function delEvent(id){
+  if(!confirm('Usunąć wydarzenie?'))return;
+  if(isDemo){live.events=(live.events||[]).filter(e=>e.id!==id);renderEventsTab();renderEventsTopPanel();return;}
+  const snap=await get(ref(db,`families/${fCode}/events`));
+  const kv=Object.entries(snap.val()||{}).find(([,v])=>v.id===id);
+  if(kv) await remove(ref(db,`families/${fCode}/events/${kv[0]}`));
+}
+window.delEvent=delEvent;
+
+/* ── GIFTS V2 — per person ── */
+function renderWishesV2(){
+  rebuildWishSelect();
+  const members=Object.entries(live.members);
+  if(!activeGiftPerson&&members.length) activeGiftPerson=members[0][0];
+  const myUid=getMyUid();
+  const tabs=members.map(([uid,m])=>`<button class="gp-tb ${activeGiftPerson===uid?'sel':''}" onclick="setGiftPerson('${uid}')">${m.avatar||'👤'} ${m.name}</button>`).join('');
+  const all=(live.wishes||[]).filter(w=>w.forUid===activeGiftPerson);
+  const pub=all.filter(w=>!w.hidden);
+  const hid=all.filter(w=>w.hidden);
+  const isMe=activeGiftPerson===myUid;
+  const target=live.members[activeGiftPerson];
+  let rows='';
+  pub.forEach(w=>{
+    rows+=`<div class="wish-item">
+      <div class="wish-ico">${w.ico||'🎁'}</div>
+      <div class="wish-info"><div class="wish-name">${w.name}</div><div class="wish-who">${w.price||''}${w.occ?' · '+w.occ:''}</div></div>
+      ${w.reserved&&myProfile?.role==='parent'?`<div class="wish-reserved">🤫 ${w.reservedBy}</div>`:''}
+      ${!w.reserved&&myProfile?.role==='parent'&&!isMe?`<button class="wish-reserved" style="background:rgba(59,130,246,.1);color:var(--b);border-radius:5px;border:none;cursor:pointer;font-family:var(--font);font-size:9px;font-weight:800;" onclick="reserveWish('${w.id}')">🤫 Rezerwuję</button>`:''}
+      <div onclick="deleteWish('${w.id}')" class="wish-del">✕</div>
+    </div>`;
+  });
+  if(!pub.length) rows=`<div class="empty"><div class="big">🎁</div><p>${isMe?'Dodaj swoje życzenia!':'Brak życzeń'}</p></div>`;
+  let hidHtml='';
+  if(!isMe&&(hid.length||myProfile?.role==='parent')){
+    hidHtml=`<div class="gift-hid">
+      <div style="font-size:11px;font-weight:800;color:var(--pu);margin-bottom:7px;">🤫 Pomysły na prezent (ukryte przed ${target?.name||''})</div>
+      ${hid.map(w=>`<div class="wish-item" style="background:transparent;border:none;padding:4px 0;">
+        <div class="wish-ico">${w.ico||'💡'}</div>
+        <div class="wish-info"><div class="wish-name">${w.name}</div><div class="wish-who">${w.price||''}${w.occ?' · '+w.occ:''}</div></div>
+        <div onclick="deleteWish('${w.id}')" class="wish-del">✕</div>
+      </div>`).join('')}
+    </div>`;
+  }
+  document.getElementById('familyTabContent').innerHTML=`
+    <div class="gp-tabs">${tabs}</div>
+    <div class="card">
+      <div style="display:flex;gap:6px;margin-bottom:9px;flex-wrap:wrap;">
+        <button class="card-act" onclick="openWishForPerson()">➕ Dodaj życzenie</button>
+        ${myProfile?.role==='parent'&&!isMe?`<button class="card-act" style="color:var(--pu);background:rgba(139,92,246,.1);" onclick="openHiddenWish()">🤫 Pomysł na prezent</button>`:''}
+      </div>
+      ${rows}${hidHtml}
+    </div>`;
+}
+function setGiftPerson(uid){activeGiftPerson=uid;renderWishesV2();}
+window.setGiftPerson=setGiftPerson;
+function openWishForPerson(){
+  const sel=document.getElementById('wishWho');
+  if(sel&&activeGiftPerson){sel.value=activeGiftPerson;}
+  const hid=document.getElementById('wishHidden');if(hid)hid.checked=false;
+  document.getElementById('wishOverlay').classList.add('show');
+}
+window.openWishForPerson=openWishForPerson;
+function openHiddenWish(){
+  const sel=document.getElementById('wishWho');
+  if(sel&&activeGiftPerson){sel.value=activeGiftPerson;}
+  const hid=document.getElementById('wishHidden');if(hid)hid.checked=true;
+  document.getElementById('wishOverlay').classList.add('show');
+}
+window.openHiddenWish=openHiddenWish;
+
+/* ── renderEventsTopPanel wywołaj przy starcie ── */
+
+
+async function submitWishV2(){
+  const ico=document.getElementById('wishIco').value.trim()||'🎁';
+  const name=document.getElementById('wishName').value.trim();if(!name){showToast('⚠️ Wpisz nazwę');return;}
+  const price=document.getElementById('wishPrice').value.trim();
+  const occ=(document.getElementById('wishOcc')?.value||'').trim();
+  const hidden=document.getElementById('wishHidden')?.checked||false;
+  const forUid=document.getElementById('wishWho').value||getMyUid();
+  const fm=live.members[forUid]||{};
+  const w={id:'w'+Date.now(),ico,name,price,occ,who:myProfile.name,forUid,hidden,reserved:false,ts:Date.now()};
+  if(isDemo){live.wishes=[...(live.wishes||[]),w];renderWishesV2();}
+  else await push(ref(db,`families/${fCode}/wishes`),w);
+  showToast(hidden?'🤫 Pomysł dodany!':'🎁 Dodano!');
+  closeOverlay('wishOverlay');
+  document.getElementById('wishName').value='';
+  if(document.getElementById('wishOcc')) document.getElementById('wishOcc').value='';
+  if(document.getElementById('wishHidden')) document.getElementById('wishHidden').checked=false;
+}
+window.submitWishV2=submitWishV2;
+
 /* ── MISC ── */
 function closeOverlay(id){document.getElementById(id).classList.remove('show');}
 window.closeOverlay=closeOverlay;
@@ -1719,7 +2235,7 @@ function goTab(id){
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();}
   if(id==='family'){renderFamilyTabs();}
-  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();}
+  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();;renderChoreVisSettings();}
   if(id==='weather'){renderWeatherFull();}
 }
 window.goTab=goTab;
