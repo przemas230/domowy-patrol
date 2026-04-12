@@ -205,20 +205,8 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .vt-btn.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
 
 /* ── CHORES ── */
-.cat-edit-btns{display:flex;gap:4px;align-items:center;}
-/* ── CATEGORY COLLAPSE ── */
 .cat-lbl{font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.6px;margin:9px 0 4px;display:flex;align-items:center;justify-content:space-between;}
-.cat-collapse-btn{width:22px;height:22px;border-radius:6px;border:none;background:var(--border);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s;color:var(--text);}
-.cat-collapse-btn.open{transform:rotate(0deg);}
-.cat-collapse-btn.closed{transform:rotate(-90deg);}
-.cat-body{overflow:hidden;transition:max-height .3s ease;}
-.cat-body.hidden{display:none;}
-/* ── CATEGORY SETTINGS ── */
-.cat-setting-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);}
-.cat-setting-row:last-child{border-bottom:none;}
-.cat-cb{width:18px;height:18px;border-radius:5px;border:2.5px solid var(--border);background:var(--card);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s;}
-.cat-cb.on{background:var(--g2);border-color:var(--g2);color:#fff;}
-
+.cat-edit-btns{display:flex;gap:4px;}
 .cat-mini-btn{font-size:9px;padding:2px 6px;border-radius:5px;border:1.5px solid var(--border);background:var(--inp);cursor:pointer;font-family:var(--font);font-weight:700;color:var(--soft);}
 .chore-list{display:flex;flex-direction:column;gap:5px;}
 .chore{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:11px;border:2px solid var(--border);background:var(--inp);cursor:pointer;transition:all .18s;position:relative;}
@@ -387,6 +375,11 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .t-nm{font-size:8px;font-weight:800;color:var(--text);}
 
 /* ── GCAL FIX BANNER ── */
+.gcal-fix{background:linear-gradient(135deg,#ff6b35,#f7c59f);border-radius:var(--rr);padding:12px;margin-bottom:10px;color:#1a1a1a;}
+.gcal-fix-title{font-size:13px;font-weight:900;margin-bottom:5px;}
+.gcal-fix-step{font-size:11px;font-weight:700;margin-bottom:4px;padding-left:16px;position:relative;line-height:1.4;}
+.gcal-fix-step::before{content:'→';position:absolute;left:0;font-weight:900;}
+.gcal-fix code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 5px;font-size:10px;font-weight:800;}
 
 /* ── GCAL CARD ── */
 .gcal-card{background:linear-gradient(135deg,#1a73e8,#4285f4);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;cursor:pointer;}
@@ -655,6 +648,16 @@ select.f-inp{cursor:pointer;}
   <div class="sec" id="sec-settings">
     <div class="sec-ttl">⚙️ Opcje</div>
 
+    <!-- GCal fix banner -->
+    <div class="gcal-fix" id="gcalFixBanner">
+      <div class="gcal-fix-title">🔧 Napraw błąd "unauthorized" Google Calendar</div>
+      <div class="gcal-fix-step">Wejdź na <strong>console.cloud.google.com</strong> → Twój projekt → <strong>APIs & Services → Credentials</strong></div>
+      <div class="gcal-fix-step">Kliknij swój OAuth Client ID → sekcja <strong>"Authorized JavaScript origins"</strong></div>
+      <div class="gcal-fix-step">Dodaj dokładny adres swojej strony, np. <code id="myDomain"></code></div>
+      <div class="gcal-fix-step">Zapisz i odczekaj 5 minut (Google potrzebuje czasu na propagację)</div>
+      <div class="gcal-fix-step">Upewnij się że Client ID w kodzie kończy się na <code>.apps.googleusercontent.com</code></div>
+      <button onclick="document.getElementById('gcalFixBanner').style.display='none'" style="margin-top:7px;padding:5px 12px;border-radius:7px;border:none;background:rgba(0,0,0,.15);cursor:pointer;font-size:10px;font-weight:800;">Ukryj tę wskazówkę</button>
+    </div>
 
     <div class="gcal-card" onclick="toggleGCal()">
       <div class="gcal-row"><div class="gcal-ico">📅</div><div><div class="gcal-ttl">Google Calendar</div><div class="gcal-sub">Synchronizuj zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus">Kliknij, aby połączyć</div></div></div>
@@ -669,12 +672,7 @@ select.f-inp{cursor:pointer;}
       <div class="int-row" id="globalIntervalRow"></div>
     </div>
     <div class="card">
-      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📂 Kategorie — widoczność</span></div>
-      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Zaznacz które kategorie mają być widoczne na głównej</div>
-      <div id="catVisSettings"></div>
-    </div>
-    <div class="card">
-      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📂 Zarządzanie kategoriami</span><button class="card-act" onclick="openCategoryModal()">➕</button></div>
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📂 Kategorie zadań</span><button class="card-act" onclick="openCategoryModal()">➕</button></div>
       <div id="categoryMgmt"></div>
     </div>
     <div class="card">
@@ -792,7 +790,9 @@ select.f-inp{cursor:pointer;}
         <div style="background:var(--gp);border-radius:9px;padding:10px;margin-bottom:11px;font-size:11px;font-weight:700;color:var(--g2);">
           ✅ Twój Client ID jest już wklejony w aplikacji.
         </div>
-        <div style="font-size:11px;font-weight:700;color:var(--text);line-height:1.6;">Musisz dodać adres tej strony jako "Authorized JavaScript origins" w Google Cloud Console.<br><br><strong>Twój adres:</strong> <span id="gcalCurrentDomain" style="font-weight:900;color:var(--b);word-break:break-all;"></span></div>
+        <div style="background:rgba(232,64,64,.07);border:2px solid var(--r);border-radius:9px;padding:10px;margin-bottom:11px;">
+          <div style="font-size:12px;font-weight:900;color:var(--r);margin-bottom:5px;">⚠️ Błąd "unauthorized"?</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text);line-height:1.6;">Musisz dodać adres tej strony jako "Authorized JavaScript origins" w Google Cloud Console.<br><br><strong>Twój adres:</strong> <span id="gcalCurrentDomain" style="font-weight:900;color:var(--b);word-break:break-all;"></span></div>
         </div>
         <div style="font-size:12px;font-weight:900;margin-bottom:10px;color:var(--text);">Kroki:</div>
         <div class="step"><div class="step-num">1</div><div class="step-text">Wejdź na <a href="https://console.cloud.google.com" target="_blank" style="color:var(--b);font-weight:800;">console.cloud.google.com</a> → wybierz projekt <strong>domowy-patrol</strong></div></div>
@@ -948,99 +948,14 @@ window.applyTheme=applyTheme;
 function renderThemeGrid(){document.getElementById('themeGrid').innerHTML=THEMES.map(th=>`<button class="theme-btn ${curTheme===th.id?'sel':''}" onclick="applyTheme('${th.id}')"><span class="t-ico">${th.ico}</span><span class="t-nm">${th.nm}</span></button>`).join('');}
 
 /* ── CATEGORIES ── */
-let cats=JSON.parse(localStorage.getItem('dp-cats9')||'null')||[
-  {id:'pies',label:'🐕 Pies',visible:true,chores:[
-    {id:'dog_m',ico:'🌅',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},
-    {id:'dog_n',ico:'☀️',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},
-    {id:'dog_e',ico:'🌙',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},
-    {id:'dog_f',ico:'🥣',name:'Karmienie psa',desc:'Rano/wieczór',pts:5,repeatable:true},
-    {id:'dog_w',ico:'💧',name:'Woda dla psa',desc:'Codziennie',pts:4},
-    {id:'dog_bath',ico:'🛁',name:'Kąpiel psa',desc:'Co 2-4 tyg.',pts:15},
-    {id:'dog_brush',ico:'🪮',name:'Szczotkowanie psa',desc:'Co tydzień',pts:8},
-    {id:'dog_vet',ico:'💊',name:'Lekarstwo dla psa',desc:'Wg przepisu',pts:6,repeatable:true},
-  ]},
-  {id:'kot',label:'🐱 Kot',visible:true,chores:[
-    {id:'cat_f',ico:'🥣',name:'Karmienie kota',desc:'Rano/wieczór',pts:5,repeatable:true},
-    {id:'cat_w',ico:'💧',name:'Woda dla kota',desc:'Codziennie',pts:4},
-    {id:'cat_l',ico:'🪣',name:'Czyszczenie kuwety',desc:'Codziennie',pts:8,repeatable:true},
-    {id:'cat_p',ico:'🎾',name:'Zabawa z kotem',desc:'Min. 10 min',pts:5},
-    {id:'cat_brush',ico:'🪮',name:'Szczotkowanie kota',desc:'Co tydzień',pts:6},
-    {id:'cat_vet',ico:'💊',name:'Lekarstwo dla kota',desc:'Wg przepisu',pts:6,repeatable:true},
-  ]},
-  {id:'kuchnia',label:'🍽️ Kuchnia',visible:true,chores:[
-    {id:'unload',ico:'🍽️',name:'Wyjmowanie ze zmywarki',desc:'Po cyklu',pts:8,repeatable:true},
-    {id:'load',ico:'🧼',name:'Załadowanie zmywarki',desc:'Po posiłku',pts:6,repeatable:true},
-    {id:'table',ico:'🍴',name:'Sprzątnięcie stołu',desc:'Po obiedzie',pts:5,repeatable:true},
-    {id:'trash',ico:'🗑️',name:'Wynoszenie śmieci',desc:'Gdy kosz pełny',pts:7},
-    {id:'cook',ico:'🍳',name:'Pomoc przy gotowaniu',desc:'Wg potrzeby',pts:8},
-    {id:'recycling',ico:'♻️',name:'Segregacja odpadów',desc:'Wg harmonogramu',pts:6},
-    {id:'fridge',ico:'🧊',name:'Sprawdzenie lodówki',desc:'Co tydzień',pts:5},
-    {id:'microwave',ico:'📦',name:'Czyszczenie mikrofalówki',desc:'Co tydz.',pts:7},
-    {id:'pots',ico:'🥘',name:'Mycie garnków i patelni',desc:'Po gotowaniu',pts:6,repeatable:true},
-    {id:'shop_unpack',ico:'🛍️',name:'Rozpakowywanie zakupów',desc:'Po zakupach',pts:6},
-  ]},
-  {id:'dom',label:'🏠 Dom',visible:true,chores:[
-    {id:'vac_s',ico:'🧹',name:'Odkurzanie salonu',desc:'Co 2 dni',pts:12},
-    {id:'vac_r',ico:'🧽',name:'Odkurzanie pokojów',desc:'Co 2 dni',pts:10},
-    {id:'laundry',ico:'🧺',name:'Składanie prania',desc:'Gdy wyschnie',pts:8,repeatable:true},
-    {id:'laundry_start',ico:'🌀',name:'Włączenie prania',desc:'Wg potrzeby',pts:5},
-    {id:'flowers',ico:'🪴',name:'Podlewanie kwiatków',desc:'Wt i Pt',pts:5},
-    {id:'bathroom',ico:'🚿',name:'Mycie łazienki',desc:'Raz w tyg.',pts:15},
-    {id:'dust',ico:'🪣',name:'Ścieranie kurzu',desc:'Co tydz.',pts:8},
-    {id:'windows',ico:'🪟',name:'Mycie okien',desc:'Co miesiąc',pts:18},
-    {id:'floors',ico:'🧹',name:'Mycie podłóg',desc:'Co tydz.',pts:14},
-    {id:'toilet',ico:'🚽',name:'Czyszczenie toalety',desc:'Co tydz.',pts:10},
-    {id:'mirrors',ico:'🪞',name:'Mycie luster',desc:'Co 2 tyg.',pts:7},
-    {id:'mail',ico:'📮',name:'Sprawdzenie skrzynki',desc:'Codziennie',pts:3},
-    {id:'bed',ico:'🛏️',name:'Ścielenie łóżka',desc:'Rano',pts:5},
-    {id:'room_tidy',ico:'🗂️',name:'Porządki w pokoju',desc:'Co tydzień',pts:10},
-    {id:'batteries',ico:'🔦',name:'Wymiana baterii',desc:'Wg potrzeby',pts:5},
-  ]},
-  {id:'zakupy',label:'🛒 Zakupy',visible:true,chores:[
-    {id:'shopping',ico:'🛒',name:'Wyjście po zakupy',desc:'Wg potrzeby',pts:10},
-    {id:'shop_online',ico:'💻',name:'Zamówienie online',desc:'Wg potrzeby',pts:6},
-    {id:'shop_list',ico:'📝',name:'Uzupełnienie listy zakupów',desc:'Brakujące',pts:3},
-    {id:'shop_veg',ico:'🥦',name:'Zakupy warzyw/owoców',desc:'2x w tyg.',pts:8},
-    {id:'shop_pharma',ico:'💊',name:'Apteka / lekarstwa',desc:'Wg potrzeby',pts:8},
-    {id:'shop_return',ico:'🔄',name:'Zwrot / reklamacja',desc:'Wg potrzeby',pts:6},
-    {id:'shop_carry',ico:'🏋️',name:'Przyniesienie ciężkich zakupów',desc:'Po zakupach',pts:8},
-  ]},
-  {id:'szkola',label:'📚 Szkoła',visible:true,chores:[
-    {id:'hw',ico:'📖',name:'Praca domowa',desc:'Codziennie',pts:12},
-    {id:'reading',ico:'📚',name:'Czytanie 20 min',desc:'Codziennie',pts:8},
-    {id:'backpack',ico:'🎒',name:'Spakowanie plecaka',desc:'Wieczór',pts:5},
-    {id:'revision',ico:'🧠',name:'Powtórka materiału',desc:'Przed sprawdzianem',pts:10},
-    {id:'school_notes',ico:'📓',name:'Przepisanie notatek',desc:'Po lekcjach',pts:7},
-    {id:'school_sign',ico:'✍️',name:'Podpisanie dokumentów',desc:'Wg potrzeby',pts:4},
-    {id:'school_fees',ico:'💳',name:'Składki / opłaty szkolne',desc:'Wg terminu',pts:5},
-    {id:'school_project',ico:'🔬',name:'Praca na projekt',desc:'Długoterminowo',pts:15},
-  ]},
-  {id:'ogrod',label:'🌿 Ogród',visible:true,chores:[
-    {id:'g_water',ico:'💦',name:'Podlewanie ogrodu',desc:'Co 2 dni',pts:8},
-    {id:'g_sweep',ico:'🍂',name:'Zamiatanie liści',desc:'W sezonie',pts:10},
-    {id:'g_mow',ico:'🌱',name:'Koszenie trawy',desc:'Co 2 tyg.',pts:20},
-    {id:'g_weed',ico:'🌾',name:'Pielenie chwastów',desc:'Co tydzień',pts:12},
-    {id:'g_prune',ico:'✂️',name:'Przycinanie krzewów',desc:'W sezonie',pts:15},
-    {id:'g_snow',ico:'❄️',name:'Odśnieżanie',desc:'Po śniegu',pts:18},
-    {id:'g_compost',ico:'🪱',name:'Kompostowanie odpadów',desc:'Co tydzień',pts:7},
-  ]},
-  {id:'auto',label:'🚗 Samochód',visible:true,chores:[
-    {id:'car_wash',ico:'🚿',name:'Mycie samochodu',desc:'Co 2 tyg.',pts:15},
-    {id:'car_vac',ico:'🧹',name:'Odkurzanie auta',desc:'Co miesiąc',pts:12},
-    {id:'car_fuel',ico:'⛽',name:'Tankowanie',desc:'Wg potrzeby',pts:8},
-    {id:'car_check',ico:'🔧',name:'Sprawdzenie oleju/płynów',desc:'Co miesiąc',pts:6},
-    {id:'car_trash',ico:'🗑️',name:'Wyrzucenie śmieci z auta',desc:'Co tydzień',pts:4},
-    {id:'car_frost',ico:'🧊',name:'Odlodzenie szyb',desc:'Zimą rano',pts:8},
-  ]},
-  {id:'family',label:'👨‍👩‍👧 Rodzina',visible:true,chores:[
-    {id:'fam_dishes',ico:'☕',name:'Herbata/kawa dla rodziny',desc:'Rano',pts:4,repeatable:true},
-    {id:'fam_birthday',ico:'🎂',name:'Organizacja urodzin',desc:'Wg daty',pts:20},
-    {id:'fam_phone',ico:'📞',name:'Telefon do dziadków',desc:'Co tydzień',pts:6},
-    {id:'fam_walk',ico:'🚶',name:'Spacer z rodziną',desc:'Wg chęci',pts:8},
-    {id:'fam_game',ico:'🎲',name:'Gra planszowa z rodziną',desc:'W weekendy',pts:6},
-    {id:'fam_photo',ico:'📷',name:'Zdjęcia rodzinne',desc:'Wg okazji',pts:5},
-  ]},
-  {id:'custom',label:'➕ Własne',visible:true,editable:true,chores:[]},
+let cats=JSON.parse(localStorage.getItem('dp-cats8')||'null')||[
+  {id:'pies',label:'🐕 Pies',chores:[{id:'dog_m',ico:'🌅',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},{id:'dog_n',ico:'☀️',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},{id:'dog_e',ico:'🌙',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},{id:'dog_f',ico:'🥣',name:'Karmienie psa',desc:'Rano/wieczór',pts:5,repeatable:true},{id:'dog_w',ico:'💧',name:'Woda dla psa',desc:'Codziennie',pts:4}]},
+  {id:'kot',label:'🐱 Kot',chores:[{id:'cat_f',ico:'🥣',name:'Karmienie kota',desc:'Rano/wieczór',pts:5,repeatable:true},{id:'cat_w',ico:'💧',name:'Woda dla kota',desc:'Codziennie',pts:4},{id:'cat_l',ico:'🪣',name:'Kuweta',desc:'Codziennie',pts:8,repeatable:true},{id:'cat_p',ico:'🎾',name:'Zabawa z kotem',desc:'Min. 10 min',pts:5}]},
+  {id:'kuchnia',label:'🍽️ Kuchnia',chores:[{id:'unload',ico:'🍽️',name:'Wyjmowanie ze zmywarki',desc:'Po cyklu',pts:8,repeatable:true},{id:'load',ico:'🧼',name:'Załadowanie zmywarki',desc:'Po posiłku',pts:6,repeatable:true},{id:'table',ico:'🍴',name:'Sprzątnięcie stołu',desc:'Po obiedzie',pts:5,repeatable:true},{id:'trash',ico:'🗑️',name:'Wynoszenie śmieci',desc:'Gdy kosz pełny',pts:7},{id:'cook',ico:'🍳',name:'Pomoc przy gotowaniu',desc:'Wg potrzeby',pts:8}]},
+  {id:'dom',label:'🏠 Dom',chores:[{id:'vac_s',ico:'🧹',name:'Odkurzanie salonu',desc:'Co 2 dni',pts:12},{id:'vac_r',ico:'🧽',name:'Odkurzanie pokojów',desc:'Co 2 dni',pts:10},{id:'laundry',ico:'🧺',name:'Składanie prania',desc:'Gdy wyschnie',pts:8,repeatable:true},{id:'flowers',ico:'🪴',name:'Podlewanie kwiatków',desc:'Wt i Pt',pts:5},{id:'bathroom',ico:'🚿',name:'Mycie łazienki',desc:'Raz w tyg.',pts:15},{id:'dust',ico:'🪣',name:'Ścieranie kurzu',desc:'Co tydz.',pts:8}]},
+  {id:'szkola',label:'📚 Szkoła',chores:[{id:'hw',ico:'📖',name:'Praca domowa',desc:'Codziennie',pts:12},{id:'reading',ico:'📚',name:'Czytanie 20 min',desc:'Codziennie',pts:8},{id:'backpack',ico:'🎒',name:'Spakowanie plecaka',desc:'Wieczór',pts:5},{id:'revision',ico:'🧠',name:'Powtórka materiału',desc:'Przed sprawdzianem',pts:10}]},
+  {id:'ogrod',label:'🌿 Ogród',chores:[{id:'g_water',ico:'💦',name:'Podlewanie ogrodu',desc:'Co 2 dni',pts:8},{id:'g_sweep',ico:'🍂',name:'Zamiatanie liści',desc:'W sezonie',pts:10},{id:'g_mow',ico:'🌱',name:'Koszenie trawy',desc:'Co 2 tyg.',pts:20}]},
+  {id:'custom',label:'➕ Własne',editable:true,chores:[]},
 ];
 function saveCats(){localStorage.setItem('dp-cats8',JSON.stringify(cats));}
 function allChores(){return cats.flatMap(c=>c.chores);}
@@ -1367,7 +1282,7 @@ function launchApp(){
   }
   checkAfter19();updateReturnBanner();renderBdayPanel();
 }
-function renderAll(){renderOnline();renderCatVisibilitySettings();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
+function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
 /* ── PROFILE ACTIONS ── */
 async function saveProfileName(){
@@ -1614,41 +1529,7 @@ function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherF
   <div class="weather-loc-row" style="margin-top:9px;"><input id="weatherCityInput2" placeholder="Zmień miasto" value="${w.city||''}"><button onclick="document.getElementById('weatherCityInput').value=document.getElementById('weatherCityInput2').value;fetchWeatherByCity()">🔍</button></div>`;}
 
 /* ── LOCATION ── */
-function startLocationSharing(){
-  if(!navigator.geolocation){showToast('❌ GPS niedostępny na tym urządzeniu');return;}
-  
-  // Request permission explicitly first
-  navigator.permissions && navigator.permissions.query({name:'geolocation'}).then(r=>{
-    console.log('GPS permission:', r.state);
-    if(r.state==='denied') showToast('❌ GPS zablokowany — włącz w ustawieniach telefonu');
-  }).catch(()=>{});
-
-  const opts = {enableHighAccuracy:true, maximumAge:10000, timeout:30000};
-  
-  function onPos(pos){
-    const data={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy),ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤'};
-    if(!isDemo) update(ref(db,`families/${fCode}/locations/${currentUser.uid}`),data);
-    console.log('GPS updated:', data.lat, data.lng, 'acc:', data.acc+'m');
-  }
-  
-  function onErr(err){
-    const msgs={1:'GPS zablokowany — zezwól w ustawieniach',2:'Brak sygnału GPS',3:'Timeout GPS'};
-    console.warn('GPS error:', err.code, err.message);
-    // Retry after 30s
-    setTimeout(()=>startLocationSharing(), 30000);
-  }
-  
-  // watchPosition is the main mechanism
-  const watchId = navigator.geolocation.watchPosition(onPos, onErr, opts);
-  
-  // Also do periodic getCurrentPosition as backup (some Android browsers stop watchPosition in background)
-  setInterval(()=>{
-    navigator.geolocation.getCurrentPosition(onPos, ()=>{}, opts);
-  }, 60000);
-  
-  // Store watchId for cleanup
-  window._gpsWatchId = watchId;
-}
+function startLocationSharing(){if(!navigator.geolocation) return;navigator.geolocation.watchPosition(pos=>{update(ref(db,`families/${fCode}/locations/${currentUser.uid}`),{lat:pos.coords.latitude,lng:pos.coords.longitude,ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤'});},{enableHighAccuracy:true,maximumAge:30000,timeout:20000});}
 
 /* ── RETURN HOME ── */
 function checkAfter19(){if(myProfile?.role!=='parent')return;const h=new Date().getHours();if(h<19)return;const children=Object.entries(live.members).filter(([,m])=>m.role==='child');let any=false;children.forEach(([uid])=>{if(!live.curfews[uid])any=true;});if(any)document.getElementById('ndToday').classList.add('show');}
@@ -1675,10 +1556,10 @@ async function setCurfew(){if(!curfewChildId)return;const t=document.getElementB
 window.setCurfew=setCurfew;
 async function clearCurfew(){if(!curfewChildId)return;if(isDemo){delete live.curfews[curfewChildId];renderCurfewPanel();updateReturnBanner();}else await remove(ref(db,`families/${fCode}/curfews/${curfewChildId}`));showToast('❌ Anulowano');closeOverlay('curfewOverlay');}
 window.clearCurfew=clearCurfew;
-function updateReturnBanner(){if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;banner.style.display='block';if(diffMin>60){banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div></div>`;clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));}else if(diffMin>0){banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;clearReturnTimers();scheduleReturnReminders(curfew.time,interval);}else{banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`,['🏃 Wracam!','Jeszcze chwilę'],true,'dp-curfew',{action0:'heading_home',action1:'not_yet'});}}
-function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min. Powrót: ${time}`,['🏃 Wracam!','Jeszcze chwilę'],true,'dp-curfew-'+left,{action0:'heading_home',action1:'not_yet'});showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
+function updateReturnBanner(){if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;banner.style.display='block';if(diffMin>60){banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div></div>`;clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));}else if(diffMin>0){banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;clearReturnTimers();scheduleReturnReminders(curfew.time,interval);}else{banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);}}
+function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
 function clearReturnTimers(){returnTimers.forEach(clearTimeout);returnTimers=[];}
-async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});}sendBrowserNotif('🏃 W drodze!','Zgłosiłeś/aś powrót do domu! Bezpiecznej drogi!',[],false,'dp-heading',{});setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);}
+async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});}sendBrowserNotif('🏃 W drodze!','Bezpiecznej drogi!');setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);}
 window.iAmHeading=iAmHeading;
 window.notYet=function(){const uid=getMyUid();const c=live.curfews[uid];if(!c)return;showToast(`⏸️ Pamiętaj o ${c.time}!`);sendBrowserNotif('🏠 Pamiętaj!',`Powrót o ${c.time}`);};
 
@@ -1712,20 +1593,7 @@ function renderChores(){
   if(selectedDay&&selectedDay!==todayKey){loadPastDay(selectedDay);return;}
   if(viewMode==='compact'){renderChoresCompact();return;}
   let html='';
-  cats.forEach(cat=>{
-    if(cat.visible===false) return;
-    if(!cat.chores.length&&!cat.editable) return;
-    const isCollapsed=!!collapsedCats[cat.id];
-    const doneInCat=cat.chores.filter(ch=>Object.keys(live.done).some(k=>k===ch.id||k.startsWith(ch.id+'_'))).length;
-    html+=`<div class="cat-lbl">
-      <span>${cat.label} <span style="font-size:9px;color:var(--soft);font-weight:600">${doneInCat>0?doneInCat+'/'+cat.chores.length:''}</span></span>
-      <div class="cat-edit-btns">
-        <button class="cat-mini-btn" onclick="openAddChore('${cat.id}')">+</button>
-        ${cat.editable?`<button class="cat-mini-btn" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}
-        <button class="cat-collapse-btn ${isCollapsed?'closed':'open'}" onclick="toggleCatCollapse('${cat.id}')">${isCollapsed?'▶':'▼'}</button>
-      </div>
-    </div>`;
-    if(!isCollapsed){html+=`<div class="chore-list">`;
+  cats.forEach(cat=>{if(!cat.chores.length&&!cat.editable) return;html+=`<div class="cat-lbl"><span>${cat.label}</span><div class="cat-edit-btns"><button class="cat-mini-btn" onclick="openAddChore('${cat.id}')">+ zadanie</button>${cat.editable?`<button class="cat-mini-btn" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}</div></div><div class="chore-list">`;
     sortChores(cat.chores).forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
     html+=`<div class="chore ${done?'done':''}" onclick="${!done?`doToggleChore('${ch.id}',${ch.pts})`:''}">
       <div class="chore-ico">${ch.ico}</div>
@@ -1741,7 +1609,7 @@ function renderChores(){
           <button class="cat-mini-btn" style="font-size:9px;" onclick="openEditChore(event,'${cat.id}',${idx})">✏️</button>`}
       </div>
     </div>`;});
-    html+=`</div>`;}});
+    html+=`</div>`;});
   document.getElementById('choreContainer').innerHTML=html;
 }
 function renderChoresCompact(){let html='';cats.forEach(cat=>{if(!cat.chores.length) return;html+=`<div class="compact-cat-lbl">${cat.label}</div><div class="compact-grid">`;cat.chores.forEach(ch=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[0]]:null;html+=`<div class="compact-tile ${done?'done':''}" onclick="doToggleChore('${ch.id}',${ch.pts})"><div class="ct-ico">${ch.ico}</div><div class="ct-nm">${ch.name}</div>${done?`<div class="ct-done">✓ ${dn?.who?.split(' ')[0]||''}${reps>1?' ×'+reps:''}</div>`:`<div class="ct-pts">+${ch.pts}⭐</div>`}</div>`;});html+=`</div>`;});document.getElementById('choreContainer').innerHTML=html;}
@@ -1835,74 +1703,8 @@ window.toggleGCal=toggleGCal;
 async function addToGCal(name,ico,date,time,pts){if(!gcalToken)return;const s=time?`${date}T${time}:00`:`${date}`;const e=time?`${date}T${d2(parseInt(time.split(':')[0]))}:${d2(parseInt(time.split(':')[1]||0)+30)}:00`:`${date}`;await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{method:'POST',headers:{Authorization:`Bearer ${gcalToken}`,'Content-Type':'application/json'},body:JSON.stringify({summary:`${ico} ${name} (+${pts}⭐)`,description:'Domowy Patrol',start:time?{dateTime:s,timeZone:'Europe/Warsaw'}:{date:s},end:time?{dateTime:e,timeZone:'Europe/Warsaw'}:{date:e}})});showToast('📅 Dodano do Google Calendar!');}
 
 /* ── NOTIFS ── */
-function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default') Notification.requestPermission().then(()=>registerSW());}
-
-/* ── SERVICE WORKER — persistent notifications with actions ── */
-const SW_CODE = `
-self.addEventListener('message', e => {
-  if(e.data?.type !== 'NOTIFY') return;
-  const opts = {
-    body: e.data.body,
-    icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2272%22 x=%2212%22>🏠</text></svg>',
-    badge: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2210%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2286%22 x=%228%22>🏠</text></svg>',
-    tag: e.data.tag || 'dp-notif',
-    renotify: true,
-    requireInteraction: e.data.persistent || false,
-    actions: (e.data.actions||[]).map((a,i)=>({action:'action'+i, title:a})),
-    data: e.data.actionData || {}
-  };
-  self.registration.showNotification(e.data.title, opts);
-});
-
-self.addEventListener('notificationclick', e => {
-  e.notification.close();
-  const data = e.notification.data || {};
-  if(e.action === 'action0' && data.action0) {
-    e.waitUntil(clients.matchAll({type:'window'}).then(cs=>{
-      cs.forEach(c=>c.postMessage({type:'NOTIF_ACTION', action: data.action0}));
-      if(cs.length===0) clients.openWindow('/');
-    }));
-  } else if(e.action === 'action1' && data.action1) {
-    e.waitUntil(clients.matchAll({type:'window'}).then(cs=>{
-      cs.forEach(c=>c.postMessage({type:'NOTIF_ACTION', action: data.action1}));
-    }));
-  } else {
-    e.waitUntil(clients.openWindow('/'));
-  }
-});
-`;
-
-// Register inline Service Worker
-function registerSW(){
-  if(!('serviceWorker' in navigator)) return;
-  const blob = new Blob([SW_CODE], {type:'application/javascript'});
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl, {scope:'/'}).then(reg=>{
-    window._swReg = reg;
-    console.log('SW registered');
-    // Listen for action messages from SW
-    navigator.serviceWorker.addEventListener('message', e=>{
-      if(e.data?.type==='NOTIF_ACTION'){
-        if(e.data.action==='heading_home') iAmHeading();
-        if(e.data.action==='not_yet') notYet && notYet();
-        console.log('SW action:', e.data.action);
-      }
-    });
-  }).catch(err=>console.log('SW failed:', err));
-}
-registerSW();
-
-// Enhanced notification sender using SW
-function sendBrowserNotif(title, body, actions, persistent, tag, actionData){
-  if(!('Notification' in window) || Notification.permission !== 'granted') return;
-  const sw = window._swReg?.active || navigator.serviceWorker.controller;
-  if(sw){
-    sw.postMessage({type:'NOTIFY', title, body, actions: actions||[], persistent: persistent||false, tag: tag||'dp-notif', actionData: actionData||{}});
-  } else {
-    new Notification(title, {body, icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2272%22 x=%2212%22>🏠</text></svg>'});
-  }
-}
-
+function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default') Notification.requestPermission();}
+function sendBrowserNotif(title,body){if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2272%22 x=%2212%22>🏠</text></svg>'});}
 function scheduleLocalNotif(n,f,ts){const d=ts-Date.now();if(d>0&&d<172800000) setTimeout(()=>sendBrowserNotif('⏰ Zadanie!',`${f}: ${n}`),d);}
 
 
@@ -2143,34 +1945,6 @@ const _origRenderChores = renderChores;
 /* We patch it after definition — inject sort into chore rendering */
 /* Sort is applied inside renderChores via sortChores() call already added below */
 
-
-/* ── CATEGORY COLLAPSE STATE ── */
-let collapsedCats = JSON.parse(localStorage.getItem('dp-collapsed')||'{}');
-function toggleCatCollapse(catId) {
-  collapsedCats[catId] = !collapsedCats[catId];
-  localStorage.setItem('dp-collapsed', JSON.stringify(collapsedCats));
-  renderChores();
-}
-window.toggleCatCollapse = toggleCatCollapse;
-
-/* ── CATEGORY VISIBILITY (settings checkboxes) ── */
-function renderCatVisibilitySettings() {
-  const el = document.getElementById('catVisSettings');
-  if(!el) return;
-  el.innerHTML = cats.map(cat => `
-    <div class="cat-setting-row">
-      <div class="cat-cb ${cat.visible!==false?'on':''}" onclick="toggleCatVisible('${cat.id}')">${cat.visible!==false?'✓':''}</div>
-      <span style="font-size:13px">${cat.label.split(' ')[0]}</span>
-      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1">${cat.label.split(' ').slice(1).join(' ')}</span>
-      <span style="font-size:10px;color:var(--soft)">${cat.chores.length} zadań</span>
-    </div>`).join('');
-}
-function toggleCatVisible(catId) {
-  const cat = cats.find(c=>c.id===catId);
-  if(cat) { cat.visible = cat.visible===false ? true : false; saveCats(); renderCatVisibilitySettings(); renderChores(); }
-}
-window.toggleCatVisible = toggleCatVisible;
-
 /* ── MISC ── */
 function closeOverlay(id){document.getElementById(id).classList.remove('show');}
 window.closeOverlay=closeOverlay;
@@ -2185,7 +1959,7 @@ function goTab(id){
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();}
   if(id==='family'){renderFamilyTabs();}
-  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();}
+  if(id==='settings'){renderCategoryMgmt();renderThemeGrid();renderWeatherFull();}
   if(id==='profile'){renderProfileHero();renderSortRow();renderPointsEdit();renderProfileAvGrid();if(myProfile?.role==='parent')renderFamilyMembers();}
   if(id==='weather'){renderWeatherFull();}
 }
