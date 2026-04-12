@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#2d6a10">
 <meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="Content-Security-Policy" content="img-src * data: blob:; default-src 'self' 'unsafe-inline' 'unsafe-eval' https: wss: data: blob:;">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Domowy Patrol">
@@ -444,56 +443,15 @@ select.f-inp{cursor:pointer;}
 .step-text a{color:var(--b);}
 .step-code{background:var(--inp);border:1.5px solid var(--border);border-radius:5px;padding:2px 6px;font-size:10px;font-weight:800;color:var(--g2);display:inline-block;word-break:break-all;}
 
-/* ── PROFILE HERO (Etap 3) ── */
-.profile-hero-card{position:relative;border-radius:var(--rr);overflow:hidden;margin-bottom:10px;box-shadow:var(--sh);}
-.profile-hero-bg{position:absolute;inset:0;background:var(--hdr);}
-.profile-hero-content{position:relative;padding:18px 14px;display:flex;align-items:center;gap:13px;}
-.profile-big-av{flex-shrink:0;}
-.profile-hero-info{flex:1;min-width:0;}
-
-/* ── PROFILE INNER TABS ── */
-.profile-tabs{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;}
-.profile-tabs::-webkit-scrollbar{display:none;}
-.ptab{padding:7px 12px;border-radius:20px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);white-space:nowrap;transition:all .15s;}
-.ptab.on{background:var(--gp);border-color:var(--g2);color:var(--g2);}
-
-/* ── SORT ROW ── */
-.sort-row{display:flex;gap:6px;flex-wrap:wrap;}
-.sort-btn{padding:6px 11px;border-radius:8px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);transition:all .15s;}
-.sort-btn.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
-
-/* ── POINTS EDIT ── */
-.pts-edit-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
-.pts-edit-row:last-child{border-bottom:none;}
-.pts-edit-av{font-size:22px;}
-.pts-edit-info{flex:1;}
-.pts-edit-nm{font-size:12px;font-weight:800;color:var(--text);}
-.pts-edit-cur{font-size:10px;color:var(--soft);}
-.pts-edit-controls{display:flex;align-items:center;gap:5px;}
-.pts-edit-btn{width:28px;height:28px;border-radius:8px;border:none;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--font);}
-.pts-edit-btn.minus{background:rgba(232,64,64,.1);color:var(--r);}
-.pts-edit-btn.plus{background:rgba(74,158,34,.12);color:var(--g2);}
-.pts-edit-input{width:52px;padding:5px 6px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:900;color:var(--text);text-align:center;outline:none;}
-.pts-edit-input:focus{border-color:var(--g2);}
-
-/* ── FAMILY MEMBERS LIST ── */
-.fm-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);}
-.fm-item:last-child{border-bottom:none;}
-.fm-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--inp);overflow:hidden;}
-.fm-av img{width:36px;height:36px;object-fit:cover;}
-.fm-info{flex:1;}
-.fm-nm{font-size:13px;font-weight:800;color:var(--text);}
-.fm-role{font-size:10px;color:var(--soft);}
-.fm-pts{font-size:14px;font-weight:900;color:var(--g2);}
-
-/* ── GOOGLE LINK CARD ── */
-.gl-connected{background:var(--gp);border-radius:11px;padding:12px;display:flex;align-items:center;gap:10px;}
-.gl-disconnected{background:var(--inp);border:2px dashed var(--border);border-radius:11px;padding:12px;}
-.gl-ico{font-size:28px;}
-.gl-info{flex:1;}
-.gl-title{font-size:13px;font-weight:800;color:var(--text);}
-.gl-sub{font-size:10px;color:var(--soft);margin-top:2px;}
-.gl-btn{padding:7px 12px;border-radius:8px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;}
+/* ── CATEGORY COLLAPSE ── */
+.cat-toggle-btn{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border);background:var(--inp);cursor:pointer;font-size:10px;display:inline-flex;align-items:center;justify-content:center;color:var(--soft);flex-shrink:0;transition:transform .2s;}
+.cat-toggle-btn.open{transform:rotate(0deg);}
+.cat-toggle-btn.closed{transform:rotate(-90deg);}
+/* ── CAT VISIBILITY ── */
+.cat-vis-row{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);}
+.cat-vis-row:last-child{border-bottom:none;}
+.cat-vis-cb{width:20px;height:20px;border-radius:6px;border:2.5px solid var(--border);background:var(--card);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s;}
+.cat-vis-cb.on{background:var(--g2);border-color:var(--g2);color:#fff;}
 </style>
 </head>
 <body>
@@ -649,7 +607,7 @@ select.f-inp{cursor:pointer;}
     <div class="sec-ttl">⚙️ Opcje</div>
 
     <!-- GCal fix banner -->
-    <div class="gcal-fix" id="gcalFixBanner">
+    <div class="gcal-fix" id="gcalFixBanner" style="display:none;">
       <div class="gcal-fix-title">🔧 Napraw błąd "unauthorized" Google Calendar</div>
       <div class="gcal-fix-step">Wejdź na <strong>console.cloud.google.com</strong> → Twój projekt → <strong>APIs & Services → Credentials</strong></div>
       <div class="gcal-fix-step">Kliknij swój OAuth Client ID → sekcja <strong>"Authorized JavaScript origins"</strong></div>
@@ -672,7 +630,12 @@ select.f-inp{cursor:pointer;}
       <div class="int-row" id="globalIntervalRow"></div>
     </div>
     <div class="card">
-      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📂 Kategorie zadań</span><button class="card-act" onclick="openCategoryModal()">➕</button></div>
+      <div class="card-ttl">☑️ Widoczność kategorii</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Zaznacz które kategorie mają być widoczne na głównej</div>
+      <div id="catVisSettings"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📂 Zarządzanie kategoriami</span><button class="card-act" onclick="openCategoryModal()">➕</button></div>
       <div id="categoryMgmt"></div>
     </div>
     <div class="card">
@@ -685,123 +648,41 @@ select.f-inp{cursor:pointer;}
     </div>
   </div>
 
-  <!-- PROFILE — Etap 3 redesign -->
+  <!-- PROFILE -->
   <div class="sec" id="sec-profile">
-
-    <!-- Hero -->
-    <div class="profile-hero-card">
-      <div class="profile-hero-bg"></div>
-      <div class="profile-hero-content">
-        <div class="profile-big-av">
-          <img id="profileBigPhoto" src="" crossorigin="anonymous" referrerpolicy="no-referrer" style="width:72px;height:72px;border-radius:50%;object-fit:cover;display:none;border:3px solid rgba(255,255,255,.4);" onerror="this.style.display='none'">
-          <div id="profileBigEmoji" style="font-size:56px;line-height:1;"></div>
-        </div>
-        <div class="profile-hero-info">
-          <div id="profileHeroName" style="font-size:17px;font-weight:900;color:#fff;"></div>
-          <div id="profileHeroRole" style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;"></div>
-          <div id="profileHeroEmail" style="font-size:10px;color:rgba(255,255,255,.5);margin-top:1px;"></div>
-          <div id="profileHeroPts" style="font-size:12px;font-weight:800;color:var(--y);margin-top:4px;"></div>
-        </div>
+    <div class="sec-ttl">👤 Profil i rodzina</div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <!-- FIXED: Google photo with proper attributes -->
+        <img id="profilePhoto" src="" crossorigin="anonymous" referrerpolicy="no-referrer" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:none;border:2px solid var(--border);" onerror="this.style.display='none'">
+        <div id="profileAvWrap" style="font-size:44px;"></div>
+        <div><div id="profileName" style="font-size:15px;font-weight:900;color:var(--text);"></div><div id="profileEmail" style="font-size:10px;color:var(--soft);"></div></div>
+      </div>
+      <div class="f-lbl">Zmień imię</div>
+      <input class="f-inp" id="editName" maxlength="18">
+      <button onclick="saveProfileName()" style="width:100%;margin-top:7px;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz imię</button>
+    </div>
+    <div class="card">
+      <div class="card-ttl">👨‍👩‍👧 Kod rodziny</div>
+      <div style="background:var(--inp);border-radius:9px;padding:10px;font-size:16px;font-weight:900;letter-spacing:2px;text-align:center;border:2px dashed var(--border);color:var(--text);margin-bottom:8px;" id="fCodeDisplay"></div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="copyCode()" style="flex:1;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">📋 Kopiuj kod</button>
+        <button onclick="copyInviteLink()" style="flex:1;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:#fff;">🔗 Link zaproszenia</button>
       </div>
     </div>
-
-    <!-- Inner tabs -->
-    <div class="profile-tabs">
-      <button class="ptab on" onclick="switchProfileTab('account')" id="ptab-account">👤 Konto</button>
-      <button class="ptab" onclick="switchProfileTab('family')" id="ptab-family">👨‍👩‍👧 Rodzina</button>
-      <button class="ptab" onclick="switchProfileTab('connect')" id="ptab-connect">🔗 Połączenia</button>
-      <button class="ptab" onclick="switchProfileTab('gcal')" id="ptab-gcal">📅 Kalendarz</button>
+    <div class="card">
+      <div class="card-ttl">🎂 Urodziny</div>
+      <div id="birthdaysList"></div>
+      <button onclick="openBdayModal()" style="width:100%;margin-top:7px;padding:9px;border-radius:9px;border:2px dashed var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--g2);">+ Dodaj urodziny</button>
     </div>
-
-    <!-- ACCOUNT -->
-    <div id="ptab-content-account">
-      <div class="card">
-        <div class="card-ttl">✏️ Moje dane</div>
-        <div class="f-lbl">Imię w rodzinie</div>
-        <input class="f-inp" id="editName" maxlength="18">
-        <div class="f-lbl">Avatar</div>
-        <div class="av-grid" id="profileAvGrid"></div>
-        <button onclick="saveProfileName()" style="width:100%;margin-top:9px;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz zmiany</button>
-      </div>
-      <div class="card" id="pointsEditCard" style="display:none;">
-        <div class="card-ttl">⭐ Edycja punktów</div>
-        <div style="font-size:11px;color:var(--soft);margin-bottom:9px;">Przyznaj lub odejmij punkty członkom rodziny.</div>
-        <div id="pointsEditList"></div>
-      </div>
-      <div class="card">
-        <div class="card-ttl">📋 Sortowanie zadań</div>
-        <div style="font-size:11px;color:var(--soft);margin-bottom:7px;">Jak wyświetlać listę obowiązków?</div>
-        <div class="sort-row" id="sortRow"></div>
-      </div>
-      <div class="card">
-        <button onclick="doSignOut()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.05);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;" id="signOutBtn">🚪 Wyloguj się</button>
-      </div>
+    <div class="card">
+      <div class="card-ttl">🔄 Zmień rodzinę</div>
+      <input class="f-inp" id="changeFamilyCode" placeholder="Nowy kod rodziny" maxlength="24" style="text-transform:uppercase;margin-bottom:8px;">
+      <button onclick="requestChangeFamily()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">🔄 Wyślij prośbę dołączenia</button>
     </div>
-
-    <!-- FAMILY -->
-    <div id="ptab-content-family" style="display:none;">
-      <div class="card">
-        <div class="card-ttl">👨‍👩‍👧 Kod rodziny</div>
-        <div style="background:var(--inp);border-radius:9px;padding:10px;font-size:15px;font-weight:900;letter-spacing:2px;text-align:center;border:2px dashed var(--border);color:var(--text);margin-bottom:8px;" id="fCodeDisplay"></div>
-        <div style="display:flex;gap:6px;">
-          <button onclick="copyCode()" style="flex:1;padding:8px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">📋 Kopiuj</button>
-          <button onclick="copyInviteLink()" style="flex:1;padding:8px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:#fff;">🔗 Link zaproszenia</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-ttl">👥 Członkowie rodziny</div>
-        <div id="familyMembersList"></div>
-      </div>
-      <div class="card">
-        <div class="card-ttl">🎂 Urodziny</div>
-        <div id="birthdaysList"></div>
-        <button onclick="openBdayModal()" style="width:100%;margin-top:7px;padding:9px;border-radius:9px;border:2px dashed var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--g2);">+ Dodaj urodziny</button>
-      </div>
-      <div class="card">
-        <div class="card-ttl">🔄 Zmień rodzinę</div>
-        <input class="f-inp" id="changeFamilyCode" placeholder="Nowy kod rodziny" maxlength="24" style="text-transform:uppercase;margin-bottom:8px;">
-        <button onclick="requestChangeFamily()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">🔄 Wyślij prośbę</button>
-      </div>
-      <div class="card">
-        <button onclick="leaveFamily()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.05);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;">🚪 Opuść rodzinę</button>
-      </div>
-    </div>
-
-    <!-- CONNECT -->
-    <div id="ptab-content-connect" style="display:none;">
-      <div class="card">
-        <div class="card-ttl">🔗 Połącz konto Google</div>
-        <div id="googleLinkStatus"></div>
-      </div>
-      <div class="card" id="childAccountsCard" style="display:none;">
-        <div class="card-ttl">🧒 Konta dzieci (Rodzic)</div>
-        <div style="font-size:11px;color:var(--soft);margin-bottom:9px;">Status połączeń dzieci z Google. Dzieci mogą połączyć konto w dowolnym momencie.</div>
-        <div id="childAccountsList"></div>
-      </div>
-    </div>
-
-    <!-- GCAL -->
-    <div id="ptab-content-gcal" style="display:none;">
-      <div class="gcal-card" onclick="toggleGCal()" style="margin-bottom:10px;">
-        <div class="gcal-row"><div class="gcal-ico">📅</div><div><div class="gcal-ttl">Google Calendar</div><div class="gcal-sub">Synchronizuj zlecone zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus2">Kliknij, aby połączyć</div></div></div>
-      </div>
-      <div class="card">
-        <div class="card-ttl">📖 Instrukcja</div>
-        <div style="background:var(--gp);border-radius:9px;padding:10px;margin-bottom:11px;font-size:11px;font-weight:700;color:var(--g2);">
-          ✅ Twój Client ID jest już wklejony w aplikacji.
-        </div>
-        <div style="background:rgba(232,64,64,.07);border:2px solid var(--r);border-radius:9px;padding:10px;margin-bottom:11px;">
-          <div style="font-size:12px;font-weight:900;color:var(--r);margin-bottom:5px;">⚠️ Błąd "unauthorized"?</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text);line-height:1.6;">Musisz dodać adres tej strony jako "Authorized JavaScript origins" w Google Cloud Console.<br><br><strong>Twój adres:</strong> <span id="gcalCurrentDomain" style="font-weight:900;color:var(--b);word-break:break-all;"></span></div>
-        </div>
-        <div style="font-size:12px;font-weight:900;margin-bottom:10px;color:var(--text);">Kroki:</div>
-        <div class="step"><div class="step-num">1</div><div class="step-text">Wejdź na <a href="https://console.cloud.google.com" target="_blank" style="color:var(--b);font-weight:800;">console.cloud.google.com</a> → wybierz projekt <strong>domowy-patrol</strong></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>APIs & Services → Credentials</strong> → kliknij swój OAuth Client ID</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-text">W sekcji <strong>"Authorized JavaScript origins"</strong> → <strong>+ ADD URI</strong>:<br><span class="step-code" id="gcalAddUri" style="margin-top:4px;display:inline-block;word-break:break-all;"></span></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-text">Obecne wpisy <strong>zostaw bez zmian</strong>: <span class="step-code">https://domowy-patrol.firebaseapp.com</span></div></div>
-        <div class="step"><div class="step-num">5</div><div class="step-text">Kliknij <strong>Save</strong>, poczekaj 5 minut, wróć tu i kliknij Google Calendar powyżej ✅</div></div>
-        <div style="background:var(--inp);border-radius:8px;padding:9px;margin-top:9px;font-size:11px;color:var(--soft);font-weight:700;">💡 Uwaga: adres <strong>bez ukośnika</strong> na końcu (np. <code style="background:rgba(0,0,0,.07);padding:1px 4px;border-radius:3px;">https://xyz.netlify.app</code> — bez /)</div>
-      </div>
+    <div class="card">
+      <button onclick="leaveFamily()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.05);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;">🚪 Opuść rodzinę</button>
+      <button onclick="doSignOut()" style="width:100%;margin-top:7px;padding:10px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;color:var(--soft);cursor:pointer;" id="signOutBtn">🚪 Wyloguj się</button>
     </div>
   </div>
 
@@ -927,7 +808,14 @@ const auth=getAuth(fbApp),db=getDatabase(fbApp),gProv=new GoogleAuthProvider();
 /* ── GCAL — show current domain for fix ── */
 document.getElementById('myDomain').textContent=location.origin;
 const GCAL_CLIENT_ID="71160418880-plh2nv7rg31t1ski2m03euqp7f0eofjv.apps.googleusercontent.com";
-let gcalToken=null;
+// ── PERSISTENT STATE — zapamiętywane między sesjami ──
+let gcalToken=sessionStorage.getItem('dp-gcal')||null; // token wygasa po ~1h
+let collapsedCats=JSON.parse(localStorage.getItem('dp-collapsed')||'{}');
+let sortMode=localStorage.getItem('dp-sort')||'default';
+let catVisibility=JSON.parse(localStorage.getItem('dp-cat-vis')||'{}'); // {catId: true/false}
+function saveState(){
+  // gcalToken celowo nie jest zapisywany długoterminowo — wygasa
+}
 
 /* ── PWA MANIFEST ── */
 const mb=new Blob([JSON.stringify({name:"Domowy Patrol",short_name:"Patrol",start_url:".",display:"standalone",background_color:"#f2f6ee",theme_color:"#2d6a10",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"512x512",type:"image/svg+xml"}]})],{type:"application/json"});
@@ -949,12 +837,97 @@ function renderThemeGrid(){document.getElementById('themeGrid').innerHTML=THEMES
 
 /* ── CATEGORIES ── */
 let cats=JSON.parse(localStorage.getItem('dp-cats8')||'null')||[
-  {id:'pies',label:'🐕 Pies',chores:[{id:'dog_m',ico:'🌅',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},{id:'dog_n',ico:'☀️',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},{id:'dog_e',ico:'🌙',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},{id:'dog_f',ico:'🥣',name:'Karmienie psa',desc:'Rano/wieczór',pts:5,repeatable:true},{id:'dog_w',ico:'💧',name:'Woda dla psa',desc:'Codziennie',pts:4}]},
-  {id:'kot',label:'🐱 Kot',chores:[{id:'cat_f',ico:'🥣',name:'Karmienie kota',desc:'Rano/wieczór',pts:5,repeatable:true},{id:'cat_w',ico:'💧',name:'Woda dla kota',desc:'Codziennie',pts:4},{id:'cat_l',ico:'🪣',name:'Kuweta',desc:'Codziennie',pts:8,repeatable:true},{id:'cat_p',ico:'🎾',name:'Zabawa z kotem',desc:'Min. 10 min',pts:5}]},
-  {id:'kuchnia',label:'🍽️ Kuchnia',chores:[{id:'unload',ico:'🍽️',name:'Wyjmowanie ze zmywarki',desc:'Po cyklu',pts:8,repeatable:true},{id:'load',ico:'🧼',name:'Załadowanie zmywarki',desc:'Po posiłku',pts:6,repeatable:true},{id:'table',ico:'🍴',name:'Sprzątnięcie stołu',desc:'Po obiedzie',pts:5,repeatable:true},{id:'trash',ico:'🗑️',name:'Wynoszenie śmieci',desc:'Gdy kosz pełny',pts:7},{id:'cook',ico:'🍳',name:'Pomoc przy gotowaniu',desc:'Wg potrzeby',pts:8}]},
-  {id:'dom',label:'🏠 Dom',chores:[{id:'vac_s',ico:'🧹',name:'Odkurzanie salonu',desc:'Co 2 dni',pts:12},{id:'vac_r',ico:'🧽',name:'Odkurzanie pokojów',desc:'Co 2 dni',pts:10},{id:'laundry',ico:'🧺',name:'Składanie prania',desc:'Gdy wyschnie',pts:8,repeatable:true},{id:'flowers',ico:'🪴',name:'Podlewanie kwiatków',desc:'Wt i Pt',pts:5},{id:'bathroom',ico:'🚿',name:'Mycie łazienki',desc:'Raz w tyg.',pts:15},{id:'dust',ico:'🪣',name:'Ścieranie kurzu',desc:'Co tydz.',pts:8}]},
-  {id:'szkola',label:'📚 Szkoła',chores:[{id:'hw',ico:'📖',name:'Praca domowa',desc:'Codziennie',pts:12},{id:'reading',ico:'📚',name:'Czytanie 20 min',desc:'Codziennie',pts:8},{id:'backpack',ico:'🎒',name:'Spakowanie plecaka',desc:'Wieczór',pts:5},{id:'revision',ico:'🧠',name:'Powtórka materiału',desc:'Przed sprawdzianem',pts:10}]},
-  {id:'ogrod',label:'🌿 Ogród',chores:[{id:'g_water',ico:'💦',name:'Podlewanie ogrodu',desc:'Co 2 dni',pts:8},{id:'g_sweep',ico:'🍂',name:'Zamiatanie liści',desc:'W sezonie',pts:10},{id:'g_mow',ico:'🌱',name:'Koszenie trawy',desc:'Co 2 tyg.',pts:20}]},
+  {id:'pies',label:'🐕 Pies',chores:[
+    {id:'dog_m',ico:'🌅',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},
+    {id:'dog_n',ico:'☀️',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},
+    {id:'dog_e',ico:'🌙',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},
+    {id:'dog_f',ico:'🥣',name:'Karmienie psa',desc:'Rano/wieczór',pts:5,repeatable:true},
+    {id:'dog_w',ico:'💧',name:'Woda dla psa',desc:'Codziennie',pts:4},
+    {id:'dog_bath',ico:'🛁',name:'Kąpiel psa',desc:'Co 2-4 tyg.',pts:15},
+    {id:'dog_brush',ico:'🪮',name:'Szczotkowanie sierści',desc:'Co tydzień',pts:8},
+    {id:'dog_med',ico:'💊',name:'Lekarstwo dla psa',desc:'Wg przepisu',pts:5,repeatable:true},
+    {id:'dog_toys',ico:'🎾',name:'Zabawa z psem',desc:'Min. 15 min',pts:6},
+  ]},
+  {id:'kot',label:'🐱 Kot',chores:[
+    {id:'cat_f',ico:'🥣',name:'Karmienie kota',desc:'Rano/wieczór',pts:5,repeatable:true},
+    {id:'cat_w',ico:'💧',name:'Woda dla kota',desc:'Codziennie',pts:4},
+    {id:'cat_l',ico:'🪣',name:'Czyszczenie kuwety',desc:'Codziennie',pts:8,repeatable:true},
+    {id:'cat_p',ico:'🎾',name:'Zabawa z kotem',desc:'Min. 10 min',pts:5},
+    {id:'cat_brush',ico:'🪮',name:'Szczotkowanie kota',desc:'Co tydzień',pts:6},
+    {id:'cat_med',ico:'💊',name:'Lekarstwo dla kota',desc:'Wg przepisu',pts:5,repeatable:true},
+  ]},
+  {id:'kuchnia',label:'🍽️ Kuchnia',chores:[
+    {id:'unload',ico:'🍽️',name:'Wyjmowanie ze zmywarki',desc:'Po cyklu',pts:8,repeatable:true},
+    {id:'load',ico:'🧼',name:'Załadowanie zmywarki',desc:'Po posiłku',pts:6,repeatable:true},
+    {id:'table',ico:'🍴',name:'Sprzątnięcie stołu',desc:'Po obiedzie',pts:5,repeatable:true},
+    {id:'trash',ico:'🗑️',name:'Wynoszenie śmieci',desc:'Gdy kosz pełny',pts:7},
+    {id:'trash_seg',ico:'♻️',name:'Segregacja odpadów',desc:'Wg harmonogramu',pts:6},
+    {id:'cook',ico:'🍳',name:'Pomoc przy gotowaniu',desc:'Wg potrzeby',pts:8},
+    {id:'pots',ico:'🥘',name:'Mycie garnków/patelni',desc:'Po gotowaniu',pts:6,repeatable:true},
+    {id:'fridge',ico:'🧊',name:'Sprawdzenie lodówki',desc:'Co tydzień',pts:5},
+    {id:'microwave',ico:'📦',name:'Czyszczenie mikrofalówki',desc:'Co 2 tyg.',pts:7},
+    {id:'shop_unpack',ico:'🛍️',name:'Rozpakowywanie zakupów',desc:'Po zakupach',pts:5},
+  ]},
+  {id:'dom',label:'🏠 Dom',chores:[
+    {id:'vac_s',ico:'🧹',name:'Odkurzanie salonu',desc:'Co 2 dni',pts:12},
+    {id:'vac_r',ico:'🧽',name:'Odkurzanie pokojów',desc:'Co 2 dni',pts:10},
+    {id:'floor_mop',ico:'🪣',name:'Mycie podłóg',desc:'Co tydzień',pts:14},
+    {id:'laundry',ico:'🧺',name:'Składanie prania',desc:'Gdy wyschnie',pts:8,repeatable:true},
+    {id:'laundry_on',ico:'🌀',name:'Włączenie pralki',desc:'Wg potrzeby',pts:5},
+    {id:'ironing',ico:'👔',name:'Prasowanie',desc:'Wg potrzeby',pts:12},
+    {id:'flowers',ico:'🪴',name:'Podlewanie kwiatków',desc:'Wt i Pt',pts:5},
+    {id:'bathroom',ico:'🚿',name:'Mycie łazienki',desc:'Raz w tyg.',pts:15},
+    {id:'toilet',ico:'🚽',name:'Czyszczenie toalety',desc:'Co tydzień',pts:10},
+    {id:'dust',ico:'🧹',name:'Ścieranie kurzu',desc:'Co tydz.',pts:8},
+    {id:'windows',ico:'🪟',name:'Mycie okien',desc:'Co miesiąc',pts:18},
+    {id:'mirrors',ico:'🪞',name:'Mycie luster',desc:'Co 2 tyg.',pts:6},
+    {id:'bed',ico:'🛏️',name:'Ścielenie łóżka',desc:'Rano',pts:4},
+    {id:'room_tidy',ico:'🗂️',name:'Porządki w swoim pokoju',desc:'Co tydzień',pts:10},
+    {id:'mail',ico:'📮',name:'Sprawdzenie skrzynki',desc:'Codziennie',pts:3},
+  ]},
+  {id:'zakupy',label:'🛒 Zakupy',chores:[
+    {id:'shopping',ico:'🛒',name:'Wyjście po zakupy',desc:'Wg potrzeby',pts:10},
+    {id:'shop_heavy',ico:'🏋️',name:'Niesienie ciężkich zakupów',desc:'Po zakupach',pts:8},
+    {id:'shop_list',ico:'📝',name:'Uzupełnienie listy zakupów',desc:'Brakujące',pts:3},
+    {id:'shop_online',ico:'💻',name:'Zamówienie online',desc:'Wg potrzeby',pts:6},
+    {id:'shop_return',ico:'🔄',name:'Zwrot / reklamacja',desc:'Wg potrzeby',pts:7},
+    {id:'shop_pharma',ico:'💊',name:'Apteka',desc:'Wg potrzeby',pts:8},
+    {id:'shop_veg',ico:'🥦',name:'Zakupy warzyw i owoców',desc:'2x w tyg.',pts:8},
+  ]},
+  {id:'szkola',label:'📚 Szkoła',chores:[
+    {id:'hw',ico:'📖',name:'Praca domowa',desc:'Codziennie',pts:12},
+    {id:'reading',ico:'📚',name:'Czytanie 20 min',desc:'Codziennie',pts:8},
+    {id:'backpack',ico:'🎒',name:'Spakowanie plecaka',desc:'Wieczór',pts:5},
+    {id:'revision',ico:'🧠',name:'Powtórka materiału',desc:'Przed sprawdzianem',pts:10},
+    {id:'school_notes',ico:'📓',name:'Przepisanie notatek',desc:'Po lekcjach',pts:7},
+    {id:'school_project',ico:'🔬',name:'Praca na projekt',desc:'Długoterminowo',pts:15},
+    {id:'school_sign',ico:'✍️',name:'Podpisanie dokumentów',desc:'Wg potrzeby',pts:4},
+  ]},
+  {id:'ogrod',label:'🌿 Ogród',chores:[
+    {id:'g_water',ico:'💦',name:'Podlewanie ogrodu',desc:'Co 2 dni',pts:8},
+    {id:'g_sweep',ico:'🍂',name:'Zamiatanie liści',desc:'W sezonie',pts:10},
+    {id:'g_mow',ico:'🌱',name:'Koszenie trawy',desc:'Co 2 tyg.',pts:20},
+    {id:'g_weed',ico:'🌾',name:'Pielenie chwastów',desc:'Co tydzień',pts:12},
+    {id:'g_prune',ico:'✂️',name:'Przycinanie krzewów',desc:'W sezonie',pts:15},
+    {id:'g_snow',ico:'❄️',name:'Odśnieżanie / posypywanie',desc:'Po śniegu',pts:18},
+  ]},
+  {id:'auto',label:'🚗 Samochód',chores:[
+    {id:'car_wash',ico:'🚗',name:'Mycie samochodu',desc:'Co 2 tyg.',pts:15},
+    {id:'car_vac',ico:'🧹',name:'Odkurzanie wnętrza',desc:'Co miesiąc',pts:12},
+    {id:'car_fuel',ico:'⛽',name:'Tankowanie',desc:'Wg potrzeby',pts:8},
+    {id:'car_check',ico:'🔧',name:'Sprawdzenie płynów',desc:'Co miesiąc',pts:6},
+    {id:'car_trash',ico:'🗑️',name:'Wyrzucenie śmieci z auta',desc:'Co tydzień',pts:4},
+    {id:'car_frost',ico:'🧊',name:'Odlodzenie szyb',desc:'Zimą rano',pts:8},
+    {id:'car_park',ico:'🅿️',name:'Opłata za parking',desc:'Wg potrzeby',pts:4},
+  ]},
+  {id:'rodzina',label:'👨‍👩‍👧 Rodzina',chores:[
+    {id:'fam_coffee',ico:'☕',name:'Herbata/kawa dla rodziny',desc:'Rano',pts:4,repeatable:true},
+    {id:'fam_call',ico:'📞',name:'Telefon do dziadków',desc:'Co tydzień',pts:6},
+    {id:'fam_walk',ico:'🚶',name:'Spacer z rodziną',desc:'W weekendy',pts:8},
+    {id:'fam_game',ico:'🎲',name:'Gra planszowa razem',desc:'W weekendy',pts:6},
+    {id:'fam_bday',ico:'🎂',name:'Organizacja urodzin',desc:'Wg daty',pts:20},
+    {id:'fam_help',ico:'🤝',name:'Pomoc starszym sąsiadom',desc:'Wg potrzeby',pts:10},
+  ]},
   {id:'custom',label:'➕ Własne',editable:true,chores:[]},
 ];
 function saveCats(){localStorage.setItem('dp-cats8',JSON.stringify(cats));}
@@ -971,7 +944,7 @@ const REWARDS=[{id:'r1',ico:'🎮',name:'Dodatkowa godzina gier',cost:30},{id:'r
 let isDemo=false,demoRole='parent',currentUser=null,myProfile=null,fCode='';
 let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},joinReqs:{},chat:[],notes:{},wishes:[],birthdays:{}};
 let selectedRole='parent',selectedAvatar=AVATARS[0],curfewChildId=null;
-let returnTimers=[],reminderInterval=15,curfewModalInterval=15;
+let returnTimers=[],reminderInterval=parseInt(localStorage.getItem('dp-reminder-int'))||15,curfewModalInterval=15;
 let viewMode=localStorage.getItem('dp-view')||'normal';
 let selectedDay=null;
 let editCatId=null;
@@ -993,51 +966,21 @@ function getMyUid(){return window._myUid||currentUser?.uid||'uid_kacper';}
 function findChore(id){for(const c of cats){const x=c.chores.find(c=>c.id===id);if(x)return x;}return null;}
 function getDayKey(){return selectedDay||todayKey;}
 
-/* ── GLOBAL FIX: Google Photos — works for ALL users ── */
-// Strategy: fetch via fetch() with no-referrer mode (bypasses CORS),
-// create blob URL. Falls back to direct URL. Works universally.
-async function setGooglePhoto(imgEl, url, fallbackEmoji) {
-  if (!imgEl || !url || url.length < 10) { if(imgEl) imgEl.style.display='none'; return; }
-  // Normalize Google URL — strip old size, add =s96-c
-  let photoUrl = url;
-  if (url.includes('googleusercontent.com')) {
-    photoUrl = url.split('=')[0] + '=s96-c';
-  }
-  // Method 1: fetch as blob — no Referer header sent, bypasses CORS block
-  try {
-    const resp = await fetch(photoUrl, {mode:'cors', credentials:'omit', referrerPolicy:'no-referrer'});
-    if (resp.ok) {
-      const blob = await resp.blob();
-      imgEl.src = URL.createObjectURL(blob);
-      imgEl.style.display = 'block';
-      imgEl.classList && imgEl.classList.add('loaded');
-      return;
-    }
-  } catch(e) {}
-  // Method 2: direct img with no-referrer policy
+/* ── FIXED: Google Photo Helper ── */
+// Google lh3 URLs need crossOrigin + referrerpolicy to display correctly
+function setGooglePhoto(imgEl, url) {
+  if (!url || url.length < 10) { imgEl.style.display='none'; return; }
   imgEl.crossOrigin = 'anonymous';
   imgEl.referrerPolicy = 'no-referrer';
-  imgEl.src = photoUrl;
-  imgEl.style.display = 'block';
-  imgEl.classList && imgEl.classList.add('loaded');
+  imgEl.src = url;
+  imgEl.onload = () => { imgEl.style.display='block'; };
   imgEl.onerror = () => { imgEl.style.display='none'; };
 }
 
-// Sync helper for HTML templates — normalized URL + no-referrer
-function googleImgHtml(url, size, fallback, extraStyle='') {
-  if (!url) return `<span style="font-size:${size}px">${fallback||'👤'}</span>`;
-  let photoUrl = url;
-  if (url.includes('googleusercontent.com')) {
-    photoUrl = url.split('=')[0] + '=s' + (size*2) + '-c';
-  }
-  const fb = (fallback||'👤').replace(/'/g,"\'");
-  return `<img src="${photoUrl}" width="${size}" height="${size}" crossorigin="anonymous" referrerpolicy="no-referrer" style="border-radius:50%;object-fit:cover;${extraStyle}" onerror="this.style.display='none'">`;
-}
-
-// Build member avatar HTML (photo or emoji) — uses global googleImgHtml
+// Build member avatar HTML (photo or emoji)
 function memberAv(member, size=24) {
   if (member?.photoURL) {
-    return googleImgHtml(member.photoURL, size, member?.avatar||'👤', 'display:inline-block;vertical-align:middle;');
+    return `<img src="${member.photoURL}" crossorigin="anonymous" referrerpolicy="no-referrer" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:inline-block;vertical-align:middle;" onerror="this.style.display='none'">`;
   }
   return `<span style="font-size:${Math.round(size*.7)}px;">${member?.avatar||'👤'}</span>`;
 }
@@ -1241,14 +1184,15 @@ function launchApp(){
   document.getElementById('fCodeDisplay').textContent=fCode;
   document.getElementById('mDate').value=todayKey;
 
-  /* Profile elements — safely set with null checks */
-  const _paw=document.getElementById('profileAvWrap');if(_paw) _paw.textContent=myProfile.avatar;
-  const _pn=document.getElementById('profileName');if(_pn) _pn.textContent=myProfile.name;
-  const _pe=document.getElementById('profileEmail');if(_pe) _pe.textContent=!isDemo?(currentUser?.email||'bez Google'):'DEMO';
-  const _en=document.getElementById('editName');if(_en) _en.value=myProfile.name;
+  /* FIXED: Google photo in profile tab */
+  document.getElementById('profileAvWrap').textContent=myProfile.avatar;
+  document.getElementById('profileName').textContent=myProfile.name;
+  document.getElementById('profileEmail').textContent=!isDemo?(currentUser?.email||'bez Google'):'DEMO';
+  document.getElementById('editName').value=myProfile.name;
   if(photoURL){
     const pp=document.getElementById('profilePhoto');
-    if(pp){ setGooglePhoto(pp, photoURL); pp.onload=()=>{pp.style.display='block';const aw=document.getElementById('profileAvWrap');if(aw)aw.style.display='none';}; }
+    setGooglePhoto(pp, photoURL);
+    pp.onload=()=>{pp.style.display='block';document.getElementById('profileAvWrap').style.display='none';};
   }
 
   if(myProfile.role==='parent') document.getElementById('fabBtn').style.display='flex';
@@ -1257,9 +1201,6 @@ function launchApp(){
   selectedDay=null;renderWeek();
   renderFamilyTabs();
   renderBirthdays();
-  renderProfileHero();
-  renderSortRow();
-  if(myProfile?.role==='parent') document.getElementById('pointsEditCard') && (document.getElementById('pointsEditCard').style.display='block');
 
   if(!isDemo){
     const memberData={name:myProfile.name,avatar:myProfile.avatar,photoURL:myProfile.photoURL||currentUser?.photoURL||'',role:myProfile.role,points:myProfile.points||0,lastSeen:serverTimestamp()};
@@ -1287,7 +1228,7 @@ function renderAll(){renderOnline();renderChores();renderScores();renderStats();
 /* ── PROFILE ACTIONS ── */
 async function saveProfileName(){
   const n=document.getElementById('editName').value.trim();if(!n){showToast('⚠️ Wpisz imię');return;}
-  myProfile.name=n;document.getElementById('chipNm').textContent=n;const _pn2=document.getElementById('profileName');if(_pn2)_pn2.textContent=n;const _phn=document.getElementById('profileHeroName');if(_phn)_phn.textContent=n;const _php=document.getElementById('profileHeroPts');if(_php)_php.textContent=`⭐ ${live.members[getMyUid()]?.points||0} punktów`;
+  myProfile.name=n;document.getElementById('chipNm').textContent=n;document.getElementById('profileName').textContent=n;
   if(!isDemo){await update(ref(db,`users/${currentUser.uid}/profile`),{name:n});await update(ref(db,`families/${fCode}/members/${currentUser.uid}`),{name:n});}
   showToast('✅ Imię zmienione: '+n);
 }
@@ -1529,7 +1470,21 @@ function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherF
   <div class="weather-loc-row" style="margin-top:9px;"><input id="weatherCityInput2" placeholder="Zmień miasto" value="${w.city||''}"><button onclick="document.getElementById('weatherCityInput').value=document.getElementById('weatherCityInput2').value;fetchWeatherByCity()">🔍</button></div>`;}
 
 /* ── LOCATION ── */
-function startLocationSharing(){if(!navigator.geolocation) return;navigator.geolocation.watchPosition(pos=>{update(ref(db,`families/${fCode}/locations/${currentUser.uid}`),{lat:pos.coords.latitude,lng:pos.coords.longitude,ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤'});},{enableHighAccuracy:true,maximumAge:30000,timeout:20000});}
+function startLocationSharing(){
+  if(!navigator.geolocation){console.warn('GPS: niedostępny');return;}
+  const uid=currentUser?.uid;if(!uid)return;
+  function sendPos(pos){
+    const d={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy||0),ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤'};
+    update(ref(db,`families/${fCode}/locations/${uid}`),d);
+    console.log('GPS ok:',d.lat.toFixed(4),d.lng.toFixed(4),'±'+d.acc+'m');
+  }
+  function onErr(e){console.warn('GPS błąd:',e.code,e.message);}
+  const opts={enableHighAccuracy:true,maximumAge:15000,timeout:25000};
+  // Główny watchPosition
+  navigator.geolocation.watchPosition(sendPos,onErr,opts);
+  // Backup co 45s — niektóre Androidy zatrzymują watch w tle
+  setInterval(()=>navigator.geolocation.getCurrentPosition(sendPos,onErr,opts),45000);
+}
 
 /* ── RETURN HOME ── */
 function checkAfter19(){if(myProfile?.role!=='parent')return;const h=new Date().getHours();if(h<19)return;const children=Object.entries(live.members).filter(([,m])=>m.role==='child');let any=false;children.forEach(([uid])=>{if(!live.curfews[uid])any=true;});if(any)document.getElementById('ndToday').classList.add('show');}
@@ -1593,8 +1548,22 @@ function renderChores(){
   if(selectedDay&&selectedDay!==todayKey){loadPastDay(selectedDay);return;}
   if(viewMode==='compact'){renderChoresCompact();return;}
   let html='';
-  cats.forEach(cat=>{if(!cat.chores.length&&!cat.editable) return;html+=`<div class="cat-lbl"><span>${cat.label}</span><div class="cat-edit-btns"><button class="cat-mini-btn" onclick="openAddChore('${cat.id}')">+ zadanie</button>${cat.editable?`<button class="cat-mini-btn" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}</div></div><div class="chore-list">`;
-    sortChores(cat.chores).forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
+  cats.forEach(cat=>{
+    if(catVisibility[cat.id]===false) return;
+    if(!cat.chores.length&&!cat.editable) return;
+    const isCollapsed=!!collapsedCats[cat.id];
+    const doneCount=cat.chores.filter(ch=>Object.keys(live.done).some(k=>k===ch.id||k.startsWith(ch.id+'_'))).length;
+    html+=`<div class="cat-lbl">
+      <span>${cat.label}${doneCount>0?` <span style="font-size:9px;color:var(--g2);font-weight:600">${doneCount}/${cat.chores.length}</span>`:''}</span>
+      <div class="cat-edit-btns">
+        <button class="cat-mini-btn" onclick="openAddChore('${cat.id}')">+</button>
+        ${cat.editable?`<button class="cat-mini-btn" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}
+        <button class="cat-toggle-btn ${isCollapsed?'closed':'open'}" onclick="toggleCatCollapse('${cat.id}')" title="${isCollapsed?'Rozwiń':'Zwiń'}">${isCollapsed?'▶':'▼'}</button>
+      </div>
+    </div>`;
+    if(isCollapsed){html+=``;return;}
+    html+=`<div class="chore-list">`;
+    cat.chores.forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
     html+=`<div class="chore ${done?'done':''}" onclick="${!done?`doToggleChore('${ch.id}',${ch.pts})`:''}">
       <div class="chore-ico">${ch.ico}</div>
       <div class="chore-info">
@@ -1609,7 +1578,8 @@ function renderChores(){
           <button class="cat-mini-btn" style="font-size:9px;" onclick="openEditChore(event,'${cat.id}',${idx})">✏️</button>`}
       </div>
     </div>`;});
-    html+=`</div>`;});
+    html+=`</div>`;
+  });
   document.getElementById('choreContainer').innerHTML=html;
 }
 function renderChoresCompact(){let html='';cats.forEach(cat=>{if(!cat.chores.length) return;html+=`<div class="compact-cat-lbl">${cat.label}</div><div class="compact-grid">`;cat.chores.forEach(ch=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[0]]:null;html+=`<div class="compact-tile ${done?'done':''}" onclick="doToggleChore('${ch.id}',${ch.pts})"><div class="ct-ico">${ch.ico}</div><div class="ct-nm">${ch.name}</div>${done?`<div class="ct-done">✓ ${dn?.who?.split(' ')[0]||''}${reps>1?' ×'+reps:''}</div>`:`<div class="ct-pts">+${ch.pts}⭐</div>`}</div>`;});html+=`</div>`;});document.getElementById('choreContainer').innerHTML=html;}
@@ -1685,19 +1655,18 @@ window.deleteCat=deleteCat;
 
 /* ── INTERVAL ── */
 function renderGlobalIntervalRow(){document.getElementById('globalIntervalRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${reminderInterval===m?'sel':''}" onclick="setGlobalInt(${m})">${m} min</button>`).join('');}
-window.setGlobalInt=function(m){reminderInterval=m;renderGlobalIntervalRow();showToast(`⏰ Co ${m} min`);};
+window.setGlobalInt=function(m){reminderInterval=m;localStorage.setItem('dp-reminder-int',m);renderGlobalIntervalRow();showToast(`⏰ Co ${m} min`);};
 
 /* ── GCAL FIXED ── */
 // FIXED: use redirect_uri matching exactly what's in Google Cloud Console
 function toggleGCal(){
   if(gcalToken){gcalToken=null;document.getElementById('gcalStatus').textContent='Kliknij, aby połączyć';showToast('📅 Odłączono');return;}
   if(GCAL_CLIENT_ID.includes('WKLEJ')){showToast('⚠️ Wklej GCAL_CLIENT_ID w kodzie');return;}
-  // FIX: For implicit flow tokens, redirect_uri must exactly match Authorized JavaScript Origins
-  // Just use location.origin (without path) — this matches what you add in Cloud Console
-  const redirectUri=encodeURIComponent(location.origin);
+  // The redirect_uri MUST match exactly what you added in Google Cloud Console
+  const redirectUri=encodeURIComponent(location.origin+location.pathname.replace(/\/$/,''));
   const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GCAL_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=token&scope=${encodeURIComponent("https://www.googleapis.com/auth/calendar.events")}&prompt=consent`;
   const pop=window.open(url,'gcal','width=500,height=600');
-  const t=setInterval(()=>{try{if(pop.closed){clearInterval(t);return;}const h=pop.location.hash;if(h&&h.includes('access_token')){gcalToken=new URLSearchParams(h.slice(1)).get('access_token');pop.close();clearInterval(t);document.getElementById('gcalStatus').textContent='✅ Połączono';const gs2=document.getElementById('gcalStatus2');if(gs2)gs2.textContent='✅ Połączono';showToast('📅 Połączono z Google Calendar!');}}catch(e){}},500);
+  const t=setInterval(()=>{try{if(pop.closed){clearInterval(t);return;}const h=pop.location.hash;if(h&&h.includes('access_token')){gcalToken=new URLSearchParams(h.slice(1)).get('access_token');sessionStorage.setItem('dp-gcal',gcalToken);pop.close();clearInterval(t);document.getElementById('gcalStatus').textContent='✅ Połączono';const gs2=document.getElementById('gcalStatus2');if(gs2)gs2.textContent='✅ Połączono';showToast('📅 Połączono z Google Calendar!');}}catch(e){}},500);
 }
 window.toggleGCal=toggleGCal;
 async function addToGCal(name,ico,date,time,pts){if(!gcalToken)return;const s=time?`${date}T${time}:00`:`${date}`;const e=time?`${date}T${d2(parseInt(time.split(':')[0]))}:${d2(parseInt(time.split(':')[1]||0)+30)}:00`:`${date}`;await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{method:'POST',headers:{Authorization:`Bearer ${gcalToken}`,'Content-Type':'application/json'},body:JSON.stringify({summary:`${ico} ${name} (+${pts}⭐)`,description:'Domowy Patrol',start:time?{dateTime:s,timeZone:'Europe/Warsaw'}:{date:s},end:time?{dateTime:e,timeZone:'Europe/Warsaw'}:{date:e}})});showToast('📅 Dodano do Google Calendar!');}
@@ -1708,242 +1677,33 @@ function sendBrowserNotif(title,body){if('Notification' in window&&Notification.
 function scheduleLocalNotif(n,f,ts){const d=ts-Date.now();if(d>0&&d<172800000) setTimeout(()=>sendBrowserNotif('⏰ Zadanie!',`${f}: ${n}`),d);}
 
 
-/* ══════ ETAP 3: Profile redesign, points editing, sorting, Google link ══════ */
-
-/* ── Sort state ── */
-let sortMode = localStorage.getItem('dp-sort') || 'default'; // default | alpha | pts-desc | pts-asc | done-last
-const SORT_OPTIONS = [
-  {id:'default',   label:'📋 Domyślna'},
-  {id:'alpha',     label:'🔤 A–Z'},
-  {id:'pts-desc',  label:'⭐ Najwięcej pkt'},
-  {id:'pts-asc',   label:'⭐ Najmniej pkt'},
-  {id:'done-last', label:'✅ Zrobione na dół'},
-];
-
-function renderSortRow() {
-  const el = document.getElementById('sortRow');
-  if (!el) return;
-  el.innerHTML = SORT_OPTIONS.map(o =>
-    `<button class="sort-btn ${sortMode===o.id?'sel':''}" onclick="setSort('${o.id}')">${o.label}</button>`
-  ).join('');
-}
-window.setSort = function(mode) {
-  sortMode = mode;
-  localStorage.setItem('dp-sort', mode);
-  renderSortRow();
+/* ── CATEGORY COLLAPSE + VISIBILITY ── */
+function toggleCatCollapse(catId){
+  collapsedCats[catId]=!collapsedCats[catId];
+  localStorage.setItem('dp-collapsed',JSON.stringify(collapsedCats));
   renderChores();
-  showToast('📋 Sortowanie: ' + SORT_OPTIONS.find(o=>o.id===mode)?.label);
-};
-
-/* Apply sort to chore array */
-function sortChores(chores) {
-  const done = live.done || {};
-  switch(sortMode) {
-    case 'alpha':     return [...chores].sort((a,b) => a.name.localeCompare(b.name));
-    case 'pts-desc':  return [...chores].sort((a,b) => b.pts - a.pts);
-    case 'pts-asc':   return [...chores].sort((a,b) => a.pts - b.pts);
-    case 'done-last': return [...chores].sort((a,b) => {
-      const da = Object.keys(done).some(k => k === a.id || k.startsWith(a.id+'_')) ? 1 : 0;
-      const db = Object.keys(done).some(k => k === b.id || k.startsWith(b.id+'_')) ? 1 : 0;
-      return da - db;
-    });
-    default: return chores;
-  }
 }
+window.toggleCatCollapse=toggleCatCollapse;
 
-/* ── Profile tabs ── */
-let activeProfileTab = 'account';
-window.switchProfileTab = function(tab) {
-  activeProfileTab = tab;
-  ['account','family','connect','gcal'].forEach(t => {
-    const btn = document.getElementById('ptab-' + t);
-    const cnt = document.getElementById('ptab-content-' + t);
-    if(btn) btn.className = 'ptab' + (t === tab ? ' on' : '');
-    if(cnt) cnt.style.display = t === tab ? 'block' : 'none';
-  });
-  if(tab === 'account') { renderSortRow(); renderPointsEdit(); renderProfileAvGrid(); }
-  if(tab === 'family')  { renderFamilyMembers(); renderBirthdays(); }
-  if(tab === 'connect') { renderGoogleLinkStatus(); renderChildAccounts(); }
-  if(tab === 'gcal')    { renderGCalTab(); }
-};
-
-/* ── Profile hero (called from launchApp) ── */
-function renderProfileHero() {
-  const uid = getMyUid();
-  const pts = live.members[uid]?.points || myProfile?.points || 0;
-  const photoURL = !isDemo ? (currentUser?.photoURL || '') : (myProfile?.photoURL || '');
-  const g = id => document.getElementById(id);
-
-  // Hero photo/emoji
-  const bigPhoto = g('profileBigPhoto');
-  const bigEmoji = g('profileBigEmoji');
-  if(bigPhoto && bigEmoji) {
-    if(photoURL) {
-      setGooglePhoto(bigPhoto, photoURL);
-      bigPhoto.onload = () => { bigPhoto.style.display='block'; bigEmoji.style.display='none'; };
-    } else {
-      bigEmoji.textContent = myProfile?.avatar || '👤';
-      bigEmoji.style.display = 'block';
-      bigPhoto.style.display = 'none';
-    }
-  }
-  if(g('profileHeroName'))  g('profileHeroName').textContent  = myProfile?.name || '';
-  if(g('profileHeroRole'))  g('profileHeroRole').textContent  = myProfile?.role === 'parent' ? '👑 Rodzic' : '🧒 Dziecko';
-  if(g('profileHeroEmail')) g('profileHeroEmail').textContent = !isDemo ? (currentUser?.email || 'bez Google') : 'DEMO';
-  if(g('profileHeroPts'))   g('profileHeroPts').textContent   = `⭐ ${pts} punktów`;
-  if(g('editName'))         g('editName').value               = myProfile?.name || '';
-  if(g('gcalCurrentDomain')) g('gcalCurrentDomain').textContent = location.origin;
-  if(g('gcalAddUri'))        g('gcalAddUri').textContent        = location.origin;
-  if(g('gcalStatus2'))       g('gcalStatus2').textContent       = gcalToken ? '✅ Połączono' : 'Kliknij, aby połączyć';
-}
-
-/* ── Profile Avatar Grid in profile tab ── */
-function renderProfileAvGrid() {
-  const grid = document.getElementById('profileAvGrid');
-  if(!grid || grid.children.length > 0) return; // already built
-  const AVLIST = ['👩','👨','🧔','🧔‍♀️','👦','👧','🧒','👴','👵','🧑','👮','👨‍🍳','🐶','🐱','🦊','🐻','🌟','🦸','🧙','🥷'];
-  AVLIST.forEach(a => {
-    const b = document.createElement('button');
-    b.className = 'av-btn' + (a === (myProfile?.avatar||'👤') ? ' sel' : '');
-    b.textContent = a;
-    b.onclick = () => {
-      grid.querySelectorAll('.av-btn').forEach(x=>x.classList.remove('sel'));
-      b.classList.add('sel');
-      if(myProfile) myProfile.avatar = a;
-    };
-    grid.appendChild(b);
-  });
-}
-
-/* ── Points editing (parents only) ── */
-function renderPointsEdit() {
-  const card = document.getElementById('pointsEditCard');
-  if(!card) return;
-  if(myProfile?.role !== 'parent') { card.style.display = 'none'; return; }
-  card.style.display = 'block';
-  const list = document.getElementById('pointsEditList');
-  const members = Object.entries(live.members);
-  list.innerHTML = members.map(([uid, m]) => `
-    <div class="pts-edit-row">
-      <div class="pts-edit-av">${m.photoURL ? `<img src="${m.photoURL}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" crossorigin="anonymous" referrerpolicy="no-referrer">` : m.avatar||'👤'}</div>
-      <div class="pts-edit-info">
-        <div class="pts-edit-nm">${m.name}${m.role==='parent'?' 👑':''}</div>
-        <div class="pts-edit-cur" id="ptsCur_${uid}">${m.points||0} pkt</div>
-      </div>
-      <div class="pts-edit-controls">
-        <button class="pts-edit-btn minus" onclick="adjustPoints('${uid}',-10)">−</button>
-        <input class="pts-edit-input" id="ptsInp_${uid}" type="number" value="${m.points||0}" min="0" max="9999">
-        <button class="pts-edit-btn plus" onclick="adjustPoints('${uid}',10)">+</button>
-        <button onclick="setPointsManual('${uid}')" style="padding:5px 8px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">✓</button>
-      </div>
-    </div>`).join('');
-}
-
-window.adjustPoints = async function(uid, delta) {
-  const inp = document.getElementById('ptsInp_' + uid);
-  if(!inp) return;
-  const cur = parseInt(inp.value) || 0;
-  const newVal = Math.max(0, cur + delta);
-  inp.value = newVal;
-};
-
-window.setPointsManual = async function(uid) {
-  const inp = document.getElementById('ptsInp_' + uid);
-  if(!inp) return;
-  const val = Math.max(0, parseInt(inp.value) || 0);
-  if(isDemo) {
-    if(live.members[uid]) live.members[uid].points = val;
-    renderScores(); renderStats(); renderRewards(); renderProfileHero();
-  } else {
-    await update(ref(db, `families/${fCode}/members/${uid}`), {points: val});
-    await update(ref(db, `users/${uid}/profile`), {points: val}).catch(()=>{});
-  }
-  document.getElementById('ptsCur_' + uid).textContent = val + ' pkt';
-  showToast('✅ Punkty zaktualizowane!');
-};
-
-/* ── Family Members List ── */
-function renderFamilyMembers() {
-  const el = document.getElementById('familyMembersList');
-  if(!el) return;
-  const members = Object.entries(live.members);
-  el.innerHTML = members.map(([uid, m]) => `
-    <div class="fm-item">
-      <div class="fm-av">${m.photoURL ? `<img src="${m.photoURL}" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.outerHTML='${m.avatar||'👤'}'">` : m.avatar||'👤'}</div>
-      <div class="fm-info">
-        <div class="fm-nm">${m.name}</div>
-        <div class="fm-role">${m.role==='parent'?'👑 Rodzic':'🧒 Dziecko'} · ${m.noAuth?'bez Google':'z Google'}</div>
-      </div>
-      <div class="fm-pts">${m.points||0}⭐</div>
-    </div>`).join('');
-}
-
-/* ── Google Account Linking ── */
-function renderGoogleLinkStatus() {
-  const el = document.getElementById('googleLinkStatus');
-  if(!el) return;
-  if(isDemo) {
-    el.innerHTML = `<div class="gl-disconnected"><div class="gl-title">🎭 Tryb demo</div><div class="gl-sub">W wersji demo łączenie kont nie jest dostępne.</div></div>`;
-    return;
-  }
-  if(currentUser?.providerData?.some(p => p.providerId === 'google.com') || (!myProfile?.noAuth && currentUser?.uid)) {
-    el.innerHTML = `<div class="gl-connected">
-      <div class="gl-ico">✅</div>
-      <div class="gl-info">
-        <div class="gl-title">Konto Google połączone</div>
-        <div class="gl-sub">${currentUser?.email || ''}</div>
-        ${currentUser?.photoURL ? `<img src="${currentUser.photoURL}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;margin-top:5px;" crossorigin="anonymous" referrerpolicy="no-referrer">` : ''}
-      </div>
+function renderCatVisibilitySettings(){
+  const el=document.getElementById('catVisSettings');if(!el)return;
+  el.innerHTML=cats.map(cat=>{
+    const vis=catVisibility[cat.id]!==false;
+    return`<div class="cat-vis-row">
+      <div class="cat-vis-cb ${vis?'on':''}" onclick="toggleCatVis('${cat.id}')">${vis?'✓':''}</div>
+      <span style="font-size:14px">${cat.label.split(' ')[0]}</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1">${cat.label.split(' ').slice(1).join(' ')}</span>
+      <span style="font-size:10px;color:var(--soft)">${cat.chores.length} zadań</span>
     </div>`;
-  } else {
-    el.innerHTML = `<div class="gl-disconnected">
-      <div class="gl-title" style="margin-bottom:5px;">Nie masz połączonego konta Google</div>
-      <div class="gl-sub" style="margin-bottom:10px;">Połącz konto Google, żeby zalogować się z dowolnego urządzenia i zachować dane.</div>
-      <button class="gl-btn" onclick="linkGoogleAccount()">🔗 Połącz konto Google</button>
-    </div>`;
-  }
+  }).join('');
 }
 
-window.linkGoogleAccount = async function() {
-  try {
-    await signInWithPopup(auth, gProv);
-    showToast('✅ Połączono z Google!');
-    renderGoogleLinkStatus();
-  } catch(e) {
-    showToast('❌ ' + e.message);
-  }
-};
-
-function renderChildAccounts() {
-  const card = document.getElementById('childAccountsCard');
-  if(!card) return;
-  if(myProfile?.role !== 'parent') { card.style.display = 'none'; return; }
-  card.style.display = 'block';
-  const children = Object.entries(live.members).filter(([,m]) => m.role === 'child');
-  document.getElementById('childAccountsList').innerHTML = children.map(([uid, m]) => `
-    <div class="fm-item">
-      <div class="fm-av">${m.photoURL ? `<img src="${m.photoURL}" crossorigin="anonymous" referrerpolicy="no-referrer">` : m.avatar||'👤'}</div>
-      <div class="fm-info">
-        <div class="fm-nm">${m.name}</div>
-        <div class="fm-role">${m.noAuth ? '⚠️ Bez Google — może połączyć przez zakładkę Połączenia' : '✅ Ma konto Google'}</div>
-      </div>
-    </div>`).join('') || '<div class="empty" style="padding:12px;"><p>Brak dzieci w rodzinie</p></div>';
+function toggleCatVis(catId){
+  catVisibility[catId]=catVisibility[catId]===false?true:false;
+  localStorage.setItem('dp-cat-vis',JSON.stringify(catVisibility));
+  renderCatVisibilitySettings();renderChores();
 }
-
-/* ── GCal tab ── */
-function renderGCalTab() {
-  const el = document.getElementById('gcalCurrentDomain');
-  const el2 = document.getElementById('gcalAddUri');
-  if(el) el.textContent = location.origin;
-  if(el2) el2.textContent = location.origin;
-  const st = document.getElementById('gcalStatus2');
-  if(st) st.textContent = gcalToken ? '✅ Połączono' : 'Kliknij, aby połączyć';
-}
-
-/* ── Override renderChores to use sort ── */
-const _origRenderChores = renderChores;
-/* We patch it after definition — inject sort into chore rendering */
-/* Sort is applied inside renderChores via sortChores() call already added below */
+window.toggleCatVis=toggleCatVis;
 
 /* ── MISC ── */
 function closeOverlay(id){document.getElementById(id).classList.remove('show');}
@@ -1959,8 +1719,7 @@ function goTab(id){
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();}
   if(id==='family'){renderFamilyTabs();}
-  if(id==='settings'){renderCategoryMgmt();renderThemeGrid();renderWeatherFull();}
-  if(id==='profile'){renderProfileHero();renderSortRow();renderPointsEdit();renderProfileAvGrid();if(myProfile?.role==='parent')renderFamilyMembers();}
+  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();}
   if(id==='weather'){renderWeatherFull();}
 }
 window.goTab=goTab;
