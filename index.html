@@ -259,179 +259,396 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ── ASSIGN QUICK TILES ── */
 .quick-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
 .qt{padding:8px 5px;border-radius:10px;border:2px solid var(--border);background:var(--inp);cursor:pointer;text-align:center;font-size:10px;font-weight:800;color:var(--text);transition:all .15s;}
-.qt:hover{border-col  </button>
+.qt:hover{border-color:var(--g2);background:var(--gp);}
+.qt .qt-ico{font-size:20px;display:block;margin-bottom:3px;}
+.qt .qt-pts{font-size:9px;color:var(--o);}
 
-  <div class="sp-divider"><span id="spDivider">lub wypróbuj demo</span></div>
+/* ── SCORES ── */
+.score-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);}
+.score-item:last-child{border-bottom:none;}
+.sc-rank{font-size:16px;font-weight:900;min-width:22px;}
+.sc-av{font-size:24px;}
+.sc-photo{width:32px;height:32px;border-radius:50%;object-fit:cover;}
+.sc-info{flex:1;}
+.sc-nm{font-size:13px;font-weight:800;color:var(--text);}
+.sc-bar-w{height:4px;background:var(--border);border-radius:99px;margin:3px 0;overflow:hidden;}
+.sc-bar-f{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--g2),var(--g3));transition:width .8s;}
+.sc-sub{font-size:9px;color:var(--soft);}
+.sc-pts{font-size:18px;font-weight:900;color:var(--g2);}
+
+/* ── SUMMARY ── */
+.sum-hero{background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:var(--rr);padding:13px;margin-bottom:10px;color:#fff;}
+.sum-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;}
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.sum-cell{background:rgba(255,255,255,.12);border-radius:8px;padding:7px 4px;text-align:center;}
+.sum-val{font-size:17px;font-weight:900;}
+.sum-lbl{font-size:8px;color:rgba(255,255,255,.65);margin-top:1px;font-weight:700;}
+.sum-champ{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border-radius:8px;padding:7px;margin-top:6px;}
+.sum-champ-av{font-size:24px;}
+.sum-champ-lbl{font-size:8px;color:rgba(255,255,255,.6);}
+.sum-champ-nm{font-size:12px;font-weight:900;}
+
+/* ── WEATHER SECTION ── */
+.weather-section{margin-bottom:10px;}
+.weather-main{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
+.w-day-card{background:var(--card);border-radius:12px;padding:10px;text-align:center;box-shadow:var(--sh);}
+.w-day-lbl{font-size:9px;font-weight:800;color:var(--soft);margin-bottom:4px;}
+.w-day-ico{font-size:26px;margin-bottom:3px;}
+.w-day-temp{font-size:15px;font-weight:900;color:var(--text);}
+.w-day-feel{font-size:9px;color:var(--soft);}
+.w-diff{text-align:center;padding:7px;border-radius:10px;background:var(--card);font-size:11px;font-weight:800;margin-bottom:7px;box-shadow:var(--sh);}
+.outfit-card{background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:12px;padding:12px;color:#fff;}
+.outfit-title{font-size:11px;font-weight:800;margin-bottom:5px;opacity:.8;}
+.outfit-text{font-size:13px;font-weight:900;line-height:1.4;}
+.weather-loc{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:11px;color:var(--soft);}
+.weather-loc input{flex:1;padding:6px 9px;border-radius:8px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:700;color:var(--text);outline:none;}
+.weather-loc button{padding:6px 10px;border-radius:8px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
+
+/* ── JOIN REQUESTS ── */
+.join-req{display:flex;align-items:center;gap:9px;padding:9px;border-radius:10px;border:2px solid var(--y);background:rgba(245,197,24,.08);margin-bottom:7px;}
+.jr-av{font-size:26px;}
+.jr-info{flex:1;}
+.jr-nm{font-size:13px;font-weight:800;color:var(--text);}
+.jr-sub{font-size:10px;color:var(--soft);}
+.jr-btns{display:flex;gap:5px;}
+.jr-accept{padding:6px 11px;border-radius:8px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;}
+.jr-reject{padding:6px 9px;border-radius:8px;border:2px solid var(--r);background:transparent;color:var(--r);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;}
+
+/* ── REWARDS ── */
+.reward-item{display:flex;align-items:center;gap:9px;padding:9px;border-radius:11px;border:2px solid var(--border);margin-bottom:7px;background:var(--inp);}
+.rew-ico{font-size:22px;}
+.rew-info{flex:1;}
+.rew-nm{font-size:12px;font-weight:800;color:var(--text);}
+.rew-cost{font-size:10px;color:var(--o);font-weight:800;margin-top:1px;}
+.rew-btn{padding:6px 10px;border-radius:8px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;}
+.rew-btn:disabled{background:var(--border);color:var(--soft);cursor:default;}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.stat-card{background:var(--card);border-radius:12px;padding:10px;box-shadow:var(--sh);}
+.stat-ico{font-size:20px;}
+.stat-val{font-size:18px;font-weight:900;color:var(--g2);line-height:1.1;}
+.stat-lbl{font-size:9px;color:var(--soft);font-weight:700;margin-top:2px;}
+
+/* ── HISTORY ── */
+.hi{display:flex;align-items:center;gap:7px;padding:7px 0;border-bottom:1px solid var(--border);}
+.hi:last-child{border-bottom:none;}
+.hi-ico{font-size:16px;}
+.hi-info{flex:1;}
+.hi-nm{font-weight:700;font-size:11px;color:var(--text);}
+.hi-who{color:var(--soft);font-size:9px;}
+.hi-pts{font-size:10px;font-weight:800;color:var(--o);}
+
+/* ── THEME GRID ── */
+.theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.theme-btn{padding:7px 3px;border-radius:9px;border:2.5px solid var(--border);background:var(--inp);cursor:pointer;text-align:center;transition:all .15s;}
+.theme-btn.sel{border-color:var(--g2);background:var(--gp);}
+.t-ico{font-size:17px;display:block;margin-bottom:2px;}
+.t-nm{font-size:8px;font-weight:800;color:var(--text);}
+
+/* ── GCAL CARD ── */
+.gcal-card{background:linear-gradient(135deg,#1a73e8,#4285f4);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;cursor:pointer;}
+.gcal-row{display:flex;align-items:center;gap:8px;}
+.gcal-ico{font-size:24px;}
+.gcal-ttl{font-size:12px;font-weight:900;}
+.gcal-sub{font-size:10px;color:rgba(255,255,255,.75);margin-top:1px;}
+.gcal-st{font-size:9px;font-weight:800;margin-top:4px;background:rgba(255,255,255,.15);border-radius:5px;padding:2px 6px;display:inline-block;}
+
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+.overlay.show{opacity:1;pointer-events:all;}
+.modal{background:var(--card);border-radius:20px 20px 0 0;padding:17px;width:100%;max-width:480px;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto;color:var(--text);}
+.overlay.show .modal{transform:translateY(0);}
+.modal-ttl{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;color:var(--text);}
+.modal-close{font-size:22px;cursor:pointer;color:var(--soft);}
+.f-lbl{font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.4px;margin:8px 0 4px;}
+.f-inp{width:100%;padding:10px 11px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:700;color:var(--text);outline:none;transition:border .2s;}
+.f-inp:focus{border-color:var(--g2);}
+select.f-inp{cursor:pointer;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.modal-btn{width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:13px;font-weight:900;cursor:pointer;margin-top:11px;}
+.modal-btn.blue{background:linear-gradient(135deg,#1e3a5f,#2563eb);}
+.modal-btn.red{background:linear-gradient(135deg,#7f1d1d,var(--r));margin-top:7px;}
+.modal-btn.gray{background:var(--border);color:var(--soft);margin-top:7px;}
+.modal-btn.outline{background:transparent;border:2px solid var(--g2);color:var(--g2);margin-top:7px;}
+
+.int-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.int-btn{padding:5px 10px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);transition:all .15s;}
+.int-btn.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+
+/* ── FAB ── */
+.fab{position:fixed;bottom:88px;right:14px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--g2),var(--g3));border:none;color:#fff;font-size:23px;cursor:pointer;box-shadow:0 4px 14px rgba(45,106,16,.45);z-index:60;display:none;align-items:center;justify-content:center;line-height:1;}
+.fab:active{transform:scale(.92);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(12px);background:#1a2e0a;color:#fff;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;opacity:0;transition:all .25s;z-index:999;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:20px 12px;color:var(--soft);}
+.empty .big{font-size:36px;margin-bottom:5px;}
+.empty p{font-size:12px;font-weight:700;}
+
+/* ── GCAL INSTRUCTIONS ── */
+.step{display:flex;gap:9px;margin-bottom:10px;}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--g2);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-text{font-size:12px;font-weight:700;color:var(--text);line-height:1.5;}
+.step-text a{color:var(--b);word-break:break-all;}
+.step-code{background:var(--inp);border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;font-weight:800;color:var(--g2);display:inline-block;margin:2px 0;word-break:break-all;}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splashScreen">
+  <div class="sp-logo">🏠</div>
+  <div class="sp-title" id="spTitle">Domowy Patrol</div>
+  <div class="sp-sub" id="spSub">Obowiązki, powroty i nagrody<br>dla całej rodziny</div>
+  <div class="lang-row" id="langRow"></div>
+  <button class="g-btn" onclick="signInWithGoogle()">
+    <svg class="g-ico" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.2 0 24 0 14.6 0 6.6 5.5 2.6 13.5l7.9 6.1C12.4 13.4 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.5 28.4A14.6 14.6 0 0 1 9.5 24c0-1.5.3-3 .7-4.4L2.3 13.5A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.9-6.3z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.8l-7.9 6.1C6.5 42.4 14.6 48 24 48z"/></svg>
+    <span id="btnGoogle">Zaloguj się przez Google</span>
+  </button>
+  <div class="sp-div"><span id="spDivider">lub wypróbuj demo</span></div>
   <div class="demo-row">
-    <button class="demo-btn" onclick="startDemo('parent')">
-      <span class="db-ico">👨</span><div class="demo-badge">DEMO</div>
-      <div id="demoBtnParent">Widok Rodzica</div>
-      <div style="font-size:9px;opacity:.65;margin-top:2px;" id="demoBtnParentSub">Zlecaj, śledź dzieci</div>
-    </button>
-    <button class="demo-btn" onclick="startDemo('child')">
-      <span class="db-ico">👦</span><div class="demo-badge">DEMO</div>
-      <div id="demoBtnChild">Widok Dziecka</div>
-      <div style="font-size:9px;opacity:.65;margin-top:2px;" id="demoBtnChildSub">Klikaj, zbieraj punkty</div>
-    </button>
+    <button class="demo-btn" onclick="startDemo('parent')"><span class="db-ico">👨</span><div class="demo-badge">DEMO</div><div id="demoBtnP">Widok Rodzica</div></button>
+    <button class="demo-btn" onclick="startDemo('child')"><span class="db-ico">👦</span><div class="demo-badge">DEMO</div><div id="demoBtnC">Widok Dziecka</div></button>
   </div>
-  <div class="sp-note" id="spNote">Demo działa lokalnie · dane nie są zapisywane w chmurze</div>
+  <div class="sp-note" id="spNote">Demo lokalne · dane nie są zapisywane</div>
 </div>
 
-<!-- ████ SETUP ████ -->
+<!-- INVITE LANDING -->
+<div id="inviteScreen">
+  <div class="invite-card">
+    <div class="invite-family-ico">🏠</div>
+    <div class="invite-title">Zaproszenie do rodziny</div>
+    <div class="invite-sub">Ktoś zaprosił Cię do dołączenia do rodziny:</div>
+    <div class="invite-family-name" id="inviteFamilyName">— — —</div>
+    <div class="invite-sub" style="margin-bottom:14px;">Zaloguj się, aby dołączyć. Rodzina musi Cię zaakceptować.</div>
+    <button class="invite-g-btn" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.2 0 24 0 14.6 0 6.6 5.5 2.6 13.5l7.9 6.1C12.4 13.4 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.5 28.4A14.6 14.6 0 0 1 9.5 24c0-1.5.3-3 .7-4.4L2.3 13.5A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.9-6.3z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.8l-7.9 6.1C6.5 42.4 14.6 48 24 48z"/></svg>
+      Zaloguj przez Google i dołącz
+    </button>
+    <button class="invite-noauth-btn" onclick="joinWithoutGoogle()">Dołącz bez konta Google (dziecko)</button>
+  </div>
+</div>
+
+<!-- SETUP -->
 <div id="setupScreen">
   <div class="s-card">
     <div class="s-title" id="setupTitle">Uzupełnij profil</div>
-    <div id="setupUserInfo" style="display:flex;align-items:center;gap:9px;padding:9px;background:var(--inp-bg);border-radius:10px;margin-bottom:4px;">
-      <img id="setupPhoto" src="" style="width:40px;height:40px;border-radius:50%;display:none;" onerror="this.style.display='none'">
+    <div id="setupUserInfo" style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--inp);border-radius:9px;margin-bottom:3px;">
+      <img id="setupPhoto" src="" style="width:38px;height:38px;border-radius:50%;display:none;" onerror="this.style.display='none'">
       <div><div id="setupGoogleName" style="font-weight:800;font-size:13px;color:var(--text);"></div><div id="setupGoogleEmail" style="font-size:10px;color:var(--soft);"></div></div>
     </div>
-    <div class="s-lbl" id="lbl-name">Imię w rodzinie</div>
-    <input class="s-inp" id="sName" maxlength="18">
-    <div class="s-lbl" id="lbl-role">Kim jesteś?</div>
+    <div class="s-lbl">Imię w rodzinie</div>
+    <input class="s-inp" id="sName" placeholder="np. Kacper" maxlength="18">
+    <div class="s-lbl">Kim jesteś?</div>
     <div class="role-row">
-      <div class="role-btn sel" id="roleP" onclick="setRole('parent')" id="roleBtnParent">👨‍👩‍👧 Rodzic</div>
+      <div class="role-btn sel" id="roleP" onclick="setRole('parent')">👨‍👩‍👧 Rodzic</div>
       <div class="role-btn" id="roleC" onclick="setRole('child')">🧒 Dziecko</div>
     </div>
-    <div class="s-lbl" id="lbl-avatar">Avatar</div>
+    <div class="s-lbl">Avatar</div>
     <div class="av-grid" id="avGrid"></div>
-    <div class="s-lbl" id="lbl-code">Kod rodziny</div>
-    <input class="s-inp" id="sCode" maxlength="20" style="text-transform:uppercase;">
-    <div style="font-size:10px;color:var(--soft);margin-top:3px;" id="lbl-code-hint">Rodzic tworzy kod, dzieci wpisują ten sam</div>
-    <button class="s-btn" onclick="doSetup()" id="btn-join">Dołącz do rodziny →</button>
+    <div class="s-lbl">Kod lub nazwa rodziny</div>
+    <input class="s-inp" id="sCode" placeholder="np. KOWALSKI2025" maxlength="24" style="text-transform:uppercase;">
+    <div id="codeStatus" style="font-size:10px;color:var(--soft);margin-top:3px;min-height:14px;"></div>
+    <button class="s-btn" onclick="doSetup()" id="btnJoin">Dołącz do rodziny →</button>
   </div>
 </div>
 
-<!-- ████ MAIN APP ████ -->
+<!-- PENDING APPROVAL -->
+<div id="pendingScreen">
+  <div class="pending-card">
+    <div class="pending-ico">⏳</div>
+    <div class="pending-title">Czekasz na akceptację</div>
+    <div class="pending-sub">
+      Twoja prośba dołączenia do rodziny <strong id="pendingFamily"></strong> została wysłana.<br><br>
+      Każdy obecny członek rodziny może Cię zaakceptować.<br>
+      Poczekaj chwilę lub poproś kogoś, żeby sprawdził aplikację.
+    </div>
+    <button class="pending-check" onclick="checkApproval()">🔄 Sprawdź status</button>
+    <button class="pending-check" style="background:var(--border);color:var(--soft);margin-top:8px;" onclick="cancelJoin()">Anuluj i wróć</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
 <div id="appScreen" style="display:none;">
   <div id="demoBanner" style="display:none;" class="demo-bar">
     <span>🎭 DEMO — <span id="demoRoleLabel"></span></span>
     <span class="demo-bar-exit" onclick="exitDemo()">Wyjdź ×</span>
   </div>
-
   <div class="hdr">
     <div class="h-row">
       <div><div class="app-name">🏠 Domowy Patrol</div><div class="app-dt" id="appDt"></div></div>
-      <div class="user-chip" onclick="goTab('more')">
+      <div class="user-chip" onclick="goTab('profile')">
         <img id="chipPhoto" src="" style="width:24px;height:24px;border-radius:50%;display:none;">
         <div class="chip-av" id="chipAv">👤</div>
         <div><div class="chip-nm" id="chipNm">Ja</div><div class="chip-role" id="chipRole"></div></div>
+        <div class="notif-badge" id="notifBadge" style="display:none;">!</div>
       </div>
     </div>
     <div class="prog-row">
       <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
       <div class="prog-lbl" id="progLbl">0/0</div>
     </div>
-    <div class="weather-chip" id="weatherChip" style="display:none;"></div>
+    <div class="weather-strip" id="weatherStrip" style="display:none;" onclick="goTab('weather')"></div>
   </div>
-
   <div id="returnBanner"></div>
-
   <div class="tabs">
-    <button class="tab on" onclick="goTab('today')"><span class="ti">📋</span><span id="tab-today">Dziś</span><div class="ndot" id="ndToday"></div></button>
-    <button class="tab"    onclick="goTab('tasks')"><span class="ti">📌</span><span id="tab-tasks">Zlecone</span><div class="ndot" id="ndTasks"></div></button>
-    <button class="tab"    onclick="goTab('scores')"><span class="ti">🏆</span><span id="tab-scores">Wyniki</span></button>
-    <button class="tab"    onclick="goTab('summary')"><span class="ti">📊</span><span id="tab-summary">Raport</span></button>
-    <button class="tab"    onclick="goTab('more')"><span class="ti">⚙️</span><span id="tab-more">Więcej</span></button>
+    <button class="tab on" onclick="goTab('today')"><span class="ti">📋</span><span>Dziś</span><div class="ndot" id="ndToday"></div></button>
+    <button class="tab" onclick="goTab('tasks')"><span class="ti">📌</span><span>Zlecone</span><div class="ndot" id="ndTasks"></div></button>
+    <button class="tab" onclick="goTab('scores')"><span class="ti">🏆</span><span>Wyniki</span></button>
+    <button class="tab" onclick="goTab('summary')"><span class="ti">📊</span><span>Raport</span></button>
+    <button class="tab" onclick="goTab('settings')"><span class="ti">⚙️</span><span>Opcje</span></button>
   </div>
 
   <!-- TODAY -->
   <div class="sec on" id="sec-today">
+    <div id="joinRequestsPanel"></div>
     <div id="curfewPanel"></div>
     <div class="card">
-      <div class="card-ttl"><span>🌐 <span id="lbl-family-online">Rodzina</span></span></div>
+      <div class="card-ttl"><div class="ct-l">🌐 Rodzina</div></div>
       <div class="online-row" id="onlineRow"></div>
     </div>
     <div class="card">
-      <div class="card-ttl"><span>📅 <span id="lbl-this-week">Ten tydzień</span></span></div>
+      <div class="card-ttl"><div class="ct-l">📅 Tydzień</div><span id="selectedDayLabel" style="font-size:10px;color:var(--soft);font-weight:700;"></span></div>
       <div class="week-row" id="weekRow"></div>
+    </div>
+    <div class="view-toggle">
+      <button class="vt-btn sel" id="vt-normal" onclick="setView('normal')">📋 Normalny</button>
+      <button class="vt-btn" id="vt-compact" onclick="setView('compact')">⊞ Kompaktowy</button>
     </div>
     <div id="choreContainer"></div>
   </div>
 
   <!-- TASKS -->
   <div class="sec" id="sec-tasks">
-    <div class="sec-ttl" id="ttl-assigned">📌 Zlecone zadania</div>
+    <div class="sec-ttl">📌 Zlecone zadania</div>
+    <div id="quickTilesContainer"></div>
     <div id="assignedList"></div>
   </div>
 
   <!-- SCORES -->
   <div class="sec" id="sec-scores">
     <div class="stats-grid" id="statsGrid"></div>
-    <div class="card"><div class="card-ttl"><span>⭐ <span id="lbl-ranking">Ranking</span></span></div><div id="scoreList"></div></div>
+    <div class="card"><div class="card-ttl"><div class="ct-l">⭐ Ranking</div></div><div id="scoreList"></div></div>
     <div class="card">
-      <div class="card-ttl"><span>🎁 <span id="lbl-rewards">Nagrody</span></span></div>
+      <div class="card-ttl"><div class="ct-l">🎁 Nagrody</div></div>
       <div style="font-size:12px;font-weight:900;color:var(--g2);margin-bottom:8px;" id="myPtsDisplay"></div>
       <div id="rewardsList"></div>
     </div>
   </div>
 
-  <!-- SUMMARY -->
+  <!-- SUMMARY/REPORT -->
   <div class="sec" id="sec-summary">
-    <div class="sec-ttl" id="ttl-reports">📊 Raporty</div>
+    <div class="sec-ttl">📊 Raporty</div>
     <div id="weeklySummary"></div>
     <div id="monthlySummary"></div>
-    <div class="card"><div class="card-ttl"><span>📅 <span id="lbl-history">Historia</span></span></div><div id="histList"></div></div>
+    <div class="card"><div class="card-ttl"><div class="ct-l">📅 Historia</div></div><div id="histList"></div></div>
   </div>
 
-  <!-- MORE -->
-  <div class="sec" id="sec-more">
-    <div class="sec-ttl" id="ttl-more">⚙️ Więcej</div>
+  <!-- SETTINGS / OPCJE -->
+  <div class="sec" id="sec-settings">
+    <div class="sec-ttl">⚙️ Opcje</div>
 
-    <!-- Schedule -->
+    <!-- Theme -->
     <div class="card">
-      <div class="card-ttl">
-        <span>📚 <span id="lbl-schedule">Plan lekcji / pracy</span></span>
-        <button class="card-act" onclick="openScheduleModal()">✏️ Edytuj</button>
-      </div>
-      <div id="scheduleView"></div>
+      <div class="card-ttl"><div class="ct-l">🎨 Motyw</div></div>
+      <div class="theme-grid" id="themeGrid"></div>
     </div>
 
-    <!-- Maps -->
-    <div class="card" id="mapsCard" style="display:none;">
-      <div class="card-ttl"><span>📍 <span id="lbl-locations">Lokalizacje dzieci</span></span></div>
-      <div id="mapsContainer"></div>
-    </div>
-
-    <!-- Google Calendar -->
+    <!-- GCal -->
     <div class="gcal-card" onclick="toggleGCal()">
       <div class="gcal-row">
         <div class="gcal-ico">📅</div>
-        <div><div class="gcal-ttl" id="lbl-gcal">Google Calendar</div><div class="gcal-sub" id="lbl-gcal-sub">Synchronizuj zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus">Kliknij, aby połączyć</div></div>
+        <div><div class="gcal-ttl">Google Calendar</div><div class="gcal-sub">Synchronizuj zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus">Kliknij, aby połączyć</div></div>
       </div>
+    </div>
+
+    <!-- GCal instructions -->
+    <div class="card">
+      <div class="card-ttl"><div class="ct-l">📖 Jak podłączyć Google Calendar?</div></div>
+      <div id="gcalInstructions"></div>
     </div>
 
     <!-- Reminders -->
     <div class="card">
-      <div class="card-ttl"><span>⏰ <span id="lbl-reminders">Przypomnienia o powrocie</span></span></div>
-      <div style="font-size:11px;color:var(--soft);margin-bottom:7px;" id="lbl-reminders-sub">Co ile minut przypominać?</div>
-      <div class="interval-row" id="globalIntervalRow"></div>
+      <div class="card-ttl"><div class="ct-l">⏰ Przypomnienia co</div></div>
+      <div class="int-row" id="globalIntervalRow"></div>
     </div>
 
-    <!-- Theme -->
+    <!-- Weather settings -->
     <div class="card">
-      <div class="card-ttl"><span>🎨 <span id="lbl-theme">Motyw</span></span></div>
-      <div class="theme-grid" id="themeGrid"></div>
+      <div class="card-ttl"><div class="ct-l">🌤️ Pogoda — lokalizacja</div></div>
+      <div class="weather-loc">
+        <input id="weatherCity" placeholder="np. Warszawa, Polska" style="">
+        <button onclick="fetchWeatherByCity()">🔍</button>
+      </div>
+      <div style="font-size:10px;color:var(--soft);">lub <span style="cursor:pointer;color:var(--b);font-weight:800;" onclick="fetchWeatherGPS()">📍 użyj GPS</span></div>
     </div>
 
     <!-- Category mgmt -->
     <div class="card">
-      <div class="card-ttl">
-        <span>📂 <span id="lbl-categories">Kategorie obowiązków</span></span>
-        <button class="card-act" onclick="openCategoryModal()">➕ Dodaj</button>
-      </div>
+      <div class="card-ttl"><div class="ct-l">📂 Kategorie</div><button class="card-act" onclick="openCategoryModal()">➕ Dodaj</button></div>
       <div id="categoryMgmt"></div>
     </div>
+  </div>
 
-    <!-- Family code -->
+  <!-- PROFILE TAB -->
+  <div class="sec" id="sec-profile">
+    <div class="sec-ttl">👤 Profil i rodzina</div>
+
+    <!-- Family info + invite -->
     <div class="card">
-      <div class="card-ttl"><span>👨‍👩‍👧 <span id="lbl-family-code">Kod rodziny</span></span></div>
-      <div style="background:var(--inp-bg);border-radius:9px;padding:11px;font-size:16px;font-weight:900;letter-spacing:2px;text-align:center;border:2px dashed var(--border);color:var(--text);" id="fCodeDisplay"></div>
-      <button onclick="copyCode()" style="width:100%;margin-top:7px;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp-bg);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--text);">📋 Kopiuj kod</button>
+      <div class="card-ttl"><div class="ct-l">👨‍👩‍👧 Rodzina</div></div>
+      <div style="background:var(--inp);border-radius:9px;padding:10px;font-size:16px;font-weight:900;letter-spacing:2px;text-align:center;border:2px dashed var(--border);color:var(--text);margin-bottom:8px;" id="fCodeDisplay"></div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="copyCode()" style="flex:1;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">📋 Kopiuj kod</button>
+        <button onclick="copyInviteLink()" style="flex:1;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:#fff;">🔗 Link zaproszenia</button>
+      </div>
     </div>
 
+    <!-- My profile -->
     <div class="card">
-      <button onclick="doSignOut()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.05);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;" id="signOutBtn">🚪 Wyloguj się</button>
+      <div class="card-ttl"><div class="ct-l">✏️ Mój profil</div></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <img id="profilePhoto" src="" style="width:48px;height:48px;border-radius:50%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <div id="profileAv" style="font-size:40px;"></div>
+        <div>
+          <div id="profileName" style="font-size:15px;font-weight:900;color:var(--text);"></div>
+          <div id="profileEmail" style="font-size:10px;color:var(--soft);"></div>
+        </div>
+      </div>
+      <div class="f-lbl">Zmień imię</div>
+      <input class="f-inp" id="editName" maxlength="18">
+      <button onclick="saveProfileName()" style="width:100%;margin-top:8px;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz imię</button>
     </div>
+
+    <!-- Change family -->
+    <div class="card">
+      <div class="card-ttl"><div class="ct-l">🔄 Zmień rodzinę</div></div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Wpisz kod innej rodziny, żeby wysłać prośbę dołączenia:</div>
+      <input class="f-inp" id="changeFamilyCode" placeholder="np. NOWAK2025" maxlength="24" style="text-transform:uppercase;">
+      <button onclick="requestChangeFamily()" style="width:100%;margin-top:8px;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">🔄 Wyślij prośbę dołączenia</button>
+    </div>
+
+    <!-- Leave family -->
+    <div class="card">
+      <button onclick="leaveFamily()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.05);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;">🚪 Opuść rodzinę</button>
+      <div style="font-size:9px;color:var(--soft);text-align:center;margin-top:5px;">Po opuszczeniu będziesz potrzebować zaproszenia, żeby wrócić</div>
+    </div>
+
+    <!-- Sign out -->
+    <div class="card">
+      <button onclick="doSignOut()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;color:var(--soft);cursor:pointer;" id="signOutBtn">🚪 Wyloguj się</button>
+    </div>
+  </div>
+
+  <!-- WEATHER TAB (hidden, accessed from header strip) -->
+  <div class="sec" id="sec-weather">
+    <div class="sec-ttl">🌤️ Pogoda</div>
+    <div id="weatherFull"></div>
   </div>
 </div>
 
@@ -440,516 +657,437 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <!-- ASSIGN MODAL -->
 <div class="overlay" id="assignOverlay">
   <div class="modal">
-    <div class="modal-ttl"><span id="modal-assign-title">📌 Zlec zadanie</span><span class="modal-close" onclick="closeOverlay('assignOverlay')">×</span></div>
-    <div class="f-lbl" id="f-task-name">Nazwa zadania</div>
-    <input class="f-inp" id="mName" placeholder="np. Odkurzanie salonu">
-    <div class="f-row">
-      <div><div class="f-lbl">Ikona</div><input class="f-inp" id="mIco" placeholder="🧹" maxlength="4" style="font-size:18px;width:68px;"></div>
-      <div><div class="f-lbl" id="f-points">Punkty</div><input class="f-inp" id="mPts" type="number" value="10" min="1" max="50"></div>
+    <div class="modal-ttl">📌 Zlec zadanie <span class="modal-close" onclick="closeOverlay('assignOverlay')">×</span></div>
+    <div class="f-lbl">Zadanie (wpisz lub wybierz)</div>
+    <div class="autocomplete-wrap">
+      <input class="f-inp" id="mName" placeholder="Zacznij pisać lub wybierz niżej…" oninput="acSearch(this.value)" autocomplete="off">
+      <div class="autocomplete-list" id="acList" style="display:none;"></div>
     </div>
-    <div class="f-lbl" id="f-for-who">Dla kogo</div>
+    <div style="display:flex;gap:7px;margin-top:6px;">
+      <div style="flex:1"><div class="f-lbl">Ikona</div><input class="f-inp" id="mIco" placeholder="📌" maxlength="4" style="font-size:17px;"></div>
+      <div style="flex:1"><div class="f-lbl">Punkty</div><input class="f-inp" id="mPts" type="number" value="10" min="1" max="50"></div>
+    </div>
+    <div class="f-lbl">Dla kogo</div>
     <select class="f-inp" id="mWho"></select>
-    <div class="f-row">
-      <div><div class="f-lbl" id="f-date">Data</div><input class="f-inp" id="mDate" type="date"></div>
-      <div><div class="f-lbl" id="f-time">Godzina</div><input class="f-inp" id="mTime" type="time"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+      <div><div class="f-lbl">Data</div><input class="f-inp" id="mDate" type="date"></div>
+      <div><div class="f-lbl">Godzina</div><input class="f-inp" id="mTime" type="time"></div>
     </div>
-    <button class="modal-btn" onclick="submitAssign()" id="btn-assign">✅ Zlec zadanie</button>
+    <button class="modal-btn" onclick="submitAssign()">✅ Zlec zadanie</button>
   </div>
 </div>
 
 <!-- CURFEW MODAL -->
 <div class="overlay" id="curfewOverlay">
   <div class="modal">
-    <div class="modal-ttl"><span>🏠 Godzina powrotu</span><span class="modal-close" onclick="closeOverlay('curfewOverlay')">×</span></div>
-    <div id="curfewForName" style="font-size:14px;font-weight:900;margin-bottom:12px;color:var(--text);"></div>
+    <div class="modal-ttl">🏠 Godzina powrotu <span class="modal-close" onclick="closeOverlay('curfewOverlay')">×</span></div>
+    <div id="curfewForName" style="font-size:14px;font-weight:900;margin-bottom:10px;color:var(--text);"></div>
     <div class="f-lbl">Godzina powrotu</div>
     <input class="f-inp" id="curfewTime" type="time" value="19:00" style="font-size:20px;font-weight:900;text-align:center;">
     <div class="f-lbl">Przypominaj co</div>
-    <div class="interval-row" id="curfewIntervalRow"></div>
-    <button class="modal-btn blue" onclick="setCurfew()">🏠 Ustaw</button>
+    <div class="int-row" id="curfewIntRow"></div>
+    <button class="modal-btn blue" onclick="setCurfew()">🏠 Ustaw godzinę powrotu</button>
     <button class="modal-btn red" onclick="clearCurfew()">❌ Anuluj godzinę powrotu</button>
   </div>
 </div>
 
 <!-- CATEGORY MODAL -->
-<div class="overlay" id="categoryOverlay">
+<div class="overlay" id="catOverlay">
   <div class="modal">
-    <div class="modal-ttl"><span id="catModalTitle">📂 Nowa kategoria</span><span class="modal-close" onclick="closeOverlay('categoryOverlay')">×</span></div>
-    <div class="f-lbl">Ikona kategorii</div>
-    <input class="f-inp" id="catIco" placeholder="🏠" maxlength="4" style="font-size:20px;width:70px;">
-    <div class="f-lbl">Nazwa kategorii</div>
-    <input class="f-inp" id="catName" placeholder="np. Ogród">
-    <div class="f-lbl">Zadania (po jednym w wierszu: ikona nazwa | punkty)</div>
-    <textarea class="f-inp" id="catChores" rows="5" placeholder="🌱 Grabienie liści | 10&#10;💦 Podlewanie ogrodu | 6&#10;✂️ Przycinanie krzewów | 12" style="resize:vertical;font-size:12px;"></textarea>
-    <button class="modal-btn" onclick="saveCategory()" id="btn-save-cat">💾 Zapisz kategorię</button>
-    <button class="modal-btn gray" onclick="closeOverlay('categoryOverlay')" id="btn-cancel">Anuluj</button>
-  </div>
-</div>
-
-<!-- CHORE MODAL (add/edit single chore) -->
-<div class="overlay" id="choreOverlay">
-  <div class="modal">
-    <div class="modal-ttl"><span id="choreModalTitle">➕ Nowe zadanie</span><span class="modal-close" onclick="closeOverlay('choreOverlay')">×</span></div>
+    <div class="modal-ttl"><span id="catModalTtl">📂 Nowa kategoria</span><span class="modal-close" onclick="closeOverlay('catOverlay')">×</span></div>
     <div class="f-lbl">Ikona</div>
-    <input class="f-inp" id="chIco" placeholder="🧹" maxlength="4" style="font-size:20px;width:70px;">
+    <input class="f-inp" id="catIco" placeholder="🏠" maxlength="4" style="font-size:20px;width:68px;">
     <div class="f-lbl">Nazwa</div>
-    <input class="f-inp" id="chName" placeholder="np. Odkurzanie">
-    <div class="f-lbl">Opis (czas/częstotliwość)</div>
-    <input class="f-inp" id="chDesc" placeholder="np. Co 2 dni">
-    <div class="f-lbl">Punkty</div>
-    <input class="f-inp" id="chPts" type="number" value="8" min="1" max="50">
-    <input type="hidden" id="chCatId">
-    <input type="hidden" id="chChoreIdx">
-    <button class="modal-btn" onclick="saveChore()">💾 Zapisz</button>
+    <input class="f-inp" id="catName" placeholder="np. Ogród">
+    <div class="f-lbl">Zadania (ikona nazwa | punkty, po jednym w wierszu)</div>
+    <textarea class="f-inp" id="catChores" rows="4" placeholder="🌱 Grabienie liści | 10&#10;💦 Podlewanie | 6" style="resize:vertical;font-size:11px;"></textarea>
+    <button class="modal-btn" onclick="saveCategory()">💾 Zapisz</button>
+    <button class="modal-btn gray" onclick="closeOverlay('catOverlay')">Anuluj</button>
   </div>
 </div>
 
-<!-- SCHEDULE MODAL -->
-<div class="overlay" id="scheduleOverlay">
+<!-- JOIN WITHOUT GOOGLE MODAL -->
+<div class="overlay" id="noAuthOverlay">
   <div class="modal">
-    <div class="modal-ttl"><span>📚 Plan lekcji/pracy</span><span class="modal-close" onclick="closeOverlay('scheduleOverlay')">×</span></div>
-    <div style="font-size:12px;color:var(--soft);margin-bottom:10px;">Wpisz godzinę końca lekcji/pracy na każdy dzień:</div>
-    <div id="scheduleForm"></div>
-    <div class="f-lbl" style="margin-top:10px;">Typ (szkoła/praca)</div>
-    <div style="display:flex;gap:8px;margin-top:5px;">
-      <button class="int-btn sel" id="schTypeSchool" onclick="setSchType('school')">🎒 Szkoła</button>
-      <button class="int-btn" id="schTypeWork" onclick="setSchType('work')">💼 Praca</button>
-    </div>
-    <input type="hidden" id="schUid">
-    <button class="modal-btn" onclick="saveSchedule()">💾 Zapisz plan</button>
+    <div class="modal-ttl">🧒 Dołącz bez Google <span class="modal-close" onclick="closeOverlay('noAuthOverlay')">×</span></div>
+    <div style="font-size:12px;color:var(--soft);margin-bottom:10px;">Konto bez Google — zarządzane przez rodzica.</div>
+    <div class="f-lbl">Imię</div>
+    <input class="f-inp" id="noAuthName" placeholder="np. Kacper" maxlength="18">
+    <div class="f-lbl">Hasło dostępu (minimum 4 znaki)</div>
+    <input class="f-inp" id="noAuthPass" type="password" placeholder="••••" maxlength="20">
+    <div class="f-lbl">Avatar</div>
+    <div class="av-grid" id="noAuthAvGrid"></div>
+    <button class="modal-btn" onclick="joinNoAuth()">🏠 Dołącz do rodziny</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAnalytics }   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
-                           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, set, get, onValue, update, push, remove, serverTimestamp }
-                           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import {initializeApp}     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {getAnalytics}      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}
+                            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {getDatabase,ref,set,get,onValue,update,push,remove,serverTimestamp,query,orderByChild,equalTo}
+                            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-/* ══════ FIREBASE ══════ */
-const fbApp = initializeApp({
-  apiKey:"AIzaSyBlhwZzbB-eh8FwWwcBLQ0Urki90BvisWY",
-  authDomain:"domowy-patrol.firebaseapp.com",
-  databaseURL:"https://domowy-patrol-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:"domowy-patrol",storageBucket:"domowy-patrol.firebasestorage.app",
-  messagingSenderId:"71160418880",appId:"1:71160418880:web:186e53da2262a2541045a5",
-  measurementId:"G-B6Y63TD13P"
-});
+/* ── FIREBASE ── */
+const fbApp=initializeApp({apiKey:"AIzaSyBlhwZzbB-eh8FwWwcBLQ0Urki90BvisWY",authDomain:"domowy-patrol.firebaseapp.com",databaseURL:"https://domowy-patrol-default-rtdb.europe-west1.firebasedatabase.app",projectId:"domowy-patrol",storageBucket:"domowy-patrol.firebasestorage.app",messagingSenderId:"71160418880",appId:"1:71160418880:web:186e53da2262a2541045a5",measurementId:"G-B6Y63TD13P"});
 getAnalytics(fbApp);
-const auth=getAuth(fbApp), db=getDatabase(fbApp), gProv=new GoogleAuthProvider();
+const auth=getAuth(fbApp),db=getDatabase(fbApp),gProv=new GoogleAuthProvider();
 const GCAL_CLIENT_ID="WKLEJ_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
-const GCAL_SCOPE="https://www.googleapis.com/auth/calendar.events";
 let gcalToken=null;
 
-/* ══════ I18N ══════ */
-const LANGS={
-  pl:{flag:'🇵🇱',name:'PL',
-    spTitle:'Domowy Patrol',spSub:'Obowiązki, powroty i nagrody\ndla całej rodziny',
-    btnGoogle:'Zaloguj się przez Google',spDivider:'lub wypróbuj demo',
-    demoBtnParent:'Widok Rodzica',demoBtnParentSub:'Zlecaj, śledź dzieci',
-    demoBtnChild:'Widok Dziecka',demoBtnChildSub:'Klikaj, zbieraj punkty',
-    spNote:'Demo działa lokalnie · dane nie są zapisywane',
-    setupTitle:'Uzupełnij profil','lbl-name':'Imię w rodzinie','lbl-role':'Kim jesteś?',
-    'lbl-avatar':'Avatar','lbl-code':'Kod rodziny','lbl-code-hint':'Rodzic tworzy kod, dzieci wpisują ten sam',
-    'btn-join':'Dołącz do rodziny →','tab-today':'Dziś','tab-tasks':'Zlecone',
-    'tab-scores':'Wyniki','tab-summary':'Raport','tab-more':'Więcej',
-    'lbl-family-online':'Rodzina','lbl-this-week':'Ten tydzień',
-    'ttl-assigned':'📌 Zlecone zadania','lbl-ranking':'Ranking','lbl-rewards':'Nagrody',
-    'ttl-reports':'📊 Raporty','lbl-history':'Historia','ttl-more':'⚙️ Więcej',
-    'lbl-schedule':'Plan lekcji/pracy','lbl-locations':'Lokalizacje dzieci',
-    'lbl-gcal':'Google Calendar','lbl-gcal-sub':'Synchronizuj z kalendarzem',
-    'lbl-reminders':'Przypomnienia o powrocie','lbl-reminders-sub':'Co ile minut przypominać?',
-    'lbl-theme':'Motyw','lbl-categories':'Kategorie obowiązków','lbl-family-code':'Kod rodziny',
-    'modal-assign-title':'📌 Zlec zadanie','f-task-name':'Nazwa zadania',
-    'f-points':'Punkty','f-for-who':'Dla kogo','f-date':'Data','f-time':'Godzina',
-    'btn-assign':'✅ Zlec zadanie','btn-save-cat':'💾 Zapisz kategorię','btn-cancel':'Anuluj',
-    signOut:'🚪 Wyloguj się',
-  },
-  en:{flag:'🇬🇧',name:'EN',
-    spTitle:'Family Patrol',spSub:'Chores, curfews & rewards\nfor the whole family',
-    btnGoogle:'Sign in with Google',spDivider:'or try the demo',
-    demoBtnParent:'Parent View',demoBtnParentSub:'Assign, track kids',
-    demoBtnChild:'Child View',demoBtnChildSub:'Do chores, earn points',
-    spNote:'Demo is local · data not saved to cloud',
-    setupTitle:'Complete your profile','lbl-name':'Your name in family','lbl-role':'Who are you?',
-    'lbl-avatar':'Avatar','lbl-code':'Family code','lbl-code-hint':'Parent creates it, children use the same',
-    'btn-join':'Join family →','tab-today':'Today','tab-tasks':'Tasks',
-    'tab-scores':'Scores','tab-summary':'Report','tab-more':'More',
-    'lbl-family-online':'Family','lbl-this-week':'This week',
-    'ttl-assigned':'📌 Assigned tasks','lbl-ranking':'Ranking','lbl-rewards':'Rewards',
-    'ttl-reports':'📊 Reports','lbl-history':'History','ttl-more':'⚙️ More',
-    'lbl-schedule':'Timetable / work hours','lbl-locations':'Children locations',
-    'lbl-gcal':'Google Calendar','lbl-gcal-sub':'Sync tasks with calendar',
-    'lbl-reminders':'Return reminders','lbl-reminders-sub':'Remind every how many minutes?',
-    'lbl-theme':'Theme','lbl-categories':'Chore categories','lbl-family-code':'Family code',
-    'modal-assign-title':'📌 Assign task','f-task-name':'Task name',
-    'f-points':'Points','f-for-who':'For who','f-date':'Date','f-time':'Time',
-    'btn-assign':'✅ Assign task','btn-save-cat':'💾 Save category','btn-cancel':'Cancel',
-    signOut:'🚪 Sign out',
-  },
-  de:{flag:'🇩🇪',name:'DE',
-    spTitle:'Familien Patrol',spSub:'Aufgaben, Rückgabe und Belohnungen\nfür die ganze Familie',
-    btnGoogle:'Mit Google anmelden',spDivider:'oder Demo ausprobieren',
-    demoBtnParent:'Eltern-Ansicht',demoBtnParentSub:'Aufgaben, Kinder verfolgen',
-    demoBtnChild:'Kind-Ansicht',demoBtnChildSub:'Aufgaben, Punkte sammeln',
-    spNote:'Demo lokal · keine Cloud-Speicherung',
-    setupTitle:'Profil ausfüllen','lbl-name':'Name in Familie','lbl-role':'Wer bist du?',
-    'lbl-avatar':'Avatar','lbl-code':'Familiencode','lbl-code-hint':'Eltern erstellen, Kinder nutzen denselben',
-    'btn-join':'Familie beitreten →','tab-today':'Heute','tab-tasks':'Aufgaben',
-    'tab-scores':'Punkte','tab-summary':'Bericht','tab-more':'Mehr',
-    'lbl-family-online':'Familie','lbl-this-week':'Diese Woche',
-    'ttl-assigned':'📌 Zugewiesene Aufgaben','lbl-ranking':'Rangliste','lbl-rewards':'Belohnungen',
-    'ttl-reports':'📊 Berichte','lbl-history':'Verlauf','ttl-more':'⚙️ Mehr',
-    'lbl-schedule':'Stundenplan/Arbeitszeiten','lbl-locations':'Kinderstandorte',
-    'lbl-gcal':'Google Kalender','lbl-gcal-sub':'Aufgaben synchronisieren',
-    'lbl-reminders':'Rückkehr-Erinnerungen','lbl-reminders-sub':'Alle wie viele Minuten erinnern?',
-    'lbl-theme':'Design','lbl-categories':'Aufgabenkategorien','lbl-family-code':'Familiencode',
-    'modal-assign-title':'📌 Aufgabe zuweisen','f-task-name':'Aufgabenname',
-    'f-points':'Punkte','f-for-who':'Für wen','f-date':'Datum','f-time':'Uhrzeit',
-    'btn-assign':'✅ Aufgabe zuweisen','btn-save-cat':'💾 Speichern','btn-cancel':'Abbrechen',
-    signOut:'🚪 Abmelden',
-  },
-  fr:{flag:'🇫🇷',name:'FR',
-    spTitle:'Patrouille Famille',spSub:'Tâches, retours et récompenses\npour toute la famille',
-    btnGoogle:'Se connecter avec Google',spDivider:'ou essayer la démo',
-    demoBtnParent:'Vue Parent',demoBtnParentSub:'Assigner, suivre les enfants',
-    demoBtnChild:'Vue Enfant',demoBtnChildSub:'Faire des tâches, gagner des points',
-    spNote:'Démo locale · données non sauvegardées',
-    setupTitle:'Compléter le profil','lbl-name':'Prénom en famille','lbl-role':'Qui es-tu?',
-    'lbl-avatar':'Avatar','lbl-code':'Code famille','lbl-code-hint':'Le parent crée le code, les enfants utilisent le même',
-    'btn-join':'Rejoindre la famille →','tab-today':'Aujourd\'hui','tab-tasks':'Tâches',
-    'tab-scores':'Scores','tab-summary':'Rapport','tab-more':'Plus',
-    'lbl-family-online':'Famille','lbl-this-week':'Cette semaine',
-    'ttl-assigned':'📌 Tâches assignées','lbl-ranking':'Classement','lbl-rewards':'Récompenses',
-    'ttl-reports':'📊 Rapports','lbl-history':'Historique','ttl-more':'⚙️ Plus',
-    'lbl-schedule':'Emploi du temps','lbl-locations':'Positions des enfants',
-    'lbl-gcal':'Google Agenda','lbl-gcal-sub':'Synchroniser les tâches',
-    'lbl-reminders':'Rappels de retour','lbl-reminders-sub':'Rappeler toutes les combien de minutes?',
-    'lbl-theme':'Thème','lbl-categories':'Catégories de tâches','lbl-family-code':'Code famille',
-    'modal-assign-title':'📌 Assigner tâche','f-task-name':'Nom de la tâche',
-    'f-points':'Points','f-for-who':'Pour qui','f-date':'Date','f-time':'Heure',
-    'btn-assign':'✅ Assigner','btn-save-cat':'💾 Enregistrer','btn-cancel':'Annuler',
-    signOut:'🚪 Déconnexion',
-  },
-  pt:{flag:'🇧🇷',name:'PT',
-    spTitle:'Patrulha Família',spSub:'Tarefas, retornos e recompensas\npara toda a família',
-    btnGoogle:'Entrar com Google',spDivider:'ou experimente a demo',
-    demoBtnParent:'Visão dos Pais',demoBtnParentSub:'Atribuir, rastrear filhos',
-    demoBtnChild:'Visão da Criança',demoBtnChildSub:'Fazer tarefas, ganhar pontos',
-    spNote:'Demo local · dados não salvos na nuvem',
-    setupTitle:'Complete seu perfil','lbl-name':'Nome na família','lbl-role':'Quem você é?',
-    'lbl-avatar':'Avatar','lbl-code':'Código da família','lbl-code-hint':'Os pais criam, os filhos usam o mesmo',
-    'btn-join':'Entrar na família →','tab-today':'Hoje','tab-tasks':'Tarefas',
-    'tab-scores':'Pontuação','tab-summary':'Relatório','tab-more':'Mais',
-    'lbl-family-online':'Família','lbl-this-week':'Esta semana',
-    'ttl-assigned':'📌 Tarefas atribuídas','lbl-ranking':'Ranking','lbl-rewards':'Recompensas',
-    'ttl-reports':'📊 Relatórios','lbl-history':'Histórico','ttl-more':'⚙️ Mais',
-    'lbl-schedule':'Horário escolar/trabalho','lbl-locations':'Localização dos filhos',
-    'lbl-gcal':'Google Agenda','lbl-gcal-sub':'Sincronizar tarefas',
-    'lbl-reminders':'Lembretes de retorno','lbl-reminders-sub':'A cada quantos minutos lembrar?',
-    'lbl-theme':'Tema','lbl-categories':'Categorias de tarefas','lbl-family-code':'Código da família',
-    'modal-assign-title':'📌 Atribuir tarefa','f-task-name':'Nome da tarefa',
-    'f-points':'Pontos','f-for-who':'Para quem','f-date':'Data','f-time':'Hora',
-    'btn-assign':'✅ Atribuir','btn-save-cat':'💾 Salvar','btn-cancel':'Cancelar',
-    signOut:'🚪 Sair',
-  },
-  zh:{flag:'🇨🇳',name:'中文',
-    spTitle:'家庭巡逻',spSub:'家务、回家时间和奖励\n全家人都在一个应用里',
-    btnGoogle:'使用Google登录',spDivider:'或者试用演示',
-    demoBtnParent:'家长视图',demoBtnParentSub:'分配任务，追踪孩子',
-    demoBtnChild:'孩子视图',demoBtnChildSub:'完成任务，赚取积分',
-    spNote:'演示在本地运行·数据不保存到云端',
-    setupTitle:'完善个人资料','lbl-name':'在家庭中的名字','lbl-role':'你是谁？',
-    'lbl-avatar':'头像','lbl-code':'家庭代码','lbl-code-hint':'家长创建代码，孩子使用相同的代码',
-    'btn-join':'加入家庭 →','tab-today':'今天','tab-tasks':'任务',
-    'tab-scores':'积分','tab-summary':'报告','tab-more':'更多',
-    'lbl-family-online':'家庭','lbl-this-week':'本周',
-    'ttl-assigned':'📌 分配的任务','lbl-ranking':'排名','lbl-rewards':'奖励',
-    'ttl-reports':'📊 报告','lbl-history':'历史','ttl-more':'⚙️ 更多',
-    'lbl-schedule':'课程表/工作时间','lbl-locations':'孩子的位置',
-    'lbl-gcal':'谷歌日历','lbl-gcal-sub':'与日历同步任务',
-    'lbl-reminders':'回家提醒','lbl-reminders-sub':'每隔多少分钟提醒？',
-    'lbl-theme':'主题','lbl-categories':'家务类别','lbl-family-code':'家庭代码',
-    'modal-assign-title':'📌 分配任务','f-task-name':'任务名称',
-    'f-points':'积分','f-for-who':'给谁','f-date':'日期','f-time':'时间',
-    'btn-assign':'✅ 分配任务','btn-save-cat':'💾 保存','btn-cancel':'取消',
-    signOut:'🚪 退出登录',
-  },
+/* ── PWA MANIFEST ── */
+const manifest={name:"Domowy Patrol",short_name:"Patrol",start_url:".",display:"standalone",background_color:"#f2f6ee",theme_color:"#2d6a10",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"192x192",type:"image/svg+xml"},{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"512x512",type:"image/svg+xml"}]};
+const mb=new Blob([JSON.stringify(manifest)],{type:"application/json"});
+const ml=document.createElement("link");ml.rel="manifest";ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
+
+/* ── I18N (shortened — same structure as v6) ── */
+const T={
+  pl:{btnGoogle:"Zaloguj się przez Google",spDivider:"lub wypróbuj demo",demoBtnP:"Widok Rodzica",demoBtnC:"Widok Dziecka"},
+  en:{btnGoogle:"Sign in with Google",spDivider:"or try demo",demoBtnP:"Parent View",demoBtnC:"Child View"},
+  de:{btnGoogle:"Mit Google anmelden",spDivider:"oder Demo",demoBtnP:"Eltern",demoBtnC:"Kind"},
+  fr:{btnGoogle:"Connexion Google",spDivider:"ou essayer",demoBtnP:"Parent",demoBtnC:"Enfant"},
+  pt:{btnGoogle:"Entrar com Google",spDivider:"ou experimente",demoBtnP:"Pais",demoBtnC:"Criança"},
+  zh:{btnGoogle:"谷歌登录",spDivider:"或试用演示",demoBtnP:"家长视图",demoBtnC:"孩子视图"},
 };
-
-let curLang='pl';
-function t(k){return LANGS[curLang]?.[k]||LANGS.pl[k]||k;}
-function applyLang(){
-  const L=LANGS[curLang];
-  const apply=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-  Object.entries(L).forEach(([k,v])=>{
-    const el=document.getElementById(k);
-    if(el) el.textContent=v;
-  });
-  document.getElementById('spSub').innerHTML=L.spSub.replace('\n','<br>');
-  document.getElementById('sName').placeholder='np. Kacper';
-  document.getElementById('sCode').placeholder='np. KOWALSKI2025';
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('sel',b.dataset.lang===curLang));
-}
-
-// Lang row
+let curLang=localStorage.getItem('dp-lang')||'pl';
+const LANGS=[['pl','🇵🇱 PL'],['en','🇬🇧 EN'],['de','🇩🇪 DE'],['fr','🇫🇷 FR'],['pt','🇧🇷 PT'],['zh','🇨🇳 中']];
 const langRow=document.getElementById('langRow');
-Object.entries(LANGS).forEach(([code,L])=>{
-  const b=document.createElement('button');
-  b.className='lang-btn'+(code==='pl'?' sel':'');
-  b.dataset.lang=code;
-  b.textContent=L.flag+' '+L.name;
-  b.onclick=()=>{curLang=code;applyLang();};
-  langRow.appendChild(b);
-});
+LANGS.forEach(([c,l])=>{const b=document.createElement('button');b.className='lang-btn'+(c===curLang?' sel':'');b.textContent=l;b.onclick=()=>{curLang=c;localStorage.setItem('dp-lang',c);applyLang();};langRow.appendChild(b);});
+function applyLang(){const L=T[curLang]||T.pl;document.getElementById('btnGoogle').textContent=L.btnGoogle;document.getElementById('spDivider').textContent=L.spDivider;document.getElementById('demoBtnP').textContent=L.demoBtnP;document.getElementById('demoBtnC').textContent=L.demoBtnC;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('sel',b.textContent.includes(LANGS.find(x=>x[0]===curLang)?.[1]?.split(' ')[1]||'')));}
 applyLang();
 
-/* ══════ CATEGORIES DATA ══════ */
-let customCategories = JSON.parse(localStorage.getItem('dp-cats6')||'null') || [
-  {id:'pies',label:'🐕 Pies',editable:false,chores:[
-    {id:'dog_morning',ico:'🌅',name:'Poranny spacer z psem',desc:'~7:00 min. 15 min',pts:10},
-    {id:'dog_noon',   ico:'☀️',name:'Południowy spacer',   desc:'~13:00',          pts:8},
-    {id:'dog_evening',ico:'🌙',name:'Wieczorny spacer',    desc:'~19:00',          pts:10},
-    {id:'dog_feed',   ico:'🥣',name:'Karmienie psa',       desc:'Rano i wieczór',  pts:5},
-    {id:'dog_water',  ico:'💧',name:'Świeża woda dla psa', desc:'Codziennie rano', pts:4},
-  ]},
-  {id:'kot',label:'🐱 Kot',editable:false,chores:[
-    {id:'cat_feed',   ico:'🥣',name:'Karmienie kota',       desc:'Rano i wieczór',  pts:5},
-    {id:'cat_water',  ico:'💧',name:'Świeża woda dla kota', desc:'Codziennie rano', pts:4},
-    {id:'cat_litter', ico:'🪣',name:'Czyszczenie kuwety',   desc:'Codziennie',      pts:8},
-    {id:'cat_play',   ico:'🎾',name:'Zabawa z kotem',       desc:'Min. 10 min',     pts:5},
-  ]},
-  {id:'kuchnia',label:'🍽️ Kuchnia',editable:false,chores:[
-    {id:'unload',ico:'🍽️',name:'Wyjmowanie ze zmywarki',desc:'Po cyklu',      pts:8},
-    {id:'load',  ico:'🧼',name:'Załadowanie zmywarki', desc:'Po posiłku',     pts:6},
-    {id:'table', ico:'🍴',name:'Sprzątnięcie stołu',   desc:'Po obiedzie',   pts:5},
-    {id:'trash', ico:'🗑️',name:'Wynoszenie śmieci',    desc:'Gdy kosz pełny',pts:7},
-    {id:'cook_help',ico:'🍳',name:'Pomoc przy gotowaniu',desc:'Wg potrzeby',  pts:8},
-  ]},
-  {id:'dom',label:'🏠 Dom',editable:false,chores:[
-    {id:'vac_salon', ico:'🧹',name:'Odkurzanie salonu',   desc:'Co 2 dni',       pts:12},
-    {id:'vac_rooms', ico:'🧽',name:'Odkurzanie pokojów',  desc:'Co 2 dni',       pts:10},
-    {id:'laundry',   ico:'🧺',name:'Składanie prania',    desc:'Gdy wyschnie',   pts:8},
-    {id:'flowers',   ico:'🪴',name:'Podlewanie kwiatków', desc:'Wt i Pt',        pts:5},
-    {id:'bathroom',  ico:'🚿',name:'Mycie łazienki',      desc:'Raz w tygodniu', pts:15},
-    {id:'windows',   ico:'🪟',name:'Mycie okien',         desc:'Raz w miesiącu', pts:18},
-    {id:'dust',      ico:'🪣',name:'Ścieranie kurzu',     desc:'Co tydzień',     pts:8},
-  ]},
-  {id:'zakupy',label:'🛒 Zakupy',editable:false,chores:[
-    {id:'shopping',  ico:'🛒',name:'Pomoc przy zakupach', desc:'Wg potrzeby',  pts:10},
-    {id:'recycling', ico:'♻️',name:'Segregacja odpadów',  desc:'Wg harmonogramu',pts:6},
-    {id:'list',      ico:'📝',name:'Uzupełnienie listy',  desc:'Brakujące',    pts:3},
-  ]},
-  {id:'szkola',label:'📚 Szkoła',editable:false,chores:[
-    {id:'homework',  ico:'📖',name:'Odrabianie pracy domowej',desc:'Codziennie po szkole',pts:12},
-    {id:'reading',   ico:'📚',name:'Czytanie (min. 20 min)',  desc:'Codziennie',           pts:8},
-    {id:'backpack',  ico:'🎒',name:'Spakowanie plecaka',      desc:'Wieczór przed szkołą', pts:5},
-    {id:'revision',  ico:'🧠',name:'Powtórzenie materiału',   desc:'Przed sprawdzianem',   pts:10},
-  ]},
-  {id:'ogrod',label:'🌿 Ogród',editable:false,chores:[
-    {id:'garden_water',ico:'💦',name:'Podlewanie ogrodu',    desc:'Co 2 dni',   pts:8},
-    {id:'garden_sweep',ico:'🍂',name:'Zamiatanie liści',     desc:'W sezonie',  pts:10},
-    {id:'garden_mow',  ico:'🌱',name:'Koszenie trawy',       desc:'Co 2 tyg.',  pts:20},
-    {id:'garden_weed', ico:'🌾',name:'Pielenie',             desc:'Co tydzień', pts:12},
-  ]},
-  {id:'auto',label:'🚗 Samochód',editable:false,chores:[
-    {id:'car_wash',    ico:'🚿',name:'Mycie samochodu',    desc:'Co 2 tyg.',  pts:15},
-    {id:'car_vacuum',  ico:'🧹',name:'Odkurzanie auta',   desc:'Co miesiąc', pts:12},
-    {id:'car_check',   ico:'⛽',name:'Sprawdzenie paliwa',desc:'Wg potrzeby',pts:5},
-  ]},
-  {id:'custom1',label:'➕ Moje kategorie',editable:true,chores:[]},
-];
-function saveCategories(){localStorage.setItem('dp-cats6',JSON.stringify(customCategories));}
-
-/* ══════ AVATARS ══════ */
-const AVATARS=['👩','👨','🧔','🧔‍♀️','👦','👧','🧒','👴','👵','🧑','👮','👨‍🍳','🐶','🐱','🦊','🐻','🌟','🦸','🧙','🥷'];
-
-/* ══════ THEMES ══════ */
-const THEMES=[
-  {id:'light',  ico:'☀️',  name:'Jasny'},
-  {id:'dark',   ico:'🌙',  name:'Ciemny'},
-  {id:'windows',ico:'🪟',  name:'Windows'},
-  {id:'android',ico:'🤖',  name:'Android'},
-  {id:'ios',    ico:'🍎',  name:'iOS'},
-];
+/* ── THEMES ── */
+const THEMES=[{id:'light',ico:'☀️',nm:'Jasny'},{id:'dark',ico:'🌙',nm:'Ciemny'},{id:'win',ico:'🪟',nm:'Win'},{id:'android',ico:'🤖',nm:'Droid'},{id:'ios',ico:'🍎',nm:'iOS'}];
 let curTheme=localStorage.getItem('dp-theme')||'light';
 function applyTheme(t){curTheme=t;document.documentElement.dataset.theme=t;localStorage.setItem('dp-theme',t);renderThemeGrid();}
 applyTheme(curTheme);
+window.applyTheme=applyTheme;
+function renderThemeGrid(){document.getElementById('themeGrid').innerHTML=THEMES.map(th=>`<button class="theme-btn ${curTheme===th.id?'sel':''}" onclick="applyTheme('${th.id}')"><span class="t-ico">${th.ico}</span><span class="t-nm">${th.nm}</span></button>`).join('');}
 
-/* ══════ CONSTS ══════ */
+/* ── CATEGORIES ── */
+let cats=JSON.parse(localStorage.getItem('dp-cats7')||'null')||[
+  {id:'pies',label:'🐕 Pies',chores:[{id:'dog_m',ico:'🌅',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},{id:'dog_n',ico:'☀️',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},{id:'dog_e',ico:'🌙',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},{id:'dog_f',ico:'🥣',name:'Karmienie psa',desc:'Rano/wieczór',pts:5,repeatable:true},{id:'dog_w',ico:'💧',name:'Woda dla psa',desc:'Codziennie',pts:4}]},
+  {id:'kot',label:'🐱 Kot',chores:[{id:'cat_f',ico:'🥣',name:'Karmienie kota',desc:'Rano/wieczór',pts:5,repeatable:true},{id:'cat_w',ico:'💧',name:'Woda dla kota',desc:'Codziennie',pts:4},{id:'cat_l',ico:'🪣',name:'Czyszczenie kuwety',desc:'Codziennie',pts:8,repeatable:true},{id:'cat_p',ico:'🎾',name:'Zabawa z kotem',desc:'Min. 10 min',pts:5}]},
+  {id:'kuchnia',label:'🍽️ Kuchnia',chores:[{id:'unload',ico:'🍽️',name:'Wyjmowanie ze zmywarki',desc:'Po cyklu',pts:8,repeatable:true},{id:'load',ico:'🧼',name:'Załadowanie zmywarki',desc:'Po posiłku',pts:6,repeatable:true},{id:'table',ico:'🍴',name:'Sprzątnięcie stołu',desc:'Po obiedzie',pts:5,repeatable:true},{id:'trash',ico:'🗑️',name:'Wynoszenie śmieci',desc:'Gdy kosz pełny',pts:7},{id:'cook',ico:'🍳',name:'Pomoc przy gotowaniu',desc:'Wg potrzeby',pts:8}]},
+  {id:'dom',label:'🏠 Dom',chores:[{id:'vac_s',ico:'🧹',name:'Odkurzanie salonu',desc:'Co 2 dni',pts:12},{id:'vac_r',ico:'🧽',name:'Odkurzanie pokojów',desc:'Co 2 dni',pts:10},{id:'laundry',ico:'🧺',name:'Składanie prania',desc:'Gdy wyschnie',pts:8,repeatable:true},{id:'flowers',ico:'🪴',name:'Podlewanie kwiatków',desc:'Wt i Pt',pts:5},{id:'bathroom',ico:'🚿',name:'Mycie łazienki',desc:'Raz w tyg.',pts:15},{id:'dust',ico:'🪣',name:'Ścieranie kurzu',desc:'Co tydz.',pts:8},{id:'windows',ico:'🪟',name:'Mycie okien',desc:'Co miesiąc',pts:18}]},
+  {id:'szkola',label:'📚 Szkoła',chores:[{id:'hw',ico:'📖',name:'Praca domowa',desc:'Codziennie',pts:12},{id:'reading',ico:'📚',name:'Czytanie 20 min',desc:'Codziennie',pts:8},{id:'backpack',ico:'🎒',name:'Spakowanie plecaka',desc:'Wieczór',pts:5},{id:'revision',ico:'🧠',name:'Powtórka materiału',desc:'Przed sprawdzianem',pts:10}]},
+  {id:'ogrod',label:'🌿 Ogród',chores:[{id:'g_water',ico:'💦',name:'Podlewanie ogrodu',desc:'Co 2 dni',pts:8},{id:'g_sweep',ico:'🍂',name:'Zamiatanie liści',desc:'W sezonie',pts:10},{id:'g_mow',ico:'🌱',name:'Koszenie trawy',desc:'Co 2 tyg.',pts:20},{id:'g_weed',ico:'🌾',name:'Pielenie',desc:'Co tydz.',pts:12}]},
+  {id:'auto',label:'🚗 Samochód',chores:[{id:'c_wash',ico:'🚿',name:'Mycie samochodu',desc:'Co 2 tyg.',pts:15},{id:'c_vac',ico:'🧹',name:'Odkurzanie auta',desc:'Co miesiąc',pts:12}]},
+  {id:'custom',label:'➕ Własne',editable:true,chores:[]},
+];
+function saveCats(){localStorage.setItem('dp-cats7',JSON.stringify(cats));}
+function allChores(){return cats.flatMap(c=>c.chores);}
+
+/* ── AVATARS ── */
+const AVATARS=['👩','👨','🧔','🧔‍♀️','👦','👧','🧒','👴','👵','🧑','👮','👨‍🍳','🐶','🐱','🦊','🐻','🌟','🦸','🧙','🥷'];
+const REMINDER_OPTIONS=[5,10,15,20,30];
 const DAY_NAMES=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
 const MONTH_NAMES=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
-const REMINDER_OPTIONS=[5,10,15,20,30];
-const REWARDS=[
-  {id:'r1',ico:'🎮',name:'Dodatkowa godzina gier',    cost:30},
-  {id:'r2',ico:'🍕',name:'Ulubiona pizza na obiad',   cost:50},
-  {id:'r3',ico:'🎬',name:'Wybór serialu wieczorem',   cost:20},
-  {id:'r4',ico:'🍦',name:'Lody na mieście',           cost:40},
-  {id:'r5',ico:'🕹️',name:'Nowa gra / aplikacja',      cost:100},
-  {id:'r6',ico:'🚴',name:'Wycieczka rowerowa z tatą', cost:60},
-  {id:'r7',ico:'😴',name:'Późniejsze spanie o 1h',    cost:25},
-  {id:'r8',ico:'🍿',name:'Film + popcorn wieczorem',  cost:35},
-];
+const REWARDS=[{id:'r1',ico:'🎮',name:'Dodatkowa godzina gier',cost:30},{id:'r2',ico:'🍕',name:'Ulubiona pizza',cost:50},{id:'r3',ico:'🎬',name:'Wybór serialu',cost:20},{id:'r4',ico:'🍦',name:'Lody na mieście',cost:40},{id:'r5',ico:'🕹️',name:'Nowa gra',cost:100},{id:'r6',ico:'🚴',name:'Wycieczka rowerowa',cost:60},{id:'r7',ico:'😴',name:'Późniejsze spanie o 1h',cost:25},{id:'r8',ico:'🍿',name:'Film + popcorn',cost:35}];
 
-/* ══════ STATE ══════ */
+/* ── STATE ── */
 let isDemo=false,demoRole='parent',currentUser=null,myProfile=null,fCode='';
-let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},schedules:{}};
+let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},joinReqs:{}};
 let selectedRole='parent',selectedAvatar=AVATARS[0],curfewChildId=null;
 let returnTimers=[],reminderInterval=15,curfewModalInterval=15;
-let undoQueue={};  // choreId -> {pts, timeout}
-let editCatId=null, editChoreIdx=null;
-let schType='school';
-let weatherData=null;
+let viewMode=localStorage.getItem('dp-view')||'normal';
+let selectedDay=null; // null = today
+let editCatId=null;
+let weatherCache=null,weatherCity=localStorage.getItem('dp-weather-city')||'';
+let pendingFamilyCode='';
+let inviteFamilyCode=''; // from URL
 
-const today=new Date(), todayKey=fmt(today);
+const today=new Date(),todayKey=fmt(today);
 const MS={min:60000,hr:3600000,day:86400000};
 
-/* ══════ UTILS ══════ */
+/* ── UTILS ── */
 function fmt(d){return d.toISOString().split('T')[0];}
 function d2(n){return String(n).padStart(2,'0');}
 function getAgo(ts){const m=Math.floor((Date.now()-ts)/60000);if(m<1)return'przed chwilą';if(m<60)return`${m} min temu`;const h=Math.floor(m/60);if(h<24)return`${h} godz. temu`;return`${Math.floor(h/24)} dni temu`;}
 function fmtDue(ts){const d=new Date(ts);return`${d2(d.getDate())}.${d2(d.getMonth()+1)} ${d2(d.getHours())}:${d2(d.getMinutes())}`;}
 function esc(s){return(s||'').replace(/'/g,"\\'");}
 function getMyUid(){return window._myUid||currentUser?.uid||'uid_kacper';}
-function findChore(id){for(const c of customCategories){const x=c.chores.find(c=>c.id===id);if(x)return x;}return null;}
+function findChore(id){for(const c of cats){const x=c.chores.find(c=>c.id===id);if(x)return x;}return null;}
+function getDayKey(){return selectedDay||todayKey;}
 
-/* ══════ DEMO DATA ══════ */
-function buildDemoData(){
-  const now=Date.now();
-  const members={
-    'uid_mama':{name:'Mama',avatar:'👩',role:'parent',points:45,photoURL:''},
-    'uid_tata':{name:'Tata',avatar:'🧔',role:'parent',points:30,photoURL:''},
-    'uid_kacper':{name:'Kacper',avatar:'👦',role:'child',points:187,photoURL:''},
-    'uid_zosia':{name:'Zosia',avatar:'👧',role:'child',points:142,photoURL:''},
-  };
-  const done={
-    'dog_morning':{who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-5*MS.hr},
-    'dog_feed':   {who:'Zosia', avatar:'👧',uid:'uid_zosia', ts:now-4.5*MS.hr},
-    'cat_feed':   {who:'Zosia', avatar:'👧',uid:'uid_zosia', ts:now-4*MS.hr},
-    'unload':     {who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-3*MS.hr},
-    'table':      {who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-2*MS.hr},
-    'homework':   {who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-1*MS.hr},
-    'flowers':    {who:'Zosia', avatar:'👧',uid:'uid_zosia', ts:now-0.5*MS.hr},
-  };
-  const poolIcos=['🌅','☀️','🌙','🥣','💧','🍽️','🧼','🍴','🗑️','🧹','🧽','🧺','🪴','🚿','🛒','♻️','📖','🎾','🥣','🪣'];
-  const poolNames=['Poranny spacer','Karmienie psa','Karmienie kota','Zmywarka','Stół','Śmieci','Odkurzanie','Pranie','Kwiaty','Łazienka','Zakupy','Segregacja','Praca domowa','Czytanie','Plecak','Kuweta'];
-  const doers=[{name:'Kacper',avatar:'👦',uid:'uid_kacper'},{name:'Zosia',avatar:'👧',uid:'uid_zosia'},{name:'Mama',avatar:'👩',uid:'uid_mama'},{name:'Tata',avatar:'🧔',uid:'uid_tata'}];
-  const history=[];
-  for(let dayBack=1;dayBack<=31;dayBack++){
-    const cnt=4+Math.floor(Math.random()*5);
-    for(let j=0;j<cnt;j++){
-      const i=Math.floor(Math.random()*poolNames.length);
-      const doer=doers[Math.floor(Math.random()*doers.length)];
-      const pts=3+Math.floor(Math.random()*15);
-      history.push({ico:poolIcos[i],name:poolNames[i],pts,who:doer.name,avatar:doer.avatar,uid:doer.uid,ts:now-dayBack*MS.day+Math.random()*16*MS.hr+6*MS.hr});
-    }
+/* ── CHECK INVITE URL ── */
+(()=>{
+  const params=new URLSearchParams(location.search);
+  const inv=params.get('invite');
+  if(inv){
+    inviteFamilyCode=inv.toUpperCase();
+    document.getElementById('inviteFamilyName').textContent=inviteFamilyCode;
+    document.getElementById('splashScreen').style.display='none';
+    document.getElementById('inviteScreen').style.display='flex';
   }
-  Object.entries(done).forEach(([id,d])=>{
-    const c=findChore(id)||{ico:'✅',name:id,pts:8};
-    history.push({ico:c.ico,name:c.name,pts:c.pts,who:d.who,avatar:d.avatar,uid:d.uid,ts:d.ts});
-  });
-  history.sort((a,b)=>b.ts-a.ts);
-  const assigned={};
-  const tasks=[
-    {name:'Odkurzanie całego mieszkania',ico:'🧹',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:15,d:1,h:'16:00'},
-    {name:'Mycie łazienki',ico:'🚿',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:15,d:1,h:'15:00'},
-    {name:'Wyniesienie śmieci',ico:'🗑️',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:7,d:2,h:'12:00'},
-    {name:'Zakupy z mamą',ico:'🛒',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:10,d:2,h:'11:00'},
-    {name:'Podlanie kwiatków',ico:'🪴',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:8,d:3,h:''},
-    {name:'Porządki w pokoju',ico:'🧽',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:10,d:4,h:''},
-    {name:'Pomoc przy gotowaniu',ico:'🍳',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:12,d:5,h:'13:00'},
-    {name:'Złożenie prania',ico:'🧺',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:8,d:6,h:''},
-  ];
-  tasks.forEach((task,i)=>{
-    const d=new Date(today);d.setDate(today.getDate()+task.d);
-    const dateStr=fmt(d);
-    const dueTs=task.h?new Date(`${dateStr}T${task.h}`).getTime():new Date(dateStr).getTime()+43200000;
-    assigned[`task_${i}`]={name:task.name,ico:task.ico,forUid:task.forUid,forName:task.forName,forAvatar:task.forAvatar,pts:task.pts,date:dateStr,dueTs,assignedBy:'Mama',assignedAvatar:'👩',ts:now-Math.random()*MS.hr,done:false};
-  });
-  assigned['done1']={name:'Załadowanie zmywarki',ico:'🧼',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:6,date:todayKey,dueTs:now-2*MS.hr,assignedBy:'Tata',assignedAvatar:'🧔',ts:now-3*MS.hr,done:true,doneBy:'Kacper',doneAvatar:'👦',doneTs:now-2*MS.hr+15*MS.min};
-  const h=new Date().getHours();
-  const curfewH=h<17?18:19;
-  const curfews={'uid_kacper':{time:`${curfewH}:30`,setBy:'Mama',setAt:now-30*MS.min,active:true,reminderInterval:15},'uid_zosia':{time:`${curfewH+1}:00`,setBy:'Tata',setAt:now-20*MS.min,active:true,reminderInterval:20}};
-  const locations={'uid_kacper':{lat:52.2297,lng:21.0122,ts:now-3*MS.min,name:'Kacper',avatar:'👦'},'uid_zosia':{lat:52.2317,lng:21.0142,ts:now-8*MS.min,name:'Zosia',avatar:'👧'}};
-  const schedules={
-    'uid_kacper':{type:'school',name:'Kacper',endTimes:{1:'14:30',2:'15:15',3:'13:30',4:'15:15',5:'14:30'}},
-    'uid_zosia':{type:'school',name:'Zosia',endTimes:{1:'13:30',2:'14:30',3:'15:15',4:'13:30',5:'14:30'}},
-    'uid_tata':{type:'work',name:'Tata',endTimes:{1:'17:00',2:'17:00',3:'17:00',4:'17:00',5:'16:00'}},
-    'uid_mama':{type:'work',name:'Mama',endTimes:{1:'16:00',2:'16:00',3:'16:00',4:'16:00',5:'15:00'}},
-  };
-  return{members,done,history,assigned,curfews,locations,schedules};
-}
+})();
 
-/* ══════ DEMO START ══════ */
-function startDemo(role){
-  isDemo=true;demoRole=role;
-  const data=buildDemoData();
-  live={done:data.done,members:data.members,history:data.history,assigned:data.assigned,curfews:data.curfews,locations:data.locations,schedules:data.schedules};
-  const uid=role==='parent'?'uid_tata':'uid_kacper';
-  myProfile={uid,name:role==='parent'?'Tata':'Kacper',avatar:role==='parent'?'🧔':'👦',role,code:'KOWALSKI2025',points:live.members[uid]?.points||0};
+/* ── JOIN WITHOUT GOOGLE ── */
+const noAuthAvGrid=document.getElementById('noAuthAvGrid');
+AVATARS.slice(0,10).forEach((a,i)=>{
+  const b=document.createElement('button');b.className='av-btn'+(i===2?' sel':'');b.textContent=a;
+  b.onclick=()=>{document.querySelectorAll('#noAuthAvGrid .av-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+  noAuthAvGrid.appendChild(b);
+});
+function joinWithoutGoogle(){document.getElementById('noAuthOverlay').classList.add('show');}
+window.joinWithoutGoogle=joinWithoutGoogle;
+async function joinNoAuth(){
+  const name=document.getElementById('noAuthName').value.trim();
+  const pass=document.getElementById('noAuthPass').value;
+  const avatar=document.querySelector('#noAuthAvGrid .av-btn.sel')?.textContent||'👦';
+  const fc=inviteFamilyCode||'RODZINA';
+  if(!name||pass.length<4){showToast('⚠️ Wpisz imię i hasło (min. 4 zn.)');return;}
+  const uid='noauth_'+name.toLowerCase().replace(/\s/g,'_')+'_'+Date.now().toString(36);
+  const profile={name,avatar,role:'child',code:fc,uid,noAuth:true,points:0,createdAt:Date.now()};
+  localStorage.setItem('dp-noauth-profile',JSON.stringify(profile));
+  currentUser={uid,displayName:name,photoURL:'',email:''};
   window._myUid=uid;
+  myProfile=profile;
+  // Send join request
+  await set(ref(db,`families/${fc}/joinRequests/${uid}`),{name,avatar,uid,ts:Date.now(),status:'pending',noAuth:true});
+  pendingFamilyCode=fc;
+  closeOverlay('noAuthOverlay');
+  showPendingScreen();
+}
+window.joinNoAuth=joinNoAuth;
+
+/* ── PENDING APPROVAL ── */
+function showPendingScreen(){
+  document.getElementById('inviteScreen').style.display='none';
   document.getElementById('splashScreen').style.display='none';
-  launchApp();
+  document.getElementById('setupScreen').style.display='none';
+  document.getElementById('pendingScreen').style.display='flex';
+  document.getElementById('pendingFamily').textContent=pendingFamilyCode;
 }
-window.startDemo=startDemo;
-
-function exitDemo(){
-  if(!confirm('Wyjść z demo?')) return;
-  isDemo=false;myProfile=null;currentUser=null;
-  live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},schedules:{}};
-  document.getElementById('appScreen').style.display='none';
-  document.getElementById('splashScreen').style.display='flex';
+async function checkApproval(){
+  const fc=pendingFamilyCode||myProfile?.code;
+  const uid=getMyUid();
+  const snap=await get(ref(db,`families/${fc}/joinRequests/${uid}`));
+  if(!snap.exists()){showToast('⚠️ Brak wniosku. Spróbuj ponownie.');return;}
+  const req=snap.val();
+  if(req.status==='approved'){
+    showToast('✅ Zaakceptowano! Witaj w rodzinie!');
+    if(myProfile) myProfile.code=fc;
+    localStorage.setItem('dp-me7',JSON.stringify(myProfile));
+    document.getElementById('pendingScreen').style.display='none';
+    launchApp();
+  } else if(req.status==='rejected'){
+    showToast('❌ Wniosek odrzucony.');
+    setTimeout(()=>{document.getElementById('pendingScreen').style.display='none';document.getElementById('splashScreen').style.display='flex';},2000);
+  } else {
+    showToast('⏳ Jeszcze oczekuje… Poczekaj chwilę.');
+  }
 }
-window.exitDemo=exitDemo;
+window.checkApproval=checkApproval;
+function cancelJoin(){document.getElementById('pendingScreen').style.display='none';document.getElementById('splashScreen').style.display='flex';}
+window.cancelJoin=cancelJoin;
 
-/* ══════ AVATAR GRID ══════ */
+/* ── AVATAR GRID ── */
 const avGrid=document.getElementById('avGrid');
 AVATARS.forEach((a,i)=>{
   const b=document.createElement('button');b.className='av-btn'+(i===0?' sel':'');b.textContent=a;
-  b.onclick=()=>{document.querySelectorAll('.av-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selectedAvatar=a;};
+  b.onclick=()=>{document.querySelectorAll('#avGrid .av-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selectedAvatar=a;};
   avGrid.appendChild(b);
 });
-document.getElementById('sCode').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');});
+document.getElementById('sCode').addEventListener('input',async e=>{
+  const val=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  e.target.value=val;
+  if(val.length>=4){
+    const snap=await get(ref(db,`families/${val}`));
+    const st=document.getElementById('codeStatus');
+    if(snap.exists()){
+      const d=snap.val();
+      const memberCount=d.members?Object.keys(d.members).length:0;
+      st.textContent=`✅ Znaleziono rodzinę (${memberCount} osób)`;st.style.color='var(--g2)';
+    } else {
+      st.textContent='🆕 Nowa rodzina — zostaniesz pierwszy/a!';st.style.color='var(--b)';
+    }
+  }
+});
 
-/* ══════ GOOGLE AUTH ══════ */
+/* ── GOOGLE AUTH ── */
 async function signInWithGoogle(){try{await signInWithPopup(auth,gProv);}catch(e){showToast('❌ '+e.message);}}
 window.signInWithGoogle=signInWithGoogle;
 
 onAuthStateChanged(auth,async user=>{
   if(isDemo) return;
-  if(!user){document.getElementById('splashScreen').style.display='flex';document.getElementById('appScreen').style.display='none';document.getElementById('setupScreen').style.display='none';return;}
+  if(!user){
+    if(inviteFamilyCode) return; // stay on invite screen
+    document.getElementById('splashScreen').style.display='flex';
+    document.getElementById('appScreen').style.display='none';
+    return;
+  }
   currentUser=user;window._myUid=user.uid;
   document.getElementById('splashScreen').style.display='none';
+  document.getElementById('inviteScreen').style.display='none';
+
   const snap=await get(ref(db,`users/${user.uid}/profile`));
   if(!snap.exists()){
+    // New user — show setup
     document.getElementById('setupScreen').style.display='flex';
     document.getElementById('setupGoogleName').textContent=user.displayName||'';
     document.getElementById('setupGoogleEmail').textContent=user.email||'';
     if(user.photoURL){const img=document.getElementById('setupPhoto');img.src=user.photoURL;img.style.display='block';}
     document.getElementById('sName').value=user.displayName?.split(' ')[0]||'';
-  } else {myProfile=snap.val();launchApp();}
+    if(inviteFamilyCode) document.getElementById('sCode').value=inviteFamilyCode;
+  } else {
+    myProfile=snap.val();
+    // If came from invite link and it's a different family, update code
+    if(inviteFamilyCode && myProfile.code!==inviteFamilyCode){
+      // Send join request to new family
+      await set(ref(db,`families/${inviteFamilyCode}/joinRequests/${user.uid}`),{name:myProfile.name,avatar:myProfile.avatar,uid:user.uid,ts:Date.now(),status:'pending',email:user.email||''});
+      pendingFamilyCode=inviteFamilyCode;
+      showPendingScreen();
+      return;
+    }
+    // Check if still approved in family
+    const famSnap=await get(ref(db,`families/${myProfile.code}/members/${user.uid}`));
+    if(!famSnap.exists()&&myProfile.code){
+      // Re-register in family
+      await set(ref(db,`families/${myProfile.code}/members/${user.uid}`),{name:myProfile.name,avatar:user.photoURL||myProfile.avatar,role:myProfile.role,points:myProfile.points||0});
+    }
+    launchApp();
+  }
 });
 
 async function doSetup(){
-  const name=document.getElementById('sName').value.trim()||currentUser.displayName||'Uż.';
-  const code=document.getElementById('sCode').value.trim()||'RODZINA';
-  const profile={name,role:selectedRole,avatar:selectedAvatar,code,photoURL:currentUser.photoURL||'',email:currentUser.email,uid:currentUser.uid,points:0,createdAt:Date.now()};
+  const name=document.getElementById('sName').value.trim()||currentUser.displayName||'Użytkownik';
+  const code=(document.getElementById('sCode').value.trim()||'RODZINA').toUpperCase();
+  const profile={name,role:selectedRole,avatar:selectedAvatar,code,photoURL:currentUser.photoURL||'',email:currentUser.email||'',uid:currentUser.uid,points:0,createdAt:Date.now()};
   await set(ref(db,`users/${currentUser.uid}/profile`),profile);
-  myProfile=profile;launchApp();
+  // First member or needs approval?
+  const famSnap=await get(ref(db,`families/${code}/members`));
+  if(!famSnap.exists()||Object.keys(famSnap.val()||{}).length===0){
+    // First member — auto approved
+    await set(ref(db,`families/${code}`),{name:code,createdAt:Date.now(),createdBy:currentUser.uid});
+    await set(ref(db,`families/${code}/members/${currentUser.uid}`),{name,avatar:currentUser.photoURL||selectedAvatar,role:selectedRole,points:0});
+    myProfile=profile;launchApp();
+  } else {
+    // Request to join
+    await set(ref(db,`families/${code}/joinRequests/${currentUser.uid}`),{name,avatar:currentUser.photoURL||selectedAvatar,uid:currentUser.uid,ts:Date.now(),status:'pending',email:currentUser.email||''});
+    pendingFamilyCode=code;
+    document.getElementById('setupScreen').style.display='none';
+    myProfile=profile;
+    showPendingScreen();
+  }
 }
 window.doSetup=doSetup;
 window.setRole=function(r){selectedRole=r;document.getElementById('roleP').className='role-btn'+(r==='parent'?' sel':'');document.getElementById('roleC').className='role-btn'+(r==='child'?' sel':'');};
 
-/* ══════ LAUNCH ══════ */
+/* ── JOIN REQUEST MANAGEMENT (parents) ── */
+function renderJoinRequests(){
+  if(myProfile?.role!=='parent') return;
+  const reqs=Object.entries(live.joinReqs||{}).filter(([,v])=>v.status==='pending');
+  if(!reqs.length){document.getElementById('joinRequestsPanel').innerHTML='';return;}
+  let html=`<div class="card" style="border:2px solid var(--y);">
+    <div class="card-ttl"><div class="ct-l">🔔 Prośby dołączenia (${reqs.length})</div></div>`;
+  reqs.forEach(([uid,req])=>{
+    html+=`<div class="join-req">
+      <div class="jr-av">${req.avatar||'👤'}</div>
+      <div class="jr-info"><div class="jr-nm">${req.name}</div><div class="jr-sub">${req.email||'bez Google'} · ${getAgo(req.ts)}</div></div>
+      <div class="jr-btns">
+        <button class="jr-accept" onclick="approveJoin('${uid}','${req.name}','${req.avatar||'👤'}','${req.noAuth?'child':'auto'}')">✅ Akceptuj</button>
+        <button class="jr-reject" onclick="rejectJoin('${uid}')">✗</button>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('joinRequestsPanel').innerHTML=html;
+  document.getElementById('notifBadge').style.display='flex';
+  document.getElementById('ndToday').classList.add('show');
+}
+async function approveJoin(uid,name,avatar,role){
+  await update(ref(db,`families/${fCode}/joinRequests/${uid}`),{status:'approved'});
+  await set(ref(db,`families/${fCode}/members/${uid}`),{name,avatar,role:role==='auto'?'child':role,points:0});
+  await update(ref(db,`users/${uid}/profile`),{code:fCode}).catch(()=>{});
+  showToast(`✅ ${name} zaakceptowany/a!`);
+}
+window.approveJoin=approveJoin;
+async function rejectJoin(uid){
+  await update(ref(db,`families/${fCode}/joinRequests/${uid}`),{status:'rejected'});
+  showToast('❌ Odrzucono');
+}
+window.rejectJoin=rejectJoin;
+
+/* ── LEAVE FAMILY ── */
+async function leaveFamily(){
+  if(!confirm(`Opuścić rodzinę ${fCode}?\n\nBędziesz potrzebować ponownego zaproszenia lub akceptacji, żeby wrócić.`)) return;
+  if(!confirm('Jesteś pewien/pewna? Ta akcja jest nieodwracalna.')) return;
+  if(!isDemo){
+    await remove(ref(db,`families/${fCode}/members/${currentUser.uid}`));
+    await update(ref(db,`users/${currentUser.uid}/profile`),{code:''});
+  }
+  myProfile=null;
+  document.getElementById('appScreen').style.display='none';
+  document.getElementById('setupScreen').style.display='flex';
+  showToast('🚪 Opuściłeś/aś rodzinę');
+}
+window.leaveFamily=leaveFamily;
+
+/* ── CHANGE FAMILY ── */
+async function requestChangeFamily(){
+  const newCode=document.getElementById('changeFamilyCode').value.trim().toUpperCase();
+  if(!newCode||newCode.length<4){showToast('⚠️ Wpisz kod rodziny');return;}
+  if(newCode===fCode){showToast('⚠️ To już jest Twoja rodzina');return;}
+  const snap=await get(ref(db,`families/${newCode}`));
+  if(!snap.exists()){showToast('❌ Rodzina nie istnieje. Sprawdź kod.');return;}
+  const uid=currentUser.uid;
+  await set(ref(db,`families/${newCode}/joinRequests/${uid}`),{name:myProfile.name,avatar:myProfile.photoURL||myProfile.avatar,uid,ts:Date.now(),status:'pending',email:currentUser.email||''});
+  showToast(`✅ Wysłano prośbę do rodziny ${newCode}`);
+  document.getElementById('changeFamilyCode').value='';
+}
+window.requestChangeFamily=requestChangeFamily;
+
+/* ── INVITE LINK ── */
+function copyInviteLink(){
+  const link=`${location.origin}${location.pathname}?invite=${fCode}`;
+  navigator.clipboard.writeText(link).then(()=>showToast('🔗 Skopiowano link zaproszenia!'));
+}
+window.copyInviteLink=copyInviteLink;
+
+/* ── DEMO MODE ── */
+function buildDemo(){
+  const now=Date.now();
+  const members={'uid_mama':{name:'Mama',avatar:'👩',role:'parent',points:45,photoURL:''},'uid_tata':{name:'Tata',avatar:'🧔',role:'parent',points:30,photoURL:''},'uid_kacper':{name:'Kacper',avatar:'👦',role:'child',points:187,photoURL:''},'uid_zosia':{name:'Zosia',avatar:'👧',role:'child',points:142,photoURL:''}};
+  const done={dog_m:{who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-5*MS.hr},dog_f:{who:'Zosia',avatar:'👧',uid:'uid_zosia',ts:now-4.5*MS.hr},unload:{who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-3*MS.hr},table:{who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-2*MS.hr},hw:{who:'Kacper',avatar:'👦',uid:'uid_kacper',ts:now-1*MS.hr},flowers:{who:'Zosia',avatar:'👧',uid:'uid_zosia',ts:now-0.5*MS.hr}};
+  const doers=[{name:'Kacper',avatar:'👦',uid:'uid_kacper'},{name:'Zosia',avatar:'👧',uid:'uid_zosia'},{name:'Mama',avatar:'👩',uid:'uid_mama'},{name:'Tata',avatar:'🧔',uid:'uid_tata'}];
+  const chPool=allChores();
+  const history=[];
+  for(let d=1;d<=31;d++){const n=4+Math.floor(Math.random()*5);for(let j=0;j<n;j++){const c=chPool[Math.floor(Math.random()*chPool.length)];const dr=doers[Math.floor(Math.random()*doers.length)];history.push({ico:c.ico,name:c.name,pts:c.pts,who:dr.name,avatar:dr.avatar,uid:dr.uid,ts:now-d*MS.day+Math.random()*16*MS.hr+6*MS.hr});}}
+  history.sort((a,b)=>b.ts-a.ts);
+  const assigned={};
+  [{name:'Odkurzanie mieszkania',ico:'🧹',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:15,d:1,h:'16:00'},{name:'Mycie łazienki',ico:'🚿',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:15,d:1,h:'15:00'},{name:'Wyniesienie śmieci',ico:'🗑️',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:7,d:2,h:'12:00'},{name:'Zakupy z mamą',ico:'🛒',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:10,d:2,h:'11:00'},{name:'Podlanie kwiatków',ico:'🪴',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:8,d:3,h:''},{name:'Porządki w pokoju',ico:'🧽',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:10,d:4,h:''},{name:'Pomoc przy gotowaniu',ico:'🍳',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:12,d:5,h:'13:00'},{name:'Złożenie prania',ico:'🧺',forUid:'uid_zosia',forName:'Zosia',forAvatar:'👧',pts:8,d:6,h:''}].forEach((t,i)=>{const dd=new Date(today);dd.setDate(today.getDate()+t.d);const ds=fmt(dd);const dueTs=t.h?new Date(`${ds}T${t.h}`).getTime():new Date(ds).getTime()+43200000;assigned[`t${i}`]={name:t.name,ico:t.ico,forUid:t.forUid,forName:t.forName,forAvatar:t.forAvatar,pts:t.pts,date:ds,dueTs,assignedBy:'Mama',assignedAvatar:'👩',ts:now-Math.random()*MS.hr,done:false};});
+  assigned.done1={name:'Załadowanie zmywarki',ico:'🧼',forUid:'uid_kacper',forName:'Kacper',forAvatar:'👦',pts:6,date:todayKey,dueTs:now-2*MS.hr,assignedBy:'Tata',assignedAvatar:'🧔',ts:now-3*MS.hr,done:true,doneBy:'Kacper',doneAvatar:'👦',doneTs:now-2*MS.hr+15*MS.min};
+  const h=new Date().getHours();const ch=h<17?18:19;
+  const curfews={'uid_kacper':{time:`${ch}:30`,setBy:'Mama',setAt:now-30*MS.min,active:true,reminderInterval:15},'uid_zosia':{time:`${ch+1}:00`,setBy:'Tata',setAt:now-20*MS.min,active:true,reminderInterval:20}};
+  const locations={'uid_kacper':{lat:52.2297,lng:21.0122,ts:now-3*MS.min,name:'Kacper',avatar:'👦'},'uid_zosia':{lat:52.2317,lng:21.0142,ts:now-8*MS.min,name:'Zosia',avatar:'👧'}};
+  return{members,done,history,assigned,curfews,locations,joinReqs:{}};
+}
+function startDemo(role){
+  isDemo=true;demoRole=role;
+  const d=buildDemo();
+  live={done:d.done,members:d.members,history:d.history,assigned:d.assigned,curfews:d.curfews,locations:d.locations,joinReqs:d.joinReqs};
+  const uid=role==='parent'?'uid_tata':'uid_kacper';
+  myProfile={uid,name:role==='parent'?'Tata':'Kacper',avatar:role==='parent'?'🧔':'👦',role,code:'KOWALSKI2025',points:live.members[uid]?.points||0,photoURL:''};
+  window._myUid=uid;
+  document.getElementById('splashScreen').style.display='none';
+  launchApp();
+}
+window.startDemo=startDemo;
+function exitDemo(){if(!confirm('Wyjść z demo?'))return;isDemo=false;myProfile=null;currentUser=null;live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},joinReqs:{}};document.getElementById('appScreen').style.display='none';document.getElementById('splashScreen').style.display='flex';}
+window.exitDemo=exitDemo;
+
+/* ── LAUNCH APP ── */
 function launchApp(){
   document.getElementById('setupScreen').style.display='none';
+  document.getElementById('pendingScreen').style.display='none';
   document.getElementById('appScreen').style.display='block';
   fCode=myProfile.code||'RODZINA';
-  if(isDemo){document.getElementById('demoBanner').style.display='flex';document.getElementById('demoRoleLabel').textContent=demoRole==='parent'?'Widok Rodzica 👨':'Widok Dziecka 👦';document.getElementById('signOutBtn').textContent='🚪 Wyjdź z demo';document.getElementById('signOutBtn').onclick=exitDemo;}
+  if(isDemo){document.getElementById('demoBanner').style.display='flex';document.getElementById('demoRoleLabel').textContent=demoRole==='parent'?'Widok Rodzica 👨':'Widok Dziecka 👦';}
+  // Header
   if(!isDemo&&currentUser?.photoURL){const ph=document.getElementById('chipPhoto');ph.src=currentUser.photoURL;ph.style.display='block';document.getElementById('chipAv').style.display='none';}
   else document.getElementById('chipAv').textContent=myProfile.avatar;
   document.getElementById('chipNm').textContent=myProfile.name;
@@ -957,67 +1095,152 @@ function launchApp(){
   document.getElementById('appDt').textContent=`${DAY_NAMES[today.getDay()]}, ${today.getDate()} ${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}`;
   document.getElementById('fCodeDisplay').textContent=fCode;
   document.getElementById('mDate').value=todayKey;
+  // Profile tab
+  document.getElementById('profileAv').textContent=myProfile.avatar;
+  document.getElementById('profileName').textContent=myProfile.name;
+  document.getElementById('profileEmail').textContent=!isDemo?(currentUser?.email||'bez Google'):'DEMO';
+  document.getElementById('editName').value=myProfile.name;
+  if(!isDemo&&currentUser?.photoURL){const pp=document.getElementById('profilePhoto');pp.src=currentUser.photoURL;pp.style.display='block';document.getElementById('profileAv').style.display='none';}
   if(myProfile.role==='parent') document.getElementById('fabBtn').style.display='flex';
-  if(myProfile.role==='parent'){
-    document.getElementById('mapsCard').style.display='block';
-  }
-  renderThemeGrid();
-  renderGlobalIntervalRow();
-  renderCategoryMgmt();
-  requestNotifPermission();
+  renderThemeGrid();renderGlobalIntervalRow();renderCategoryMgmt();renderGCalInstructions();
   renderAll();
   fetchWeather();
+  selectedDay=null;renderWeek();
   if(!isDemo){
-    set(ref(db,`f/${fCode}/members/${currentUser.uid}`),{name:myProfile.name,role:myProfile.role,avatar:myProfile.avatar,photoURL:myProfile.photoURL||'',points:myProfile.points||0,lastSeen:serverTimestamp()});
+    // Register in family
+    set(ref(db,`families/${fCode}/members/${currentUser.uid}`),{name:myProfile.name,avatar:currentUser.photoURL||myProfile.avatar,role:myProfile.role,points:myProfile.points||0,lastSeen:serverTimestamp()});
+    // Listeners
     onValue(ref(db,`f/${fCode}/done/${todayKey}`),s=>{live.done=s.val()||{};renderChores();renderWeek();updateProgress();});
-    onValue(ref(db,`f/${fCode}/members`),s=>{live.members=s.val()||{};renderOnline();renderScores();renderStats();rebuildAssignSelect();if(myProfile.role==='parent')renderCurfewPanel();});
-    onValue(ref(db,`f/${fCode}/history`),s=>{const raw=s.val()||{};live.history=Object.values(raw).sort((a,b)=>(b.ts||0)-(a.ts||0));renderHistory();renderSummary();});
+    onValue(ref(db,`families/${fCode}/members`),s=>{live.members=s.val()||{};renderOnline();renderScores();renderStats();rebuildAssignSelect();if(myProfile.role==='parent')renderCurfewPanel();});
+    onValue(ref(db,`f/${fCode}/history`),s=>{const r=s.val()||{};live.history=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));renderHistory();renderSummary();});
     onValue(ref(db,`f/${fCode}/assigned`),s=>{live.assigned=s.val()||{};renderAssigned();});
-    onValue(ref(db,`f/${fCode}/curfews`),s=>{live.curfews=s.val()||{};if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')renderCurfewPanel();});
-    onValue(ref(db,`f/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderMaps();}});
-    onValue(ref(db,`f/${fCode}/schedules`),s=>{live.schedules=s.val()||{};renderScheduleView();});
+    onValue(ref(db,`families/${fCode}/curfews`),s=>{live.curfews=s.val()||{};if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')renderCurfewPanel();});
+    onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent')renderMaps();});
+    onValue(ref(db,`families/${fCode}/joinRequests`),s=>{live.joinReqs=s.val()||{};renderJoinRequests();});
     if(myProfile.role==='child') startLocationSharing();
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
-    if(myProfile.role==='parent') renderMaps();
   }
   checkAfter19();updateReturnBanner();
 }
-function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderScheduleView();updateProgress();renderWeek();}
+function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
-/* ══════ WEATHER ══════ */
+/* ── PROFILE ACTIONS ── */
+async function saveProfileName(){
+  const newName=document.getElementById('editName').value.trim();
+  if(!newName){showToast('⚠️ Wpisz imię');return;}
+  myProfile.name=newName;
+  document.getElementById('chipNm').textContent=newName;
+  document.getElementById('profileName').textContent=newName;
+  if(!isDemo){
+    await update(ref(db,`users/${currentUser.uid}/profile`),{name:newName});
+    await update(ref(db,`families/${fCode}/members/${currentUser.uid}`),{name:newName});
+  }
+  showToast('✅ Imię zmienione na: '+newName);
+}
+window.saveProfileName=saveProfileName;
+
+/* ── WEATHER ── */
 async function fetchWeather(){
-  if(!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(async pos=>{
-    try{
-      const url=`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current=temperature_2m,weathercode,apparent_temperature&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&forecast_days=2`;
-      const r=await fetch(url);const d=await r.json();
-      const c=d.current;const tomorrow=d.daily;
-      weatherData={temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),code:c.weathercode,tomorrowMax:Math.round(tomorrow.temperature_2m_max[1]),tomorrowMin:Math.round(tomorrow.temperature_2m_min[1]),tomorrowCode:tomorrow.weathercode[1],yesterdayDiff:Math.round(c.temperature_2m-(tomorrow.temperature_2m_max[0]+tomorrow.temperature_2m_min[0])/2)};
-      renderWeather();
-    }catch(e){}
-  },{timeout:10000});
+  if(weatherCity) return fetchWeatherByCity();
+  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(async p=>await fetchWeatherCoords(p.coords.latitude,p.coords.longitude),()=>{},{timeout:8000});
+}
+async function fetchWeatherGPS(){navigator.geolocation.getCurrentPosition(async p=>await fetchWeatherCoords(p.coords.latitude,p.coords.longitude),()=>showToast('❌ Brak GPS'));}
+window.fetchWeatherGPS=fetchWeatherGPS;
+async function fetchWeatherByCity(){
+  const city=document.getElementById('weatherCity')?.value?.trim()||weatherCity;
+  if(!city) return;
+  weatherCity=city;localStorage.setItem('dp-weather-city',city);
+  try{
+    const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+    const gd=await geo.json();
+    if(!gd.results?.length){showToast('❌ Nie znaleziono miasta');return;}
+    await fetchWeatherCoords(gd.results[0].latitude,gd.results[0].longitude,city);
+  }catch(e){showToast('❌ Błąd pogody');}
+}
+window.fetchWeatherByCity=fetchWeatherByCity;
+async function fetchWeatherCoords(lat,lng,cityName){
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weathercode,apparent_temperature,windspeed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=auto&forecast_days=3&past_days=1`;
+    const r=await fetch(url);const d=await r.json();
+    const c=d.current;const dl=d.daily;
+    weatherCache={
+      city:cityName||'',lat,lng,
+      now:{temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),code:c.weathercode,wind:Math.round(c.windspeed_10m),rain:c.precipitation},
+      yesterday:{max:Math.round(dl.temperature_2m_max[0]),min:Math.round(dl.temperature_2m_min[0]),code:dl.weathercode[0]},
+      today:{max:Math.round(dl.temperature_2m_max[1]),min:Math.round(dl.temperature_2m_min[1]),code:dl.weathercode[1],rain:dl.precipitation_sum[1]},
+      tomorrow:{max:Math.round(dl.temperature_2m_max[2]),min:Math.round(dl.temperature_2m_min[2]),code:dl.weathercode[2],rain:dl.precipitation_sum[2]},
+    };
+    renderWeatherStrip();renderWeatherFull();
+  }catch(e){}
 }
 function wmoIcon(code){if(code===0)return'☀️';if(code<=3)return'⛅';if(code<=49)return'🌫️';if(code<=67)return'🌧️';if(code<=77)return'❄️';if(code<=82)return'🌦️';return'⛈️';}
-function renderWeather(){
-  if(!weatherData) return;
-  const w=weatherData;
-  const diff=w.yesterdayDiff;
-  const diffStr=diff>0?`▲${diff}°`:(diff<0?`▼${Math.abs(diff)}°`:'→ tyle samo');
-  const diffColor=diff>0?'#ff9500':diff<0?'#007aff':'#8e8e93';
-  const chip=document.getElementById('weatherChip');
-  chip.style.display='flex';
-  chip.innerHTML=`<div class="weather-ico">${wmoIcon(w.code)}</div><div><div class="weather-temp">${w.temp}°C <span style="font-size:9px;opacity:.7">odczuwalnie ${w.feels}°C</span></div><div class="weather-desc">Jutro: ${w.tomorrowMin}–${w.tomorrowMax}°C ${wmoIcon(w.tomorrowCode)}</div></div><div class="weather-compare" style="color:${diffColor}">${diffStr} vs wczoraj</div>`;
+function wmoText(code){if(code===0)return'Bezchmurnie';if(code<=3)return'Częściowo zachmurzono';if(code<=49)return'Mgła';if(code<=67)return'Deszcz';if(code<=77)return'Śnieg';if(code<=82)return'Przelotne opady';return'Burza';}
+function outfitSuggestion(w){
+  const feel=w.now.feels;const rain=w.today.rain>0;const wind=w.now.wind>30;
+  let text='';
+  if(feel<0)text='🧥❄️ Bardzo zimno! Kurtka zimowa, czapka, szalik i rękawiczki.';
+  else if(feel<8)text='🧥 Chłodno — gruba kurtka lub płaszcz, może czapka.';
+  else if(feel<14)text='🧤 Lekko chłodno — kurtka lub bluza z kapturem.';
+  else if(feel<20)text='👕 Przyjemnie — cienka kurtka lub bluza.';
+  else if(feel<26)text='😎 Ciepło — T-shirt lub cienka koszula. Idealnie!';
+  else text='🌡️ Gorąco — lekkie ubrania, pamiętaj o nawodnieniu!';
+  if(rain)text+=' ☔ Weź parasol — prognozowany deszcz.';
+  if(wind)text+=' 💨 Silny wiatr — ogranicz otwarte powierzchnie.';
+  return text;
+}
+function renderWeatherStrip(){
+  if(!weatherCache) return;
+  const w=weatherCache;
+  const diff=w.today.max-w.yesterday.max;
+  const diffStr=diff>0?`▲${diff}°C`:diff<0?`▼${Math.abs(diff)}°C`:'';
+  const strip=document.getElementById('weatherStrip');
+  strip.style.display='flex';
+  strip.innerHTML=`<div class="ws-ico">${wmoIcon(w.now.code)}</div><div class="ws-temp">${w.now.temp}°C</div><div class="ws-desc">${wmoText(w.now.code)} · jutro ${w.tomorrow.min}–${w.tomorrow.max}°C</div>${diffStr?`<div class="ws-diff">${diffStr} vs wczoraj</div>`:''}`;
+}
+function renderWeatherFull(){
+  if(!weatherCache){document.getElementById('weatherFull').innerHTML='<div class="empty"><div class="big">🌤️</div><p>Brak danych pogodowych</p></div>';return;}
+  const w=weatherCache;
+  const diff=w.today.max-w.yesterday.max;
+  const diffTxt=diff>0?`▲ ${diff}°C cieplej niż wczoraj`:diff<0?`▼ ${Math.abs(diff)}°C zimniej niż wczoraj`:'Tyle samo co wczoraj';
+  const diffColor=diff>0?'var(--r)':diff<0?'var(--b)':'var(--soft)';
+  document.getElementById('weatherFull').innerHTML=`
+    ${w.city?`<div class="weather-loc"><span>📍 ${w.city}</span></div>`:''}
+    <div class="weather-main">
+      <div class="w-day-card"><div class="w-day-lbl">Wczoraj</div><div class="w-day-ico">${wmoIcon(w.yesterday.code)}</div><div class="w-day-temp">${w.yesterday.min}–${w.yesterday.max}°C</div></div>
+      <div class="w-day-card" style="border:2px solid var(--g2);"><div class="w-day-lbl" style="color:var(--g2);">Dziś</div><div class="w-day-ico">${wmoIcon(w.today.code)}</div><div class="w-day-temp">${w.today.min}–${w.today.max}°C</div><div class="w-day-feel">Odcz. ${w.now.feels}°C</div></div>
+      <div class="w-day-card"><div class="w-day-lbl">Jutro</div><div class="w-day-ico">${wmoIcon(w.tomorrow.code)}</div><div class="w-day-temp">${w.tomorrow.min}–${w.tomorrow.max}°C</div></div>
+    </div>
+    <div class="w-diff" style="color:${diffColor};">${diffTxt}</div>
+    <div class="outfit-card">
+      <div class="outfit-title">👔 Co dzisiaj założyć?</div>
+      <div class="outfit-text">${outfitSuggestion(w)}</div>
+    </div>
+    <div style="margin-top:9px;">
+      <div class="weather-loc">
+        <input id="weatherCity" placeholder="Zmień miasto, np. Kraków" value="${w.city||''}">
+        <button onclick="fetchWeatherByCity()">🔍</button>
+      </div>
+      <div style="font-size:10px;color:var(--soft);">lub <span style="cursor:pointer;color:var(--b);font-weight:800;" onclick="fetchWeatherGPS()">📍 GPS</span></div>
+    </div>`;
 }
 
-/* ══════ RETURN HOME SYSTEM ══════ */
+/* ── LOCATION SHARING (GPS) ── */
 function startLocationSharing(){
   if(!navigator.geolocation) return;
   navigator.geolocation.watchPosition(pos=>{
-    if(!isDemo) update(ref(db,`f/${fCode}/locations/${currentUser.uid}`),{lat:pos.coords.latitude,lng:pos.coords.longitude,ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar});
-  },{enableHighAccuracy:true,maximumAge:60000,timeout:30000});
+    update(ref(db,`families/${fCode}/locations/${currentUser.uid}`),{lat:pos.coords.latitude,lng:pos.coords.longitude,ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤'});
+  },{enableHighAccuracy:true,maximumAge:30000,timeout:20000});
 }
+function renderMaps(){
+  if(myProfile?.role!=='parent') return;
+  const locs=Object.entries(live.locations||{});
+  if(!locs.length) return;
+  // Show in profile tab or today tab — we'll add to today if needed
+}
+
+/* ── RETURN HOME ── */
 function checkAfter19(){
   if(myProfile?.role!=='parent') return;
   const h=new Date().getHours();if(h<19) return;
@@ -1030,189 +1253,187 @@ function renderCurfewPanel(){
   const children=Object.entries(live.members).filter(([,m])=>m.role==='child');
   if(!children.length){document.getElementById('curfewPanel').style.display='none';return;}
   const h=new Date().getHours();
-  let html=`<div class="curfew-card"><div class="curfew-ttl">🏠 Powrót dzieci do domu</div>`;
+  let html=`<div class="curfew-card"><div class="curfew-ttl">🏠 Powrót dzieci</div>`;
   children.forEach(([uid,child])=>{
     const c=live.curfews[uid];
     const loc=live.locations[uid];
     const locAge=loc?Math.round((Date.now()-loc.ts)/60000):null;
-    const locStr=loc?(locAge<2?'📍 Przed chwilą':`📍 ${locAge} min temu`):'📍 Brak GPS';
-    html+=`<div class="child-row"><div class="cr-av">${child.avatar||'👤'}</div><div class="cr-info"><div class="cr-nm">${child.name}</div><div class="cr-detail">${locStr}${c?` · 🏠 <strong>${c.time}</strong>`:(h>=19?' · <span style="color:#fca5a5">⚠️ Brak!</span>':'')}</div></div><button class="cr-btn" onclick="openCurfewModal('${uid}','${child.name}')">${c?'✏️':'🏠 Ustaw'}</button></div>`;
+    const locStr=loc?(locAge<2?'📍 Teraz':`📍 ${locAge} min temu`):'📍 Brak GPS';
+    html+=`<div class="child-row"><div class="cr-av">${child.avatar||'👤'}</div><div class="cr-info"><div class="cr-nm">${child.name}</div><div class="cr-detail">${locStr}${c?` · 🏠 ${c.time}`:(h>=19?' · <span style="color:#fca5a5">⚠️</span>':'')}</div></div><button class="cr-btn" onclick="openCurfewModal('${uid}','${child.name}')">${c?'✏️':'🏠'}</button></div>`;
   });
   html+=`</div>`;
   document.getElementById('curfewPanel').style.display='block';
   document.getElementById('curfewPanel').innerHTML=html;
 }
-function openCurfewModal(uid,childName){
+function openCurfewModal(uid,name){
   curfewChildId=uid;
-  document.getElementById('curfewForName').textContent=`${live.members[uid]?.avatar||'👤'} ${childName}`;
+  document.getElementById('curfewForName').textContent=`${live.members[uid]?.avatar||'👤'} ${name}`;
   const ex=live.curfews[uid];
   document.getElementById('curfewTime').value=ex?.time||'19:00';
   curfewModalInterval=ex?.reminderInterval||15;
-  renderCurfewIntervalBtns();
+  document.getElementById('curfewIntRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${curfewModalInterval===m?'sel':''}" onclick="setCurfewInt(${m})">${m} min</button>`).join('');
   document.getElementById('curfewOverlay').classList.add('show');
 }
 window.openCurfewModal=openCurfewModal;
-function renderCurfewIntervalBtns(){document.getElementById('curfewIntervalRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${curfewModalInterval===m?'sel':''}" onclick="setCurfewInt(${m})">${m} min</button>`).join('');}
-window.setCurfewInt=function(m){curfewModalInterval=m;renderCurfewIntervalBtns();};
+window.setCurfewInt=function(m){curfewModalInterval=m;document.getElementById('curfewIntRow').innerHTML=REMINDER_OPTIONS.map(v=>`<button class="int-btn ${curfewModalInterval===v?'sel':''}" onclick="setCurfewInt(${v})">${v} min</button>`).join('');};
 async function setCurfew(){
   if(!curfewChildId) return;
   const time=document.getElementById('curfewTime').value;if(!time){showToast('⚠️ Wybierz godzinę');return;}
   const c={time,setBy:myProfile.name,setAt:Date.now(),active:true,reminderInterval:curfewModalInterval};
   if(isDemo){live.curfews[curfewChildId]=c;renderCurfewPanel();updateReturnBanner();}
-  else await set(ref(db,`f/${fCode}/curfews/${curfewChildId}`),c);
-  showToast(`🏠 Powrót: ${time} (co ${curfewModalInterval} min)`);closeOverlay('curfewOverlay');
+  else await set(ref(db,`families/${fCode}/curfews/${curfewChildId}`),c);
+  showToast(`🏠 Powrót o ${time} (co ${curfewModalInterval} min)`);closeOverlay('curfewOverlay');
 }
 window.setCurfew=setCurfew;
 async function clearCurfew(){
   if(!curfewChildId) return;
   if(isDemo){delete live.curfews[curfewChildId];renderCurfewPanel();updateReturnBanner();}
-  else await remove(ref(db,`f/${fCode}/curfews/${curfewChildId}`));
+  else await remove(ref(db,`families/${fCode}/curfews/${curfewChildId}`));
   showToast('❌ Anulowano');closeOverlay('curfewOverlay');
 }
 window.clearCurfew=clearCurfew;
-
 function updateReturnBanner(){
   if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}
   const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');
   if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}
-  const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);
-  const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);
-  const interval=curfew.reminderInterval||reminderInterval||15;
+  const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);
+  const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;
   banner.style.display='block';
   if(diffMin>60){
-    banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · ustalone przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min przypomnienie</div></div></div>`;
+    banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min przypomnienie</div></div></div>`;
     clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));
   } else if(diffMin>0){
-    banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Wracaj! Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">Ustalone przez ${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;
+    banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Wracaj! Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;
     clearReturnTimers();scheduleReturnReminders(curfew.time,interval);
   } else {
-    banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU! (${curfew.time})</div><div class="rb-sub">Zadzwoń do rodzica lub kliknij że wracasz</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;
+    banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU! (${curfew.time})</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;
     sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);
   }
 }
-function scheduleReturnReminders(time,intervalMin){
-  clearReturnTimers();
-  const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);
-  const diffMs=rt.getTime()-Date.now();if(diffMs<=0) return;
-  const steps=Math.ceil(diffMs/(intervalMin*MS.min));
-  for(let i=1;i<=steps;i++){
-    const fireAt=Date.now()+i*intervalMin*MS.min;
-    if(fireAt<rt.getTime()+60000){
-      returnTimers.push(setTimeout(()=>{
-        const left=Math.round((rt.getTime()-Date.now())/MS.min);
-        sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);
-        showToast(`🏠 Wracaj! ~${left} min!`);updateReturnBanner();
-      },fireAt-Date.now()));
-    }
-  }
+function scheduleReturnReminders(time,intMin){
+  clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0) return;
+  const steps=Math.ceil(diff/(intMin*MS.min));
+  for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000) returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);showToast(`🏠 Wracaj! ~${left} min!`);updateReturnBanner();},fa-Date.now()));}
 }
 function clearReturnTimers(){returnTimers.forEach(clearTimeout);returnTimers=[];}
 async function iAmHeading(){
   clearReturnTimers();const uid=getMyUid();
   document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Świetnie! Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;
-  if(!isDemo){const parents=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of parents) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze do domu!`,ts:Date.now(),read:false});}
-  else showToast('🏃 Rodzice dostali powiadomienie!');
+  if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze do domu!`,ts:Date.now(),read:false});}
   sendBrowserNotif('🏃 W drodze!','Zgłosiłeś/aś powrót. Bezpiecznej drogi!');
-  setTimeout(()=>{if(!isDemo)remove(ref(db,`f/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);
+  setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);
 }
 window.iAmHeading=iAmHeading;
-window.notYet=function(){const uid=getMyUid();const c=live.curfews[uid];if(!c)return;showToast(`⏸️ Pamiętaj wrócić o ${c.time}!`);sendBrowserNotif('🏠 Pamiętaj o powrocie!',`Godzina powrotu: ${c.time}`);};
+window.notYet=function(){const uid=getMyUid();const c=live.curfews[uid];if(!c)return;showToast(`⏸️ Pamiętaj o ${c.time}!`);sendBrowserNotif('🏠 Pamiętaj!',`Powrót o ${c.time}`);};
 
-/* ══════ MAPS ══════ */
-function renderMaps(){
-  const container=document.getElementById('mapsContainer');
-  const locs=Object.entries(live.locations);
-  if(!locs.length){container.innerHTML='<div class="empty"><div class="big">📍</div><p>Brak lokalizacji dzieci</p></div>';return;}
-  container.innerHTML=locs.map(([uid,loc])=>{
-    const age=Math.round((Date.now()-loc.ts)/60000);
-    const mapsUrl=`https://www.google.com/maps?q=${loc.lat},${loc.lng}&z=15&output=embed`;
-    return`<div class="child-map-item">
-      <div class="child-map-nm">${loc.avatar||'👤'} ${loc.name} <span class="child-map-time">${age<2?'Właśnie teraz':`${age} min temu`}</span></div>
-      <div class="map-mini"><iframe src="${mapsUrl}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+/* ── WEEK BAR & DAY SELECTOR ── */
+function renderWeek(){
+  const row=document.getElementById('weekRow');const dow=today.getDay();const mon=new Date(today);mon.setDate(today.getDate()-((dow+6)%7));
+  row.innerHTML='';const total=cats.reduce((a,c)=>a+c.chores.length,0);
+  // show past 7 days + today + next 0 (total 7)
+  for(let i=0;i<7;i++){
+    const d=new Date(mon);d.setDate(mon.getDate()+i);const k=fmt(d);
+    const isToday=k===todayKey;const isSel=k===selectedDay;
+    const isPast=d<today&&!isToday;
+    const doneCount=isToday?Object.keys(live.done).length:0;
+    row.innerHTML+=`<div class="dc ${isToday?'today':''} ${isSel?'selected':''} ${doneCount>=total&&doneCount>0?'full':doneCount>0?'partial':''}" onclick="selectDay('${k}')">
+      <div class="dn">${DAY_NAMES[d.getDay()]}</div>
+      <div class="dd">${d.getDate()}</div>
+      <div class="dot"></div>
     </div>`;
-  }).join('');
+  }
+  const selLabel=document.getElementById('selectedDayLabel');
+  if(selectedDay&&selectedDay!==todayKey){const sd=new Date(selectedDay);selLabel.textContent=`📅 Edytujesz: ${sd.getDate()}.${d2(sd.getMonth()+1)}`;}
+  else selLabel.textContent='';
 }
 
-/* ══════ SCHEDULE ══════ */
-let editSchUid=null;
-function renderScheduleView(){
-  const el=document.getElementById('scheduleView');
-  const members=Object.values(live.members);
-  if(!members.length){el.innerHTML='<div class="empty"><div class="big">📚</div><p>Brak danych</p></div>';return;}
-  const days=['Pn','Wt','Śr','Cz','Pt'];
+function selectDay(k){
+  const d=new Date(k);const now=new Date(todayKey);const diff=Math.round((now-d)/MS.day);
+  if(diff>7){showToast('⚠️ Można edytować tylko 7 dni wstecz');return;}
+  if(diff<0){showToast('⚠️ Nie można edytować przyszłości');return;}
+  selectedDay=k===todayKey?null:k;
+  renderWeek();
+  loadDayDone(k);
+}
+window.selectDay=selectDay;
+
+async function loadDayDone(k){
+  if(k===todayKey||!k){renderChores();return;}
+  if(isDemo){
+    // For demo, show mostly done state
+    const mockDone={};allChores().forEach(c=>{if(Math.random()>0.4) mockDone[c.id]={who:'Kacper',avatar:'👦',ts:Date.now()-MS.day};});
+    live['pastDone_'+k]=mockDone;renderChorseForDay(k,mockDone);return;
+  }
+  const snap=await get(ref(db,`f/${fCode}/done/${k}`));
+  live['pastDone_'+k]=snap.val()||{};
+  renderChorseForDay(k,live['pastDone_'+k]);
+}
+
+function renderChorseForDay(dayKey,doneData){
+  const isEditable=dayKey===todayKey||!dayKey||(new Date(todayKey)-new Date(dayKey))/MS.day<=7;
   let html='';
-  members.forEach(m=>{
-    const uid=Object.keys(live.members).find(k=>live.members[k].name===m.name)||'';
-    const sch=live.schedules[uid];
-    if(!sch) return;
-    const ico=sch.type==='work'?'💼':'🎒';
-    html+=`<div style="margin-bottom:10px;"><div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:5px;">${m.avatar||'👤'} ${m.name} ${ico}</div>`;
-    html+=`<div class="schedule-grid">`;
-    days.forEach((d,i)=>{
-      const dow=i+1;
-      const time=sch.endTimes?.[dow]||'';
-      const isToday=(today.getDay()===dow);
-      html+=`<div class="sch-day ${isToday?'today-col':''}"><div class="sch-day-nm">${d}</div><div class="sch-slot ${time?'filled':''}"><span style="font-size:9px">${time||'—'}</span></div></div>`;
-    });
-    html+=`</div>`;
-    const todayTime=sch.endTimes?.[today.getDay()];
-    if(todayTime) html+=`<div class="sch-end-time">Dziś kończy: ${todayTime}</div>`;
-    html+=`</div>`;
-  });
-  if(!html) html='<div style="font-size:12px;color:var(--soft);text-align:center;padding:10px;">Kliknij Edytuj aby dodać plan</div>';
-  el.innerHTML=html;
-}
-
-function openScheduleModal(){
-  const uid=getMyUid();
-  editSchUid=uid;
-  document.getElementById('schUid').value=uid;
-  const sch=live.schedules[uid]||{type:'school',endTimes:{}};
-  schType=sch.type||'school';
-  document.getElementById('schTypeSchool').className='int-btn'+(schType==='school'?' sel':'');
-  document.getElementById('schTypeWork').className='int-btn'+(schType==='work'?' sel':'');
-  const days=[['Pn',1],['Wt',2],['Śr',3],['Cz',4],['Pt',5]];
-  document.getElementById('scheduleForm').innerHTML=days.map(([name,dow])=>
-    `<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><span style="font-size:12px;font-weight:800;color:var(--text);min-width:20px;">${name}</span><input class="f-inp" type="time" id="schTime${dow}" value="${sch.endTimes?.[dow]||''}" style="flex:1;"></div>`
-  ).join('');
-  document.getElementById('scheduleOverlay').classList.add('show');
-}
-window.openScheduleModal=openScheduleModal;
-window.setSchType=function(t){schType=t;document.getElementById('schTypeSchool').className='int-btn'+(t==='school'?' sel':'');document.getElementById('schTypeWork').className='int-btn'+(t==='work'?' sel':'');};
-async function saveSchedule(){
-  const uid=getMyUid();
-  const endTimes={};
-  [1,2,3,4,5].forEach(d=>{const v=document.getElementById(`schTime${d}`)?.value;if(v)endTimes[d]=v;});
-  const sch={type:schType,name:myProfile.name,endTimes};
-  if(isDemo){live.schedules[uid]=sch;renderScheduleView();}
-  else await set(ref(db,`f/${fCode}/schedules/${uid}`),sch);
-  showToast('💾 Plan zapisany!');closeOverlay('scheduleOverlay');
-}
-window.saveSchedule=saveSchedule;
-
-/* ══════ CHORES & CATEGORIES ══════ */
-function renderChores(){
-  let html='';
-  customCategories.forEach(cat=>{
-    if(!cat.chores.length&&!cat.editable) return;
-    html+=`<div class="cat-lbl"><span>${cat.label}</span><div class="cat-edit-btns">
-      <button class="cat-btn" onclick="openAddChore('${cat.id}')">+zadanie</button>
-      ${cat.editable?`<button class="cat-btn" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}
-    </div></div>`;
+  cats.forEach(cat=>{
+    if(!cat.chores.length) return;
+    html+=`<div class="cat-lbl"><span>${cat.label}</span><div class="cat-edit-btns"><button class="cat-mini-btn" onclick="openAddChore('${cat.id}')">+</button></div></div>`;
     html+=`<div class="chore-list">`;
     cat.chores.forEach((ch,idx)=>{
-      const dn=live.done[ch.id];const done=!!dn;
-      const hasUndo=!!undoQueue[ch.id];
-      html+=`<div class="chore ${done?'done':''}" onclick="toggleChore('${ch.id}',${ch.pts},'${cat.id}')">
+      const dn=doneData[ch.id];const done=!!dn;const repeats=Object.keys(doneData).filter(k=>k===ch.id||k.startsWith(ch.id+'_')).length;
+      html+=`<div class="chore ${done?'done-past':''}">
         <div class="chore-ico">${ch.ico}</div>
-        <div class="chore-info">
-          <div class="chore-name">${ch.name}</div>
-          <div class="chore-meta">${done?`${dn.avatar||''} ${dn.who}`:ch.desc}</div>
+        <div class="chore-info"><div class="chore-name">${ch.name}</div><div class="chore-meta">${done?`${dn.avatar||''} ${dn.who} · ${getAgo(dn.ts)}`:ch.desc}</div></div>
+        <div class="chore-right">
+          ${done?`<div class="done-badge">✓</div><button class="undo-btn" onclick="togglePastChore('${dayKey}','${ch.id}',${ch.pts},true)">↩️</button>`:
+          `<div class="chore-pts">+${ch.pts}⭐</div><button style="padding:3px 7px;border-radius:6px;border:none;background:var(--g2);color:#fff;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--font);" onclick="togglePastChore('${dayKey}','${ch.id}',${ch.pts},false)">✓</button>`}
         </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('choreContainer').innerHTML=`<div style="background:rgba(59,130,246,.06);border:2px solid var(--b);border-radius:11px;padding:8px;margin-bottom:8px;font-size:11px;font-weight:800;color:var(--b);">📅 Edytujesz dzień: ${new Date(dayKey).getDate()}.${d2(new Date(dayKey).getMonth()+1)} — do 7 dni wstecz</div>`+html;
+}
+
+async function togglePastChore(dayKey,choreId,pts,isDone){
+  if(isDone){
+    // Remove
+    delete (live['pastDone_'+dayKey]||{})[choreId];
+    if(!isDemo) await set(ref(db,`f/${fCode}/done/${dayKey}/${choreId}`),null);
+    showToast('↩️ Cofnięto');
+  } else {
+    const uid=getMyUid();
+    const entry={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};
+    if(!live['pastDone_'+dayKey]) live['pastDone_'+dayKey]={};
+    live['pastDone_'+dayKey][choreId]=entry;
+    if(!isDemo) await set(ref(db,`f/${fCode}/done/${dayKey}/${choreId}`),entry);
+    showToast(`✅ Zaznaczono dla ${dayKey}`);
+  }
+  renderChorseForDay(dayKey,live['pastDone_'+dayKey]||{});
+}
+window.togglePastChore=togglePastChore;
+
+/* ── CHORES TODAY ── */
+function renderChores(){
+  if(selectedDay&&selectedDay!==todayKey){loadDayDone(selectedDay);return;}
+  if(viewMode==='compact'){renderChoresCompact();return;}
+  let html='';
+  cats.forEach(cat=>{
+    if(!cat.chores.length&&!cat.editable) return;
+    html+=`<div class="cat-lbl"><span>${cat.label}</span><div class="cat-edit-btns"><button class="cat-mini-btn" onclick="openAddChore('${cat.id}')">+</button>${cat.editable?`<button class="cat-mini-btn" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}</div></div>`;
+    html+=`<div class="chore-list">`;
+    cat.chores.forEach((ch,idx)=>{
+      const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));
+      const done=allKeys.length>0;const repeats=allKeys.length;
+      const dn=done?live.done[allKeys[allKeys.length-1]]:null;
+      html+=`<div class="chore ${done?'done':''}">
+        <div class="chore-ico">${ch.ico}</div>
+        <div class="chore-info"><div class="chore-name">${ch.name}</div><div class="chore-meta">${done?`${dn?.avatar||''} ${dn?.who}`:ch.desc}</div></div>
         <div class="chore-right">
           ${done
-            ?`<div class="done-badge">✓ Zrobione</div><button class="undo-btn" onclick="undoChore(event,'${ch.id}',${ch.pts})">↩️ Cofnij</button>`
-            :`<div class="chore-pts">+${ch.pts}⭐</div><button class="cat-btn" onclick="openEditChore(event,'${cat.id}',${idx})" style="font-size:9px;">✏️</button>`
+            ?`<div class="done-badge">✓ ×${repeats}</div>
+               <button class="undo-btn" onclick="undoChore(event,'${ch.id}',${ch.pts})">↩️</button>
+               ${ch.repeatable?`<button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})">+1</button>`:''}
+               `
+            :`<div class="chore-pts">+${ch.pts}⭐</div>
+              <button class="cat-mini-btn" style="font-size:9px;" onclick="openEditChore(event,'${cat.id}',${idx})">✏️</button>`
           }
         </div>
       </div>`;
@@ -1220,323 +1441,295 @@ function renderChores(){
     html+=`</div>`;
   });
   document.getElementById('choreContainer').innerHTML=html;
+  document.querySelectorAll('.chore:not(.done)').forEach(el=>{
+    const onclick=el.getAttribute('onclick');
+    if(!onclick) el.onclick=()=>{};
+  });
+  // Make undone chores clickable
+  document.querySelectorAll('.chore:not(.done):not(.done-past)').forEach(el=>{
+    const btn=el.querySelector('.chore-pts')?.parentElement;
+  });
 }
 
-async function toggleChore(choreId,pts,catId){
-  // If already done show undo option (handled in render), just do it
-  if(live.done[choreId]){
-    // clicking done chore = nothing; use undo button instead
-    return;
-  }
+function renderChoresCompact(){
+  let html='';
+  cats.forEach(cat=>{
+    if(!cat.chores.length) return;
+    html+=`<div class="compact-cat-lbl">${cat.label}</div><div class="compact-grid">`;
+    cat.chores.forEach(ch=>{
+      const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));
+      const done=allKeys.length>0;const repeats=allKeys.length;
+      const dn=done?live.done[allKeys[0]]:null;
+      html+=`<div class="compact-tile ${done?'done':''}" onclick="doToggleChore('${ch.id}',${ch.pts})">
+        <div class="ct-ico">${ch.ico}</div>
+        <div class="ct-nm">${ch.name}</div>
+        ${done?`<div class="ct-done-who">✓ ${dn?.who?.split(' ')[0]||''}${repeats>1?' ×'+repeats:''}</div>`:`<div class="ct-pts">+${ch.pts}⭐</div>`}
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('choreContainer').innerHTML=html;
+}
+
+async function doToggleChore(choreId,pts){
   const uid=getMyUid();
   if(isDemo){
-    live.done[choreId]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};
-    if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;
-    const c=findChore(choreId);
-    live.history.unshift({ico:c?.ico||'✅',name:c?.name||choreId,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
-    showToast(`🎉 +${pts} pkt!`);
+    if(live.done[choreId]){delete live.done[choreId];if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts);showToast('↩️ Cofnięto');}
+    else{live.done[choreId]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;const c=findChore(choreId);live.history.unshift({ico:c?.ico||'✅',name:c?.name||choreId,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`🎉 +${pts} pkt!`);}
     renderChores();renderStats();renderScores();renderRewards();updateProgress();return;
   }
-  const r=ref(db,`f/${fCode}/done/${todayKey}/${choreId}`);
-  await set(r,{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});
-  const cur=live.members[uid]?.points||0;
-  await update(ref(db,`f/${fCode}/members/${uid}`),{points:cur+pts});
-  await update(ref(db,`users/${uid}/profile`),{points:cur+pts});
-  const c=findChore(choreId);
-  await push(ref(db,`f/${fCode}/history`),{ico:c?.ico||'✅',name:c?.name||choreId,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
-  showToast(`🎉 +${pts} pkt!`);
+  const r=ref(db,`f/${fCode}/done/${todayKey}/${choreId}`);const s=await get(r);
+  if(s.exists()){
+    await set(r,null);const cur=live.members[uid]?.points||0;
+    await update(ref(db,`families/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts)});
+    await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts)});
+    showToast('↩️ Cofnięto');
+  } else {
+    const c=findChore(choreId);
+    await set(r,{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});
+    const cur=live.members[uid]?.points||0;
+    await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+pts});
+    await update(ref(db,`users/${uid}/profile`),{points:cur+pts});
+    await push(ref(db,`f/${fCode}/history`),{ico:c?.ico||'✅',name:c?.name||choreId,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
+    showToast(`🎉 +${pts} pkt!`);
+  }
 }
-window.toggleChore=toggleChore;
+window.doToggleChore=doToggleChore;
+
+// Clicking undone chore area
+document.getElementById('choreContainer').addEventListener('click',e=>{
+  const chore=e.target.closest('.chore:not(.done):not(.done-past)');
+  if(!chore) return;
+  const btn=e.target.closest('button');
+  if(btn) return; // let button handle it
+  const onclick=chore.dataset.id;
+});
 
 async function undoChore(e,choreId,pts){
   e.stopPropagation();
   const uid=getMyUid();
+  // Remove all repeat entries for this choreId
+  const toRemove=Object.keys(live.done).filter(k=>k===choreId||k.startsWith(choreId+'_'));
   if(isDemo){
-    delete live.done[choreId];
-    if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts);
-    showToast('↩️ Cofnięto zadanie');
-    renderChores();renderStats();renderScores();renderRewards();updateProgress();return;
+    toRemove.forEach(k=>delete live.done[k]);
+    if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts*toRemove.length);
+    showToast('↩️ Cofnięto');renderChores();renderStats();renderScores();renderRewards();updateProgress();return;
   }
-  await set(ref(db,`f/${fCode}/done/${todayKey}/${choreId}`),null);
+  for(const k of toRemove) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
   const cur=live.members[uid]?.points||0;
-  await update(ref(db,`f/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts)});
-  await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts)});
-  showToast('↩️ Cofnięto zadanie');
+  await update(ref(db,`families/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts*toRemove.length)});
+  await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts*toRemove.length)});
+  showToast('↩️ Cofnięto');
 }
 window.undoChore=undoChore;
 
-/* ══════ CATEGORY MANAGEMENT ══════ */
-function renderCategoryMgmt(){
-  document.getElementById('categoryMgmt').innerHTML=customCategories.map(cat=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
-      <span style="font-size:13px;font-weight:700;color:var(--text);">${cat.label} <span style="color:var(--soft);font-size:10px;">(${cat.chores.length} zadań)</span></span>
-      <div style="display:flex;gap:5px;">
-        <button class="cat-btn" onclick="openEditCat('${cat.id}')">✏️</button>
-        ${cat.editable?`<button class="cat-btn" style="color:var(--r);" onclick="deleteCat('${cat.id}')">🗑️</button>`:'<span style="font-size:9px;color:var(--soft);padding:2px 5px;">wbudowana</span>'}
-      </div>
-    </div>`).join('');
-}
-function openCategoryModal(){
-  editCatId=null;
-  document.getElementById('catModalTitle').textContent='📂 Nowa kategoria';
-  document.getElementById('catIco').value='';
-  document.getElementById('catName').value='';
-  document.getElementById('catChores').value='';
-  document.getElementById('categoryOverlay').classList.add('show');
-}
-window.openCategoryModal=openCategoryModal;
-function openEditCat(id){
-  editCatId=id;
-  const cat=customCategories.find(c=>c.id===id);if(!cat) return;
-  document.getElementById('catModalTitle').textContent='✏️ Edytuj kategorię';
-  const parts=cat.label.split(' ');
-  document.getElementById('catIco').value=parts[0]||'';
-  document.getElementById('catName').value=parts.slice(1).join(' ');
-  document.getElementById('catChores').value=cat.chores.map(c=>`${c.ico} ${c.name} | ${c.pts}`).join('\n');
-  document.getElementById('categoryOverlay').classList.add('show');
-}
-window.openEditCat=openEditCat;
-function saveCategory(){
-  const ico=document.getElementById('catIco').value.trim()||'📂';
-  const name=document.getElementById('catName').value.trim();if(!name){showToast('⚠️ Wpisz nazwę');return;}
-  const label=`${ico} ${name}`;
-  const choreLines=document.getElementById('catChores').value.trim().split('\n').filter(l=>l.trim());
-  const chores=choreLines.map((line,i)=>{
-    const parts=line.split('|');const left=(parts[0]||'').trim();const pts=parseInt(parts[1])||8;
-    const words=left.split(' ');const choreIco=words[0]||'✅';const choreName=words.slice(1).join(' ')||left;
-    return{id:`cat_${editCatId||Date.now()}_${i}`,ico:choreIco,name:choreName,desc:'',pts};
-  });
-  if(editCatId){
-    const idx=customCategories.findIndex(c=>c.id===editCatId);
-    if(idx>=0){customCategories[idx]={...customCategories[idx],label,chores};showToast('✅ Kategoria zaktualizowana');}
-  } else {
-    customCategories.push({id:`cat_${Date.now()}`,label,editable:true,chores});
-    showToast('✅ Kategoria dodana');
-  }
-  saveCategories();renderChores();renderCategoryMgmt();closeOverlay('categoryOverlay');
-}
-window.saveCategory=saveCategory;
-function deleteCat(id){
-  if(!confirm('Usunąć tę kategorię?')) return;
-  customCategories=customCategories.filter(c=>c.id!==id);
-  saveCategories();renderChores();renderCategoryMgmt();showToast('🗑️ Usunięto');
-}
-window.deleteCat=deleteCat;
-
-/* ══════ CHORE MODAL (single) ══════ */
-function openAddChore(catId){
-  editCatId=catId;editChoreIdx=null;
-  document.getElementById('choreModalTitle').textContent='➕ Nowe zadanie';
-  document.getElementById('chIco').value='';document.getElementById('chName').value='';
-  document.getElementById('chDesc').value='';document.getElementById('chPts').value='8';
-  document.getElementById('chCatId').value=catId;document.getElementById('chChoreIdx').value='';
-  document.getElementById('choreOverlay').classList.add('show');
-}
-window.openAddChore=openAddChore;
-function openEditChore(e,catId,idx){
+async function repeatChore(e,choreId,pts){
   e.stopPropagation();
-  const cat=customCategories.find(c=>c.id===catId);if(!cat) return;
-  const ch=cat.chores[idx];if(!ch) return;
-  editCatId=catId;editChoreIdx=idx;
-  document.getElementById('choreModalTitle').textContent='✏️ Edytuj zadanie';
-  document.getElementById('chIco').value=ch.ico;document.getElementById('chName').value=ch.name;
-  document.getElementById('chDesc').value=ch.desc||'';document.getElementById('chPts').value=ch.pts;
-  document.getElementById('chCatId').value=catId;document.getElementById('chChoreIdx').value=idx;
-  document.getElementById('choreOverlay').classList.add('show');
-}
-window.openEditChore=openEditChore;
-function saveChore(){
-  const ico=document.getElementById('chIco').value.trim()||'✅';
-  const name=document.getElementById('chName').value.trim();if(!name){showToast('⚠️ Wpisz nazwę');return;}
-  const desc=document.getElementById('chDesc').value.trim();
-  const pts=parseInt(document.getElementById('chPts').value)||8;
-  const catId=document.getElementById('chCatId').value;
-  const choreIdx=document.getElementById('chChoreIdx').value;
-  const cat=customCategories.find(c=>c.id===catId);if(!cat) return;
-  if(choreIdx!==''){
-    cat.chores[parseInt(choreIdx)]={...cat.chores[parseInt(choreIdx)],ico,name,desc,pts};
-    showToast('✅ Zadanie zaktualizowane');
-  } else {
-    cat.chores.push({id:`ch_${catId}_${Date.now()}`,ico,name,desc,pts});
-    showToast('✅ Zadanie dodane');
+  const uid=getMyUid();
+  const repeatKey=`${choreId}_${Date.now()}`;
+  if(isDemo){
+    live.done[repeatKey]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};
+    if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;
+    const c=findChore(choreId);live.history.unshift({ico:c?.ico||'✅',name:c?.name+' (×2+)',who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
+    showToast(`+1 powtórzenie! +${pts} pkt`);renderChores();renderStats();renderScores();renderRewards();updateProgress();return;
   }
-  saveCategories();renderChores();closeOverlay('choreOverlay');
+  const c=findChore(choreId);
+  await set(ref(db,`f/${fCode}/done/${todayKey}/${repeatKey}`),{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});
+  const cur=live.members[uid]?.points||0;
+  await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+pts});
+  await update(ref(db,`users/${uid}/profile`),{points:cur+pts});
+  await push(ref(db,`f/${fCode}/history`),{ico:c?.ico||'✅',name:(c?.name||choreId)+' (+1)',who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
+  showToast(`+1 powtórzenie! +${pts} pkt`);
 }
-window.saveChore=saveChore;
+window.repeatChore=repeatChore;
 
-/* ══════ ASSIGNED TASKS ══════ */
+/* ── VIEW TOGGLE ── */
+function setView(v){
+  viewMode=v;localStorage.setItem('dp-view',v);
+  document.getElementById('vt-normal').className='vt-btn'+(v==='normal'?' sel':'');
+  document.getElementById('vt-compact').className='vt-btn'+(v==='compact'?' sel':'');
+  renderChores();
+}
+window.setView=setView;
+// Apply saved view on load
+document.getElementById('vt-'+viewMode).classList.add('sel');
+
+/* ── AUTOCOMPLETE ── */
+const AC_SUGGESTIONS=()=>[
+  ...allChores().map(c=>({ico:c.ico,name:c.name,pts:c.pts})),
+  {ico:'🛁',name:'Mycie wanny',pts:12},{ico:'🚽',name:'Czyszczenie toalety',pts:10},
+  {ico:'🧴',name:'Uzupełnienie mydła/szamponu',pts:4},{ico:'💊',name:'Podanie lekarstw zwierzęciu',pts:5},
+  {ico:'📮',name:'Sprawdzenie skrzynki pocztowej',pts:3},{ico:'🔦',name:'Wymiana baterii w urządzeniach',pts:5},
+  {ico:'📦',name:'Rozpakowywanie zakupów',pts:6},{ico:'🧊',name:'Uzupełnienie lodu',pts:3},
+].filter((v,i,a)=>a.findIndex(x=>x.name===v.name)===i);
+
+function acSearch(val){
+  const list=document.getElementById('acList');
+  if(!val||val.length<2){list.style.display='none';return;}
+  const results=AC_SUGGESTIONS().filter(s=>s.name.toLowerCase().includes(val.toLowerCase())).slice(0,8);
+  if(!results.length){list.style.display='none';return;}
+  list.style.display='block';
+  list.innerHTML=results.map(s=>`<div class="ac-item" onclick="acSelect('${esc(s.name)}','${s.ico}',${s.pts})"><span class="ac-ico">${s.ico}</span><span>${s.name}</span><span class="ac-pts">+${s.pts}⭐</span></div>`).join('');
+}
+window.acSearch=acSearch;
+function acSelect(name,ico,pts){
+  document.getElementById('mName').value=name;
+  document.getElementById('mIco').value=ico;
+  document.getElementById('mPts').value=pts;
+  document.getElementById('acList').style.display='none';
+}
+window.acSelect=acSelect;
+document.addEventListener('click',e=>{if(!e.target.closest('.autocomplete-wrap')) document.getElementById('acList').style.display='none';});
+
+/* ── QUICK TILES FOR TASKS ── */
+const QUICK_TASKS=[
+  {ico:'🧹',name:'Odkurzanie',pts:12},{ico:'🚿',name:'Mycie łazienki',pts:15},{ico:'🗑️',name:'Wyniesienie śmieci',pts:7},
+  {ico:'🍽️',name:'Zmywarka',pts:8},{ico:'🧺',name:'Pranie/składanie',pts:8},{ico:'🛒',name:'Zakupy',pts:10},
+  {ico:'🐕',name:'Spacer z psem',pts:10},{ico:'📖',name:'Praca domowa',pts:12},{ico:'🪴',name:'Kwiatki',pts:5},
+  {ico:'🧼',name:'Załaduj zmywarkę',pts:6},{ico:'🍳',name:'Gotowanie',pts:8},{ico:'🧽',name:'Sprzątanie pokoju',pts:10},
+];
+function renderQuickTiles(){
+  if(myProfile?.role!=='parent') return;
+  rebuildAssignSelect();
+  document.getElementById('quickTilesContainer').innerHTML=`
+    <div style="font-size:11px;font-weight:800;color:var(--soft);margin-bottom:7px;">⚡ Szybkie zlecenie — kliknij zadanie:</div>
+    <div class="quick-tiles">${QUICK_TASKS.map(t=>`<div class="qt" onclick="quickAssign('${esc(t.name)}','${t.ico}',${t.pts})"><span class="qt-ico">${t.ico}</span>${t.name}<div class="qt-pts">+${t.pts}⭐</div></div>`).join('')}</div>`;
+}
+function quickAssign(name,ico,pts){
+  document.getElementById('mName').value=name;
+  document.getElementById('mIco').value=ico;
+  document.getElementById('mPts').value=pts;
+  rebuildAssignSelect();
+  document.getElementById('assignOverlay').classList.add('show');
+}
+window.quickAssign=quickAssign;
+
+/* ── ASSIGNED TASKS ── */
 function rebuildAssignSelect(){
   const sel=document.getElementById('mWho');
   sel.innerHTML=Object.entries(live.members).map(([uid,m])=>`<option value="${uid}">${m.avatar||'👤'} ${m.name}</option>`).join('');
 }
-function openAssignModal(){rebuildAssignSelect();document.getElementById('assignOverlay').classList.add('show');}
+function openAssignModal(){rebuildAssignSelect();document.getElementById('mName').value='';document.getElementById('assignOverlay').classList.add('show');}
 window.openAssignModal=openAssignModal;
 async function submitAssign(){
   const name=document.getElementById('mName').value.trim();if(!name){showToast('⚠️ Wpisz nazwę');return;}
-  const ico=document.getElementById('mIco').value.trim()||'📌';
-  const forUid=document.getElementById('mWho').value;
-  const fm=live.members[forUid]||{};
-  const date=document.getElementById('mDate').value||todayKey;
-  const time=document.getElementById('mTime').value;
-  const pts=parseInt(document.getElementById('mPts').value)||10;
+  const ico=document.getElementById('mIco').value.trim()||'📌';const forUid=document.getElementById('mWho').value;
+  const fm=live.members[forUid]||{};const date=document.getElementById('mDate').value||todayKey;
+  const time=document.getElementById('mTime').value;const pts=parseInt(document.getElementById('mPts').value)||10;
   const dueTs=time?new Date(`${date}T${time}`).getTime():new Date(date).getTime()+43200000;
   const task={name,ico,forUid,forName:fm.name||'?',forAvatar:fm.avatar||'👤',pts,date,dueTs,assignedBy:myProfile.name,assignedAvatar:myProfile.avatar,ts:Date.now(),done:false};
-  if(isDemo){live.assigned['task_new_'+Date.now()]=task;renderAssigned();}
+  if(isDemo){live.assigned['t_'+Date.now()]=task;renderAssigned();}
   else{await push(ref(db,`f/${fCode}/assigned`),task);if(time)scheduleLocalNotif(name,fm.name||'',dueTs);if(gcalToken)addToGCal(name,ico,date,time,pts);}
   showToast(`📌 Zlecono: ${name} → ${fm.name||'?'}`);closeOverlay('assignOverlay');document.getElementById('mName').value='';
 }
 window.submitAssign=submitAssign;
+
 function renderAssigned(){
   const uid=getMyUid();
   const items=Object.entries(live.assigned).map(([k,v])=>({...v,key:k})).sort((a,b)=>(a.dueTs||0)-(b.dueTs||0));
   const mine=myProfile.role==='parent'?items:items.filter(t=>t.forUid===uid||t.forName===myProfile.name);
-  const pending=mine.filter(t=>!t.done);const done=mine.filter(t=>t.done);
-  const now=Date.now();let html='';
-  if(!pending.length&&!done.length){html=`<div class="empty"><div class="big">📭</div><p>${myProfile.role==='parent'?'Użyj + aby zlecić':'Brak zadań od rodzica'}</p></div>`;}
-  if(pending.length){
-    html+=`<div class="cat-lbl"><span>⏳ Do zrobienia (${pending.length})</span></div><div class="chore-list">`;
-    pending.forEach(t=>{
-      const ov=t.dueTs<now;
-      html+=`<div class="chore ${ov?'overdue':'assigned'}"><div class="chore-ico">${t.ico||'📌'}</div><div class="chore-info"><div class="chore-name">${t.name}</div><div class="chore-meta">${t.forAvatar} ${t.forName}${t.dueTs?' · ⏰ '+fmtDue(t.dueTs):''}</div></div><div class="chore-right"><div class="chore-pts">+${t.pts}⭐</div><button onclick="doneAssigned('${t.key}',${t.pts},'${esc(t.name)}')" style="padding:4px 8px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;margin-top:3px;">✓ Zrobione</button>${myProfile.role==='parent'?`<button onclick="delAssigned('${t.key}')" style="padding:3px 6px;border-radius:6px;border:none;background:rgba(232,64,64,.1);color:var(--r);font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;margin-top:2px;">Usuń</button>`:''}</div></div>`;
-    });
-    html+=`</div>`;
-  }
-  if(done.length){
-    html+=`<div class="cat-lbl" style="margin-top:10px;"><span>✅ Wykonane (${done.length})</span></div><div class="chore-list">`;
-    done.forEach(t=>{html+=`<div class="chore done"><div class="chore-ico">${t.ico||'📌'}</div><div class="chore-info"><div class="chore-name">${t.name}</div><div class="chore-meta">${t.doneAvatar||''} ${t.doneBy||'?'} · ${getAgo(t.doneTs||0)}</div></div><div class="done-badge">✓ OK</div></div>`;});
-    html+=`</div>`;
-  }
+  const pending=mine.filter(t=>!t.done);const done=mine.filter(t=>t.done);const now=Date.now();let html='';
+  if(!pending.length&&!done.length){html=`<div class="empty"><div class="big">📭</div><p>${myProfile.role==='parent'?'Kliknij kafelek lub + aby zlecić':'Brak zadań od rodzica'}</p></div>`;}
+  if(pending.length){html+=`<div class="cat-lbl"><span>⏳ Do zrobienia (${pending.length})</span></div><div class="chore-list">`;pending.forEach(t=>{const ov=t.dueTs<now;html+=`<div class="chore ${ov?'overdue':'assigned'}"><div class="chore-ico">${t.ico||'📌'}</div><div class="chore-info"><div class="chore-name">${t.name}</div><div class="chore-meta">${t.forAvatar} ${t.forName}${t.dueTs?' · ⏰ '+fmtDue(t.dueTs):''}</div></div><div class="chore-right"><div class="chore-pts">+${t.pts}⭐</div><button onclick="doneAssigned('${t.key}',${t.pts},'${esc(t.name)}')" style="padding:4px 8px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;margin-top:2px;">✓</button>${myProfile.role==='parent'?`<button onclick="delAssigned('${t.key}')" style="padding:2px 6px;border-radius:6px;border:none;background:rgba(232,64,64,.1);color:var(--r);font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;margin-top:2px;">🗑️</button>`:''}</div></div>`;});html+=`</div>`;}
+  if(done.length){html+=`<div class="cat-lbl" style="margin-top:9px;"><span>✅ Wykonane (${done.length})</span></div><div class="chore-list">`;done.forEach(t=>{html+=`<div class="chore done"><div class="chore-ico">${t.ico||'📌'}</div><div class="chore-info"><div class="chore-name">${t.name}</div><div class="chore-meta">${t.doneAvatar||''} ${t.doneBy||'?'} · ${getAgo(t.doneTs||0)}</div></div><div class="done-badge">✓</div></div>`;});html+=`</div>`;}
   document.getElementById('assignedList').innerHTML=html;
   const myPending=items.filter(t=>!t.done&&(t.forUid===uid||t.forName===myProfile.name)).length;
   document.getElementById('ndTasks').className='ndot'+(myPending?' show':'');
 }
 async function doneAssigned(key,pts,name){
   const uid=getMyUid();
-  if(isDemo){
-    if(live.assigned[key]) live.assigned[key]={...live.assigned[key],done:true,doneBy:myProfile.name,doneAvatar:myProfile.avatar,doneTs:Date.now()};
-    if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;
-    live.history.unshift({ico:'📌',name:`Zlecone: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
-    renderAssigned();renderScores();renderRewards();showToast(`🎉 +${pts} pkt!`);return;
-  }
+  if(isDemo){if(live.assigned[key]) live.assigned[key]={...live.assigned[key],done:true,doneBy:myProfile.name,doneAvatar:myProfile.avatar,doneTs:Date.now()};if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;live.history.unshift({ico:'📌',name:`Zlecone: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});renderAssigned();renderScores();renderRewards();showToast(`🎉 +${pts} pkt!`);return;}
   await update(ref(db,`f/${fCode}/assigned/${key}`),{done:true,doneBy:myProfile.name,doneAvatar:myProfile.avatar,doneTs:Date.now()});
-  const cur=live.members[uid]?.points||0;
-  await update(ref(db,`f/${fCode}/members/${uid}`),{points:cur+pts});
-  await update(ref(db,`users/${uid}/profile`),{points:cur+pts});
-  await push(ref(db,`f/${fCode}/history`),{ico:'📌',name:`Zlecone: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});
-  showToast(`🎉 +${pts} pkt!`);
+  const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+pts});await update(ref(db,`users/${uid}/profile`),{points:cur+pts});
+  await push(ref(db,`f/${fCode}/history`),{ico:'📌',name:`Zlecone: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`🎉 +${pts} pkt!`);
 }
 window.doneAssigned=doneAssigned;
-async function delAssigned(key){if(!confirm('Usunąć?')) return;if(isDemo){delete live.assigned[key];renderAssigned();return;}await remove(ref(db,`f/${fCode}/assigned/${key}`));}
+async function delAssigned(key){if(!confirm('Usunąć?'))return;if(isDemo){delete live.assigned[key];renderAssigned();return;}await remove(ref(db,`f/${fCode}/assigned/${key}`));}
 window.delAssigned=delAssigned;
 
-/* ══════ RENDER HELPERS ══════ */
-function renderOnline(){
-  const ms=Object.values(live.members);
-  document.getElementById('onlineRow').innerHTML=ms.length?ms.map(m=>`<div class="op"><div class="odot"></div>${m.avatar||'👤'} ${m.name}${m.role==='parent'?' 👑':''}</div>`).join(''):'<span style="font-size:11px;color:var(--soft)">Tylko Ty</span>';
-}
-function renderScores(){
-  const ms=Object.values(live.members);const sorted=[...ms].sort((a,b)=>(b.points||0)-(a.points||0));
-  const maxP=Math.max(...sorted.map(m=>m.points||0),1);const ranks=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'];
-  document.getElementById('scoreList').innerHTML=sorted.map((m,i)=>`<div class="score-item"><div class="sc-rank">${ranks[i]||'▪'}</div><div class="sc-av">${m.avatar||'👤'}</div><div class="sc-info"><div class="sc-nm">${m.name}${m.role==='parent'?' 👑':''}</div><div class="sc-bar-w"><div class="sc-bar-f" style="width:${(m.points||0)/maxP*100}%"></div></div><div class="sc-sub">${m.points||0} pkt</div></div><div class="sc-pts">${m.points||0}</div></div>`).join('');
-}
-function renderStats(){
-  const ms=Object.values(live.members);const tp=ms.reduce((a,m)=>a+(m.points||0),0);
-  const td=Object.keys(live.done).length;const total=customCategories.reduce((a,c)=>a+c.chores.length,0);
-  const leader=[...ms].sort((a,b)=>(b.points||0)-(a.points||0))[0];
-  document.getElementById('statsGrid').innerHTML=`<div class="stat-card"><div class="stat-ico">⭐</div><div class="stat-val">${tp}</div><div class="stat-lbl">Pkt rodziny</div></div><div class="stat-card"><div class="stat-ico">✅</div><div class="stat-val">${td}/${total}</div><div class="stat-lbl">Dziś</div></div><div class="stat-card"><div class="stat-ico">👨‍👩‍👧</div><div class="stat-val">${ms.length}</div><div class="stat-lbl">Osób</div></div><div class="stat-card"><div class="stat-ico">🏆</div><div class="stat-val">${leader?.avatar||'—'}</div><div class="stat-lbl">Lider</div></div>`;
-}
-function renderRewards(){
-  const uid=getMyUid();const myPts=live.members[uid]?.points||myProfile?.points||0;
-  document.getElementById('myPtsDisplay').textContent=`${myProfile?.avatar||'👤'} ${myProfile?.name||''}: ${myPts} pkt`;
-  document.getElementById('rewardsList').innerHTML=REWARDS.map(r=>`<div class="reward-item"><div class="rew-ico">${r.ico}</div><div class="rew-info"><div class="rew-nm">${r.name}</div><div class="rew-cost">💰 ${r.cost} pkt</div></div><button class="rew-btn" ${myPts<r.cost?'disabled':''} onclick="redeem('${r.id}',${r.cost},'${esc(r.name)}')">${myPts>=r.cost?'Odbierz':'−'+(r.cost-myPts)}</button></div>`).join('');
-}
-async function redeem(id,cost,name){
-  const uid=getMyUid();const cur=live.members[uid]?.points||0;if(cur<cost) return;
-  if(isDemo){live.members[uid].points=cur-cost;live.history.unshift({ico:'🎁',name:`Nagroda: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts:-cost,ts:Date.now()});renderRewards();renderScores();showToast(`🎁 Odebrano: ${name}!`);return;}
-  await update(ref(db,`f/${fCode}/members/${uid}`),{points:cur-cost});await update(ref(db,`users/${uid}/profile`),{points:cur-cost});
-  await push(ref(db,`f/${fCode}/history`),{ico:'🎁',name:`Nagroda: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts:-cost,ts:Date.now()});
-  showToast(`🎁 Odebrano: ${name}!`);
-}
+/* ── RENDER HELPERS ── */
+function renderOnline(){const ms=Object.values(live.members);document.getElementById('onlineRow').innerHTML=ms.length?ms.map(m=>`<div class="op"><div class="odot"></div>${m.photoURL?`<img src="${m.photoURL}" style="width:18px;height:18px;border-radius:50%;object-fit:cover;">`:m.avatar||'👤'} ${m.name}${m.role==='parent'?' 👑':''}</div>`).join(''):'<span style="font-size:10px;color:var(--soft)">Tylko Ty</span>';}
+function renderScores(){const ms=Object.values(live.members);const sorted=[...ms].sort((a,b)=>(b.points||0)-(a.points||0));const maxP=Math.max(...sorted.map(m=>m.points||0),1);const ranks=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'];document.getElementById('scoreList').innerHTML=sorted.map((m,i)=>`<div class="score-item"><div class="sc-rank">${ranks[i]||'▪'}</div><div>${m.photoURL?`<img src="${m.photoURL}" class="sc-photo">`:''}<span class="sc-av" ${m.photoURL?'style="display:none"':''}>${m.avatar||'👤'}</span></div><div class="sc-info"><div class="sc-nm">${m.name}${m.role==='parent'?' 👑':''}</div><div class="sc-bar-w"><div class="sc-bar-f" style="width:${(m.points||0)/maxP*100}%"></div></div><div class="sc-sub">${m.points||0} pkt</div></div><div class="sc-pts">${m.points||0}</div></div>`).join('');}
+function renderStats(){const ms=Object.values(live.members);const tp=ms.reduce((a,m)=>a+(m.points||0),0);const td=Object.keys(live.done).length;const total=cats.reduce((a,c)=>a+c.chores.length,0);const leader=[...ms].sort((a,b)=>(b.points||0)-(a.points||0))[0];document.getElementById('statsGrid').innerHTML=`<div class="stat-card"><div class="stat-ico">⭐</div><div class="stat-val">${tp}</div><div class="stat-lbl">Pkt rodziny</div></div><div class="stat-card"><div class="stat-ico">✅</div><div class="stat-val">${td}/${total}</div><div class="stat-lbl">Dziś</div></div><div class="stat-card"><div class="stat-ico">👨‍👩‍👧</div><div class="stat-val">${ms.length}</div><div class="stat-lbl">Osób</div></div><div class="stat-card"><div class="stat-ico">🏆</div><div class="stat-val">${leader?.avatar||'—'}</div><div class="stat-lbl">Lider</div></div>`;}
+function renderRewards(){const uid=getMyUid();const myPts=live.members[uid]?.points||myProfile?.points||0;document.getElementById('myPtsDisplay').textContent=`${myProfile?.avatar||'👤'} ${myProfile?.name||''}: ${myPts} pkt`;document.getElementById('rewardsList').innerHTML=REWARDS.map(r=>`<div class="reward-item"><div class="rew-ico">${r.ico}</div><div class="rew-info"><div class="rew-nm">${r.name}</div><div class="rew-cost">💰 ${r.cost} pkt</div></div><button class="rew-btn" ${myPts<r.cost?'disabled':''} onclick="redeem('${r.id}',${r.cost},'${esc(r.name)}')">${myPts>=r.cost?'Odbierz':'−'+(r.cost-myPts)}</button></div>`).join('');}
+async function redeem(id,cost,name){const uid=getMyUid();const cur=live.members[uid]?.points||0;if(cur<cost)return;if(isDemo){live.members[uid].points=cur-cost;live.history.unshift({ico:'🎁',name:`Nagroda: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts:-cost,ts:Date.now()});renderRewards();renderScores();showToast(`🎁 Odebrano: ${name}!`);return;}await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur-cost});await update(ref(db,`users/${uid}/profile`),{points:cur-cost});await push(ref(db,`f/${fCode}/history`),{ico:'🎁',name:`Nagroda: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts:-cost,ts:Date.now()});showToast(`🎁 Odebrano: ${name}!`);}
 window.redeem=redeem;
-function renderSummary(){
-  const hist=live.history;
-  const dow=today.getDay();const mon=new Date(today);mon.setDate(today.getDate()-((dow+6)%7));const sun=new Date(mon);sun.setDate(mon.getDate()+6);
-  const wH=hist.filter(h=>h.ts&&h.ts>=mon.getTime()&&h.ts<=sun.getTime()+MS.day&&h.pts>0);
-  const wPts=wH.reduce((a,h)=>a+h.pts,0);const byM={};wH.forEach(h=>{byM[h.who]=(byM[h.who]||{pts:0,n:0,av:h.avatar});byM[h.who].pts+=h.pts;byM[h.who].n++;});
-  const champ=Object.entries(byM).sort((a,b)=>b[1].pts-a[1].pts)[0];
-  document.getElementById('weeklySummary').innerHTML=`<div class="sum-hero"><div class="sum-title">📅 Tydzień ${d2(mon.getDate())}.${d2(mon.getMonth()+1)} – ${d2(sun.getDate())}.${d2(sun.getMonth()+1)}</div><div class="sum-grid"><div class="sum-cell"><div class="sum-val">${wH.length}</div><div class="sum-lbl">Zadań</div></div><div class="sum-cell"><div class="sum-val">${wPts}</div><div class="sum-lbl">Punktów</div></div><div class="sum-cell"><div class="sum-val">${Object.keys(byM).length}</div><div class="sum-lbl">Aktywnych</div></div></div>${champ?`<div class="sum-champ"><div class="sum-champ-av">${champ[1].av||'🏆'}</div><div><div class="sum-champ-lbl">⭐ Mistrz tygodnia</div><div class="sum-champ-nm">${champ[0]} — ${champ[1].pts} pkt</div></div></div>`:''}</div>`;
-  const mS=new Date(today.getFullYear(),today.getMonth(),1);const mE=new Date(today.getFullYear(),today.getMonth()+1,0);
-  const mH=hist.filter(h=>h.ts&&h.ts>=mS.getTime()&&h.ts<=mE.getTime()+MS.day&&h.pts>0);
-  const mPts=mH.reduce((a,h)=>a+h.pts,0);const mByM={};mH.forEach(h=>{mByM[h.who]=(mByM[h.who]||{pts:0,n:0,av:h.avatar});mByM[h.who].pts+=h.pts;mByM[h.who].n++;});
-  const mChamp=Object.entries(mByM).sort((a,b)=>b[1].pts-a[1].pts)[0];
-  document.getElementById('monthlySummary').innerHTML=`<div class="card"><div class="card-ttl"><span>🗓️ ${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:${mChamp?'8':'0'}px;"><div style="background:var(--inp-bg);border-radius:9px;padding:9px;text-align:center;"><div style="font-size:18px;font-weight:900;color:var(--g2)">${mH.length}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Zadań</div></div><div style="background:var(--inp-bg);border-radius:9px;padding:9px;text-align:center;"><div style="font-size:18px;font-weight:900;color:var(--g2)">${mPts}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Punktów</div></div><div style="background:var(--inp-bg);border-radius:9px;padding:9px;text-align:center;"><div style="font-size:18px;font-weight:900;color:var(--g2)">${new Set(mH.map(h=>h.who)).size}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Aktywnych</div></div></div>${mChamp?`<div style="display:flex;align-items:center;gap:8px;background:var(--inp-bg);border-radius:9px;padding:8px;"><div style="font-size:24px">${mChamp[1].av||'🏆'}</div><div><div style="font-size:9px;color:var(--soft);font-weight:700">🏆 Mistrz miesiąca</div><div style="font-size:13px;font-weight:900;color:var(--text);">${mChamp[0]} — ${mChamp[1].pts} pkt · ${mChamp[1].n} zadań</div></div></div>`:''}</div>`;
-}
-function renderHistory(){
-  document.getElementById('histList').innerHTML=live.history.length?live.history.slice(0,30).map(x=>`<div class="hi"><div class="hi-ico">${x.ico||'✅'}</div><div class="hi-info"><div class="hi-nm">${x.name}</div><div class="hi-who">${x.avatar||''} ${x.who} · ${getAgo(x.ts)}</div></div><div class="hi-pts">${x.pts>0?'+':''}${x.pts}⭐</div></div>`).join(''):'<div class="empty"><div class="big">📭</div><p>Brak historii</p></div>';
-}
-function renderWeek(){
-  const row=document.getElementById('weekRow');const dow=today.getDay();const mon=new Date(today);mon.setDate(today.getDate()-((dow+6)%7));
-  row.innerHTML='';const total=customCategories.reduce((a,c)=>a+c.chores.length,0);
-  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const isToday=fmt(d)===todayKey;const done=isToday?Object.keys(live.done).length:0;row.innerHTML+=`<div class="dc ${isToday?'today':''} ${done>=total&&done>0?'full':done>0?'partial':''}"><div class="dn">${DAY_NAMES[d.getDay()]}</div><div class="dd">${d.getDate()}</div><div class="dot"></div></div>`;}
-}
-function updateProgress(){
-  const total=customCategories.reduce((a,c)=>a+c.chores.length,0);const done=Object.keys(live.done).length;
-  document.getElementById('progFill').style.width=(total>0?Math.round(done/total*100):0)+'%';
-  document.getElementById('progLbl').textContent=`${done}/${total}`;
-}
+function renderSummary(){const hist=live.history;const dow=today.getDay();const mon=new Date(today);mon.setDate(today.getDate()-((dow+6)%7));const sun=new Date(mon);sun.setDate(mon.getDate()+6);const wH=hist.filter(h=>h.ts&&h.ts>=mon.getTime()&&h.ts<=sun.getTime()+MS.day&&h.pts>0);const wPts=wH.reduce((a,h)=>a+h.pts,0);const byM={};wH.forEach(h=>{byM[h.who]=(byM[h.who]||{pts:0,n:0,av:h.avatar});byM[h.who].pts+=h.pts;byM[h.who].n++;});const champ=Object.entries(byM).sort((a,b)=>b[1].pts-a[1].pts)[0];document.getElementById('weeklySummary').innerHTML=`<div class="sum-hero"><div class="sum-title">📅 Tydzień ${d2(mon.getDate())}.${d2(mon.getMonth()+1)} – ${d2(sun.getDate())}.${d2(sun.getMonth()+1)}</div><div class="sum-grid"><div class="sum-cell"><div class="sum-val">${wH.length}</div><div class="sum-lbl">Zadań</div></div><div class="sum-cell"><div class="sum-val">${wPts}</div><div class="sum-lbl">Punktów</div></div><div class="sum-cell"><div class="sum-val">${Object.keys(byM).length}</div><div class="sum-lbl">Aktywnych</div></div></div>${champ?`<div class="sum-champ"><div class="sum-champ-av">${champ[1].av||'🏆'}</div><div><div class="sum-champ-lbl">⭐ Mistrz tygodnia</div><div class="sum-champ-nm">${champ[0]} — ${champ[1].pts} pkt</div></div></div>`:''}</div>`;const mS=new Date(today.getFullYear(),today.getMonth(),1);const mE=new Date(today.getFullYear(),today.getMonth()+1,0);const mH=hist.filter(h=>h.ts&&h.ts>=mS.getTime()&&h.ts<=mE.getTime()+MS.day&&h.pts>0);const mPts=mH.reduce((a,h)=>a+h.pts,0);const mByM={};mH.forEach(h=>{mByM[h.who]=(mByM[h.who]||{pts:0,n:0,av:h.avatar});mByM[h.who].pts+=h.pts;mByM[h.who].n++;});const mChamp=Object.entries(mByM).sort((a,b)=>b[1].pts-a[1].pts)[0];document.getElementById('monthlySummary').innerHTML=`<div class="card"><div class="card-ttl"><div class="ct-l">🗓️ ${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}</div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:${mChamp?'7':'0'}px;"><div style="background:var(--inp);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:17px;font-weight:900;color:var(--g2)">${mH.length}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Zadań</div></div><div style="background:var(--inp);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:17px;font-weight:900;color:var(--g2)">${mPts}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Punktów</div></div><div style="background:var(--inp);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:17px;font-weight:900;color:var(--g2)">${new Set(mH.map(h=>h.who)).size}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Aktywnych</div></div></div>${mChamp?`<div style="display:flex;align-items:center;gap:7px;background:var(--inp);border-radius:8px;padding:8px;"><div style="font-size:22px">${mChamp[1].av||'🏆'}</div><div><div style="font-size:9px;color:var(--soft);font-weight:700">🏆 Mistrz miesiąca</div><div style="font-size:12px;font-weight:900;color:var(--text);">${mChamp[0]} — ${mChamp[1].pts} pkt</div></div></div>`:''}</div>`;}
+function renderHistory(){document.getElementById('histList').innerHTML=live.history.length?live.history.slice(0,30).map(x=>`<div class="hi"><div class="hi-ico">${x.ico||'✅'}</div><div class="hi-info"><div class="hi-nm">${x.name}</div><div class="hi-who">${x.avatar||''} ${x.who} · ${getAgo(x.ts)}</div></div><div class="hi-pts">${x.pts>0?'+':''}${x.pts}⭐</div></div>`).join(''):'<div class="empty"><div class="big">📭</div><p>Brak historii</p></div>';}
+function updateProgress(){const total=cats.reduce((a,c)=>a+c.chores.length,0);const done=Object.keys(live.done).length;document.getElementById('progFill').style.width=(total>0?Math.round(done/total*100):0)+'%';document.getElementById('progLbl').textContent=`${done}/${total}`;}
 
-/* ══════ THEME ══════ */
-function renderThemeGrid(){
-  document.getElementById('themeGrid').innerHTML=THEMES.map(th=>`<button class="theme-btn ${curTheme===th.id?'sel':''}" onclick="applyTheme('${th.id}')"><span class="t-ico">${th.ico}</span><span class="t-nm">${th.name}</span></button>`).join('');
-}
-window.applyTheme=applyTheme;
+/* ── CATEGORY MGMT ── */
+function renderCategoryMgmt(){document.getElementById('categoryMgmt').innerHTML=cats.map(cat=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span style="font-size:12px;font-weight:700;color:var(--text);">${cat.label} <span style="color:var(--soft);font-size:9px;">(${cat.chores.length})</span></span><div style="display:flex;gap:4px;"><button class="card-act" onclick="openEditCat('${cat.id}')">✏️</button>${cat.editable?`<button class="card-act" style="color:var(--r);background:rgba(232,64,64,.08);" onclick="deleteCat('${cat.id}')">🗑️</button>`:''}</div></div>`).join('');}
+function openCategoryModal(){editCatId=null;document.getElementById('catModalTtl').textContent='📂 Nowa kategoria';document.getElementById('catIco').value='';document.getElementById('catName').value='';document.getElementById('catChores').value='';document.getElementById('catOverlay').classList.add('show');}
+window.openCategoryModal=openCategoryModal;
+function openEditCat(id){editCatId=id;const cat=cats.find(c=>c.id===id);if(!cat)return;document.getElementById('catModalTtl').textContent='✏️ Edytuj kategorię';const parts=cat.label.split(' ');document.getElementById('catIco').value=parts[0]||'';document.getElementById('catName').value=parts.slice(1).join(' ');document.getElementById('catChores').value=cat.chores.map(c=>`${c.ico} ${c.name} | ${c.pts}`).join('\n');document.getElementById('catOverlay').classList.add('show');}
+window.openEditCat=openEditCat;
+function openAddChore(catId){openEditCat(catId);}
+window.openAddChore=openAddChore;
+function openEditChore(e,catId,idx){e.stopPropagation();openEditCat(catId);}
+window.openEditChore=openEditChore;
+function saveCategory(){const ico=document.getElementById('catIco').value.trim()||'📂';const name=document.getElementById('catName').value.trim();if(!name){showToast('⚠️ Wpisz nazwę');return;}const label=`${ico} ${name}`;const lines=document.getElementById('catChores').value.trim().split('\n').filter(l=>l.trim());const chores=lines.map((line,i)=>{const parts=line.split('|');const left=(parts[0]||'').trim();const pts=parseInt(parts[1])||8;const words=left.split(' ');const cico=words[0]||'✅';const cname=words.slice(1).join(' ')||left;return{id:`c_${editCatId||Date.now()}_${i}`,ico:cico,name:cname,desc:'',pts};});if(editCatId){const idx=cats.findIndex(c=>c.id===editCatId);if(idx>=0){cats[idx]={...cats[idx],label,chores};showToast('✅ Zaktualizowano');}}else{cats.push({id:`cat_${Date.now()}`,label,editable:true,chores});showToast('✅ Dodano kategorię');}saveCats();renderChores();renderCategoryMgmt();closeOverlay('catOverlay');}
+window.saveCategory=saveCategory;
+function deleteCat(id){if(!confirm('Usunąć?'))return;cats=cats.filter(c=>c.id!==id);saveCats();renderChores();renderCategoryMgmt();}
+window.deleteCat=deleteCat;
 
-/* ══════ INTERVAL ══════ */
-function renderGlobalIntervalRow(){
-  document.getElementById('globalIntervalRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${reminderInterval===m?'sel':''}" onclick="setGlobalInt(${m})">${m} min</button>`).join('');
-}
+/* ── INTERVAL ── */
+function renderGlobalIntervalRow(){document.getElementById('globalIntervalRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${reminderInterval===m?'sel':''}" onclick="setGlobalInt(${m})">${m} min</button>`).join('');}
 window.setGlobalInt=function(m){reminderInterval=m;renderGlobalIntervalRow();showToast(`⏰ Co ${m} min`);};
 
-/* ══════ NOTIFICATIONS ══════ */
-function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default') Notification.requestPermission();}
-function sendBrowserNotif(title,body){if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>'});}
-function scheduleLocalNotif(n,f,ts){const d=ts-Date.now();if(d>0&&d<172800000) setTimeout(()=>sendBrowserNotif('⏰ Czas na zadanie!',`${f}: ${n}`),d);}
-
-/* ══════ GOOGLE CALENDAR ══════ */
+/* ── GCAL ── */
 function toggleGCal(){
   if(gcalToken){gcalToken=null;document.getElementById('gcalStatus').textContent='Kliknij, aby połączyć';showToast('📅 Odłączono');return;}
-  if(GCAL_CLIENT_ID.includes('WKLEJ')){showToast('⚠️ GCAL_CLIENT_ID jeszcze nie skonfigurowany — wrócimy razem');return;}
-  const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GCAL_CLIENT_ID}&redirect_uri=${encodeURIComponent(location.origin+location.pathname)}&response_type=token&scope=${encodeURIComponent(GCAL_SCOPE)}&prompt=consent`;
+  if(GCAL_CLIENT_ID.includes('WKLEJ')){showToast('⚠️ GCAL_CLIENT_ID nie skonfigurowany — patrz instrukcja poniżej');return;}
+  const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GCAL_CLIENT_ID}&redirect_uri=${encodeURIComponent(location.origin+location.pathname)}&response_type=token&scope=${encodeURIComponent("https://www.googleapis.com/auth/calendar.events")}&prompt=consent`;
   const pop=window.open(url,'gcal','width=500,height=600');
   const t=setInterval(()=>{try{if(pop.closed){clearInterval(t);return;}const h=pop.location.hash;if(h&&h.includes('access_token')){gcalToken=new URLSearchParams(h.slice(1)).get('access_token');pop.close();clearInterval(t);document.getElementById('gcalStatus').textContent='✅ Połączono';showToast('📅 Połączono z Google Calendar!');}}catch(e){}},500);
 }
 window.toggleGCal=toggleGCal;
-async function addToGCal(name,ico,date,time,pts){
-  if(!gcalToken) return;
-  const s=time?`${date}T${time}:00`:`${date}`;
-  const e=time?`${date}T${d2(parseInt(time.split(':')[0]))}:${d2(parseInt(time.split(':')[1]||0)+30)}:00`:`${date}`;
-  await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{method:'POST',headers:{Authorization:`Bearer ${gcalToken}`,'Content-Type':'application/json'},body:JSON.stringify({summary:`${ico} ${name} (+${pts}⭐)`,description:'Domowy Patrol',start:time?{dateTime:s,timeZone:'Europe/Warsaw'}:{date:s},end:time?{dateTime:e,timeZone:'Europe/Warsaw'}:{date:e}})});
-  showToast('📅 Dodano do Google Calendar!');
+async function addToGCal(name,ico,date,time,pts){if(!gcalToken)return;const s=time?`${date}T${time}:00`:`${date}`;const e=time?`${date}T${d2(parseInt(time.split(':')[0]))}:${d2(parseInt(time.split(':')[1]||0)+30)}:00`:`${date}`;await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{method:'POST',headers:{Authorization:`Bearer ${gcalToken}`,'Content-Type':'application/json'},body:JSON.stringify({summary:`${ico} ${name} (+${pts}⭐)`,description:'Domowy Patrol',start:time?{dateTime:s,timeZone:'Europe/Warsaw'}:{date:s},end:time?{dateTime:e,timeZone:'Europe/Warsaw'}:{date:e}})});showToast('📅 Dodano do Google Calendar!');}
+
+function renderGCalInstructions(){
+  document.getElementById('gcalInstructions').innerHTML=`
+    <div class="step"><div class="step-num">1</div><div class="step-text">Wejdź na <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> i zaloguj się tym samym kontem Google co w aplikacji.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Kliknij <strong>Wybierz projekt</strong> → <strong>Nowy projekt</strong> → wpisz nazwę np. <span class="step-code">domowy-patrol</span> → Utwórz.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">W menu po lewej: <strong>APIs & Services</strong> → <strong>Library</strong> → wyszukaj <span class="step-code">Google Calendar API</span> → Włącz.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><strong>APIs & Services</strong> → <strong>OAuth consent screen</strong> → wybierz <strong>External</strong> → wypełnij nazwę aplikacji → Zapisz.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text"><strong>APIs & Services</strong> → <strong>Credentials</strong> → <strong>+ Create Credentials</strong> → <strong>OAuth client ID</strong> → typ: <strong>Web application</strong>.</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-text">W polu <strong>Authorized JavaScript origins</strong> dodaj adres swojej strony Netlify, np. <span class="step-code">https://twoja-nazwa.netlify.app</span></div></div>
+    <div class="step"><div class="step-num">7</div><div class="step-text">Kliknij <strong>Create</strong> → skopiuj <strong>Client ID</strong> (wygląda jak: <span class="step-code">123456789.apps.googleusercontent.com</span>)</div></div>
+    <div class="step"><div class="step-num">8</div><div class="step-text">W kodzie aplikacji znajdź linię: <span class="step-code">const GCAL_CLIENT_ID = "WKLEJ_GOOGLE_CLIENT_ID..."</span> i wklej swój Client ID zamiast tekstu w cudzysłowie.</div></div>
+    <div class="step"><div class="step-num">9</div><div class="step-text">Wgraj zaktualizowany plik na Netlify (przeciągnij i upuść na <a href="https://app.netlify.com" target="_blank">app.netlify.com</a>) i odśwież aplikację.</div></div>
+    <div style="background:var(--gp);border-radius:9px;padding:9px;font-size:11px;font-weight:700;color:var(--g2);margin-top:8px;">✅ Po tych krokach przycisk Google Calendar w aplikacji zacznie działać!</div>`;
 }
 
-/* ══════ MISC ══════ */
+/* ── NOTIFS ── */
+function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default') Notification.requestPermission();}
+function sendBrowserNotif(title,body){if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2272%22 x=%2212%22>🏠</text></svg>'});}
+function scheduleLocalNotif(n,f,ts){const d=ts-Date.now();if(d>0&&d<172800000) setTimeout(()=>sendBrowserNotif('⏰ Czas na zadanie!',`${f}: ${n}`),d);}
+
+/* ── MISC ── */
 function copyCode(){navigator.clipboard.writeText(fCode).then(()=>showToast('📋 Skopiowano: '+fCode));}
 window.copyCode=copyCode;
 function closeOverlay(id){document.getElementById(id).classList.remove('show');}
 window.closeOverlay=closeOverlay;
-async function doSignOut(){if(!confirm('Wylogować?')) return;if(isDemo){exitDemo();return;}await signOut(auth);}
+async function doSignOut(){if(!confirm('Wylogować się?'))return;if(isDemo){exitDemo();return;}await signOut(auth);}
 window.doSignOut=doSignOut;
-let tt;function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600);}
+let tt;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600);}
 window.showToast=showToast;
+
 function goTab(id){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.getElementById('sec-'+id).classList.add('on');
-  const idx={today:0,tasks:1,scores:2,summary:3,more:4}[id];
-  document.querySelectorAll('.tab')[idx]?.classList.add('on');
+  const sec=document.getElementById('sec-'+id);if(!sec) return;
+  sec.classList.add('on');
+  const idx={today:0,tasks:1,scores:2,summary:3,settings:4}[id];
+  if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();}
   if(id==='summary'){renderSummary();renderHistory();}
-  if(id==='more'){renderCategoryMgmt();renderScheduleView();if(myProfile?.role==='parent')renderMaps();}
+  if(id==='settings'){renderCategoryMgmt();renderGCalInstructions();renderThemeGrid();renderWeatherFull();}
+  if(id==='profile'){}
+  if(id==='weather'){renderWeatherFull();}
 }
 window.goTab=goTab;
 </script>
