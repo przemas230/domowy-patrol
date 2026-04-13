@@ -374,7 +374,11 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .t-nm{font-size:8px;font-weight:800;color:var(--text);}
 
 /* ── GCAL FIX BANNER ── */
-
+.gcal-fix{background:linear-gradient(135deg,#ff6b35,#f7c59f);border-radius:var(--rr);padding:12px;margin-bottom:10px;color:#1a1a1a;}
+.gcal-fix-title{font-size:13px;font-weight:900;margin-bottom:5px;}
+.gcal-fix-step{font-size:11px;font-weight:700;margin-bottom:4px;padding-left:16px;position:relative;line-height:1.4;}
+.gcal-fix-step::before{content:'→';position:absolute;left:0;font-weight:900;}
+.gcal-fix code{background:rgba(0,0,0,.1);border-radius:4px;padding:1px 5px;font-size:10px;font-weight:800;}
 
 /* ── GCAL CARD ── */
 .gcal-card{background:linear-gradient(135deg,#1a73e8,#4285f4);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;cursor:pointer;}
@@ -584,22 +588,6 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 .ct-timer{font-size:11px;font-weight:900;color:var(--y);}
 .ct-done-btn{padding:5px 10px;border-radius:8px;border:none;background:rgba(255,255,255,.2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
 .ct-done-btn.done-state{background:rgba(255,255,255,.8);color:#7c3aed;}
-
-/* ── WEATHER LOCATIONS LIST ── */
-.wloc-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);margin-bottom:5px;cursor:pointer;}
-.wloc-item.active{border-color:var(--g2);background:var(--gp);}
-.wloc-name{flex:1;font-size:12px;font-weight:700;color:var(--text);}
-.wloc-del{font-size:12px;cursor:pointer;color:var(--soft);padding:2px 5px;}
-.wloc-del:hover{color:var(--r);}
-
-/* ── IMPORTANT EVENTS ── */
-.imp-item{background:var(--card);border-radius:10px;padding:10px;margin-bottom:7px;border-left:4px solid var(--r);box-shadow:var(--sh);}
-.imp-item.done{border-left-color:var(--g2);opacity:.7;}
-.imp-title{font-size:13px;font-weight:800;color:var(--text);}
-.imp-meta{font-size:10px;color:var(--soft);margin-top:3px;}
-.imp-notif-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
-.imp-nb{padding:3px 8px;border-radius:20px;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;border:2px solid var(--border);background:var(--inp);color:var(--soft);}
-.imp-nb.on{background:var(--r);border-color:var(--r);color:#fff;}
 </style>
 </head>
 <body>
@@ -768,11 +756,30 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   <div class="sec" id="sec-settings">
     <div class="sec-ttl">⚙️ Opcje</div>
 
+    <!-- GCal fix banner -->
+    <div class="gcal-fix" id="gcalFixBanner" style="display:none;">
+      <div class="gcal-fix-title">🔧 Napraw błąd "unauthorized" Google Calendar</div>
+      <div class="gcal-fix-step">Wejdź na <strong>console.cloud.google.com</strong> → Twój projekt → <strong>APIs & Services → Credentials</strong></div>
+      <div class="gcal-fix-step">Kliknij swój OAuth Client ID → sekcja <strong>"Authorized JavaScript origins"</strong></div>
+      <div class="gcal-fix-step">Dodaj dokładny adres swojej strony, np. <code id="myDomain"></code></div>
+      <div class="gcal-fix-step">Zapisz i odczekaj 5 minut (Google potrzebuje czasu na propagację)</div>
+      <div class="gcal-fix-step">Upewnij się że Client ID w kodzie kończy się na <code>.apps.googleusercontent.com</code></div>
+      <button onclick="document.getElementById('gcalFixBanner').style.display='none'" style="margin-top:7px;padding:5px 12px;border-radius:7px;border:none;background:rgba(0,0,0,.15);cursor:pointer;font-size:10px;font-weight:800;">Ukryj tę wskazówkę</button>
+    </div>
 
     <div class="gcal-card" onclick="toggleGCal()">
       <div class="gcal-row"><div class="gcal-ico">📅</div><div><div class="gcal-ttl">Google Calendar</div><div class="gcal-sub">Synchronizuj zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus">Kliknij, aby połączyć</div></div></div>
     </div>
-
+    <div class="card" style="border:2px solid var(--y);">
+      <div class="card-ttl">🔧 Błąd redirect_uri? Zrób to raz:</div>
+      <div style="font-size:11px;color:var(--text);line-height:1.7;margin-bottom:9px;">
+        <b>1.</b> Wejdź: <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--b);">console.cloud.google.com/apis/credentials</a><br>
+        <b>2.</b> Kliknij swój OAuth 2.0 Client ID<br>
+        <b>3.</b> Sekcja <b>"Authorized redirect URIs"</b> (nie JavaScript origins!)<br>
+        <b>4.</b> Kliknij przycisk niżej aby skopiować swój URI:
+      </div>
+      <button onclick="showGCalSetupInfo()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">📋 Kopiuj mój redirect URI i pokaż instrukcję</button>
+    </div>
 
     <div class="card">
       <div class="card-ttl">🎨 Motyw</div>
@@ -797,13 +804,12 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div id="categoryMgmt"></div>
     </div>
     <div class="card">
-      <div class="card-ttl">🌤️ Lokalizacje pogody <span style="font-size:10px;color:var(--soft);font-weight:600;">(max 3)</span></div>
-      <div id="weatherLocsList" style="margin-bottom:9px;"></div>
+      <div class="card-ttl">🌤️ Lokalizacja pogody</div>
       <div class="weather-loc-row">
-        <input id="weatherCityInput" placeholder="Dodaj miasto, np. Kraków">
-        <button onclick="addWeatherLoc()" style="white-space:nowrap;">➕ Dodaj</button>
+        <input id="weatherCityInput" placeholder="np. Warszawa, Polska">
+        <button onclick="fetchWeatherByCity()">🔍</button>
       </div>
-      <div style="font-size:10px;color:var(--soft);margin-top:6px;">lub <span style="cursor:pointer;color:var(--b);font-weight:800;" onclick="addWeatherLocGPS()">📍 użyj GPS</span></div>
+      <div style="font-size:10px;color:var(--soft);margin-top:5px;">lub <span style="cursor:pointer;color:var(--b);font-weight:800;" onclick="fetchWeatherGPS()">📍 użyj GPS</span></div>
     </div>
   </div>
 
@@ -915,19 +921,6 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="f-lbl">Kiedy zacząć</div>
     <input class="f-inp" id="ctStartTime" type="time">
     <button class="modal-btn" onclick="submitChildTask()">✅ Wyślij zadanie</button>
-  </div>
-</div>
-
-<!-- IMPORTANT EVENT MODAL -->
-<div class="overlay" id="impOverlay">
-  <div class="modal">
-    <div class="modal-ttl">📌 Ważna sprawa <span class="modal-close" onclick="closeOverlay('impOverlay')">×</span></div>
-    <div class="f-lbl">Opis</div>
-    <input class="f-inp" id="impText" placeholder="np. Wizyta u lekarza, Termin szkolny">
-    <div class="f-lbl">Data (opcja)</div>
-    <input class="f-inp" id="impDate" type="date">
-    <div style="font-size:11px;color:var(--soft);margin-top:8px;">Przypomnienia możesz ustawić po dodaniu klikając przyciski dni.</div>
-    <button class="modal-btn" onclick="saveImportant()">📌 Dodaj</button>
   </div>
 </div>
 
@@ -1069,99 +1062,34 @@ const ml=document.createElement("link");ml.rel="manifest";ml.href=URL.createObje
 /* ── I18N ── */
 const LANGS=[['pl','🇵🇱 PL'],['en','🇬🇧 EN'],['de','🇩🇪 DE'],['fr','🇫🇷 FR'],['pt','🇧🇷 PT'],['zh','🇨🇳 中']];
 let curLang=localStorage.getItem('dp-lang')||'pl';
-
-// ── Pełne tłumaczenia ──
-const LANG_STRINGS={
-  pl:{
-    btnGoogle:'Zaloguj się przez Google',spDiv:'lub wypróbuj demo',
-    demoParent:'Widok Rodzica',demoChild:'Widok Dziecka',
-    today:'Dziś',tasks:'Zlecone',family:'Rodzina',scores:'Wyniki',settings:'Opcje',
-    chatLbl:'💬 Czat',shopLbl:'🛒 Zakupy',impLbl:'📌 Ważne',
-    notesLbl:'📝 Notatki',wishLbl:'🎁 Prezenty',evLbl:'📅 Wydarzenia',
-  },
-  en:{
-    btnGoogle:'Sign in with Google',spDiv:'or try demo',
-    demoParent:'Parent View',demoChild:'Child View',
-    today:'Today',tasks:'Tasks',family:'Family',scores:'Scores',settings:'Options',
-    chatLbl:'💬 Chat',shopLbl:'🛒 Shopping',impLbl:'📌 Important',
-    notesLbl:'📝 Notes',wishLbl:'🎁 Gifts',evLbl:'📅 Events',
-  },
-  de:{
-    btnGoogle:'Mit Google anmelden',spDiv:'oder Demo testen',
-    demoParent:'Eltern-Ansicht',demoChild:'Kind-Ansicht',
-    today:'Heute',tasks:'Aufgaben',family:'Familie',scores:'Punkte',settings:'Optionen',
-    chatLbl:'💬 Chat',shopLbl:'🛒 Einkauf',impLbl:'📌 Wichtig',
-    notesLbl:'📝 Notizen',wishLbl:'🎁 Geschenke',evLbl:'📅 Termine',
-  },
-  fr:{
-    btnGoogle:'Se connecter avec Google',spDiv:'ou essayez la démo',
-    demoParent:'Vue Parent',demoChild:'Vue Enfant',
-    today:"Aujourd'hui",tasks:'Tâches',family:'Famille',scores:'Scores',settings:'Options',
-    chatLbl:'💬 Chat',shopLbl:'🛒 Courses',impLbl:'📌 Important',
-    notesLbl:'📝 Notes',wishLbl:'🎁 Cadeaux',evLbl:'📅 Événements',
-  },
-  pt:{
-    btnGoogle:'Entrar com Google',spDiv:'ou experimente a demo',
-    demoParent:'Visão Pais',demoChild:'Visão Filho',
-    today:'Hoje',tasks:'Tarefas',family:'Família',scores:'Pontos',settings:'Opções',
-    chatLbl:'💬 Chat',shopLbl:'🛒 Compras',impLbl:'📌 Importante',
-    notesLbl:'📝 Notas',wishLbl:'🎁 Presentes',evLbl:'📅 Eventos',
-  },
-  zh:{
-    btnGoogle:'使用谷歌登录',spDiv:'或试用演示',
-    demoParent:'家长视图',demoChild:'孩子视图',
-    today:'今天',tasks:'任务',family:'家庭',scores:'积分',settings:'设置',
-    chatLbl:'💬 聊天',shopLbl:'🛒 购物',impLbl:'📌 重要',
-    notesLbl:'📝 笔记',wishLbl:'🎁 礼物',evLbl:'📅 活动',
-  },
+const langRow=document.getElementById('langRow');
+LANGS.forEach(([c,l])=>{const b=document.createElement('button');b.className='lang-btn'+(c===curLang?' sel':'');b.textContent=l;b.onclick=()=>{curLang=c;localStorage.setItem('dp-lang',c);document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};langRow.appendChild(b);});
+// Rozszerzenie: applyLang() tłumaczy zakładki po zmianie języka
+const LANG_TAB_NAMES={
+  pl:{today:'Dziś',tasks:'Zlecone',family:'Rodzina',scores:'Wyniki',settings:'Opcje'},
+  en:{today:'Today',tasks:'Tasks',family:'Family',scores:'Scores',settings:'Options'},
+  de:{today:'Heute',tasks:'Aufgaben',family:'Familie',scores:'Punkte',settings:'Optionen'},
+  fr:{today:"Auj.",tasks:'Tâches',family:'Famille',scores:'Scores',settings:'Options'},
+  pt:{today:'Hoje',tasks:'Tarefas',family:'Família',scores:'Pontos',settings:'Opções'},
+  zh:{today:'今天',tasks:'任务',family:'家庭',scores:'积分',settings:'选项'},
 };
-
 function applyLang(){
-  const L=LANG_STRINGS[curLang]||LANG_STRINGS.pl;
-  const $=id=>document.getElementById(id);
-  // Splash
-  if($('btnGoogle')) $('btnGoogle').textContent=L.btnGoogle;
-  if($('spDivider')) $('spDivider').textContent=L.spDiv;
-  if($('demoBtnP')) $('demoBtnP').textContent=L.demoParent;
-  if($('demoBtnC')) $('demoBtnC').textContent=L.demoChild;
-  // Zakładki główne (gdy aplikacja widoczna)
-  const tabs=document.querySelectorAll('.tab');
-  const tabKeys=['today','tasks','family','scores','settings'];
-  tabs.forEach((tab,i)=>{
-    const sp=tab.querySelector('span:not(.ti):not(.ndot)');
-    if(sp&&tabKeys[i]) sp.textContent=L[tabKeys[i]];
-  });
-  // Zakładki rodziny
-  const famTabKeys=['chatLbl','shopLbl','impLbl','notesLbl','wishLbl','evLbl'];
-  document.querySelectorAll('.note-tab').forEach((btn,i)=>{
-    if(famTabKeys[i]&&L[famTabKeys[i]]){
-      // Zachowaj ikonę (pierwsze słowo)
-      const parts=btn.textContent.split(' ');
-      if(parts.length>=2) btn.textContent=parts[0]+' '+L[famTabKeys[i]].replace(/^[^ ]+ /,'');
-    }
-  });
-  // Oznacz aktywny przycisk języka
+  const L=LANG_TAB_NAMES[curLang]||LANG_TAB_NAMES.pl;
+  const tabSpans=document.querySelectorAll('.tab span:not(.ti):not(.ndot)');
+  const names=[L.today,L.tasks,L.family,L.scores,L.settings];
+  tabSpans.forEach((el,i)=>{if(names[i])el.textContent=names[i];});
   document.querySelectorAll('.lang-btn').forEach(b=>{
-    b.classList.toggle('sel',b.dataset.lang===curLang);
+    // find which lang this button is
+    const txt=b.textContent;
+    const found=LANGS.find(([code,label])=>label===txt);
+    if(found) b.className='lang-btn'+(found[0]===curLang?' sel':'');
   });
 }
-
-// Buduj przyciski języków
-const langRow=document.getElementById('langRow');
-LANGS.forEach(([code,label])=>{
-  const b=document.createElement('button');
-  b.className='lang-btn'+(code===curLang?' sel':'');
-  b.textContent=label;
-  b.dataset.lang=code;
-  b.onclick=()=>{
-    curLang=code;
-    localStorage.setItem('dp-lang',code);
-    applyLang();
-  };
-  langRow.appendChild(b);
+// Re-apply on lang change — patch existing onclick
+document.querySelectorAll('.lang-btn').forEach(b=>{
+  const orig=b.onclick;
+  b.onclick=()=>{orig&&orig.call(b);applyLang();};
 });
-// Zastosuj od razu przy wczytaniu strony
-applyLang();
 
 /* ── THEMES ── */
 const THEMES=[{id:'light',ico:'☀️',nm:'Jasny'},{id:'dark',ico:'🌙',nm:'Ciemny'},{id:'win',ico:'🪟',nm:'Win'},{id:'android',ico:'🤖',nm:'Droid'},{id:'ios',ico:'🍎',nm:'iOS'}];
@@ -1294,15 +1222,7 @@ function applyDesktopMode(){
 window.addEventListener('resize',applyDesktopMode);
 let selectedDay=null;
 let editCatId=null;
-let weatherCache=null;
-// Multi-lokalizacja pogody (max 3) — przechowywana w localStorage
-let weatherLocs=JSON.parse(localStorage.getItem('dp-weather-locs')||'null')||(()=>{
-  const saved=localStorage.getItem('dp-weather-city');
-  return saved?[{name:saved,active:true}]:[];
-})();
-let weatherCity=weatherLocs.find(l=>l.active)?.name||weatherLocs[0]?.name||'';
-function saveWeatherLocs(){localStorage.setItem('dp-weather-locs',JSON.stringify(weatherLocs));}
-function getActiveWeatherLoc(){return weatherLocs.find(l=>l.active)||weatherLocs[0]||null;}
+let weatherCache=null,weatherCity=localStorage.getItem('dp-weather-city')||'';
 let pendingFamilyCode='';
 let inviteFamilyCode='';
 let activeFamilyTab='chat';
@@ -1544,7 +1464,6 @@ function launchApp(){
   }
 
   document.getElementById('chipNm').textContent=myProfile.name;
-  applyLang(); // odśwież język po zalogowaniu
   document.getElementById('chipRole').textContent=myProfile.role==='parent'?'👑 Rodzic':'🧒 Dziecko';
   document.getElementById('appDt').textContent=`${DAY_NAMES[today.getDay()]}, ${today.getDate()} ${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}`;
   document.getElementById('fCodeDisplay').textContent=fCode;
@@ -1585,15 +1504,14 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChat();});
     onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);});
     onValue(ref(db,`families/${fCode}/wishes`),s=>{const r=s.val()||{};live.wishes=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));if(activeFamilyTab==='wishes')renderWishes();});
-    onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();scheduleBdayNotifications();});
+    onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
     onValue(ref(db,`families/${fCode}/events`),s=>{const r=s.val()||{};live.events=Object.values(r).sort((a,b)=>a.date>b.date?1:-1);renderEventsTopPanel();if(activeFamilyTab==='events')renderEventsTab();});
     if(myProfile.role==='child') startLocationSharing();
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   }
-  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();
-  scheduleBdayNotifications();applyDesktopMode();requestNotifPermission();
+  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
@@ -1630,8 +1548,7 @@ function renderFamilyContent(){
   else if(activeFamilyTab==='shopping') renderShoppingWeek();
   else if(activeFamilyTab==='misc') renderStickyNotes();
   else if(activeFamilyTab==='events') renderEventsTab();
-  else if(activeFamilyTab==='important') renderImportantEvents();
-  else renderNotes(activeFamilyTab);
+  else renderNotes(activeFamilyTab); // 'important' uses original
 }
 
 /* ── CHAT ── */
@@ -1822,14 +1739,7 @@ async function saveBday(){
 window.saveBday=saveBday;
 
 /* ── WEATHER ── */
-async function fetchWeather(){
-  // Odśwież z aktywnej lokalizacji
-  const active=getActiveWeatherLoc();
-  if(active){weatherCity=active.name;return fetchWeatherByCity();}
-  if(navigator.geolocation) navigator.geolocation.getCurrentPosition(
-    async p=>await fetchWeatherCoords(p.coords.latitude,p.coords.longitude),
-    ()=>{},{timeout:8000});
-}
+async function fetchWeather(){if(weatherCity)return fetchWeatherByCity();if(navigator.geolocation) navigator.geolocation.getCurrentPosition(async p=>await fetchWeatherCoords(p.coords.latitude,p.coords.longitude),()=>{},{timeout:8000});}
 async function fetchWeatherGPS(){navigator.geolocation.getCurrentPosition(async p=>await fetchWeatherCoords(p.coords.latitude,p.coords.longitude),()=>showToast('❌ Brak GPS'));}
 window.fetchWeatherGPS=fetchWeatherGPS;
 async function fetchWeatherByCity(){const city=document.getElementById('weatherCityInput')?.value?.trim()||weatherCity;if(!city) return;weatherCity=city;localStorage.setItem('dp-weather-city',city);try{const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);const gd=await geo.json();if(!gd.results?.length){showToast('❌ Nie znaleziono miasta');return;}await fetchWeatherCoords(gd.results[0].latitude,gd.results[0].longitude,city);}catch(e){showToast('❌ Błąd pogody');}}
@@ -2458,20 +2368,6 @@ function renderWishesV2(){
   }
   document.getElementById('familyTabContent').innerHTML=`
     <div class="gp-tabs">${tabs}</div>
-      \${(()=>{
-        const be=live.birthdays[activeGiftPerson];
-        if(!be?.date) return '';
-        const n2=new Date();n2.setHours(0,0,0,0);
-        const bd2=new Date(be.date);
-        const nx=new Date(n2.getFullYear(),bd2.getMonth(),bd2.getDate());
-        if(nx<n2) nx.setFullYear(n2.getFullYear()+1);
-        const dl2=Math.round((nx-n2)/86400000);
-        if(dl2>30) return '';
-        const col=dl2===0?'var(--r)':dl2<=7?'var(--o)':'var(--b)';
-        const msg=dl2===0?'🎂 Dziś urodziny!':dl2===1?'🎂 Jutro!':dl2<=7?`🎂 Za \${dl2} dni!`:`🎂 Za \${dl2} dni`;
-        const who=isMyList?'Twoje urodziny 🎉':('Kup prezent dla '+(live.members[activeGiftPerson]?.name||'?')+'!');
-        return`<div style="background:\${col};color:#fff;border-radius:9px;padding:8px 11px;margin-bottom:9px;font-size:12px;font-weight:800;">\${msg} \${who}</div>`;
-      })()}
     <div class="card">
       <div style="display:flex;gap:6px;margin-bottom:9px;flex-wrap:wrap;">
         <button class="card-act" onclick="openWishForPerson()">➕ Dodaj życzenie</button>
@@ -2875,236 +2771,6 @@ window.markChildTaskDone=markChildTaskDone;
 /* ── Aktualizuj panele co minutę ── */
 setInterval(()=>{renderReturnSchedulePanel();renderChildTasksPanel();},60000);
 
-
-/* ── WEATHER MULTI-LOCATION ── */
-function renderWeatherLocsList(){
-  const el=document.getElementById('weatherLocsList');if(!el)return;
-  if(!weatherLocs.length){
-    el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:4px 0;">Brak zapisanych lokalizacji. Dodaj miasto poniżej.</div>';
-    return;
-  }
-  el.innerHTML=weatherLocs.map((loc,i)=>`
-    <div class="wloc-item ${loc.active?'active':''}" onclick="setActiveWeatherLoc(${i})">
-      <span style="font-size:14px;">${loc.active?'📍':'📌'}</span>
-      <span class="wloc-name">${loc.name}</span>
-      ${loc.active?'<span style="font-size:10px;font-weight:800;color:var(--g2);">aktywna</span>':''}
-      <span class="wloc-del" onclick="removeWeatherLoc(event,${i})">✕</span>
-    </div>`).join('');
-}
-function setActiveWeatherLoc(i){
-  weatherLocs.forEach((l,j)=>l.active=j===i);
-  weatherCity=weatherLocs[i].name;
-  saveWeatherLocs();
-  renderWeatherLocsList();
-  fetchWeatherByCity();
-  showToast('📍 Lokalizacja: '+weatherLocs[i].name);
-}
-window.setActiveWeatherLoc=setActiveWeatherLoc;
-function removeWeatherLoc(e,i){
-  e.stopPropagation();
-  weatherLocs.splice(i,1);
-  if(weatherLocs.length&&!weatherLocs.find(l=>l.active)) weatherLocs[0].active=true;
-  weatherCity=weatherLocs.find(l=>l.active)?.name||'';
-  saveWeatherLocs();
-  renderWeatherLocsList();
-  if(weatherCity) fetchWeatherByCity(); else document.getElementById('weatherStrip').style.display='none';
-}
-window.removeWeatherLoc=removeWeatherLoc;
-function addWeatherLoc(){
-  const inp=document.getElementById('weatherCityInput');
-  const name=(inp?.value||'').trim();
-  if(!name){showToast('⚠️ Wpisz nazwę miasta');return;}
-  if(weatherLocs.length>=3){showToast('⚠️ Max 3 lokalizacje');return;}
-  if(weatherLocs.find(l=>l.name.toLowerCase()===name.toLowerCase())){showToast('⚠️ Już dodane');return;}
-  const wasEmpty=weatherLocs.length===0;
-  weatherLocs.push({name,active:wasEmpty});
-  if(wasEmpty) weatherCity=name;
-  saveWeatherLocs();
-  if(inp) inp.value='';
-  renderWeatherLocsList();
-  // Pobierz pogodę dla nowej lokalizacji (dla pierwszej ustaw aktywną)
-  if(wasEmpty){fetchWeatherByCity();}
-  showToast('✅ Dodano lokalizację: '+name);
-}
-window.addWeatherLoc=addWeatherLoc;
-function addWeatherLocGPS(){
-  if(!navigator.geolocation){showToast('❌ Brak GPS');return;}
-  showToast('📍 Szukam lokalizacji...');
-  navigator.geolocation.getCurrentPosition(async pos=>{
-    try{
-      const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-      const d=await r.json();
-      const city=d.address?.city||d.address?.town||d.address?.village||'GPS';
-      const inp=document.getElementById('weatherCityInput');
-      if(inp) inp.value=city;
-      addWeatherLoc();
-    }catch(e){
-      // Jeśli reverse geocoding nie zadziała, użyj koordynatów
-      await fetchWeatherCoords(pos.coords.latitude,pos.coords.longitude,'GPS');
-      showToast('📍 Lokalizacja GPS dodana');
-    }
-  },()=>showToast('❌ Brak GPS'));
-}
-window.addWeatherLocGPS=addWeatherLocGPS;
-
-/* ── WINDOW EXPORTS (brakujące) ── */
-window.setDM=window.setDesktopMode; // alias
-window.renderChatV2=renderChatV2;
-window.renderShoppingWeek=renderShoppingWeek;
-window.renderStickyNotes=renderStickyNotes;
-window.renderEventsTab=renderEventsTab;
-window.renderWishesV2=renderWishesV2;
-window.applyDesktopMode=applyDesktopMode;
-window.renderDistancePanel=renderDistancePanel;
-window.renderReturnSchedulePanel=renderReturnSchedulePanel;
-window.renderChildTasksPanel=renderChildTasksPanel;
-window.applyLang=applyLang;
-
-
-/* ── POWIADOMIENIA URODZINOWE (harmonogram) ── */
-// Domyślny harmonogram: 30, 20, 10, 5 dni przed i codziennie od 5 dni
-let bdayNotifSchedule=JSON.parse(localStorage.getItem('dp-bday-notif')||'[30,20,10,5,4,3,2,1]');
-
-function scheduleBdayNotifications(){
-  // Wywoływana przy starcie i gdy birthdays się zmieniają
-  const bdays=Object.entries(live.birthdays||{});
-  const myUid=getMyUid();
-  bdays.forEach(([uid,b])=>{
-    if(!b.date) return;
-    const now=new Date(); now.setHours(0,0,0,0);
-    const bd=new Date(b.date);
-    // Znajdź następne urodziny (w tym lub przyszłym roku)
-    const next=new Date(now.getFullYear(),bd.getMonth(),bd.getDate());
-    if(next<now) next.setFullYear(now.getFullYear()+1);
-    const daysLeft=Math.round((next-now)/86400000);
-    const name=b.name||live.members[uid]?.name||'?';
-    // Sprawdź czy ten dzień jest na liście
-    if(bdayNotifSchedule.includes(daysLeft)){
-      const msg=daysLeft===0?`🎂 Dziś urodziny: ${name}!`
-        :daysLeft===1?`🎂 Jutro urodziny: ${name}!`
-        :`🎂 Za ${daysLeft} dni urodziny: ${name}`;
-      // Zaplanuj na jutro rano 9:00
-      const notifTime=new Date(now);
-      notifTime.setHours(9,0,0,0);
-      const delay=notifTime-Date.now();
-      if(delay>0&&delay<86400000*2){
-        setTimeout(()=>{
-          sendBrowserNotif('🎂 Urodziny!',msg);
-          sendPersistentNotif('🎂 Urodziny!',msg,{tag:'dp-bday-'+uid+'-'+daysLeft,persist:false});
-        }, delay>0?delay:1000);
-      }
-    }
-  });
-}
-
-function renderBdayNotifSettings(){
-  const el=document.getElementById('bdayNotifSettings');if(!el)return;
-  const opts=[30,20,10,7,5,4,3,2,1];
-  el.innerHTML=`<div style="font-size:11px;color:var(--soft);margin-bottom:7px;">Kiedy przypominać o urodzinach (dni przed):</div>`+
-    `<div style="display:flex;flex-wrap:wrap;gap:5px;">`+
-    opts.map(d=>{
-      const on=bdayNotifSchedule.includes(d);
-      return`<button onclick="toggleBdayNotif(${d})" style="padding:4px 10px;border-radius:20px;border:2px solid ${on?'var(--g2)':'var(--border)'};background:${on?'var(--gp)':'var(--inp)'};color:${on?'var(--g2)':'var(--soft)'};font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">${d}d</button>`;
-    }).join('')+`</div>`;
-}
-function toggleBdayNotif(days){
-  const idx=bdayNotifSchedule.indexOf(days);
-  if(idx>=0) bdayNotifSchedule.splice(idx,1); else bdayNotifSchedule.push(days);
-  bdayNotifSchedule.sort((a,b)=>b-a);
-  localStorage.setItem('dp-bday-notif',JSON.stringify(bdayNotifSchedule));
-  renderBdayNotifSettings();
-  showToast(bdayNotifSchedule.includes(days)?`✅ Dodano ${days} dni`:`❌ Usunięto ${days} dni`);
-}
-window.toggleBdayNotif=toggleBdayNotif;
-
-
-/* ── WAŻNE ZDARZENIA z harmonogramem powiadomień ── */
-function renderImportantEvents(){
-  const el=document.getElementById('familyTabContent');if(!el)return;
-  const notes=(live.notes['important']||[]);
-  let html=`<div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;">
-      <div style="font-size:12px;font-weight:700;color:var(--soft);">Ważne sprawy z przypomnieniami</div>
-      <button class="card-act" onclick="openImpModal()">➕ Dodaj</button>
-    </div>`;
-  if(!notes.length) html+=`<div class="empty"><div class="big">📌</div><p>Brak ważnych spraw. Dodaj pierwszą!</p></div>`;
-  notes.forEach(n=>{
-    const isDone=!!n.checked;
-    const notifDays=n.notifDays||[];
-    const dayOpts=[30,14,7,3,1,0];
-    const notifRow=dayOpts.map(d=>{
-      const on=notifDays.includes(d);
-      const lbl=d===0?'W dzień':'−'+d+'d';
-      return`<button class="imp-nb ${on?'on':''}" onclick="toggleImpNotif('${n.id}',${d})">${lbl}</button>`;
-    }).join('');
-    html+=`<div class="imp-item ${isDone?'done':''}">
-      <div style="display:flex;align-items:flex-start;gap:8px;">
-        <div class="note-cb ${isDone?'checked':''}" onclick="toggleNote('important','${n.id}')" style="margin-top:2px;">${isDone?'✓':''}</div>
-        <div style="flex:1;">
-          <div class="imp-title">${n.text}</div>
-          <div class="imp-meta">${n.date?'📅 '+n.date:''}${n.who?' · '+n.who:''}</div>
-          <div class="imp-notif-row">${notifRow}</div>
-        </div>
-        <div onclick="deleteNote('important','${n.id}')" style="font-size:12px;cursor:pointer;color:var(--soft);">✕</div>
-      </div>
-    </div>`;
-  });
-  html+=`</div>`;
-  el.innerHTML=html;
-}
-window.renderImportantEvents=renderImportantEvents;
-
-function openImpModal(){
-  document.getElementById('impOverlay').classList.add('show');
-}
-window.openImpModal=openImpModal;
-
-async function saveImportant(){
-  const text=document.getElementById('impText')?.value.trim();
-  if(!text){showToast('⚠️ Wpisz treść');return;}
-  const date=document.getElementById('impDate')?.value||'';
-  const note={id:'i'+Date.now(),text,date,checked:false,who:myProfile.name,notifDays:[7,1],ts:Date.now()};
-  if(!live.notes.important) live.notes.important=[];
-  live.notes.important.push(note);
-  if(!isDemo) await set(ref(db,`families/${fCode}/notes/important`),live.notes.important);
-  // Zaplanuj powiadomienia
-  scheduleImportantNotifs(note);
-  showToast('📌 Dodano!');
-  closeOverlay('impOverlay');
-  document.getElementById('impText').value='';
-  renderImportantEvents();
-}
-window.saveImportant=saveImportant;
-
-async function toggleImpNotif(id,days){
-  const arr=live.notes.important||[];
-  const n=arr.find(x=>x.id===id);if(!n)return;
-  if(!n.notifDays) n.notifDays=[];
-  const idx=n.notifDays.indexOf(days);
-  if(idx>=0) n.notifDays.splice(idx,1); else n.notifDays.push(days);
-  if(!isDemo) await set(ref(db,`families/${fCode}/notes/important`),arr);
-  else live.notes.important=arr;
-  scheduleImportantNotifs(n);
-  renderImportantEvents();
-}
-window.toggleImpNotif=toggleImpNotif;
-
-function scheduleImportantNotifs(note){
-  if(!note.date||!note.notifDays?.length) return;
-  const eventDate=new Date(note.date); eventDate.setHours(9,0,0,0);
-  note.notifDays.forEach(d=>{
-    const notifDate=new Date(eventDate.getTime()-d*86400000);
-    const delay=notifDate.getTime()-Date.now();
-    if(delay>0&&delay<30*86400000){
-      setTimeout(()=>{
-        const msg=d===0?`📌 Dziś: ${note.text}`:`📌 Za ${d} dni: ${note.text}`;
-        sendBrowserNotif('📌 Ważna sprawa',msg);
-        sendPersistentNotif('📌 Ważna sprawa',msg,{tag:'dp-imp-'+note.id+'-'+d,persist:false});
-      },delay);
-    }
-  });
-}
-
 /* ── MISC ── */
 function closeOverlay(id){document.getElementById(id).classList.remove('show');}
 window.closeOverlay=closeOverlay;
@@ -3119,7 +2785,7 @@ function goTab(id){
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();}
   if(id==='family'){renderFamilyTabs();}
-  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();;renderChoreVisSettings();;renderWeatherLocsList();;renderBdayNotifSettings();}
+  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();;renderChoreVisSettings();}
   if(id==='weather'){renderWeatherFull();}
 }
 window.goTab=goTab;
