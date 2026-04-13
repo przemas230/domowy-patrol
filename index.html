@@ -540,50 +540,39 @@ select.f-inp{cursor:pointer;}
 .wloc-name{flex:1;font-size:12px;font-weight:700;color:var(--text);}
 .wloc-active-lbl{font-size:9px;font-weight:800;color:var(--g2);}
 
-/* ── DESKTOP VIEW ── */
+/* ── DESKTOP MODE ── */
 body.dp-desktop{max-width:900px;}
 body.dp-desktop .compact-grid{grid-template-columns:repeat(6,1fr);}
-body.dp-desktop .sec{padding:14px 16px;}
-body.dp-desktop .modal{border-radius:14px;max-width:440px;margin:auto;}
 body.dp-desktop .overlay{align-items:center;}
-.vm-bar{display:flex;gap:4px;margin-left:auto;margin-right:8px;}
-.vm-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+body.dp-desktop .modal{border-radius:14px;max-width:440px;margin:auto;}
+.vm-bar{display:flex;gap:3px;margin-left:auto;margin-right:6px;}
+.vm-btn{width:26px;height:26px;border-radius:6px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .vm-btn.sel{background:rgba(255,255,255,.9);color:#1a3a0a;}
 
 /* ── DISTANCE PANEL ── */
-.dist-panel{background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
-.dist-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;}
-.dist-row{display:flex;align-items:center;gap:8px;padding:6px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:5px;}
+.dist-card{background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
+.dist-row{display:flex;align-items:center;gap:8px;padding:6px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:4px;}
 .dist-row:last-child{margin-bottom:0;}
-.dist-av{font-size:20px;}
-.dist-info{flex:1;}
-.dist-nm{font-size:12px;font-weight:800;}
+.dist-info{flex:1;}.dist-nm{font-size:12px;font-weight:800;}
 .dist-sub{font-size:9px;color:rgba(255,255,255,.7);margin-top:1px;}
 .dist-val{font-size:13px;font-weight:900;}
 .dist-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
 /* ── RETURN SCHEDULE ── */
 .rs-card{background:linear-gradient(135deg,#0f4c81,#1a73e8);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
-.rs-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;}
-.rs-row{display:flex;align-items:center;gap:8px;padding:7px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:5px;}
+.rs-row{display:flex;align-items:center;gap:8px;padding:7px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:4px;}
 .rs-row:last-child{margin-bottom:0;}
-.rs-info{flex:1;}
-.rs-time{font-size:12px;font-weight:800;}
-.rs-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;}
-.rs-btn{padding:4px 9px;border-radius:7px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
+.rs-info{flex:1;}.rs-time{font-size:12px;font-weight:800;}.rs-sub{font-size:9px;color:rgba(255,255,255,.7);margin-top:1px;}
+.rs-btn{padding:4px 8px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
 /* ── CHILD TASKS ── */
 .ct-card{background:linear-gradient(135deg,#7c3aed,#a855f7);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
-.ct-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;}
-.ct-row{display:flex;align-items:center;gap:8px;padding:8px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:5px;}
+.ct-row{display:flex;align-items:center;gap:8px;padding:7px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:4px;}
 .ct-row:last-child{margin-bottom:0;}
-.ct-ico{font-size:22px;}
-.ct-info{flex:1;}
-.ct-nm{font-size:12px;font-weight:800;}
-.ct-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;}
+.ct-ico{font-size:20px;}.ct-info{flex:1;}.ct-nm{font-size:12px;font-weight:800;}.ct-sub{font-size:9px;color:rgba(255,255,255,.7);margin-top:1px;}
 .ct-prog{height:4px;background:rgba(255,255,255,.2);border-radius:99px;margin-top:4px;overflow:hidden;}
-.ct-prog-fill{height:100%;border-radius:99px;transition:width 1s;}
-.ct-done-btn{padding:5px 10px;border-radius:8px;border:none;background:rgba(255,255,255,.2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
-.ct-done-btn.done{background:rgba(255,255,255,.85);color:#7c3aed;}
+.ct-prog-f{height:100%;border-radius:99px;transition:width 1s;}
+.ct-btn{padding:5px 9px;border-radius:7px;border:none;background:rgba(255,255,255,.2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
+.ct-btn.done{background:rgba(255,255,255,.85);color:#7c3aed;}
 </style>
 </head>
 <body>
@@ -662,11 +651,7 @@ body.dp-desktop .overlay{align-items:center;}
   <div class="hdr">
     <div class="h-row">
       <div><div class="app-name">🏠 Domowy Patrol</div><div class="app-dt" id="appDt"></div></div>
-        <div class="vm-bar">
-          <button class="vm-btn" data-dm="mobile" onclick="setDM('mobile')" title="Mobile">📱</button>
-          <button class="vm-btn" data-dm="auto"   onclick="setDM('auto')"   title="Auto">🔄</button>
-          <button class="vm-btn" data-dm="desktop" onclick="setDM('desktop')" title="Desktop">🖥️</button>
-        </div>
+        <div class="vm-bar"><button class="vm-btn" data-dm="mobile" onclick="setDM('mobile')" title="Mobile">📱</button><button class="vm-btn" data-dm="auto" onclick="setDM('auto')" title="Auto">🔄</button><button class="vm-btn" data-dm="desktop" onclick="setDM('desktop')" title="Desktop">🖥️</button></div>
       <div class="user-chip" onclick="goTab('profile')">
         <!-- FIXED: proper crossOrigin for Google photo -->
         <img id="chipPhoto" class="chip-photo" src="" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.style.display='none'">
@@ -722,7 +707,7 @@ body.dp-desktop .overlay{align-items:center;}
   <!-- TASKS -->
   <div class="sec" id="sec-tasks">
     <div class="sec-ttl">📌 Zlecone zadania</div>
-    <div id="childTaskBtnWrap"></div>
+    <div id="ctBtnWrap"></div>
     <div id="quickTilesContainer"></div>
     <div id="assignedList"></div>
   </div>
@@ -859,36 +844,28 @@ body.dp-desktop .overlay{align-items:center;}
 
 
 <!-- RETURN SCHEDULE MODAL -->
-<div class="overlay" id="returnSchedOverlay">
+<div class="overlay" id="rsOverlay">
   <div class="modal">
-    <div class="modal-ttl">🏠 Harmonogram powrotów <span class="modal-close" onclick="closeOverlay('returnSchedOverlay')">×</span></div>
+    <div class="modal-ttl">🏠 Harmonogram powrotów <span class="modal-close" onclick="closeOverlay('rsOverlay')">×</span></div>
     <div class="f-lbl">Osoba</div><select class="f-inp" id="rsWho"></select>
-    <div class="f-lbl">Dzień tygodnia</div>
-    <select class="f-inp" id="rsDay">
-      <option value="1">Poniedziałek</option><option value="2">Wtorek</option>
-      <option value="3">Środa</option><option value="4">Czwartek</option>
-      <option value="5">Piątek</option><option value="6">Sobota</option><option value="0">Niedziela</option>
-    </select>
-    <div class="f-lbl">Koniec zajęć/pracy</div>
-    <input class="f-inp" id="rsEnd" type="time" value="15:30">
-    <div class="f-lbl">Szacowany powrót</div>
-    <input class="f-inp" id="rsEta" type="time" value="16:00">
-    <div class="f-lbl">Opis (opcja)</div>
-    <input class="f-inp" id="rsLabel" placeholder="np. Szkoła, Praca, Trening">
-    <button class="modal-btn" onclick="saveReturnSched()">💾 Zapisz</button>
+    <div class="f-lbl">Dzień</div>
+    <select class="f-inp" id="rsDay"><option value="1">Poniedziałek</option><option value="2">Wtorek</option><option value="3">Środa</option><option value="4">Czwartek</option><option value="5">Piątek</option><option value="6">Sobota</option><option value="0">Niedziela</option></select>
+    <div class="f-lbl">Koniec zajęć</div><input class="f-inp" id="rsEnd" type="time" value="15:30">
+    <div class="f-lbl">Szacowany powrót</div><input class="f-inp" id="rsEta" type="time" value="16:00">
+    <div class="f-lbl">Opis (opcja)</div><input class="f-inp" id="rsLabel" placeholder="np. Szkoła">
+    <button class="modal-btn" onclick="saveRS()">💾 Zapisz</button>
   </div>
 </div>
 <!-- CHILD TASK MODAL -->
-<div class="overlay" id="childTaskOverlay">
+<div class="overlay" id="ctOverlay">
   <div class="modal">
-    <div class="modal-ttl">🧒 Zadanie z timerem <span class="modal-close" onclick="closeOverlay('childTaskOverlay')">×</span></div>
-    <div style="font-size:11px;color:var(--soft);margin-bottom:9px;">Zadanie z odliczaniem — powiadomienie do rodzica gdy czas mija</div>
+    <div class="modal-ttl">🧒 Zadanie z timerem <span class="modal-close" onclick="closeOverlay('ctOverlay')">×</span></div>
+    <div style="font-size:11px;color:var(--soft);margin-bottom:9px;">Dziecko widzi odliczanie, rodzic dostaje powiadomienie gdy czas mija</div>
     <div class="f-lbl">Zadanie</div><input class="f-inp" id="ctName" placeholder="np. Umyj zęby">
     <div class="f-lbl">Ikona</div><input class="f-inp" id="ctIco" placeholder="🦷" maxlength="4" style="width:68px;font-size:18px;">
     <div class="f-lbl">Dla kogo</div><select class="f-inp" id="ctWho"></select>
-    <div class="f-lbl">Czas na wykonanie (minuty)</div>
-    <input class="f-inp" id="ctMin" type="number" value="10" min="1" max="120">
-    <button class="modal-btn" onclick="submitChildTask()">✅ Wyślij zadanie</button>
+    <div class="f-lbl">Czas (minuty)</div><input class="f-inp" id="ctMin" type="number" value="10" min="1" max="120">
+    <button class="modal-btn" onclick="submitCT()">✅ Wyślij</button>
   </div>
 </div>
 
@@ -997,128 +974,6 @@ body.dp-desktop .overlay{align-items:center;}
 
 <div class="toast" id="toast"></div>
 
-<script>
-// ── PRE-FLIGHT: działa bez Firebase, lokalnie, offline ──
-// Buduje przyciski językow i zapewnia że onclick w HTML zadziała
-// nawet gdy Firebase module się nie załaduje
-
-(function(){
-  'use strict';
-
-  // ── JĘZYKI ──
-  const LANGS_PF=[['pl','🇵🇱 PL'],['en','🇬🇧 EN'],['de','🇩🇪 DE'],
-                  ['fr','🇫🇷 FR'],['pt','🇧🇷 PT'],['zh','🇨🇳 中']];
-  const LS={
-    pl:{g:'Zaloguj się przez Google',d:'lub wypróbuj demo',p:'Widok Rodzica',c:'Widok Dziecka'},
-    en:{g:'Sign in with Google',d:'or try demo',p:'Parent View',c:'Child View'},
-    de:{g:'Mit Google anmelden',d:'oder Demo testen',p:'Eltern-Ansicht',c:'Kind-Ansicht'},
-    fr:{g:'Connexion Google',d:"ou essayez la démo",p:'Vue Parent',c:'Vue Enfant'},
-    pt:{g:'Entrar com Google',d:'ou experimente',p:'Visão Pais',c:'Visão Filho'},
-    zh:{g:'使用谷歌登录',d:'或试用演示',p:'家长视图',c:'孩子视图'},
-  };
-  let lang=localStorage.getItem('dp-lang')||'pl';
-
-  function buildLangButtons(){
-    const row=document.getElementById('langRow');
-    if(!row||row.children.length>0) return;
-    LANGS_PF.forEach(([code,label])=>{
-      const b=document.createElement('button');
-      b.className='lang-btn'+(code===lang?' sel':'');
-      b.textContent=label;
-      b.dataset.lang=code;
-      b.onclick=function(){
-        lang=code;
-        localStorage.setItem('dp-lang',code);
-        document.querySelectorAll('.lang-btn')
-          .forEach(x=>x.classList.toggle('sel',x.dataset.lang===code));
-        applyLangSplash(code);
-        // Jeśli moduł już załadowany — wywołaj pełny applyLang
-        if(typeof window.applyLang==='function') window.applyLang();
-      };
-      row.appendChild(b);
-    });
-    applyLangSplash(lang);
-  }
-
-  function applyLangSplash(code){
-    const L=LS[code]||LS.pl;
-    const $=id=>document.getElementById(id);
-    if($('btnGoogle')) $('btnGoogle').textContent=L.g;
-    if($('spDivider')) $('spDivider').textContent=L.d;
-    if($('demoBtnP'))  $('demoBtnP').textContent=L.p;
-    if($('demoBtnC'))  $('demoBtnC').textContent=L.c;
-  }
-
-  // Buduj natychmiast + po DOMContentLoaded dla pewności
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', buildLangButtons);
-  } else {
-    buildLangButtons();
-  }
-
-  // ── DEMO STUB ──
-  // Tymczasowy stub który pokazuje loader dopóki moduł Firebase
-  // nie załaduje właściwej funkcji startDemo
-  window.startDemo=function(role){
-    // Pokaż spinner
-    const sp=document.getElementById('splashScreen');
-    if(sp){
-      const msg=document.createElement('div');
-      msg.id='_demoLoading';
-      msg.style.cssText='position:fixed;inset:0;background:linear-gradient(160deg,#1a3a0a,#2d6a10);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:12px;';
-      msg.innerHTML='<div style="font-size:48px;animation:bob 1s ease-in-out infinite">🏠</div><div style="color:#fff;font-family:sans-serif;font-size:14px;font-weight:700;">Ładowanie demo…</div>';
-      document.body.appendChild(msg);
-    }
-    // Poczekaj aż moduł załaduje właściwą startDemo (max 8s)
-    let tries=0;
-    const check=setInterval(function(){
-      tries++;
-      const real=window._realStartDemo;
-      if(typeof real==='function'){
-        clearInterval(check);
-        const loader=document.getElementById('_demoLoading');
-        if(loader) loader.remove();
-        real(role);
-      } else if(tries>80){
-        clearInterval(check);
-        const loader=document.getElementById('_demoLoading');
-        if(loader) loader.remove();
-        alert('Brak połączenia z internetem.\nDemo wymaga jednorazowego połączenia do załadowania Firebase.\n\nSpróbuj ponownie gdy będziesz online.');
-      }
-    },100);
-  };
-
-  // ── INNE STUBY dla onclick w HTML ──
-  // (zostaną nadpisane przez moduł gdy załaduje)
-  ['signInWithGoogle','goTab','closeOverlay','openAssignModal',
-   'switchFamilyTab','setView','setShopDay','sendChatV2','sendChat',
-   'addNote','toggleNote','deleteNote','addShopItem','addStickyNote',
-   'openEventModal','openWishForPerson','openHiddenWish',
-   'setGiftPerson','setWeatherLoc','removeWeatherLoc','addWeatherLoc',
-   'addWeatherLocGPS','toggleCatCollapse','toggleCatVis','toggleChoreVis',
-   'setChatRoom','setStickyColor','openReturnSchedModal','openChildTaskModal',
-   'doToggleChore','undoChore','repeatChore','selectDay','togglePast',
-   'setDM','applyTheme','setSort','saveProfileName','copyCode',
-   'copyInviteLink','leaveFamily','doSignOut','checkApproval','cancelJoin',
-   'joinNoAuth','approveJoin','rejectJoin','iAmHeading','notYet',
-   'openCurfewModal','setCurfew','clearCurfew','setCurfewInt',
-   'openCategoryModal','openEditCat','openAddChore','saveCategory',
-   'deleteCat','setGlobalInt','toggleGCal','fetchWeatherByCity',
-   'fetchWeatherGPS','openBdayModal','saveBday','acSearch','acSelect',
-   'quickAssign','submitAssign','doneAssigned','delAssigned','redeem',
-   'reserveWish','deleteWish','submitWish','submitWishV2','submitEvent',
-   'delEvent','saveReturnSched','submitChildTask','markCTDone',
-   'shopWill','shopDone','selectStickyColor','openWishModal',
-  ].forEach(function(name){
-    if(!window[name]) window[name]=function(){
-      // Stub — zostanie zastąpiony przez moduł
-      console.log('stub called:',name,'— module not loaded yet');
-    };
-  });
-
-})();
-</script>
-
 <script type="module">
 import {initializeApp}  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {getAnalytics}   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
@@ -1191,8 +1046,6 @@ function applyLang(){
   });
 }
 window.applyLang=applyLang;
-// Wywołaj applyLang po załadowaniu modułu żeby uzupełnić tłumaczenia
-applyLang();
 
 // Zbuduj przyciski języków — z dataset.lang dla niezawodnego wykrywania
 (function(){
@@ -1335,8 +1188,8 @@ let returnTimers=[],reminderInterval=parseInt(localStorage.getItem('dp-reminder-
 let viewMode=localStorage.getItem('dp-view')||'normal';
 let desktopMode=localStorage.getItem('dp-desktop')||'auto';
 function applyDesktopMode(){
-  const isD=desktopMode==='desktop'||(desktopMode==='auto'&&window.innerWidth>=768);
-  document.body.classList.toggle('dp-desktop',isD);
+  const on=desktopMode==='desktop'||(desktopMode==='auto'&&window.innerWidth>=768);
+  document.body.classList.toggle('dp-desktop',on);
   document.querySelectorAll('.vm-btn').forEach(b=>b.classList.toggle('sel',b.dataset.dm===desktopMode));
 }
 window.addEventListener('resize',applyDesktopMode);
@@ -1363,7 +1216,7 @@ let activeShopDay=new Date().getDay()||1;
 let activeChatRoom='family';
 let activeStickyColor='sc-y';
 let activeGiftPerson='';
-let returnSchedules=JSON.parse(localStorage.getItem('dp-return-sched')||'{}');
+let returnSchedules=JSON.parse(localStorage.getItem('dp-rs')||'{}');
 
 const today=new Date(),todayKey=fmt(today);
 const MS={min:60000,hr:3600000,day:86400000};
@@ -1576,7 +1429,6 @@ function startDemo(role){
   launchApp();
 }
 window.startDemo=startDemo;
-window._realStartDemo=startDemo; // używany przez preflight stub
 function exitDemo(){if(!confirm('Wyjść z demo?'))return;isDemo=false;myProfile=null;currentUser=null;live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},joinReqs:{},chat:[],notes:{},wishes:[],birthdays:{}};document.getElementById('appScreen').style.display='none';document.getElementById('splashScreen').style.display='flex';}
 window.exitDemo=exitDemo;
 
@@ -1643,7 +1495,8 @@ function launchApp(){
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   }
-  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();requestNotifPermission();applyDesktopMode();
+  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();
+  requestNotifPermission();applyDesktopMode();
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
@@ -1937,9 +1790,9 @@ window.setCurfew=setCurfew;
 async function clearCurfew(){if(!curfewChildId)return;if(isDemo){delete live.curfews[curfewChildId];renderCurfewPanel();updateReturnBanner();}else await remove(ref(db,`families/${fCode}/curfews/${curfewChildId}`));showToast('❌ Anulowano');closeOverlay('curfewOverlay');}
 window.clearCurfew=clearCurfew;
 function updateReturnBanner(){if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;banner.style.display='block';if(diffMin>60){banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div></div>`;clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));}else if(diffMin>0){banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;clearReturnTimers();scheduleReturnReminders(curfew.time,interval);}else{banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);
-    sendPersistentNotif('❗ Czas minął!',`Wróć do domu! (${curfew.time})`,{tag:'dp-late',persist:true,actions:['🏃 Wracam!','Jeszcze chwilę'],aData:{a0:'heading_home',a1:'not_yet'}});}}
+    sendPersistentNotif('❗ Czas minął!',`Wróć do domu! (${curfew.time})`,{tag:'dp-late',persist:true,acts:['🏃 Wracam!','Jeszcze chwilę'],ad:{a0:'home',a1:'wait'}});}}
 function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);
-        sendPersistentNotif('🏠 Czas wracać!',`Zostało ${left} min. Powrót: ${time}`,{tag:'dp-curfew',persist:true,actions:['🏃 Wracam!','Jeszcze chwilę'],aData:{a0:'heading_home',a1:'not_yet'}});showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
+        sendPersistentNotif('🏠 Czas wracać!',`${left} min · powrót: ${time}`,{tag:'dp-curfew',persist:true,acts:['🏃 Wracam!','Jeszcze chwilę'],ad:{a0:'home',a1:'wait'}});showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
 function clearReturnTimers(){returnTimers.forEach(clearTimeout);returnTimers=[];}
 async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});}sendBrowserNotif('🏃 W drodze!','Bezpiecznej drogi!');setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);}
 window.iAmHeading=iAmHeading;
@@ -2034,8 +1887,8 @@ document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap')) document
 /* ── QUICK TILES ── */
 const QUICK_TASKS=[{ico:'🧹',name:'Odkurzanie',pts:12},{ico:'🚿',name:'Mycie łazienki',pts:15},{ico:'🗑️',name:'Wyniesienie śmieci',pts:7},{ico:'🍽️',name:'Zmywarka',pts:8},{ico:'🧺',name:'Pranie/składanie',pts:8},{ico:'🛒',name:'Zakupy',pts:10},{ico:'🐕',name:'Spacer z psem',pts:10},{ico:'📖',name:'Praca domowa',pts:12},{ico:'🪴',name:'Kwiatki',pts:5},{ico:'🧼',name:'Załaduj zmywarkę',pts:6},{ico:'🍳',name:'Gotowanie',pts:8},{ico:'🧽',name:'Sprzątanie pokoju',pts:10}];
 function renderQuickTiles(){if(myProfile?.role!=='parent')return;rebuildAssignSelect();
-  const w=document.getElementById('childTaskBtnWrap');
-  if(w) w.innerHTML=`<button onclick="openChildTaskModal()" style="width:100%;margin-bottom:9px;padding:9px;border-radius:9px;border:2px solid rgba(139,92,246,.4);background:rgba(139,92,246,.07);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--pu);">🧒 Zadanie z timerem dla dziecka</button>`;document.getElementById('quickTilesContainer').innerHTML=`<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:6px;">⚡ Szybkie zlecenie — kliknij:</div><div class="quick-tiles">${QUICK_TASKS.map(t=>`<div class="qt" onclick="quickAssign('${esc(t.name)}','${t.ico}',${t.pts})"><span class="qt-ico">${t.ico}</span>${t.name}<div class="qt-pts">+${t.pts}⭐</div></div>`).join('')}</div>`;}
+  const w=document.getElementById('ctBtnWrap');
+  if(w) w.innerHTML=`<button onclick="openCT()" style="width:100%;margin-bottom:9px;padding:9px;border-radius:9px;border:2px solid rgba(139,92,246,.4);background:rgba(139,92,246,.07);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--pu);">🧒 Zadanie z timerem dla dziecka</button>`;document.getElementById('quickTilesContainer').innerHTML=`<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:6px;">⚡ Szybkie zlecenie — kliknij:</div><div class="quick-tiles">${QUICK_TASKS.map(t=>`<div class="qt" onclick="quickAssign('${esc(t.name)}','${t.ico}',${t.pts})"><span class="qt-ico">${t.ico}</span>${t.name}<div class="qt-pts">+${t.pts}⭐</div></div>`).join('')}</div>`;}
 function quickAssign(name,ico,pts){document.getElementById('mName').value=name;document.getElementById('mIco').value=ico;document.getElementById('mPts').value=pts;rebuildAssignSelect();document.getElementById('assignOverlay').classList.add('show');}
 window.quickAssign=quickAssign;
 
@@ -2105,76 +1958,60 @@ async function addToGCal(name,ico,date,time,pts){if(!gcalToken)return;const s=ti
 function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default') Notification.requestPermission();}
 function sendBrowserNotif(title,body){if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2272%22 x=%2212%22>🏠</text></svg>'});}
 
-/* ── SERVICE WORKER — powiadomienia permanentne ── */
-const _SW_SRC=`
-self.addEventListener('message',e=>{
-  if(!e.data||e.data.type!=='DP_NOTIFY') return;
-  const d=e.data,icon=d.icon||'';
-  const opts={body:d.body||'',icon,badge:icon,tag:d.tag||'dp',
-    renotify:true,requireInteraction:!!d.persist,silent:false,
-    data:d.aData||{},
-    actions:(d.actions||[]).map((a,i)=>({action:'a'+i,title:a}))};
-  if(d.progress!==undefined){
-    const n=Math.round(d.progress/10);
-    opts.body=(opts.body?opts.body+' ':'')+
-      '['+'█'.repeat(n)+'░'.repeat(10-n)+'] '+d.progress+'%';
-  }
-  e.waitUntil(self.registration.showNotification(d.title,opts));
-});
-self.addEventListener('notificationclick',e=>{
-  e.notification.close();
-  const data=e.notification.data||{},act=e.action;
-  e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{
-    if(act&&data[act]) cs.forEach(c=>c.postMessage({type:'DP_ACTION',action:data[act]}));
-    if(cs.length){cs[0].focus();return;}
-    clients.openWindow(self.location.origin);
-  }));
-});`;
-
+/* ── SERVICE WORKER + PERSISTENT NOTIFS (Etap 3) ── */
 let _swReg=null;
-(async function initSW(){
-  if(!('serviceWorker' in navigator)||!('Notification' in window)) return;
+(async function(){
+  if(!('serviceWorker' in navigator)) return;
   try{
-    const blob=new Blob([_SW_SRC],{type:'application/javascript'});
-    const url=URL.createObjectURL(blob);
-    _swReg=await navigator.serviceWorker.register(url).catch(()=>
-      navigator.serviceWorker.register(url,{scope:'/'}));
+    const src=`self.addEventListener('message',e=>{
+      if(!e.data||e.data.type!=='DP_N') return;
+      const d=e.data,ic=d.ic||'';
+      let body=d.body||'';
+      if(d.pct!=null) body+=' ['+'█'.repeat(Math.round(d.pct/10))+'░'.repeat(10-Math.round(d.pct/10))+'] '+d.pct+'%';
+      self.registration.showNotification(d.title,{body,icon:ic,badge:ic,
+        tag:d.tag||'dp',renotify:true,requireInteraction:!!d.persist,silent:false,
+        data:d.ad||{},actions:(d.acts||[]).map((a,i)=>({action:'a'+i,title:a}))});
+    });
+    self.addEventListener('notificationclick',e=>{
+      e.notification.close();
+      const a=e.action,dt=e.notification.data||{};
+      e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{
+        if(a&&dt[a]) cs.forEach(c=>c.postMessage({type:'DP_ACT',action:dt[a]}));
+        cs.length?cs[0].focus():clients.openWindow('/');
+      }));
+    });`;
+    const blob=new Blob([src],{type:'application/javascript'});
+    _swReg=await navigator.serviceWorker.register(URL.createObjectURL(blob));
     navigator.serviceWorker.addEventListener('message',e=>{
-      if(e.data?.type==='DP_ACTION'){
+      if(e.data?.type==='DP_ACT'){
         const a=e.data.action;
-        if(a==='heading_home'&&typeof iAmHeading==='function') iAmHeading();
-        if(a==='not_yet'&&typeof notYet==='function') notYet();
-        if(a==='open_app') goTab('today');
+        if(a==='home'&&typeof iAmHeading==='function') iAmHeading();
+        if(a==='wait'&&typeof notYet==='function') notYet();
+        if(a==='app') goTab('today');
       }
     });
-  }catch(err){console.log('SW:',err.message);}
+  }catch(e){console.log('SW:',e.message);}
 })();
 
-const _NOTIF_ICON='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#2d6a10"/><text y=".9em" font-size="72" x="12">🏠</text></svg>');
+const _NI='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#2d6a10"/><text y=".9em" font-size="72" x="12">🏠</text></svg>');
 
-function sendPersistentNotif(title,body,opts={}){
+function sendPersistentNotif(title,body,o={}){
   if(!('Notification' in window)) return;
   if(Notification.permission!=='granted'){
-    Notification.requestPermission().then(p=>{if(p==='granted') sendPersistentNotif(title,body,opts);});
+    Notification.requestPermission().then(p=>{if(p==='granted')sendPersistentNotif(title,body,o);});
     return;
   }
   const sw=_swReg?.active||navigator.serviceWorker?.controller;
-  if(sw){
-    sw.postMessage({type:'DP_NOTIFY',title,body,icon:_NOTIF_ICON,
-      tag:opts.tag||'dp',persist:opts.persist||false,
-      actions:opts.actions||[],aData:opts.aData||{},progress:opts.progress});
-  } else {
-    new Notification(title,{body,icon:_NOTIF_ICON,tag:opts.tag||'dp',
-      requireInteraction:opts.persist||false});
-  }
+  if(sw) sw.postMessage({type:'DP_N',title,body,ic:_NI,tag:o.tag||'dp',
+    persist:o.persist,acts:o.acts||[],ad:o.ad||{},pct:o.pct});
+  else new Notification(title,{body,icon:_NI,tag:o.tag||'dp',requireInteraction:!!o.persist});
 }
 function scheduleLocalNotif(n,f,ts){
-  const d=ts-Date.now();if(d<=0||d>172800000) return;
-  if(d>3600000) setTimeout(()=>sendPersistentNotif('⏰ Zadanie za 1h',`${f}: ${n}`,{tag:'dp-t-'+ts}),d-3600000);
-  if(d>900000)  setTimeout(()=>sendPersistentNotif('⏰ Za 15 min!',`${f}: ${n}`,{tag:'dp-t-'+ts,persist:true,progress:75,actions:['✅ Robię to'],aData:{a0:'open_app'}}),d-900000);
+  const d=ts-Date.now();if(d<=0||d>172800000)return;
+  if(d>900000) setTimeout(()=>sendPersistentNotif('⏰ Za 15 min',`${f}: ${n}`,{tag:'dp-t'+ts,persist:true,pct:75,acts:['✅ Robię to'],ad:{a0:'app'}}),d-900000);
   setTimeout(()=>{
-    sendPersistentNotif('🔔 Czas na zadanie!',`${f}: ${n}`,{tag:'dp-tn-'+ts,persist:true,progress:100,actions:['✅ Zrobione'],aData:{a0:'open_app'}});
     sendBrowserNotif('🔔 Czas na zadanie!',`${f}: ${n}`);
+    sendPersistentNotif('🔔 Czas na zadanie!',`${f}: ${n}`,{tag:'dp-tn'+ts,persist:true,pct:100,acts:['✅ Zrobione'],ad:{a0:'app'}});
   },d);
 }
 
@@ -2637,183 +2474,117 @@ function addWeatherLocGPS(){
 }
 window.addWeatherLocGPS=addWeatherLocGPS;
 
-
-/* ── DESKTOP/MOBILE MODE ── */
-function setDM(mode){
-  desktopMode=mode;localStorage.setItem('dp-desktop',mode);
-  applyDesktopMode();
-  showToast(mode==='desktop'?'🖥️ Desktop':mode==='mobile'?'📱 Mobile':'🔄 Auto');
-}
+function setDM(m){desktopMode=m;localStorage.setItem('dp-desktop',m);applyDesktopMode();showToast(m==='desktop'?'🖥️ Desktop':m==='mobile'?'📱 Mobile':'🔄 Auto');}
 window.setDM=setDM;
-
-
-/* ── ODLEGŁOŚCI (Etap 3) ── */
-function haversineM(la1,lo1,la2,lo2){
-  const R=6371000,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;
-  const a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;
-  return Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
-}
+function haversineM(a,b,d,e){const R=6371000,dl=(d-a)*Math.PI/180,do2=(e-b)*Math.PI/180,x=Math.sin(dl/2)**2+Math.cos(a*Math.PI/180)*Math.cos(d*Math.PI/180)*Math.sin(do2/2)**2;return Math.round(R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x)));}
 function fmtDist(m){return m<1000?m+'m':(m/1000).toFixed(1)+'km';}
 function renderDistancePanel(){
   const el=document.getElementById('distancePanel');if(!el)return;
   if(myProfile?.role!=='parent'){el.innerHTML='';return;}
-  const myLoc=live.locations[getMyUid()];
-  const others=Object.entries(live.locations||{}).filter(([uid])=>uid!==getMyUid());
-  if(!others.length||!myLoc){el.innerHTML='';return;}
+  const my=live.locations[getMyUid()];
+  const others=Object.entries(live.locations||{}).filter(([u])=>u!==getMyUid());
+  if(!others.length||!my){el.innerHTML='';return;}
   const now=Date.now();
   const rows=others.map(([uid,loc])=>{
-    const mem=live.members[uid]||{name:'?',avatar:'👤'};
-    const ageMin=Math.round((now-loc.ts)/60000);
-    const fresh=ageMin<5;
-    const dist=myLoc.lat&&loc.lat?fmtDist(haversineM(myLoc.lat,myLoc.lng,loc.lat,loc.lng)):'?';
-    return`<div class="dist-row">
-      <div class="dist-av">${mem.avatar||'👤'}</div>
-      <div class="dist-info">
-        <div class="dist-nm">${mem.name}</div>
-        <div class="dist-sub">${fresh?'📍 teraz':'📍 '+ageMin+' min temu'}${loc.acc?' ±'+loc.acc+'m':''}</div>
-      </div>
-      <div class="dist-val">${dist}</div>
-      <div class="dist-dot" style="background:${fresh?'#22c55e':'#f59e0b'}"></div>
-    </div>`;
+    const m=live.members[uid]||{name:'?',avatar:'👤'};
+    const age=Math.round((now-loc.ts)/60000),fresh=age<5;
+    const dist=my.lat&&loc.lat?fmtDist(haversineM(my.lat,my.lng,loc.lat,loc.lng)):'?';
+    return`<div class="dist-row"><span style="font-size:18px">${m.avatar||'👤'}</span><div class="dist-info"><div class="dist-nm">${m.name}</div><div class="dist-sub">${fresh?'📍 teraz':'📍 '+age+' min temu'}${loc.acc?' ±'+loc.acc+'m':''}</div></div><div class="dist-val">${dist}</div><div class="dist-dot" style="background:${fresh?'#22c55e':'#f59e0b'}"></div></div>`;
   }).join('');
-  el.innerHTML=`<div class="dist-panel"><div class="dist-title">📍 Odległości</div>${rows}</div>`;
+  el.innerHTML=`<div class="dist-card"><div style="font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;">📍 Odległości</div>${rows}</div>`;
 }
+window.renderDistancePanel=renderDistancePanel;
 setInterval(renderDistancePanel,300000);
 
 
-/* ════ ETAP 4 — HARMONOGRAM POWROTÓW + ZADANIA DLA DZIECI ════ */
-const DAY_PL=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
-const DAY_FULL_PL=['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
-
+/* ── ETAP 4 — HARMONOGRAM + ZADANIA DZIECI ── */
 function renderReturnSchedPanel(){
   const el=document.getElementById('returnSchedPanel');if(!el)return;
-  if(myProfile?.role!=='parent'&&!Object.values(returnSchedules).some(a=>a.some(s=>s.forUid===getMyUid()))){el.innerHTML='';return;}
-  const dow=new Date().getDay();
-  const nowMin=new Date().getHours()*60+new Date().getMinutes();
+  const dow=new Date().getDay(),nowMin=new Date().getHours()*60+new Date().getMinutes();
   let rows='';
-  Object.entries(returnSchedules).forEach(([uid,scheds])=>{
-    const s=scheds.find(x=>parseInt(x.day)===dow);if(!s) return;
-    const mem=live.members[uid]||{name:'?',avatar:'👤'};
-    const [eh,em]=(s.end||'15:30').split(':').map(Number);
+  Object.entries(returnSchedules).forEach(([uid,arr])=>{
+    const s=arr.find(x=>parseInt(x.day)===dow);if(!s)return;
+    const m=live.members[uid]||{name:'?',avatar:'👤'};
+    const[eh,em]=(s.end||'15:30').split(':').map(Number);
     const diff=eh*60+em-nowMin;
-    const status=diff>0?`za ${diff} min kończy`:'już po zajęciach';
-    rows+=`<div class="rs-row">
-      <div style="font-size:20px">${mem.avatar||'👤'}</div>
-      <div class="rs-info">
-        <div class="rs-time">${mem.name} — ${s.label||'Zajęcia'} do ${s.end||'?'}</div>
-        <div class="rs-sub">${status}${s.eta?' · powrót ~'+s.eta:''}</div>
-      </div>
-      ${myProfile?.role==='parent'?`<button class="rs-btn" onclick="openReturnSchedModal('${uid}')">✏️</button>`:''}
-    </div>`;
+    const status=diff>0?`za ${diff} min`:'po zajęciach';
+    rows+=`<div class="rs-row"><span style="font-size:18px">${m.avatar||'👤'}</span><div class="rs-info"><div class="rs-time">${m.name} — ${s.label||'Zajęcia'} do ${s.end}</div><div class="rs-sub">${status}${s.eta?' · powrót ~'+s.eta:''}</div></div>${myProfile?.role==='parent'?`<button class="rs-btn" onclick="openRS('${uid}')">✏️</button>`:''}</div>`;
   });
   if(!rows&&myProfile?.role!=='parent'){el.innerHTML='';return;}
-  el.innerHTML=`<div class="rs-card"><div class="rs-title">📅 Dzisiaj wracacie</div>${rows}
-    ${myProfile?.role==='parent'?`<button onclick="openReturnSchedModal('')" style="border:none;background:none;color:rgba(255,255,255,.65);font-size:10px;font-weight:800;cursor:pointer;margin-top:5px;">+ Dodaj harmonogram</button>`:''}
-  </div>`;
+  el.innerHTML=`<div class="rs-card"><div style="font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;">📅 Dzisiaj wracacie</div>${rows}${myProfile?.role==='parent'?'<button onclick="openRS('')" style="border:none;background:none;color:rgba(255,255,255,.6);font-size:10px;font-weight:800;cursor:pointer;margin-top:5px;">+ Dodaj harmonogram</button>':''}</div>`;
 }
-function openReturnSchedModal(uid){
+function openRS(uid){
   const sel=document.getElementById('rsWho');
   if(sel) sel.innerHTML=Object.entries(live.members).map(([u,m])=>`<option value="${u}" ${u===uid?'selected':''}>${m.avatar||'👤'} ${m.name}</option>`).join('');
   if(uid&&returnSchedules[uid]?.length){
     const s=returnSchedules[uid][0];
-    const rsDay=document.getElementById('rsDay');if(rsDay)rsDay.value=s.day;
-    const rsE=document.getElementById('rsEnd');if(rsE)rsE.value=s.end||'15:30';
-    const rsEt=document.getElementById('rsEta');if(rsEt)rsEt.value=s.eta||'16:00';
-    const rsL=document.getElementById('rsLabel');if(rsL)rsL.value=s.label||'';
+    ['rsDay','rsEnd','rsEta','rsLabel'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.value=[s.day,s.end,s.eta,s.label][i]||'';});
   }
-  document.getElementById('returnSchedOverlay').classList.add('show');
+  document.getElementById('rsOverlay').classList.add('show');
 }
-window.openReturnSchedModal=openReturnSchedModal;
-function saveReturnSched(){
-  const uid=document.getElementById('rsWho').value;
-  const day=parseInt(document.getElementById('rsDay').value);
-  const end=document.getElementById('rsEnd').value;
-  const eta=document.getElementById('rsEta').value;
-  const label=document.getElementById('rsLabel').value.trim();
+window.openRS=openRS;
+function saveRS(){
+  const uid=document.getElementById('rsWho')?.value;
+  const day=parseInt(document.getElementById('rsDay')?.value);
+  const end=document.getElementById('rsEnd')?.value;
+  const eta=document.getElementById('rsEta')?.value;
+  const label=document.getElementById('rsLabel')?.value.trim();
   if(!uid||!end){showToast('⚠️ Wypełnij dane');return;}
   if(!returnSchedules[uid]) returnSchedules[uid]=[];
   const idx=returnSchedules[uid].findIndex(s=>s.day===day);
-  const entry={day,end,eta,label,forUid:uid};
+  const entry={day,end,eta,label};
   if(idx>=0) returnSchedules[uid][idx]=entry; else returnSchedules[uid].push(entry);
-  localStorage.setItem('dp-return-sched',JSON.stringify(returnSchedules));
+  localStorage.setItem('dp-rs',JSON.stringify(returnSchedules));
   renderReturnSchedPanel();
-  // Zaplanuj powiadomienie
-  const now=new Date();const [eh,em]=end.split(':').map(Number);
-  const endTime=new Date();endTime.setHours(eh,em,0,0);
-  const diff=endTime.getTime()-now.getTime();
+  // Powiadomienie
+  const now=new Date();const[eh,em]=end.split(':').map(Number);
+  const et=new Date();et.setHours(eh,em,0,0);const diff=et-now;
   if(diff>0&&diff<86400000){
-    const mem=live.members[uid]||{name:'?'};
-    setTimeout(()=>{
-      sendBrowserNotif(`🏠 ${mem.name} kończy ${label||'zajęcia'}`,eta?`Powrót ~${eta}`:'');
-      sendPersistentNotif(`🏠 ${mem.name} kończy`,`${label||'Zajęcia'} o ${end}. Powrót ~${eta||'?'}`,{tag:'dp-rs-'+uid,actions:['📍 Sprawdź lokalizację'],aData:{a0:'open_app'}});
-    },diff);
-    if(diff>900000) setTimeout(()=>{
-      sendPersistentNotif(`⏰ ${mem.name} za 15 min`,label||'Zajęcia',{tag:'dp-rs-w-'+uid});
-    },diff-900000);
+    const mn=live.members[uid]||{name:'?'};
+    if(diff>900000) setTimeout(()=>sendPersistentNotif(`⏰ ${mn.name} za 15 min`,label||'Zajęcia',{tag:'dp-rs-w'+uid}),diff-900000);
+    setTimeout(()=>{sendBrowserNotif(`🏠 ${mn.name} kończy`,`${label||'Zajęcia'} o ${end}`);sendPersistentNotif(`🏠 ${mn.name} kończy`,`${label||'Zajęcia'} o ${end}. Powrót ~${eta||'?'}`,{tag:'dp-rs'+uid,acts:['📍 Lokalizacja'],ad:{a0:'app'}});},diff);
   }
-  showToast('✅ Harmonogram zapisany!');closeOverlay('returnSchedOverlay');
+  showToast('✅ Harmonogram zapisany!');closeOverlay('rsOverlay');
 }
-window.saveReturnSched=saveReturnSched;
+window.saveRS=saveRS;
 
-/* ── ZADANIA DLA DZIECI z timerem ── */
 function renderChildTasksPanel(){
   const el=document.getElementById('childTasksPanel');if(!el)return;
-  const myUid=getMyUid();
-  const active=(live.childTasks||[]).filter(t=>t.forUid===myUid&&!t.done);
+  const active=(live.childTasks||[]).filter(t=>t.forUid===getMyUid()&&!t.done);
   if(!active.length){el.innerHTML='';return;}
-  const rows=active.map(t=>{
-    const dl=t.startTs+(t.minutes||10)*60000;
-    const left=Math.max(0,Math.round((dl-Date.now())/60000));
+  el.innerHTML=`<div class="ct-card"><div style="font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;">📋 Twoje zadania</div>`+active.map(t=>{
+    const dl=t.startTs+t.minutes*60000,left=Math.max(0,Math.round((dl-Date.now())/60000));
     const pct=Math.min(100,Math.round((1-(dl-Date.now())/(t.minutes*60000))*100));
     const col=left<=2?'#ef4444':left<=5?'#f59e0b':'#22c55e';
-    return`<div class="ct-row">
-      <div class="ct-ico">${t.ico||'📋'}</div>
-      <div class="ct-info">
-        <div class="ct-nm">${t.name}</div>
-        <div class="ct-sub">od ${new Date(t.startTs).toLocaleTimeString('pl',{hour:'2-digit',minute:'2-digit'})}</div>
-        <div class="ct-prog"><div class="ct-prog-fill" style="width:${pct}%;background:${col}"></div></div>
-      </div>
-      <div style="font-size:12px;font-weight:900;color:var(--y);margin:0 6px;">${left}min</div>
-      <button class="ct-done-btn ${t.doneByChild?'done':''}" onclick="markCTDone('${t.id}')">${t.doneByChild?'✓':'✅'}</button>
-    </div>`;
-  }).join('');
-  el.innerHTML=`<div class="ct-card"><div class="ct-title">📋 Twoje zadania</div>${rows}</div>`;
+    return`<div class="ct-row"><div class="ct-ico">${t.ico||'📋'}</div><div class="ct-info"><div class="ct-nm">${t.name}</div><div class="ct-sub">od ${new Date(t.startTs).toLocaleTimeString('pl',{hour:'2-digit',minute:'2-digit'})}</div><div class="ct-prog"><div class="ct-prog-f" style="width:${pct}%;background:${col}"></div></div></div><div style="font-size:12px;font-weight:900;color:var(--y);margin:0 5px;">${left}m</div><button class="ct-btn ${t.doneByChild?'done':''}" onclick="markCTDone('${t.id}')">${t.doneByChild?'✓':'✅'}</button></div>`;
+  }).join('')+'</div>';
 }
-function openChildTaskModal(){
+function openCT(){
   const sel=document.getElementById('ctWho');
-  if(sel) sel.innerHTML=Object.entries(live.members).filter(([,m])=>m.role==='child').map(([uid,m])=>`<option value="${uid}">${m.avatar||'👤'} ${m.name}</option>`).join('');
-  document.getElementById('childTaskOverlay').classList.add('show');
+  if(sel) sel.innerHTML=Object.entries(live.members).filter(([,m])=>m.role==='child').map(([u,m])=>`<option value="${u}">${m.avatar||'👤'} ${m.name}</option>`).join('');
+  document.getElementById('ctOverlay').classList.add('show');
 }
-window.openChildTaskModal=openChildTaskModal;
-async function submitChildTask(){
-  const name=document.getElementById('ctName').value.trim();if(!name){showToast('⚠️ Wpisz zadanie');return;}
-  const ico=document.getElementById('ctIco').value.trim()||'📋';
-  const forUid=document.getElementById('ctWho').value;if(!forUid){showToast('⚠️ Wybierz dziecko');return;}
-  const minutes=parseInt(document.getElementById('ctMin').value)||10;
-  const task={id:'ct'+Date.now(),name,ico,forUid,minutes,startTs:Date.now(),assignedBy:myProfile.name,ts:Date.now(),done:false,doneByChild:false};
+window.openCT=openCT;
+async function submitCT(){
+  const name=document.getElementById('ctName')?.value.trim();if(!name){showToast('⚠️ Wpisz zadanie');return;}
+  const ico=document.getElementById('ctIco')?.value.trim()||'📋';
+  const forUid=document.getElementById('ctWho')?.value;if(!forUid){showToast('⚠️ Wybierz dziecko');return;}
+  const minutes=parseInt(document.getElementById('ctMin')?.value)||10;
+  const task={id:'ct'+Date.now(),name,ico,forUid,minutes,startTs:Date.now(),assignedBy:myProfile.name,done:false,doneByChild:false};
   if(isDemo){if(!live.childTasks)live.childTasks=[];live.childTasks.push(task);renderChildTasksPanel();}
   else await push(ref(db,`families/${fCode}/childTasks`),task);
-  // Timer — powiadomienie dla rodzica
-  setTimeout(()=>{
-    const mem=live.members[forUid]||{name:'?'};
-    sendPersistentNotif(`⏰ Czas na zadanie!`,`${mem.name}: ${name}`,{tag:'dp-ct-'+task.id,persist:true,progress:100,actions:['✅ Oznacz zrobione'],aData:{a0:'open_app'}});
-  },minutes*60000);
-  showToast(`📋 Zadanie wysłane!`);closeOverlay('childTaskOverlay');
-  document.getElementById('ctName').value='';
+  setTimeout(()=>{const m=live.members[forUid]||{name:'?'};sendPersistentNotif('⏰ Czas na zadanie!',`${m.name}: ${name}`,{tag:'dp-ct'+task.id,persist:true,pct:100,acts:['✅ Zrobione'],ad:{a0:'app'}});},minutes*60000);
+  showToast('📋 Zadanie wysłane!');closeOverlay('ctOverlay');document.getElementById('ctName').value='';
 }
-window.submitChildTask=submitChildTask;
+window.submitCT=submitCT;
 async function markCTDone(id){
-  if(isDemo){const t=(live.childTasks||[]).find(x=>x.id===id);if(t){t.doneByChild=true;t.done=true;}renderChildTasksPanel();showToast('✅ Brawo!');
-    sendPersistentNotif('✅ Zadanie zrobione!',`${myProfile.name}: ${t?.name||''}`,{tag:'dp-ctd-'+id});return;}
+  const t=(live.childTasks||[]).find(x=>x.id===id);
+  if(isDemo){if(t){t.doneByChild=true;t.done=true;}renderChildTasksPanel();showToast('✅ Brawo!');sendPersistentNotif('✅ Zadanie zrobione!',`${myProfile.name}: ${t?.name||''}`,{tag:'dp-ctd'+id});return;}
   const snap=await get(ref(db,`families/${fCode}/childTasks`));
   const kv=Object.entries(snap.val()||{}).find(([,v])=>v.id===id);
-  if(kv){await update(ref(db,`families/${fCode}/childTasks/${kv[0]}`),{doneByChild:true,done:true,doneTs:Date.now()});
-    showToast('✅ Brawo! Rodzic dostał powiadomienie!');
-    sendPersistentNotif('✅ '+myProfile.name+' zrobił zadanie!',kv[1].name||'',{tag:'dp-ctd-'+id});}
+  if(kv){await update(ref(db,`families/${fCode}/childTasks/${kv[0]}`),{doneByChild:true,done:true,doneTs:Date.now()});showToast('✅ Brawo!');sendPersistentNotif('✅ Zrobione!',kv[1].name||'',{tag:'dp-ctd'+id});}
 }
 window.markCTDone=markCTDone;
-
-/* Odśwież panele co minutę */
 setInterval(()=>{renderReturnSchedPanel();renderChildTasksPanel();},60000);
 
 /* ── MISC ── */
