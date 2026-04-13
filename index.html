@@ -553,6 +553,24 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 .vm-btn{padding:4px 9px;border-radius:7px;border:none;background:transparent;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);}
 .vm-btn.sel{background:var(--g2);color:#fff;}
 
+/* ── SETUP SCHEDULE ROWS ── */
+.sched-row{display:grid;grid-template-columns:80px 1fr 1fr;gap:5px;align-items:center;padding:3px 0;}
+.sched-day{font-size:11px;font-weight:800;color:var(--text);}
+.sched-inp{padding:6px 8px;border-radius:7px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:700;color:var(--text);outline:none;width:100%;}
+.sched-inp:focus{border-color:var(--g2);}
+
+/* ── REFERRAL STAR ── */
+#referralStar{position:fixed;bottom:96px;left:14px;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--y),var(--o));border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 3px 12px rgba(245,197,24,.5);z-index:59;display:none;align-items:center;justify-content:center;transition:transform .3s,box-shadow .3s;}
+#referralStar.visible{display:flex;}
+#referralStar.pulse{animation:starPulse 1s ease-in-out 3;box-shadow:0 0 0 0 rgba(245,197,24,.7);}
+@keyframes starPulse{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(245,197,24,.7);}50%{transform:scale(1.25);box-shadow:0 0 0 12px rgba(245,197,24,.0);}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(245,197,24,.0);}}
+#referralPanel{position:fixed;bottom:140px;left:14px;background:var(--card);border-radius:var(--rr);box-shadow:0 4px 24px rgba(0,0,0,.18);padding:14px;width:240px;z-index:60;display:none;border:2px solid var(--y);}
+#referralPanel.show{display:block;}
+.ref-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--text);margin-bottom:5px;}
+.ref-sub{font-size:11px;color:var(--soft);margin-bottom:10px;line-height:1.4;}
+.ref-btn{width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;margin-bottom:6px;}
+.ref-close{font-size:10px;color:var(--soft);text-align:center;cursor:pointer;padding:3px;}
+
 /* ── DISTANCE PANEL ── */
 .dist-panel{background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
 .dist-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:8px;}
@@ -646,6 +664,14 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <button onclick="captureHomeGPS()" style="flex:1;padding:8px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--g2);">📍 Użyj GPS teraz</button>
     </div>
     <div id="homeLocStatus" style="font-size:10px;color:var(--soft);min-height:14px;"></div>
+    <div class="s-lbl" style="margin-top:11px;">📅 Harmonogram tygodniowy (opcja)</div>
+    <div style="font-size:10px;color:var(--soft);margin-bottom:7px;">Kiedy wracasz do domu? Rodzina zobaczy planowane powroty.</div>
+    <div id="setupScheduleGrid" style="display:flex;flex-direction:column;gap:5px;">
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:5px;font-size:9px;font-weight:800;color:var(--soft);text-transform:uppercase;padding:0 2px;">
+        <span>Dzień</span><span>Koniec (szkoła/praca)</span><span>Powrót ~</span>
+      </div>
+      <div id="schedRowsContainer"></div>
+    </div>
     <button class="s-btn" onclick="doSetup()">Dołącz →</button>
   </div>
 </div>
@@ -713,11 +739,16 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div class="card-ttl">🌐 Rodzina online</div>
       <div class="online-row" id="onlineRow"></div>
     </div>
-    <div class="card">
+    <div class="card" id="weekCard">
       <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
-        <span>📅 Tydzień</span><span id="selectedDayLabel" style="font-size:10px;color:var(--soft);font-weight:700;"></span>
+        <button onclick="shiftWeek(-1)" style="border:none;background:var(--inp);border-radius:7px;padding:3px 9px;font-size:14px;cursor:pointer;color:var(--text);">◀</button>
+        <span id="weekLabel" style="font-size:11px;font-weight:800;color:var(--text);">📅 Tydzień</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span id="selectedDayLabel" style="font-size:9px;color:var(--soft);font-weight:700;"></span>
+          <button onclick="shiftWeek(1)" id="weekNextBtn" style="border:none;background:var(--inp);border-radius:7px;padding:3px 9px;font-size:14px;cursor:pointer;color:var(--text);" disabled>▶</button>
+        </div>
       </div>
-      <div class="week-row" id="weekRow"></div>
+      <div class="week-row" id="weekRow" style="touch-action:pan-y;"></div>
     </div>
     <div class="view-toggle">
       <button class="vt-btn sel" id="vt-normal" onclick="setView('normal')">📋 Normalny</button>
@@ -758,12 +789,17 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="sec-ttl">⚙️ Opcje</div>
 
     <span id="myDomain" style="display:none"></span>
-    <div class="gcal-card" onclick="toggleGCal()">
-      <div class="gcal-row"><div class="gcal-ico">📅</div><div><div class="gcal-ttl">Google Calendar</div><div class="gcal-sub">Synchronizuj zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus">Kliknij, aby połączyć</div></div></div>
-    </div>
-    <div class="card" id="gcalStatus2Card" style="display:none;">
-      <div style="font-size:12px;font-weight:800;color:var(--g2);" id="gcalStatus2">✅ Połączono z Google Calendar</div>
-      <button onclick="toggleGCal()" style="margin-top:7px;padding:7px 12px;border-radius:8px;border:2px solid var(--r);background:transparent;color:var(--r);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔌 Odłącz</button>
+    <div class="card" style="padding:11px;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="font-size:22px;">📅</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:800;color:var(--text);">Google Calendar</div>
+          <div style="font-size:10px;color:var(--soft);" id="gcalStatus">Kliknij, aby połączyć</div>
+        </div>
+        <button id="gcalConnectBtn" onclick="toggleGCal()" style="padding:6px 12px;border-radius:8px;border:none;background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔗 Połącz</button>
+        <button id="gcalDisconnectBtn" onclick="toggleGCal()" style="display:none;padding:6px 12px;border-radius:8px;border:2px solid var(--r);background:transparent;color:var(--r);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔌 Odłącz</button>
+      </div>
+      <div id="gcalStatus2" style="display:none;font-size:10px;color:var(--g2);font-weight:800;margin-top:5px;">✅ Połączono z Google Calendar</div>
     </div>
 
     <div class="card">
@@ -795,6 +831,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
         <button onclick="fetchWeatherByCity()">🔍</button>
       </div>
       <div style="font-size:10px;color:var(--soft);margin-top:5px;">lub <span style="cursor:pointer;color:var(--b);font-weight:800;" onclick="fetchWeatherGPS()">📍 użyj GPS</span></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">🔗 Zaproszenia</div>
+      <div id="referralSettingRow"></div>
+      <button onclick="shareInviteLink()" style="width:100%;margin-top:8px;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">🔗 Wyślij link zaproszenia teraz</button>
     </div>
     <div class="card">
       <div class="card-ttl">🏠 Lokalizacja domu rodziny</div>
@@ -1018,6 +1059,16 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   </div>
 </div>
 
+<!-- REFERRAL STAR -->
+<button id="referralStar" onclick="toggleReferralPanel()" title="Zaproś do rodziny">⭐</button>
+<div id="referralPanel">
+  <div class="ref-title">🏠 Zaproś do Domowy Patrol!</div>
+  <div class="ref-sub">Wyślij link przez dowolny komunikator — wystarczy kliknąć żeby dołączyć do Twojej rodziny.</div>
+  <button class="ref-btn" onclick="shareInviteLink()">🔗 Wyślij link zaproszenia</button>
+  <button class="ref-btn" style="background:linear-gradient(135deg,#1e3a5f,#2563eb);" onclick="copyInviteLink();toggleReferralPanel()">📋 Kopiuj link</button>
+  <div class="ref-close" onclick="dismissReferral()">✕ Nie pokazuj ponownie</div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -1050,39 +1101,58 @@ function saveState(){
 const mb=new Blob([JSON.stringify({name:"Domowy Patrol",short_name:"Patrol",start_url:".",display:"standalone",background_color:"#f2f6ee",theme_color:"#2d6a10",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"512x512",type:"image/svg+xml"}]})],{type:"application/json"});
 const ml=document.createElement("link");ml.rel="manifest";ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
 
-/* ── I18N ── */
+/* ── I18N — pełna naprawiona wersja ── */
 const LANGS=[['pl','🇵🇱 PL'],['en','🇬🇧 EN'],['de','🇩🇪 DE'],['fr','🇫🇷 FR'],['pt','🇧🇷 PT'],['zh','🇨🇳 中']];
 let curLang=localStorage.getItem('dp-lang')||'pl';
-const langRow=document.getElementById('langRow');
-LANGS.forEach(([c,l])=>{const b=document.createElement('button');b.className='lang-btn'+(c===curLang?' sel':'');b.textContent=l;b.onclick=()=>{curLang=c;localStorage.setItem('dp-lang',c);document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};langRow.appendChild(b);});
-// Rozszerzenie: applyLang() tłumaczy zakładki po zmianie języka
+
 const LANG_TAB_NAMES={
-  pl:{today:'Dziś',tasks:'Zlecone',family:'Rodzina',scores:'Wyniki',settings:'Opcje'},
-  en:{today:'Today',tasks:'Tasks',family:'Family',scores:'Scores',settings:'Options'},
-  de:{today:'Heute',tasks:'Aufgaben',family:'Familie',scores:'Punkte',settings:'Optionen'},
-  fr:{today:"Auj.",tasks:'Tâches',family:'Famille',scores:'Scores',settings:'Options'},
-  pt:{today:'Hoje',tasks:'Tarefas',family:'Família',scores:'Pontos',settings:'Opções'},
-  zh:{today:'今天',tasks:'任务',family:'家庭',scores:'积分',settings:'选项'},
+  pl:{today:'Dziś',tasks:'Zlecone',family:'Rodzina',scores:'Wyniki',settings:'Opcje',profile:'Profil'},
+  en:{today:'Today',tasks:'Tasks',family:'Family',scores:'Scores',settings:'Options',profile:'Profile'},
+  de:{today:'Heute',tasks:'Aufgaben',family:'Familie',scores:'Punkte',settings:'Optionen',profile:'Profil'},
+  fr:{today:"Auj.",tasks:'Tâches',family:'Famille',scores:'Scores',settings:'Options',profile:'Profil'},
+  pt:{today:'Hoje',tasks:'Tarefas',family:'Família',scores:'Pontos',settings:'Opções',profile:'Perfil'},
+  zh:{today:'今天',tasks:'任务',family:'家庭',scores:'积分',settings:'选项',profile:'个人'},
 };
+
 function applyLang(){
   const L=LANG_TAB_NAMES[curLang]||LANG_TAB_NAMES.pl;
-  const tabSpans=document.querySelectorAll('.tab span:not(.ti):not(.ndot)');
-  const names=[L.today,L.tasks,L.family,L.scores,L.settings];
-  tabSpans.forEach((el,i)=>{if(names[i])el.textContent=names[i];});
+  // Tłumacz zakładki — selektywnie po data-tab
+  document.querySelectorAll('.tab').forEach(tab=>{
+    const span=tab.querySelector('span:last-of-type');
+    if(!span) return;
+    const onclick=tab.getAttribute('onclick')||'';
+    if(onclick.includes("'today'")) span.textContent=L.today;
+    else if(onclick.includes("'tasks'")) span.textContent=L.tasks;
+    else if(onclick.includes("'family'")) span.textContent=L.family;
+    else if(onclick.includes("'scores'")) span.textContent=L.scores;
+    else if(onclick.includes("'settings'")) span.textContent=L.settings;
+  });
+  // Aktualizuj przyciski językowe
   document.querySelectorAll('.lang-btn').forEach(b=>{
-    // find which lang this button is
-    const txt=b.textContent;
-    const found=LANGS.find(([code,label])=>label===txt);
+    const found=LANGS.find(([code,label])=>label===b.textContent);
     if(found) b.className='lang-btn'+(found[0]===curLang?' sel':'');
   });
 }
-// Re-apply on lang change — patch existing onclick
-document.querySelectorAll('.lang-btn').forEach(b=>{
-  const orig=b.onclick;
-  b.onclick=()=>{orig&&orig.call(b);applyLang();};
+window.applyLang=applyLang;
+
+// Buduj przyciski językowe
+const langRow=document.getElementById('langRow');
+LANGS.forEach(([c,l])=>{
+  const b=document.createElement('button');
+  b.className='lang-btn'+(c===curLang?' sel':'');
+  b.textContent=l;
+  b.onclick=()=>{
+    curLang=c;
+    localStorage.setItem('dp-lang',c);
+    applyLang();
+  };
+  langRow.appendChild(b);
 });
-// Zastosuj język od razu przy starcie
-applyLang();
+
+// Zastosuj przy starcie (tabs jeszcze nie istnieją — poczekaj na DOM)
+document.addEventListener('DOMContentLoaded',applyLang);
+// Też od razu jeśli DOM już gotowy
+if(document.readyState!=='loading') applyLang();
 
 /* ── THEMES ── */
 const THEMES=[{id:'light',ico:'☀️',nm:'Jasny'},{id:'dark',ico:'🌙',nm:'Ciemny'},{id:'win',ico:'🪟',nm:'Win'},{id:'android',ico:'🤖',nm:'Droid'},{id:'ios',ico:'🍎',nm:'iOS'}];
@@ -1354,7 +1424,11 @@ async function doSetup(){
   if(!famSnap.exists()||!Object.keys(famSnap.val()||{}).length){
     await set(ref(db,`families/${code}`),{name:code,createdAt:Date.now(),createdBy:currentUser.uid});
     await set(ref(db,`families/${code}/members/${currentUser.uid}`),{name,avatar:currentUser.photoURL||selectedAvatar,role:selectedRole,points:0,photoURL:currentUser.photoURL||''});
-    myProfile=profile;launchApp();
+    myProfile=profile;
+    // Zapisz harmonogram z setupu
+    const setupScheds=_collectSetupSchedule();
+    if(setupScheds.length){returnSchedules[currentUser.uid]=setupScheds;localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));await set(ref(db,`families/${code}/returnSchedules/${currentUser.uid}`),setupScheds).catch(()=>{});}
+    launchApp();
   } else {
     await set(ref(db,`families/${code}/joinRequests/${currentUser.uid}`),{name,avatar:currentUser.photoURL||selectedAvatar,uid:currentUser.uid,ts:Date.now(),status:'pending',email:currentUser.email||''});
     pendingFamilyCode=code;document.getElementById('setupScreen').style.display='none';myProfile=profile;showPendingScreen();
@@ -1507,14 +1581,13 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/returnSchedules`),s=>{if(s.val()){const fb=s.val();Object.assign(returnSchedules,fb);localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));renderReturnSchedulePanel();}});
   renderThemeGrid();renderGlobalIntervalRow();renderCategoryMgmt();
   // Pokaż status GCal
-  if(gcalToken){
-    const gs=document.getElementById('gcalStatus');if(gs)gs.textContent='✅ Połączono';
-    const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display='block';
-  }
+  if(gcalToken){ _gcalUpdateUI(true); }
   renderAll();fetchWeather();
-  selectedDay=null;renderWeek();
+  selectedDay=null;weekOffset=0;renderWeek();
   renderFamilyTabs();
   renderBirthdays();
+  // Inicjalizuj gwiazdkę zaproszenia
+  setTimeout(initReferralStar, 500);
 
   if(!isDemo){
     const memberData={name:myProfile.name,avatar:myProfile.avatar,photoURL:myProfile.photoURL||currentUser?.photoURL||'',role:myProfile.role,points:myProfile.points||0,lastSeen:serverTimestamp()};
@@ -1878,14 +1951,83 @@ async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.ge
 window.iAmHeading=iAmHeading;
 window.notYet=function(){const uid=getMyUid();const c=live.curfews[uid];if(!c)return;showToast(`⏸️ Pamiętaj o ${c.time}!`);sendBrowserNotif('🏠 Pamiętaj!',`Powrót o ${c.time}`);};
 
-/* ── WEEK & DAY SELECTOR ── */
-function renderWeek(){
-  const row=document.getElementById('weekRow');const dow=today.getDay();const mon=new Date(today);mon.setDate(today.getDate()-((dow+6)%7));row.innerHTML='';const total=cats.reduce((a,c)=>a+c.chores.length,0);
-  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const k=fmt(d);const isToday=k===todayKey;const isSel=k===selectedDay;const done=isToday?Object.keys(live.done).length:0;row.innerHTML+=`<div class="dc ${isToday?'today':''} ${isSel?'selected':''} ${done>=total&&done>0?'full':done>0?'partial':''}" onclick="selectDay('${k}')"><div class="dn">${DAY_NAMES[d.getDay()]}</div><div class="dd">${d.getDate()}</div><div class="dot"></div></div>`;}
-  const sl=document.getElementById('selectedDayLabel');if(selectedDay&&selectedDay!==todayKey){const sd=new Date(selectedDay);sl.textContent=`📅 Edytujesz: ${sd.getDate()}.${d2(sd.getMonth()+1)}`;}else sl.textContent='';
+/* ── WEEK & DAY SELECTOR — wielotygodniowy ── */
+let weekOffset=0; // 0=bieżący, -1=poprzedni, -2=dwa tygodnie temu itd.
+
+function getWeekStart(offset){
+  const dow=today.getDay();
+  const mon=new Date(today);
+  mon.setDate(today.getDate()-((dow+6)%7) + offset*7);
+  mon.setHours(0,0,0,0);
+  return mon;
 }
-function selectDay(k){const now2=new Date(todayKey);const d=new Date(k);const diff=Math.round((now2-d)/MS.day);if(diff>7){showToast('⚠️ Max 7 dni wstecz');return;}if(diff<0){showToast('⚠️ Nie można edytować przyszłości');return;}selectedDay=k===todayKey?null:k;renderWeek();if(selectedDay){loadPastDay(k);}else{renderChores();}}
+
+function shiftWeek(dir){
+  const newOffset=weekOffset+dir;
+  if(newOffset>0) return; // nie w przyszłość
+  if(newOffset<-8){showToast('⚠️ Max 8 tygodni wstecz');return;}
+  weekOffset=newOffset;
+  selectedDay=null;
+  renderWeek();
+  renderChores();
+}
+window.shiftWeek=shiftWeek;
+
+function renderWeek(){
+  const row=document.getElementById('weekRow');
+  if(!row) return;
+  const mon=getWeekStart(weekOffset);
+  row.innerHTML='';
+  const total=cats.reduce((a,c)=>a+c.chores.length,0);
+  const MN=['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+  for(let i=0;i<7;i++){
+    const d=new Date(mon);d.setDate(mon.getDate()+i);
+    const k=fmt(d);
+    const isToday=k===todayKey;
+    const isSel=k===selectedDay;
+    const done=isToday?Object.keys(live.done).length:0;
+    row.innerHTML+=`<div class="dc ${isToday?'today':''} ${isSel?'selected':''} ${done>=total&&done>0?'full':done>0?'partial':''}" onclick="selectDay('${k}')"><div class="dn">${DAY_NAMES[d.getDay()]}</div><div class="dd">${d.getDate()}</div><div class="dot"></div></div>`;
+  }
+  // Label tygodnia
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const lbl=document.getElementById('weekLabel');
+  if(lbl){
+    if(weekOffset===0) lbl.textContent='📅 Ten tydzień';
+    else if(weekOffset===-1) lbl.textContent='📅 Poprzedni tydzień';
+    else lbl.textContent=`📅 ${mon.getDate()} ${MN[mon.getMonth()]} – ${sun.getDate()} ${MN[sun.getMonth()]}`;
+  }
+  // Strzałka do przodu tylko gdy jesteśmy w przeszłości
+  const nxtBtn=document.getElementById('weekNextBtn');
+  if(nxtBtn) nxtBtn.disabled=weekOffset>=0;
+  // Zaznaczony dzień label
+  const sl=document.getElementById('selectedDayLabel');
+  if(sl){if(selectedDay&&selectedDay!==todayKey){const sd=new Date(selectedDay);sl.textContent=`✏️ ${sd.getDate()}.${d2(sd.getMonth()+1)}`;}else sl.textContent=weekOffset<0?'(historia)':'';}
+}
+
+function selectDay(k){
+  const now2=new Date(todayKey);const d=new Date(k);
+  const diff=Math.round((now2-d)/MS.day);
+  if(diff<0){showToast('⚠️ Nie można edytować przyszłości');return;}
+  selectedDay=k===todayKey?null:k;
+  renderWeek();
+  if(selectedDay){loadPastDay(k);}else{renderChores();}
+}
 window.selectDay=selectDay;
+
+// Swipe na tygodniu
+(function(){
+  let sx=0,sy=0;
+  document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const el=document.getElementById('weekCard');if(!el||!el.contains(e.target)) return;
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=Math.abs(e.changedTouches[0].clientY-sy);
+    if(Math.abs(dx)>50&&dy<40){
+      if(dx<0) shiftWeek(-1); // swipe lewo = poprzedni
+      else shiftWeek(1);      // swipe prawo = następny
+    }
+  },{passive:true});
+})();
 async function loadPastDay(k){
   if(isDemo){const mock={};allChores().forEach(c=>{if(Math.random()>.4)mock[c.id]={who:'Kacper',avatar:'👦',ts:Date.now()-MS.day};});live['past_'+k]=mock;renderPastDay(k,mock);return;}
   const snap=await get(ref(db,`f/${fCode}/done/${k}`));live['past_'+k]=snap.val()||{};renderPastDay(k,live['past_'+k]);
@@ -2020,15 +2162,27 @@ window.deleteCat=deleteCat;
 function renderGlobalIntervalRow(){document.getElementById('globalIntervalRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${reminderInterval===m?'sel':''}" onclick="setGlobalInt(${m})">${m} min</button>`).join('');}
 window.setGlobalInt=function(m){reminderInterval=m;localStorage.setItem('dp-reminder-int',m);renderGlobalIntervalRow();showToast(`⏰ Co ${m} min`);};
 
+
+function _gcalUpdateUI(connected){
+  const st=document.getElementById('gcalStatus');
+  const st2=document.getElementById('gcalStatus2');
+  const btnC=document.getElementById('gcalConnectBtn');
+  const btnD=document.getElementById('gcalDisconnectBtn');
+  if(st) st.textContent=connected?'✅ Połączono — zadania trafiają do kalendarza':'Kliknij, aby połączyć';
+  if(st2){st2.textContent=connected?'✅ Połączono z Google Calendar':'';st2.style.display=connected?'block':'none';}
+  if(btnC) btnC.style.display=connected?'none':'';
+  if(btnD) btnD.style.display=connected?'':'none';
+}
+
 /* ── GCAL FIXED — token zapisywany trwale ── */
 function toggleGCal(){
   if(gcalToken){
+    if(!confirm('Odłączyć Google Calendar?')) return;
     gcalToken=null;
     sessionStorage.removeItem('dp-gcal');
     localStorage.removeItem('dp-gcal-token');
     if(!isDemo&&currentUser) update(ref(db,`users/${currentUser.uid}/profile`),{gcalToken:null}).catch(()=>{});
-    document.getElementById('gcalStatus').textContent='Kliknij, aby połączyć';
-    const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display='none';
+    _gcalUpdateUI(false);
     showToast('📅 Odłączono');return;
   }
   if(GCAL_CLIENT_ID.includes('WKLEJ')){showToast('⚠️ Wklej GCAL_CLIENT_ID w kodzie');return;}
@@ -2052,9 +2206,7 @@ function toggleGCal(){
         // Zapisz token do Firebase żeby nie logować się za każdym razem
         if(!isDemo&&currentUser) update(ref(db,`users/${currentUser.uid}/profile`),{gcalToken}).catch(()=>{});
         pop.close();clearInterval(t);
-        document.getElementById('gcalStatus').textContent='✅ Połączono';
-        const gs2=document.getElementById('gcalStatus2');if(gs2)gs2.textContent='✅ Połączono';
-        const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display='block';
+        _gcalUpdateUI(true);
         showToast('📅 Połączono z Google Calendar!');
       }
     }catch(e){}
@@ -2870,13 +3022,136 @@ function goTab(id){
     const hst=document.getElementById('homeLocSettingsStatus');
     if(hst){hst.textContent=homeLocation?`✅ Dom ustawiony: ${homeLocation.lat.toFixed(4)}, ${homeLocation.lng.toFixed(4)}`:'⚠️ Nie ustawiono lokalizacji domu';}
     // Pokaż status GCal
-    const gs=document.getElementById('gcalStatus');
-    if(gs) gs.textContent=gcalToken?'✅ Połączono':'Kliknij, aby połączyć';
-    const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display=gcalToken?'block':'none';
+    _gcalUpdateUI(!!gcalToken);renderReferralSetting();
   }
   if(id==='weather'){renderWeatherFull();}
 }
 window.goTab=goTab;
+
+
+/* ══════════════════════════════════════════════
+   v14 — NOWE FUNKCJE
+   ══════════════════════════════════════════════ */
+
+/* ── SETUP HARMONOGRAMÓW ── */
+(function initSetupSchedule(){
+  const DAYS_PL=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+  const WORK_DAYS=[1,2,3,4,5]; // Pn-Pt
+  const container=document.getElementById('schedRowsContainer');
+  if(!container) return;
+  // Domyślne godziny — zostaną zaktualizowane gdy wybieramy rolę
+  function buildRows(role){
+    container.innerHTML='';
+    WORK_DAYS.forEach(d=>{
+      const defEnd=role==='child'?'15:30':'17:00';
+      const defEta=role==='child'?'16:00':'17:30';
+      const row=document.createElement('div');
+      row.className='sched-row';
+      row.innerHTML=`<span class="sched-day">${DAYS_PL[d]}</span>
+        <input class="sched-inp" type="time" id="sched_end_${d}" value="${defEnd}">
+        <input class="sched-inp" type="time" id="sched_eta_${d}" value="${defEta}">`;
+      container.appendChild(row);
+    });
+  }
+  buildRows('parent');
+  window._rebuildScheduleRows=buildRows;
+})();
+
+// Wywołaj buildRows gdy zmienia się rola
+const _origSetRole=window.setRole;
+window.setRole=function(r){
+  _origSetRole&&_origSetRole(r);
+  if(window._rebuildScheduleRows) window._rebuildScheduleRows(r);
+};
+
+// Zbierz harmonogram z setupu i zapisz przy doSetup
+const _origDoSetup=window.doSetup;
+// Patch doSetup — zbieramy dane harmonogramu i dołączamy do returnSchedules
+function _collectSetupSchedule(){
+  const WORK_DAYS=[1,2,3,4,5];
+  const role=document.getElementById('roleC')?.classList.contains('sel')?'child':'parent';
+  const label=role==='child'?'Szkoła':'Praca';
+  const uid=window._setupUid||''; // ustawiany podczas doSetup
+  const scheds=[];
+  WORK_DAYS.forEach(d=>{
+    const endEl=document.getElementById('sched_end_'+d);
+    const etaEl=document.getElementById('sched_eta_'+d);
+    if(endEl?.value) scheds.push({day:d,time:endEl.value,eta:etaEl?.value||'',label});
+  });
+  return scheds;
+}
+
+/* ── REFERRAL STAR ── */
+let referralDismissed=localStorage.getItem('dp-ref-dismissed')==='1';
+let referralPanelOpen=false;
+
+function initReferralStar(){
+  if(referralDismissed) return;
+  const star=document.getElementById('referralStar');
+  if(!star) return;
+  star.classList.add('visible');
+  // Po 1 minucie — pulsuje
+  setTimeout(()=>{
+    if(!referralDismissed){
+      star.classList.add('pulse');
+      setTimeout(()=>star.classList.remove('pulse'),3100);
+    }
+  },60000);
+  // Po 5 minutach — znika automatycznie jeśli nie kliknięty
+  setTimeout(()=>{
+    if(!referralPanelOpen&&!referralDismissed){
+      star.classList.remove('visible');
+    }
+  },300000);
+}
+
+window.toggleReferralPanel=function(){
+  const panel=document.getElementById('referralPanel');
+  referralPanelOpen=!referralPanelOpen;
+  panel.classList.toggle('show',referralPanelOpen);
+};
+
+window.dismissReferral=function(){
+  referralDismissed=true;
+  localStorage.setItem('dp-ref-dismissed','1');
+  document.getElementById('referralStar')?.classList.remove('visible');
+  document.getElementById('referralPanel')?.classList.remove('show');
+  // Można ponownie włączyć w Opcjach
+  showToast('⭐ Gwiazdka ukryta — możesz włączyć w Opcjach');
+};
+
+window.shareInviteLink=function(){
+  const link=`${location.origin}${location.pathname}?invite=${fCode}`;
+  if(navigator.share){
+    navigator.share({title:'Domowy Patrol 🏠',text:'Dołącz do naszej rodziny w Domowy Patrol!',url:link})
+      .then(()=>showToast('✅ Wysłano!'))
+      .catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(link).then(()=>showToast('📋 Skopiowano link!'));
+  }
+  toggleReferralPanel();
+};
+
+/* ── Opcja w settings — przywróć gwiazdkę ── */
+function renderReferralSetting(){
+  const el=document.getElementById('referralSettingRow');
+  if(!el) return;
+  el.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;">
+    <div><div style="font-size:12px;font-weight:800;color:var(--text);">⭐ Przycisk zaproszenia</div><div style="font-size:10px;color:var(--soft);">Gwiazdka w rogu ekranu z linkiem zaproszenia</div></div>
+    <button onclick="toggleReferralVisibility()" style="padding:5px 10px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--text);">${referralDismissed?'Włącz':'Wyłącz'}</button>
+  </div>`;
+}
+window.toggleReferralVisibility=function(){
+  referralDismissed=!referralDismissed;
+  localStorage.setItem('dp-ref-dismissed',referralDismissed?'1':'0');
+  if(!referralDismissed) initReferralStar();
+  else document.getElementById('referralStar')?.classList.remove('visible');
+  renderReferralSetting();
+};
+
+/* ── Inicjalizuj gwiazdkę po zalogowaniu ── */
+// (wywoływane z launchApp)
+
 </script>
 </body>
 </html>
