@@ -641,6 +641,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="s-lbl">Kod rodziny</div>
     <input class="s-inp" id="sCode" placeholder="np. KOWALSKI2025" maxlength="24" style="text-transform:uppercase;">
     <div id="codeStatus" style="font-size:10px;color:var(--soft);margin-top:3px;min-height:14px;"></div>
+    <div class="s-lbl" id="homeLbl" style="display:none;">📍 Lokalizacja domu (opcja)</div>
+    <div id="homeLocRow" style="display:none;gap:6px;margin-bottom:4px;">
+      <button onclick="captureHomeGPS()" style="flex:1;padding:8px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--g2);">📍 Użyj GPS teraz</button>
+    </div>
+    <div id="homeLocStatus" style="font-size:10px;color:var(--soft);min-height:14px;"></div>
     <button class="s-btn" onclick="doSetup()">Dołącz →</button>
   </div>
 </div>
@@ -669,11 +674,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           <div class="app-name">🏠 Domowy Patrol</div>
           <div class="app-dt" id="appDt"></div>
         </div>
-        <div class="view-mode-bar" style="position:static;margin-left:auto;margin-right:8px;">
-          <button class="vm-btn" data-dm="mobile" onclick="setDesktopMode('mobile')" title="Widok mobile">📱</button>
-          <button class="vm-btn sel" data-dm="auto" onclick="setDesktopMode('auto')" title="Auto">🔄</button>
-          <button class="vm-btn" data-dm="desktop" onclick="setDesktopMode('desktop')" title="Widok desktop">🖥️</button>
-        </div>
+
       <div class="user-chip" onclick="goTab('profile')">
         <!-- FIXED: proper crossOrigin for Google photo -->
         <img id="chipPhoto" class="chip-photo" src="" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.style.display='none'">
@@ -756,29 +757,13 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   <div class="sec" id="sec-settings">
     <div class="sec-ttl">⚙️ Opcje</div>
 
-    <!-- GCal fix banner -->
-    <div class="gcal-fix" id="gcalFixBanner" style="display:none;">
-      <div class="gcal-fix-title">🔧 Napraw błąd "unauthorized" Google Calendar</div>
-      <div class="gcal-fix-step">Wejdź na <strong>console.cloud.google.com</strong> → Twój projekt → <strong>APIs & Services → Credentials</strong></div>
-      <div class="gcal-fix-step">Kliknij swój OAuth Client ID → sekcja <strong>"Authorized JavaScript origins"</strong></div>
-      <div class="gcal-fix-step">Dodaj dokładny adres swojej strony, np. <code id="myDomain"></code></div>
-      <div class="gcal-fix-step">Zapisz i odczekaj 5 minut (Google potrzebuje czasu na propagację)</div>
-      <div class="gcal-fix-step">Upewnij się że Client ID w kodzie kończy się na <code>.apps.googleusercontent.com</code></div>
-      <button onclick="document.getElementById('gcalFixBanner').style.display='none'" style="margin-top:7px;padding:5px 12px;border-radius:7px;border:none;background:rgba(0,0,0,.15);cursor:pointer;font-size:10px;font-weight:800;">Ukryj tę wskazówkę</button>
-    </div>
-
+    <span id="myDomain" style="display:none"></span>
     <div class="gcal-card" onclick="toggleGCal()">
       <div class="gcal-row"><div class="gcal-ico">📅</div><div><div class="gcal-ttl">Google Calendar</div><div class="gcal-sub">Synchronizuj zadania z kalendarzem</div><div class="gcal-st" id="gcalStatus">Kliknij, aby połączyć</div></div></div>
     </div>
-    <div class="card" style="border:2px solid var(--y);">
-      <div class="card-ttl">🔧 Błąd redirect_uri? Zrób to raz:</div>
-      <div style="font-size:11px;color:var(--text);line-height:1.7;margin-bottom:9px;">
-        <b>1.</b> Wejdź: <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--b);">console.cloud.google.com/apis/credentials</a><br>
-        <b>2.</b> Kliknij swój OAuth 2.0 Client ID<br>
-        <b>3.</b> Sekcja <b>"Authorized redirect URIs"</b> (nie JavaScript origins!)<br>
-        <b>4.</b> Kliknij przycisk niżej aby skopiować swój URI:
-      </div>
-      <button onclick="showGCalSetupInfo()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">📋 Kopiuj mój redirect URI i pokaż instrukcję</button>
+    <div class="card" id="gcalStatus2Card" style="display:none;">
+      <div style="font-size:12px;font-weight:800;color:var(--g2);" id="gcalStatus2">✅ Połączono z Google Calendar</div>
+      <button onclick="toggleGCal()" style="margin-top:7px;padding:7px 12px;border-radius:8px;border:2px solid var(--r);background:transparent;color:var(--r);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔌 Odłącz</button>
     </div>
 
     <div class="card">
@@ -810,6 +795,12 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
         <button onclick="fetchWeatherByCity()">🔍</button>
       </div>
       <div style="font-size:10px;color:var(--soft);margin-top:5px;">lub <span style="cursor:pointer;color:var(--b);font-weight:800;" onclick="fetchWeatherGPS()">📍 użyj GPS</span></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">🏠 Lokalizacja domu rodziny</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Używana do obliczania odległości dzieci od domu</div>
+      <div id="homeLocSettingsStatus" style="font-size:11px;font-weight:800;color:var(--g2);margin-bottom:8px;"></div>
+      <button onclick="captureHomeGPS_settings()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--g2);background:var(--gp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--g2);">📍 Ustaw lokalizację domu (GPS)</button>
     </div>
   </div>
 
@@ -1046,7 +1037,7 @@ const auth=getAuth(fbApp),db=getDatabase(fbApp),gProv=new GoogleAuthProvider();
 document.getElementById('myDomain').textContent=location.origin;
 const GCAL_CLIENT_ID="71160418880-plh2nv7rg31t1ski2m03euqp7f0eofjv.apps.googleusercontent.com";
 // ── PERSISTENT STATE — zapamiętywane między sesjami ──
-let gcalToken=sessionStorage.getItem('dp-gcal')||null; // token wygasa po ~1h
+let gcalToken=localStorage.getItem('dp-gcal-token')||sessionStorage.getItem('dp-gcal')||null;
 let collapsedCats=JSON.parse(localStorage.getItem('dp-collapsed')||'{}');
 let sortMode=localStorage.getItem('dp-sort')||'default';
 let catVisibility=JSON.parse(localStorage.getItem('dp-cat-vis')||'{}');
@@ -1090,6 +1081,8 @@ document.querySelectorAll('.lang-btn').forEach(b=>{
   const orig=b.onclick;
   b.onclick=()=>{orig&&orig.call(b);applyLang();};
 });
+// Zastosuj język od razu przy starcie
+applyLang();
 
 /* ── THEMES ── */
 const THEMES=[{id:'light',ico:'☀️',nm:'Jasny'},{id:'dark',ico:'🌙',nm:'Ciemny'},{id:'win',ico:'🪟',nm:'Win'},{id:'android',ico:'🤖',nm:'Droid'},{id:'ios',ico:'🍎',nm:'iOS'}];
@@ -1210,14 +1203,9 @@ let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},join
 let selectedRole='parent',selectedAvatar=AVATARS[0],curfewChildId=null;
 let returnTimers=[],reminderInterval=parseInt(localStorage.getItem('dp-reminder-int'))||15,curfewModalInterval=15;
 let viewMode=localStorage.getItem('dp-view')||'normal';
-let desktopMode=localStorage.getItem('dp-desktop')||'auto'; // 'auto'|'mobile'|'desktop'
+let desktopMode='desktop'; // zawsze desktop
 function applyDesktopMode(){
-  const w=window.innerWidth;
-  const isDesktop=desktopMode==='desktop'||(desktopMode==='auto'&&w>=768);
-  document.body.classList.toggle('dp-desktop',isDesktop);
-  document.querySelectorAll('.vm-btn').forEach(b=>{
-    b.classList.toggle('sel',b.dataset.dm===desktopMode);
-  });
+  document.body.classList.add('dp-desktop');
 }
 window.addEventListener('resize',applyDesktopMode);
 let selectedDay=null;
@@ -1231,7 +1219,24 @@ let activeChatRoom='family';
 let activeStickyColor='sc-y';
 let activeGiftPerson='';
 // Etap 4 state
-let returnSchedules=JSON.parse(localStorage.getItem('dp-return-schedules')||'{}'); // {uid: [{day:1,time:'16:30',eta:'~17:00',label:'Szkoła'}]}
+let returnSchedules=JSON.parse(localStorage.getItem('dp-return-schedules')||'{}');
+let homeLocation=JSON.parse(localStorage.getItem('dp-home-loc')||'null'); // {lat,lng}
+
+/* ── LOKALIZACJA DOMU ── */
+window.captureHomeGPS=function(){
+  const st=document.getElementById('homeLocStatus');
+  if(st) st.textContent='📍 Pobieranie GPS…';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    homeLocation={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    localStorage.setItem('dp-home-loc',JSON.stringify(homeLocation));
+    if(st) st.textContent=`✅ Dom: ${homeLocation.lat.toFixed(4)}, ${homeLocation.lng.toFixed(4)}`;
+    showToast('🏠 Lokalizacja domu zapisana!');
+    // Zapisz do Firebase rodziny jeśli już zalogowany
+    if(!isDemo&&fCode) set(ref(db,`families/${fCode}/homeLocation`),homeLocation).catch(()=>{});
+  },()=>{
+    if(st) st.textContent='❌ Brak GPS — włącz i spróbuj ponownie';
+  },{enableHighAccuracy:true,timeout:10000});
+};
 
 const today=new Date(),todayKey=fmt(today);
 const MS={min:60000,hr:3600000,day:86400000};
@@ -1329,6 +1334,12 @@ onAuthStateChanged(auth,async user=>{
     if(inviteFamilyCode) document.getElementById('sCode').value=inviteFamilyCode;
   } else {
     myProfile=snap.val();
+    // Przywróć token GCal jeśli był zapisany
+    if(myProfile.gcalToken&&!gcalToken){
+      gcalToken=myProfile.gcalToken;
+      sessionStorage.setItem('dp-gcal',gcalToken);
+      localStorage.setItem('dp-gcal-token',gcalToken);
+    }
     if(inviteFamilyCode&&myProfile.code!==inviteFamilyCode){await set(ref(db,`families/${inviteFamilyCode}/joinRequests/${user.uid}`),{name:myProfile.name,avatar:user.photoURL||myProfile.avatar,uid:user.uid,ts:Date.now(),status:'pending',email:user.email||''});pendingFamilyCode=inviteFamilyCode;showPendingScreen();return;}
     launchApp();
   }
@@ -1350,7 +1361,12 @@ async function doSetup(){
   }
 }
 window.doSetup=doSetup;
-window.setRole=function(r){selectedRole=r;document.getElementById('roleP').className='role-btn'+(r==='parent'?' sel':'');document.getElementById('roleC').className='role-btn'+(r==='child'?' sel':'');};
+window.setRole=function(r){selectedRole=r;document.getElementById('roleP').className='role-btn'+(r==='parent'?' sel':'');document.getElementById('roleC').className='role-btn'+(r==='child'?' sel':'');
+  // Pokaż pole lokalizacji domu tylko rodzicowi
+  const show=r==='parent';
+  document.getElementById('homeLbl').style.display=show?'':'none';
+  document.getElementById('homeLocRow').style.display=show?'flex':'none';
+};
 
 /* ── JOIN REQUESTS ── */
 function renderJoinRequests(){
@@ -1485,7 +1501,16 @@ function launchApp(){
   renderReturnSchedulePanel();renderChildTasksPanel();
   // Listener dla child tasks
   if(!isDemo) onValue(ref(db,`families/${fCode}/childTasks`),s=>{const r=s.val()||{};live.childTasks=Object.values(r);renderChildTasksPanel();});
+    // Wczytaj lokalizację domu rodziny
+    onValue(ref(db,`families/${fCode}/homeLocation`),s=>{if(s.val()){homeLocation=s.val();localStorage.setItem('dp-home-loc',JSON.stringify(homeLocation));}});
+    // Wczytaj harmonogramy powrotów z Firebase
+    onValue(ref(db,`families/${fCode}/returnSchedules`),s=>{if(s.val()){const fb=s.val();Object.assign(returnSchedules,fb);localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));renderReturnSchedulePanel();}});
   renderThemeGrid();renderGlobalIntervalRow();renderCategoryMgmt();
+  // Pokaż status GCal
+  if(gcalToken){
+    const gs=document.getElementById('gcalStatus');if(gs)gs.textContent='✅ Połączono';
+    const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display='block';
+  }
   renderAll();fetchWeather();
   selectedDay=null;renderWeek();
   renderFamilyTabs();
@@ -1511,7 +1536,7 @@ function launchApp(){
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   }
-  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();
+  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();applyLang();
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
@@ -1811,20 +1836,45 @@ async function setCurfew(){if(!curfewChildId)return;const t=document.getElementB
 window.setCurfew=setCurfew;
 async function clearCurfew(){if(!curfewChildId)return;if(isDemo){delete live.curfews[curfewChildId];renderCurfewPanel();updateReturnBanner();}else await remove(ref(db,`families/${fCode}/curfews/${curfewChildId}`));showToast('❌ Anulowano');closeOverlay('curfewOverlay');}
 window.clearCurfew=clearCurfew;
-function updateReturnBanner(){if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;banner.style.display='block';if(diffMin>60){banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div></div>`;clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));}else if(diffMin>0){banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;clearReturnTimers();scheduleReturnReminders(curfew.time,interval);}else{banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);
+function updateReturnBanner(){
+  if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}
+  const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');
+  if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}
+  const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);
+  const rt=new Date(now);rt.setHours(hh,mm,0,0);
+  const diffMs=rt.getTime()-now.getTime();
+  const diffMin=Math.round(diffMs/60000);
+  const interval=curfew.reminderInterval||reminderInterval||15;
+  banner.style.display='block';
+
+  // Auto-ukryj baner 30 minut po czasie powrotu
+  if(diffMin < -30){banner.style.display='none';clearReturnTimers();return;}
+
+  if(diffMin>60){
+    banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div><div class="rb-btns"><button class="rb-btn" onclick="dismissCurfewBanner()">✕ Ukryj</button></div></div>`;
+    clearReturnTimers();
+    if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));
+  } else if(diffMin>0){
+    banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;
+    clearReturnTimers();scheduleReturnReminders(curfew.time,interval);
+  } else {
+    banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica · ${curfew.time}</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button><button class="rb-btn" onclick="dismissCurfewBanner()">✕</button></div></div>`;
+    sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);
     sendPersistentNotif('❗ Czas minął!', `Powinieneś być w domu! (${curfew.time})`, {
       tag:'dp-curfew-late', persist:true, renotify:true,
       actions:['🏃 Wracam teraz!','📞 Dzwonię'],
       actionData:{a0:'heading_home',a1:'open_app'}
-    });}}
-function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);
-        sendPersistentNotif('🏠 Czas wracać!', `Zostało ${left} min. Powrót: ${time}`, {
-          tag:'dp-curfew', persist:true, renotify:true,
-          actions:['🏃 Wracam!','Jeszcze chwilę'],
-          actionData:{a0:'heading_home',a1:'not_yet'}
-        });showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
+    });
+  }
+}
+window.dismissCurfewBanner=function(){
+  document.getElementById('returnBanner').style.display='none';
+  clearReturnTimers();
+};
+function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);sendPersistentNotif('🏠 Czas wracać!', `Zostało ${left} min. Powrót: ${time}`, {tag:'dp-curfew', persist:true, renotify:true, actions:['🏃 Wracam!','Jeszcze chwilę'], actionData:{a0:'heading_home',a1:'not_yet'}});showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
 function clearReturnTimers(){returnTimers.forEach(clearTimeout);returnTimers=[];}
 async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});}sendBrowserNotif('🏃 W drodze!','Bezpiecznej drogi!');setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);}
+
 window.iAmHeading=iAmHeading;
 window.notYet=function(){const uid=getMyUid();const c=live.curfews[uid];if(!c)return;showToast(`⏸️ Pamiętaj o ${c.time}!`);sendBrowserNotif('🏠 Pamiętaj!',`Powrót o ${c.time}`);};
 
@@ -1970,18 +2020,19 @@ window.deleteCat=deleteCat;
 function renderGlobalIntervalRow(){document.getElementById('globalIntervalRow').innerHTML=REMINDER_OPTIONS.map(m=>`<button class="int-btn ${reminderInterval===m?'sel':''}" onclick="setGlobalInt(${m})">${m} min</button>`).join('');}
 window.setGlobalInt=function(m){reminderInterval=m;localStorage.setItem('dp-reminder-int',m);renderGlobalIntervalRow();showToast(`⏰ Co ${m} min`);};
 
-/* ── GCAL FIXED ── */
-// FIXED: use redirect_uri matching exactly what's in Google Cloud Console
+/* ── GCAL FIXED — token zapisywany trwale ── */
 function toggleGCal(){
   if(gcalToken){
-    gcalToken=null;sessionStorage.removeItem('dp-gcal');
+    gcalToken=null;
+    sessionStorage.removeItem('dp-gcal');
+    localStorage.removeItem('dp-gcal-token');
+    if(!isDemo&&currentUser) update(ref(db,`users/${currentUser.uid}/profile`),{gcalToken:null}).catch(()=>{});
     document.getElementById('gcalStatus').textContent='Kliknij, aby połączyć';
+    const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display='none';
     showToast('📅 Odłączono');return;
   }
   if(GCAL_CLIENT_ID.includes('WKLEJ')){showToast('⚠️ Wklej GCAL_CLIENT_ID w kodzie');return;}
-  // redirect_uri = dokładnie ten adres który dodajesz w "Authorized redirect URIs"
-  const redirectUri=location.origin+location.pathname.replace(/\/$/,'');
-  console.log('GCal redirect_uri (dodaj w Cloud Console → Authorized redirect URIs):', redirectUri);
+  const redirectUri=location.origin;
   const fullUrl='https://accounts.google.com/o/oauth2/v2/auth'
     +'?client_id='+encodeURIComponent(GCAL_CLIENT_ID)
     +'&redirect_uri='+encodeURIComponent(redirectUri)
@@ -1997,9 +2048,13 @@ function toggleGCal(){
       if(h&&h.includes('access_token')){
         gcalToken=new URLSearchParams(h.slice(1)).get('access_token');
         sessionStorage.setItem('dp-gcal',gcalToken);
+        localStorage.setItem('dp-gcal-token',gcalToken);
+        // Zapisz token do Firebase żeby nie logować się za każdym razem
+        if(!isDemo&&currentUser) update(ref(db,`users/${currentUser.uid}/profile`),{gcalToken}).catch(()=>{});
         pop.close();clearInterval(t);
         document.getElementById('gcalStatus').textContent='✅ Połączono';
         const gs2=document.getElementById('gcalStatus2');if(gs2)gs2.textContent='✅ Połączono';
+        const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display='block';
         showToast('📅 Połączono z Google Calendar!');
       }
     }catch(e){}
@@ -2541,34 +2596,53 @@ function fmtDist(m){return m<1000?m+'m':(m/1000).toFixed(1)+'km';}
 function renderDistancePanel(){
   const el=document.getElementById('distancePanel');if(!el)return;
   if(myProfile?.role!=='parent'){el.innerHTML='';return;}
-  const myLoc=live.locations[getMyUid()];
-  const locs=Object.entries(live.locations||{}).filter(([uid])=>uid!==getMyUid());
-  if(!locs.length||!myLoc){el.innerHTML='';return;}
+  const locs=Object.entries(live.locations||{});
+  if(!locs.length){el.innerHTML='';return;}
   const now=Date.now();
   let rows='';
   locs.forEach(([uid,loc])=>{
     const mem=live.members[uid]||{name:'?',avatar:'👤'};
+    if(mem.role==='parent') return; // pokaż tylko dzieci
     const ageMin=Math.round((now-loc.ts)/60000);
     const fresh=ageMin<5;
     let dist='?';
-    if(myLoc&&loc.lat&&loc.lng&&myLoc.lat&&myLoc.lng){
-      dist=fmtDist(haversine(myLoc.lat,myLoc.lng,loc.lat,loc.lng));
+    // Odległość od DOMU (homeLocation), nie od rodzica
+    if(homeLocation&&loc.lat&&loc.lng){
+      dist=fmtDist(haversine(homeLocation.lat,homeLocation.lng,loc.lat,loc.lng));
     }
-    rows+=`<div class="dist-row">
+    const mapUrl=`https://www.openstreetmap.org/?mlat=${loc.lat}&mlon=${loc.lng}&zoom=15`;
+    rows+=`<div class="dist-row" style="cursor:pointer;" onclick="window.open('${mapUrl}','_blank')">
       <div class="dist-av">${mem.avatar||'👤'}</div>
       <div class="dist-info">
-        <div class="dist-name">${mem.name}</div>
+        <div class="dist-name">${mem.name} <span style="font-size:9px;color:rgba(255,255,255,.6);">🗺️ mapa</span></div>
         <div class="dist-detail">${fresh?'📍 Teraz':'📍 '+ageMin+' min temu'}${loc.acc?' ±'+loc.acc+'m':''}</div>
       </div>
-      <div class="dist-val">${dist}</div>
+      <div class="dist-val">${homeLocation?dist:'—'}</div>
       <div class="dist-dot" style="background:${fresh?'#22c55e':'#f59e0b'}"></div>
     </div>`;
   });
-  el.innerHTML=`<div class="dist-panel"><div class="dist-title">📍 Odległości</div>${rows}</div>`;
+  if(!rows){el.innerHTML='';return;}
+  const homeTxt=homeLocation?'':`<div style="font-size:9px;color:rgba(255,255,255,.6);margin-top:4px;">⚠️ Ustaw lokalizację domu w Opcjach aby widzieć odległości</div>`;
+  el.innerHTML=`<div class="dist-panel"><div class="dist-title">📍 Lokalizacje dzieci</div>${rows}${homeTxt}</div>`;
 }
 
-// Aktualizuj panel odległości co 5 minut
-setInterval(renderDistancePanel, 300000);
+window.captureHomeGPS_settings=function(){
+  const st=document.getElementById('homeLocSettingsStatus');
+  if(st) st.textContent='📍 Pobieranie GPS…';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    homeLocation={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    localStorage.setItem('dp-home-loc',JSON.stringify(homeLocation));
+    if(st) st.textContent=`✅ Dom ustawiony: ${homeLocation.lat.toFixed(4)}, ${homeLocation.lng.toFixed(4)}`;
+    showToast('🏠 Lokalizacja domu zapisana!');
+    if(!isDemo&&fCode) set(ref(db,`families/${fCode}/homeLocation`),homeLocation).catch(()=>{});
+    renderDistancePanel();
+  },()=>{
+    if(st) st.textContent='❌ Brak GPS — włącz lokalizację i spróbuj ponownie';
+  },{enableHighAccuracy:true,timeout:12000});
+};
+
+// Aktualizuj panel odległości co 2 minuty (szybciej niż poprzednio)
+setInterval(renderDistancePanel, 120000);
 
 
 /* ════════════════════════════════════════════════════════
@@ -2581,45 +2655,50 @@ const DAY_FULL_PL=['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Pi�
 
 function renderReturnSchedulePanel(){
   const el=document.getElementById('returnSchedulePanel');if(!el)return;
-  const members=Object.entries(live.members);
-  const todayDow=new Date().getDay();
-  const nowMin=new Date().getHours()*60+new Date().getMinutes();
-
-  // Zbierz dzisiejsze harmonogramy
-  const todayScheds=[];
-  members.forEach(([uid,mem])=>{
-    const scheds=returnSchedules[uid]||[];
-    const todaySched=scheds.find(s=>parseInt(s.day)===todayDow);
-    if(todaySched) todayScheds.push({uid,mem,sched:todaySched});
+  // Szybka wersja — nie blokuje UI
+  requestAnimationFrame(()=>{
+    const members=Object.entries(live.members);
+    const todayDow=new Date().getDay();
+    const nowH=new Date().getHours();
+    const nowMin=new Date().getHours()*60+new Date().getMinutes();
+    const todayScheds=[];
+    members.forEach(([uid,mem])=>{
+      const scheds=returnSchedules[uid]||[];
+      scheds.filter(s=>parseInt(s.day)===todayDow).forEach(s=>todayScheds.push({uid,mem,sched:s}));
+    });
+    if(!todayScheds.length&&myProfile?.role!=='parent'){el.innerHTML='';return;}
+    let rows='';
+    todayScheds.forEach(({uid,mem,sched})=>{
+      const[eh,em]=sched.time.split(':').map(Number);
+      const endMin=eh*60+em;
+      const diff=endMin-nowMin;
+      const status=diff>0?`za ${diff} min`:'już po zajęciach';
+      const etaStr=sched.eta?` · powrót ~${sched.eta}`:'';
+      rows+=`<div class="rs-row">
+        <div class="rs-day">${mem.avatar||'👤'}</div>
+        <div class="rs-info">
+          <div class="rs-time">${mem.name} — ${sched.label||'Zajęcia'} do ${sched.time}</div>
+          <div class="rs-eta">${status}${etaStr}</div>
+        </div>
+        ${myProfile?.role==='parent'?`<button class="rs-btn" onclick="openReturnSchedModal('${uid}')">✏️</button><button class="rs-btn" onclick="deleteReturnSched('${uid}',${sched.day})" style="margin-left:3px;color:rgba(255,100,100,.9);">🗑️</button>`:''}
+      </div>`;
+    });
+    const manageBtn=myProfile?.role==='parent'?`<button onclick="openReturnSchedModal('')" style="font-size:10px;font-weight:800;color:rgba(255,255,255,.7);background:none;border:none;cursor:pointer;margin-top:6px;">+ Dodaj harmonogram</button>`:'';
+    el.innerHTML=todayScheds.length?`<div class="return-schedule-card">
+      <div class="rs-title">📅 Dzisiaj wracacie</div>
+      ${rows}${manageBtn}
+    </div>`:(myProfile?.role==='parent'?`<div style="padding:6px 0;"><button onclick="openReturnSchedModal('')" style="font-size:11px;font-weight:800;color:var(--soft);background:var(--inp);border:2px dashed var(--border);border-radius:9px;width:100%;padding:8px;cursor:pointer;">📅 + Dodaj harmonogram powrotów</button></div>`:'');
   });
-
-  if(!todayScheds.length&&myProfile?.role!=='parent'){el.innerHTML='';return;}
-
-  // Pokaż panel dla rodzica z przyciskiem zarządzania
-  let rows='';
-  todayScheds.forEach(({uid,mem,sched})=>{
-    const [eh,em]=sched.time.split(':').map(Number);
-    const endMin=eh*60+em;
-    const diff=endMin-nowMin;
-    const status=diff>0?`za ${diff} min`:'już po zajęciach';
-    const etaStr=sched.eta?` · powrót ~${sched.eta}`:'';
-    rows+=`<div class="rs-row">
-      <div class="rs-day">${mem.avatar||'👤'}</div>
-      <div class="rs-info">
-        <div class="rs-time">${mem.name} — ${sched.label||'Zajęcia'} do ${sched.time}</div>
-        <div class="rs-eta">${status}${etaStr}</div>
-      </div>
-      ${myProfile?.role==='parent'?`<button class="rs-btn" onclick="openReturnSchedModal('${uid}')">✏️</button>`:''}
-    </div>`;
-  });
-
-  const manageBtn=myProfile?.role==='parent'?`<button onclick="openReturnSchedModal('')" style="font-size:10px;font-weight:800;color:rgba(255,255,255,.7);background:none;border:none;cursor:pointer;margin-top:6px;">+ Dodaj harmonogram</button>`:'';
-
-  el.innerHTML=todayScheds.length?`<div class="return-schedule-card">
-    <div class="rs-title">📅 Dzisiaj wracacie</div>
-    ${rows}${manageBtn}
-  </div>`:(myProfile?.role==='parent'?`<div style="padding:6px 0;"><button onclick="openReturnSchedModal('')" style="font-size:11px;font-weight:800;color:var(--soft);background:var(--inp);border:2px dashed var(--border);border-radius:9px;width:100%;padding:8px;cursor:pointer;">📅 + Dodaj harmonogram powrotów</button></div>`:'');
 }
+window.deleteReturnSched=function(uid,day){
+  if(!returnSchedules[uid]) return;
+  returnSchedules[uid]=returnSchedules[uid].filter(s=>parseInt(s.day)!==parseInt(day));
+  if(!returnSchedules[uid].length) delete returnSchedules[uid];
+  localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));
+  if(!isDemo&&fCode) set(ref(db,`families/${fCode}/returnSchedules/${uid}`),returnSchedules[uid]||null).catch(()=>{});
+  renderReturnSchedulePanel();
+  showToast('🗑️ Usunięto harmonogram');
+};
 
 function openReturnSchedModal(uid){
   const sel=document.getElementById('rsWho');
@@ -2646,15 +2725,15 @@ function saveReturnSchedule(){
   const label=document.getElementById('rsLabel').value.trim();
   if(!uid||!time){showToast('⚠️ Wypełnij dane');return;}
   if(!returnSchedules[uid]) returnSchedules[uid]=[];
-  // Replace or add for this day
   const idx=returnSchedules[uid].findIndex(s=>s.day===day);
   const entry={day,time,eta,label};
   if(idx>=0) returnSchedules[uid][idx]=entry; else returnSchedules[uid].push(entry);
   localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));
+  // Zapisz też do Firebase — trwale dla całej rodziny
+  if(!isDemo&&fCode) set(ref(db,`families/${fCode}/returnSchedules/${uid}`),returnSchedules[uid]).catch(()=>{});
   renderReturnSchedulePanel();
   showToast('✅ Harmonogram zapisany!');
   closeOverlay('returnSchedOverlay');
-  // Zaplanuj powiadomienia
   scheduleReturnNotifications(uid,entry);
 }
 window.saveReturnSchedule=saveReturnSchedule;
@@ -2785,7 +2864,16 @@ function goTab(id){
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();}
   if(id==='family'){renderFamilyTabs();}
-  if(id==='settings'){renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();;renderChoreVisSettings();}
+  if(id==='settings'){
+    renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();renderChoreVisSettings();
+    // Pokaż status lokalizacji domu
+    const hst=document.getElementById('homeLocSettingsStatus');
+    if(hst){hst.textContent=homeLocation?`✅ Dom ustawiony: ${homeLocation.lat.toFixed(4)}, ${homeLocation.lng.toFixed(4)}`:'⚠️ Nie ustawiono lokalizacji domu';}
+    // Pokaż status GCal
+    const gs=document.getElementById('gcalStatus');
+    if(gs) gs.textContent=gcalToken?'✅ Połączono':'Kliknij, aby połączyć';
+    const c2=document.getElementById('gcalStatus2Card');if(c2)c2.style.display=gcalToken?'block':'none';
+  }
   if(id==='weather'){renderWeatherFull();}
 }
 window.goTab=goTab;
