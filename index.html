@@ -533,6 +533,38 @@ select.f-inp{cursor:pointer;}
 .gp-tb{flex-shrink:0;padding:6px 12px;border-radius:20px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);}
 .gp-tb.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
 .gift-hid{background:rgba(139,92,246,.05);border:2px dashed rgba(139,92,246,.3);border-radius:10px;padding:9px;margin-top:8px;}
+
+/* ── DESKTOP VIEW (Etap 3) ── */
+body.dp-desktop{max-width:860px;}
+body.dp-desktop .tabs{justify-content:flex-start;}
+body.dp-desktop .tab{min-width:80px;font-size:11px;padding:10px 14px 9px;}
+body.dp-desktop .tab .ti{font-size:19px;}
+body.dp-desktop .sec{padding:14px;}
+body.dp-desktop .chore-list,.body.dp-desktop .compact-grid{display:grid;}
+body.dp-desktop .compact-grid{grid-template-columns:repeat(6,1fr);}
+body.dp-desktop .hdr{padding:14px 18px 18px;}
+body.dp-desktop .app-name{font-size:22px;}
+body.dp-desktop .modal{border-radius:14px;max-width:420px;margin:auto;}
+body.dp-desktop .overlay{align-items:center;}
+/* Two-column layout for desktop */
+body.dp-desktop .dp-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+body.dp-desktop .dp-col-full{grid-column:span 2;}
+.view-mode-bar{display:flex;align-items:center;gap:6px;background:var(--inp);border-radius:9px;padding:4px 6px;position:absolute;right:10px;top:10px;z-index:55;}
+.vm-btn{padding:4px 9px;border-radius:7px;border:none;background:transparent;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);}
+.vm-btn.sel{background:var(--g2);color:#fff;}
+
+/* ── DISTANCE PANEL ── */
+.dist-panel{background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
+.dist-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:8px;}
+.dist-row{display:flex;align-items:center;gap:8px;padding:6px;background:rgba(255,255,255,.1);border-radius:9px;margin-bottom:5px;}
+.dist-row:last-child{margin-bottom:0;}
+.dist-av{font-size:20px;}
+.dist-info{flex:1;}
+.dist-name{font-size:12px;font-weight:800;}
+.dist-detail{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;}
+.dist-val{font-size:13px;font-weight:900;}
+.dist-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse-g 2s infinite;}
+@keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
@@ -610,7 +642,15 @@ select.f-inp{cursor:pointer;}
 
   <div class="hdr">
     <div class="h-row">
-      <div><div class="app-name">🏠 Domowy Patrol</div><div class="app-dt" id="appDt"></div></div>
+      <div style="position:relative;">
+          <div class="app-name">🏠 Domowy Patrol</div>
+          <div class="app-dt" id="appDt"></div>
+        </div>
+        <div class="view-mode-bar" style="position:static;margin-left:auto;margin-right:8px;">
+          <button class="vm-btn" data-dm="mobile" onclick="setDesktopMode('mobile')" title="Widok mobile">📱</button>
+          <button class="vm-btn sel" data-dm="auto" onclick="setDesktopMode('auto')" title="Auto">🔄</button>
+          <button class="vm-btn" data-dm="desktop" onclick="setDesktopMode('desktop')" title="Widok desktop">🖥️</button>
+        </div>
       <div class="user-chip" onclick="goTab('profile')">
         <!-- FIXED: proper crossOrigin for Google photo -->
         <img id="chipPhoto" class="chip-photo" src="" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.style.display='none'">
@@ -642,6 +682,7 @@ select.f-inp{cursor:pointer;}
     <div id="bdayPanel"></div>
     <div id="eventsTopPanel"></div>
     <div id="curfewPanel"></div>
+    <div id="distancePanel"></div>
     <div class="card">
       <div class="card-ttl">🌐 Rodzina online</div>
       <div class="online-row" id="onlineRow"></div>
@@ -1092,6 +1133,16 @@ let live={done:{},members:{},history:[],assigned:{},curfews:{},locations:{},join
 let selectedRole='parent',selectedAvatar=AVATARS[0],curfewChildId=null;
 let returnTimers=[],reminderInterval=parseInt(localStorage.getItem('dp-reminder-int'))||15,curfewModalInterval=15;
 let viewMode=localStorage.getItem('dp-view')||'normal';
+let desktopMode=localStorage.getItem('dp-desktop')||'auto'; // 'auto'|'mobile'|'desktop'
+function applyDesktopMode(){
+  const w=window.innerWidth;
+  const isDesktop=desktopMode==='desktop'||(desktopMode==='auto'&&w>=768);
+  document.body.classList.toggle('dp-desktop',isDesktop);
+  document.querySelectorAll('.vm-btn').forEach(b=>{
+    b.classList.toggle('sel',b.dataset.dm===desktopMode);
+  });
+}
+window.addEventListener('resize',applyDesktopMode);
 let selectedDay=null;
 let editCatId=null;
 let weatherCache=null,weatherCity=localStorage.getItem('dp-weather-city')||'';
@@ -1365,7 +1416,7 @@ function launchApp(){
     onValue(ref(db,`f/${fCode}/history`),s=>{const r=s.val()||{};live.history=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));renderHistory();renderSummary();});
     onValue(ref(db,`f/${fCode}/assigned`),s=>{live.assigned=s.val()||{};renderAssigned();});
     onValue(ref(db,`families/${fCode}/curfews`),s=>{live.curfews=s.val()||{};if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')renderCurfewPanel();});
-    onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent')renderCurfewPanel();});
+    onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderDistancePanel();}});
     onValue(ref(db,`families/${fCode}/joinRequests`),s=>{live.joinReqs=s.val()||{};renderJoinRequests();});
     onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChat();});
     onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);});
@@ -1377,9 +1428,9 @@ function launchApp(){
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   }
-  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();
+  checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();
 }
-function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
+function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
 
 /* ── PROFILE ACTIONS ── */
 async function saveProfileName(){
@@ -1630,19 +1681,26 @@ function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherF
 
 /* ── LOCATION ── */
 function startLocationSharing(){
-  if(!navigator.geolocation){console.warn('GPS: niedostępny');return;}
-  const uid=currentUser?.uid;if(!uid)return;
+  if(!navigator.geolocation) return;
+  const uid=currentUser?.uid;if(!uid) return;
+  let lastSend=0;
   function sendPos(pos){
-    const d={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy||0),ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤'};
-    update(ref(db,`families/${fCode}/locations/${uid}`),d);
-    console.log('GPS ok:',d.lat.toFixed(4),d.lng.toFixed(4),'±'+d.acc+'m');
+    const now=Date.now();
+    if(now-lastSend<30000) return; // max co 30s — oszczędność baterii
+    lastSend=now;
+    const data={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy||0),ts:now,name:myProfile.name,avatar:myProfile.avatar||'👤'};
+    update(ref(db,`families/${fCode}/locations/${uid}`),data);
+    console.log('GPS:',data.lat.toFixed(5),data.lng.toFixed(5),'±'+data.acc+'m');
   }
-  function onErr(e){console.warn('GPS błąd:',e.code,e.message);}
-  const opts={enableHighAccuracy:true,maximumAge:15000,timeout:25000};
-  // Główny watchPosition
+  function onErr(e){
+    const msgs={1:'Brak uprawnień GPS — włącz w ustawieniach',2:'Brak sygnału GPS',3:'GPS timeout'};
+    console.warn('GPS:',msgs[e.code]||e.message);
+    if(e.code===1) showToast('📍 '+msgs[1]);
+  }
+  const opts={enableHighAccuracy:true,maximumAge:30000,timeout:30000};
   navigator.geolocation.watchPosition(sendPos,onErr,opts);
-  // Backup co 45s — niektóre Androidy zatrzymują watch w tle
-  setInterval(()=>navigator.geolocation.getCurrentPosition(sendPos,onErr,opts),45000);
+  // Backup co 60s dla Androidów które zatrzymują watch w tle
+  setInterval(()=>navigator.geolocation.getCurrentPosition(sendPos,()=>{},opts),60000);
 }
 
 /* ── RETURN HOME ── */
@@ -1670,8 +1728,18 @@ async function setCurfew(){if(!curfewChildId)return;const t=document.getElementB
 window.setCurfew=setCurfew;
 async function clearCurfew(){if(!curfewChildId)return;if(isDemo){delete live.curfews[curfewChildId];renderCurfewPanel();updateReturnBanner();}else await remove(ref(db,`families/${fCode}/curfews/${curfewChildId}`));showToast('❌ Anulowano');closeOverlay('curfewOverlay');}
 window.clearCurfew=clearCurfew;
-function updateReturnBanner(){if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;banner.style.display='block';if(diffMin>60){banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div></div>`;clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));}else if(diffMin>0){banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;clearReturnTimers();scheduleReturnReminders(curfew.time,interval);}else{banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);}}
-function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
+function updateReturnBanner(){if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);const rt=new Date(now);rt.setHours(hh,mm,0,0);const diffMs=rt.getTime()-now.getTime();const diffMin=Math.round(diffMs/60000);const interval=curfew.reminderInterval||reminderInterval||15;banner.style.display='block';if(diffMin>60){banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div></div>`;clearReturnTimers();if(diffMs-60*MS.min>0) returnTimers.push(setTimeout(()=>updateReturnBanner(),diffMs-60*MS.min));}else if(diffMin>0){banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;clearReturnTimers();scheduleReturnReminders(curfew.time,interval);}else{banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);
+    sendPersistentNotif('❗ Czas minął!', `Powinieneś być w domu! (${curfew.time})`, {
+      tag:'dp-curfew-late', persist:true, renotify:true,
+      actions:['🏃 Wracam teraz!','📞 Dzwonię'],
+      actionData:{a0:'heading_home',a1:'open_app'}
+    });}}
+function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);
+        sendPersistentNotif('🏠 Czas wracać!', `Zostało ${left} min. Powrót: ${time}`, {
+          tag:'dp-curfew', persist:true, renotify:true,
+          actions:['🏃 Wracam!','Jeszcze chwilę'],
+          actionData:{a0:'heading_home',a1:'not_yet'}
+        });showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
 function clearReturnTimers(){returnTimers.forEach(clearTimeout);returnTimers=[];}
 async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});}sendBrowserNotif('🏃 W drodze!','Bezpiecznej drogi!');setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);}
 window.iAmHeading=iAmHeading;
@@ -1834,7 +1902,23 @@ async function addToGCal(name,ico,date,time,pts){if(!gcalToken)return;const s=ti
 /* ── NOTIFS ── */
 function requestNotifPermission(){if('Notification' in window&&Notification.permission==='default') Notification.requestPermission();}
 function sendBrowserNotif(title,body){if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232d6a10%22/><text y=%22.9em%22 font-size=%2272%22 x=%2212%22>🏠</text></svg>'});}
-function scheduleLocalNotif(n,f,ts){const d=ts-Date.now();if(d>0&&d<172800000) setTimeout(()=>sendBrowserNotif('⏰ Zadanie!',`${f}: ${n}`),d);}
+function scheduleLocalNotif(n,f,ts){
+  const d=ts-Date.now();
+  if(d<=0||d>172800000) return;
+  // Powiadomienie godzinę przed
+  if(d>3600000) setTimeout(()=>{
+    sendPersistentNotif('⏰ Zadanie za 1h',`${f}: ${n}`,{tag:'dp-task-'+ts,persist:false});
+  }, d-3600000);
+  // Powiadomienie 15 min przed — z paskiem postępu
+  if(d>900000) setTimeout(()=>{
+    sendPersistentNotif('⏰ Zadanie za 15 min',`${f}: ${n}`,{tag:'dp-task-'+ts,persist:true,progress:75,actions:['✅ Robię to'],actionData:{a0:'open_app'}});
+  }, d-900000);
+  // Na czas
+  setTimeout(()=>{
+    sendPersistentNotif('🔔 Czas na zadanie!',`${f}: ${n}`,{tag:'dp-task-now-'+ts,persist:true,progress:100,actions:['✅ Zrobione','⏰ Odłóż'],actionData:{a0:'open_app',a1:'open_app'}});
+    sendBrowserNotif('🔔 Czas na zadanie!',`${f}: ${n}`);
+  }, d);
+}
 
 
 /* ── CATEGORY COLLAPSE + VISIBILITY ── */
@@ -2220,6 +2304,161 @@ async function submitWishV2(){
   if(document.getElementById('wishHidden')) document.getElementById('wishHidden').checked=false;
 }
 window.submitWishV2=submitWishV2;
+
+
+/* ════════════════════════════════════════════════════════
+   ETAP 3 — SERVICE WORKER + POWIADOMIENIA + DESKTOP VIEW
+   ════════════════════════════════════════════════════════ */
+
+// ── Service Worker jako inline blob ──
+const _SW_SRC = `
+self.addEventListener('message', e => {
+  if(!e.data || e.data.type !== 'DP_NOTIFY') return;
+  const d = e.data;
+  const opts = {
+    body: d.body || '',
+    icon: d.icon || '',
+    badge: d.icon || '',
+    tag: d.tag || 'dp',
+    renotify: !!d.renotify,
+    requireInteraction: !!d.persist,
+    silent: false,
+    data: d.actionData || {},
+    actions: (d.actions || []).map((a,i) => ({action: 'a'+i, title: a}))
+  };
+  if(d.progress !== undefined) {
+    opts.body = (opts.body ? opts.body + ' ' : '') + '[' + '█'.repeat(Math.round(d.progress/10)) + '░'.repeat(10-Math.round(d.progress/10)) + '] ' + d.progress + '%';
+  }
+  e.waitUntil(self.registration.showNotification(d.title, opts));
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const act = e.action;
+  const data = e.notification.data || {};
+  e.waitUntil(
+    clients.matchAll({type:'window', includeUncontrolled:true}).then(cs => {
+      if(act && data[act]) {
+        cs.forEach(c => c.postMessage({type:'DP_ACTION', action: data[act]}));
+      }
+      if(cs.length) { cs[0].focus(); return; }
+      clients.openWindow(self.location.origin);
+    })
+  );
+});
+
+self.addEventListener('notificationclose', e => {
+  // Notify app that notification was dismissed
+  clients.matchAll({type:'window'}).then(cs => {
+    cs.forEach(c => c.postMessage({type:'DP_NOTIF_CLOSED', tag: e.notification.tag}));
+  });
+});
+`;
+
+let _swReg = null;
+
+async function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    const blob = new Blob([_SW_SRC], {type: 'application/javascript'});
+    const url = URL.createObjectURL(blob);
+    _swReg = await navigator.serviceWorker.register(url, {scope: '/'}).catch(() =>
+      navigator.serviceWorker.register(url) // fallback without scope
+    );
+    // Listen for actions from SW
+    navigator.serviceWorker.addEventListener('message', e => {
+      if(e.data?.type === 'DP_ACTION') handleSWAction(e.data.action);
+    });
+    console.log('SW registered');
+  } catch(err) {
+    console.log('SW failed (ok on file://):', err.message);
+  }
+}
+
+function handleSWAction(action) {
+  if(action === 'heading_home') { if(typeof iAmHeading === 'function') iAmHeading(); }
+  if(action === 'not_yet')      { if(typeof notYet === 'function') notYet(); }
+  if(action === 'open_app')     { goTab('today'); }
+}
+
+// ── Ulepszone sendBrowserNotif — używa SW gdy dostępny ──
+function sendPersistentNotif(title, body, opts = {}) {
+  // opts: { tag, persist, renotify, actions, actionData, progress }
+  if(!('Notification' in window)) return;
+  if(Notification.permission !== 'granted') {
+    Notification.requestPermission().then(p => {
+      if(p === 'granted') { registerSW(); sendPersistentNotif(title, body, opts); }
+    });
+    return;
+  }
+  const icon = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#2d6a10"/><text y=".9em" font-size="72" x="12">🏠</text></svg>');
+  const sw = _swReg?.active || navigator.serviceWorker?.controller;
+  if(sw) {
+    sw.postMessage({ type:'DP_NOTIFY', title, body, icon, tag: opts.tag||'dp',
+      persist: opts.persist||false, renotify: opts.renotify!==false,
+      actions: opts.actions||[], actionData: opts.actionData||{}, progress: opts.progress });
+  } else {
+    // Fallback: standard Notification
+    new Notification(title, { body, icon, tag: opts.tag||'dp',
+      requireInteraction: opts.persist||false });
+  }
+}
+
+// ── Zainicjuj SW przy starcie (nie blokuje) ──
+if('serviceWorker' in navigator && 'Notification' in window) {
+  registerSW();
+}
+
+
+/* ── DESKTOP/MOBILE MODE ── */
+function setDesktopMode(mode){
+  desktopMode=mode;
+  localStorage.setItem('dp-desktop',mode);
+  applyDesktopMode();
+  showToast(mode==='desktop'?'🖥️ Widok desktop':mode==='mobile'?'📱 Widok mobile':'🔄 Widok auto');
+}
+window.setDesktopMode=setDesktopMode;
+
+
+/* ── DISTANCE BETWEEN MEMBERS (Etap 3) ── */
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371;const dLat=(lat2-lat1)*Math.PI/180;const dLon=(lon2-lon1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))*1000); // metry
+}
+function fmtDist(m){return m<1000?m+'m':(m/1000).toFixed(1)+'km';}
+
+function renderDistancePanel(){
+  const el=document.getElementById('distancePanel');if(!el)return;
+  if(myProfile?.role!=='parent'){el.innerHTML='';return;}
+  const myLoc=live.locations[getMyUid()];
+  const locs=Object.entries(live.locations||{}).filter(([uid])=>uid!==getMyUid());
+  if(!locs.length||!myLoc){el.innerHTML='';return;}
+  const now=Date.now();
+  let rows='';
+  locs.forEach(([uid,loc])=>{
+    const mem=live.members[uid]||{name:'?',avatar:'👤'};
+    const ageMin=Math.round((now-loc.ts)/60000);
+    const fresh=ageMin<5;
+    let dist='?';
+    if(myLoc&&loc.lat&&loc.lng&&myLoc.lat&&myLoc.lng){
+      dist=fmtDist(haversine(myLoc.lat,myLoc.lng,loc.lat,loc.lng));
+    }
+    rows+=`<div class="dist-row">
+      <div class="dist-av">${mem.avatar||'👤'}</div>
+      <div class="dist-info">
+        <div class="dist-name">${mem.name}</div>
+        <div class="dist-detail">${fresh?'📍 Teraz':'📍 '+ageMin+' min temu'}${loc.acc?' ±'+loc.acc+'m':''}</div>
+      </div>
+      <div class="dist-val">${dist}</div>
+      <div class="dist-dot" style="background:${fresh?'#22c55e':'#f59e0b'}"></div>
+    </div>`;
+  });
+  el.innerHTML=`<div class="dist-panel"><div class="dist-title">📍 Odległości</div>${rows}</div>`;
+}
+
+// Aktualizuj panel odległości co 5 minut
+setInterval(renderDistancePanel, 300000);
 
 /* ── MISC ── */
 function closeOverlay(id){document.getElementById(id).classList.remove('show');}
