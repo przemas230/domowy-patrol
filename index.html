@@ -208,7 +208,7 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .cat-edit-btns{display:flex;gap:4px;}
 .cat-mini-btn{font-size:9px;padding:2px 6px;border-radius:5px;border:1.5px solid var(--border);background:var(--inp);cursor:pointer;font-family:var(--font);font-weight:700;color:var(--soft);}
 .chore-list{display:flex;flex-direction:column;gap:5px;}
-.chore{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:11px;border:2px solid var(--border);background:var(--inp);cursor:pointer;transition:all .18s;position:relative;}
+.chore{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:10px;border:2px solid var(--border);background:var(--inp);cursor:pointer;transition:all .18s;position:relative;}
 .chore:active{transform:scale(.98);}
 .chore.done{background:var(--gp);border-color:var(--g3);}
 .chore.done-past{background:var(--gp);border-color:var(--g3);opacity:.75;}
@@ -222,8 +222,8 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .chore-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
 .chore-pts{font-size:10px;font-weight:900;color:var(--o);background:rgba(240,123,32,.1);border-radius:6px;padding:2px 5px;}
 .done-badge{font-size:10px;font-weight:800;color:var(--g2);background:var(--gp);border-radius:6px;padding:2px 5px;}
-.undo-btn{font-size:9px;font-weight:800;color:var(--o);border:1.5px solid var(--o);background:transparent;border-radius:5px;padding:1px 5px;cursor:pointer;font-family:var(--font);}
-.repeat-btn{font-size:9px;font-weight:800;color:var(--b);border:1.5px solid var(--b);background:rgba(59,130,246,.08);border-radius:5px;padding:1px 5px;cursor:pointer;font-family:var(--font);}
+.undo-btn{font-size:11px;font-weight:800;color:var(--r);border:1.5px solid rgba(232,64,64,.4);background:rgba(232,64,64,.07);border-radius:7px;padding:4px 9px;cursor:pointer;font-family:var(--font);}
+.repeat-btn{font-size:11px;font-weight:800;color:var(--b);border:1.5px solid rgba(59,130,246,.4);background:rgba(59,130,246,.07);border-radius:7px;padding:4px 8px;cursor:pointer;font-family:var(--font);}
 
 /* ── COMPACT ── */
 .compact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:7px;}
@@ -775,6 +775,12 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   <!-- SCORES -->
   <div class="sec" id="sec-scores">
     <div class="stats-grid" id="statsGrid"></div>
+    <div style="display:flex;gap:5px;margin-bottom:8px;">
+      <button class="vt-btn sel" id="sp-day"   onclick="setScorePeriod('day')">📆 Dziś</button>
+      <button class="vt-btn"     id="sp-week"  onclick="setScorePeriod('week')">📅 Tydzień</button>
+      <button class="vt-btn"     id="sp-month" onclick="setScorePeriod('month')">🗓️ Miesiąc</button>
+    </div>
+    <div id="scorePeriodStats" style="margin-bottom:8px;"></div>
     <div class="card"><div class="card-ttl">⭐ Ranking</div><div id="scoreList"></div></div>
     <div class="card">
       <div class="card-ttl">🎁 Nagrody</div>
@@ -1165,9 +1171,9 @@ function renderThemeGrid(){document.getElementById('themeGrid').innerHTML=THEMES
 /* ── CATEGORIES ── */
 let cats=JSON.parse(localStorage.getItem('dp-cats8')||'null')||[
   {id:'pies',label:'🐕 Pies',chores:[
-    {id:'dog_m',ico:'🌅',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},
-    {id:'dog_n',ico:'☀️',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},
-    {id:'dog_e',ico:'🌙',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},
+    {id:'dog_m',ico:'🌅🐕',name:'Spacer poranny',desc:'~7:00',pts:10,repeatable:true},
+    {id:'dog_n',ico:'☀️🐕',name:'Spacer południowy',desc:'~13:00',pts:8,repeatable:true},
+    {id:'dog_e',ico:'🌙🐕',name:'Spacer wieczorny',desc:'~19:00',pts:10,repeatable:true},
     {id:'dog_f',ico:'🥣',name:'Karmienie psa',desc:'Rano/wieczór',pts:5,repeatable:true},
     {id:'dog_w',ico:'💧',name:'Woda dla psa',desc:'Codziennie',pts:4},
     {id:'dog_bath',ico:'🛁',name:'Kąpiel psa',desc:'Co 2-4 tyg.',pts:15},
@@ -1611,7 +1617,7 @@ function launchApp(){
   }
   checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();applyLang();
 }
-function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();}
+function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();renderScorePeriodStats();}
 
 /* ── PROFILE ACTIONS ── */
 async function saveProfileName(){
@@ -2074,11 +2080,14 @@ function renderChores(){
         <div class="chore-meta">${done?`${member?.photoURL?``:(dn?.avatar||'')} ${dn?.who}`:ch.desc}</div>
       </div>
       <div class="chore-right">
-        ${done?`<div class="done-badge">✓ ×${reps}</div>
-          <button class="undo-btn" onclick="undoChore(event,'${ch.id}',${ch.pts})">↩️ Cofnij</button>
-          ${ch.repeatable?`<button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})">+1</button>`:''}`:
-          `<div class="chore-pts">+${ch.pts}⭐</div>
-          <button class="cat-mini-btn" style="font-size:9px;" onclick="openEditChore(event,'${cat.id}',${idx})">✏️</button>`}
+        ${done
+          ?`<div class="done-badge" style="font-size:10px;">✓${reps>1?' ×'+reps:''}</div>
+            <button class="undo-btn" onclick="undoChore(event,'${ch.id}',${ch.pts})" title="Cofnij">↩️</button>
+            ${ch.repeatable?`<button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})" title="+1">+1</button>`:''}`
+          :`<div class="chore-pts">+${ch.pts}⭐</div>
+            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;" onclick="openEditChore(event,'${cat.id}',${idx})" title="Edytuj">✏️</button>
+            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;color:var(--b);border-color:rgba(59,130,246,.3);" onclick="duplicateChore(event,'${ch.id}','${cat.id}')" title="Duplikuj">⧉</button>`
+        }
       </div>
     </div>`;});
     html+=`</div>`;
@@ -3014,7 +3023,7 @@ function goTab(id){
   sec.classList.add('on');
   const idx={today:0,tasks:1,family:2,scores:3,settings:4}[id];
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
-  if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();}
+  if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();renderScorePeriodStats();}
   if(id==='family'){renderFamilyTabs();}
   if(id==='settings'){
     renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();renderChoreVisSettings();
@@ -3026,6 +3035,79 @@ function goTab(id){
   }
   if(id==='weather'){renderWeatherFull();}
 }
+
+/* ── SCORE PERIOD (dzień / tydzień / miesiąc) ── */
+let scorePeriod='day';
+window.setScorePeriod=function(p){
+  scorePeriod=p;
+  ['day','week','month'].forEach(x=>{
+    const el=document.getElementById('sp-'+x);
+    if(el) el.className='vt-btn'+(x===p?' sel':'');
+  });
+  renderScorePeriodStats();
+};
+
+function renderScorePeriodStats(){
+  const el=document.getElementById('scorePeriodStats');if(!el)return;
+  const hist=live.history||[];
+  const now=new Date();
+  let from,label;
+  if(scorePeriod==='day'){
+    from=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+    label='Dziś';
+  } else if(scorePeriod==='week'){
+    const dow=now.getDay();
+    const mon=new Date(now);mon.setDate(now.getDate()-((dow+6)%7));mon.setHours(0,0,0,0);
+    from=mon.getTime();label='Ten tydzień';
+  } else {
+    from=new Date(now.getFullYear(),now.getMonth(),1).getTime();
+    label=MONTH_NAMES[now.getMonth()];
+  }
+  const filtered=hist.filter(h=>h.ts>=from&&h.pts>0);
+  const byMember={};
+  filtered.forEach(h=>{
+    if(!byMember[h.who]) byMember[h.who]={pts:0,count:0,av:h.avatar};
+    byMember[h.who].pts+=h.pts;
+    byMember[h.who].count++;
+  });
+  const sorted=Object.entries(byMember).sort((a,b)=>b[1].pts-a[1].pts);
+  const totalPts=filtered.reduce((a,h)=>a+h.pts,0);
+  if(!sorted.length){
+    el.innerHTML=`<div style="background:var(--inp);border-radius:10px;padding:10px;text-align:center;font-size:11px;color:var(--soft);font-weight:700;">Brak aktywności — ${label}</div>`;
+    return;
+  }
+  const maxPts=sorted[0]?.[1]?.pts||1;
+  const ranks=['🥇','🥈','🥉'];
+  el.innerHTML=`<div class="card" style="margin-bottom:0;">
+    <div class="card-ttl">${label} · ${totalPts} pkt łącznie</div>
+    ${sorted.map(([name,d],i)=>`
+      <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border);${i===sorted.length-1?'border:none':''}">
+        <div style="font-size:16px;width:22px;text-align:center;">${ranks[i]||'▪'}</div>
+        <div style="font-size:18px;">${d.av||'👤'}</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:800;color:var(--text);">${name}</div>
+          <div style="height:4px;background:var(--border);border-radius:99px;margin-top:3px;overflow:hidden;">
+            <div style="height:100%;width:${Math.round(d.pts/maxPts*100)}%;background:linear-gradient(90deg,var(--g2),var(--g3));border-radius:99px;"></div>
+          </div>
+        </div>
+        <div style="font-size:13px;font-weight:900;color:var(--g2);">${d.pts}⭐</div>
+        <div style="font-size:10px;color:var(--soft);">${d.count}×</div>
+      </div>`).join('')}
+  </div>`;
+}
+
+/* ── DUPLIKUJ ZADANIE ── */
+window.duplicateChore=function(e,choreId,catId){
+  e.stopPropagation();
+  const cat=cats.find(c=>c.id===catId);if(!cat)return;
+  const orig=cat.chores.find(ch=>ch.id===choreId);if(!orig)return;
+  const newCh={...orig,id:'c_dup_'+Date.now(),name:orig.name+' (kopia)'};
+  const target=cat.editable?cat:(cats.find(c=>c.id==='custom')||cat);
+  target.chores.push(newCh);
+  saveCats();renderChores();
+  showToast('⧉ Zduplikowano: '+orig.name);
+};
+
 window.goTab=goTab;
 
 
