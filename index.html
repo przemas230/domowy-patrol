@@ -166,6 +166,11 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .rb-btn{padding:5px 7px;border-radius:7px;border:1.5px solid rgba(255,255,255,.5);background:rgba(255,255,255,.15);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;}
 .rb-btn.solid{background:rgba(255,255,255,.88);color:#1a1a1a;}
 
+/* ── CHORE SWIPE ── */
+.chore{transition:transform .2s,background .2s,border-color .2s;}
+.chore.swipe-right{background:rgba(74,158,34,.15);border-color:var(--g3);}
+.chore.swipe-left{background:rgba(232,64,64,.1);border-color:var(--r);}
+
 /* ── CURFEW PANEL ── */
 .curfew-card{background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
 .curfew-ttl{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:7px;}
@@ -219,7 +224,7 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .chore-name{font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
 .chore-meta{font-size:9px;color:var(--soft);margin-top:1px;}
 .chore.done .chore-name,.chore.done-past .chore-name{text-decoration:line-through;color:var(--soft);}
-.chore-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.chore-right{display:flex;flex-direction:row;align-items:center;gap:4px;flex-shrink:0;}
 .chore-pts{font-size:10px;font-weight:900;color:var(--o);background:rgba(240,123,32,.1);border-radius:6px;padding:2px 5px;}
 .done-badge{font-size:10px;font-weight:800;color:var(--g2);background:var(--gp);border-radius:6px;padding:2px 5px;}
 .undo-btn{font-size:11px;font-weight:800;color:var(--r);border:1.5px solid rgba(232,64,64,.4);background:rgba(232,64,64,.07);border-radius:7px;padding:4px 9px;cursor:pointer;font-family:var(--font);}
@@ -482,12 +487,22 @@ select.f-inp{cursor:pointer;}
 .si-lbl{font-size:8px;font-weight:800;color:var(--soft);}
 /* ── STICKY ── */
 .sticky-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
-.sticky{border-radius:12px;padding:11px;position:relative;min-height:76px;box-shadow:var(--sh);}
+.sticky{border-radius:12px;padding:10px;position:relative;min-height:70px;box-shadow:var(--sh);cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.sticky:active{transform:scale(.97);}
 .sc-y{background:#fef08a;}.sc-g{background:#bbf7d0;}.sc-b{background:#bae6fd;}.sc-p{background:#e9d5ff;}.sc-o{background:#fed7aa;}
-.sticky-txt{font-size:12px;font-weight:700;color:#1a1a1a;line-height:1.5;white-space:pre-wrap;word-break:break-word;}
-.sticky-meta{font-size:9px;color:rgba(0,0,0,.4);margin-top:5px;}
-.sticky-x{position:absolute;top:5px;right:7px;font-size:12px;cursor:pointer;color:rgba(0,0,0,.25);}
+.sticky-title{font-size:13px;font-weight:900;color:#1a1a1a;margin-bottom:3px;padding-right:18px;word-break:break-word;}
+.sticky-preview{font-size:10px;color:rgba(0,0,0,.55);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sticky-meta{font-size:8px;color:rgba(0,0,0,.35);margin-top:5px;}
+.sticky-x{position:absolute;top:5px;right:7px;font-size:13px;cursor:pointer;color:rgba(0,0,0,.25);font-weight:900;}
 .sticky-x:hover{color:rgba(0,0,0,.6);}
+/* Editor overlay */
+#stickyEditorOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:16px;}
+#stickyEditorOverlay.show{display:flex;}
+.sticky-editor{width:100%;max-width:440px;border-radius:18px;padding:18px;box-shadow:0 8px 40px rgba(0,0,0,.3);max-height:80vh;display:flex;flex-direction:column;}
+.sticky-editor-title{width:100%;border:none;background:transparent;font-family:var(--font);font-size:18px;font-weight:900;color:#1a1a1a;outline:none;margin-bottom:10px;padding:4px 0;border-bottom:2px solid rgba(0,0,0,.15);}
+.sticky-editor-body{flex:1;width:100%;border:none;background:transparent;font-family:var(--font);font-size:13px;font-weight:600;color:#1a1a1a;outline:none;resize:none;min-height:160px;line-height:1.6;}
+.sticky-editor-actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;}
+.sticky-editor-btn{padding:8px 14px;border-radius:9px;border:none;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;}
 .scolor-row{display:flex;gap:5px;margin-bottom:9px;}
 .scolor-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;}
 .scolor-dot.sel{border-color:#1a1a1a;}
@@ -606,6 +621,60 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 .ct-timer{font-size:11px;font-weight:900;color:var(--y);}
 .ct-done-btn{padding:5px 10px;border-radius:8px;border:none;background:rgba(255,255,255,.2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;}
 .ct-done-btn.done-state{background:rgba(255,255,255,.8);color:#7c3aed;}
+
+/* ── FAB DRAGGABLE ── */
+.fab{touch-action:none;transition:box-shadow .2s;}
+.fab.dragging{box-shadow:0 8px 24px rgba(45,106,16,.6);transform:scale(1.1);}
+/* ── SHOPPING WEEK STACKED ── */
+.shop-day-section{margin-bottom:8px;border-radius:var(--rr);overflow:hidden;border:2px solid var(--border);background:var(--card);}
+.shop-day-header{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;cursor:pointer;background:var(--inp);}
+.shop-day-header.today-hdr{background:var(--gp);border-bottom:2px solid var(--g2);}
+.shop-day-nm{font-size:12px;font-weight:900;color:var(--text);}
+.shop-day-nm.today-nm{color:var(--g2);}
+.shop-day-cnt{font-size:10px;color:var(--soft);}
+.shop-day-body{padding:8px;}
+.si{position:relative;overflow:hidden;}
+.si-swipe-hint{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;opacity:0;transition:opacity .2s;padding:0 12px;font-size:11px;font-weight:800;}
+.si.swipe-r .si-swipe-hint{background:rgba(74,158,34,.15);color:var(--g2);justify-content:flex-start;opacity:1;}
+.si.swipe-l .si-swipe-hint{background:rgba(232,64,64,.1);color:var(--r);justify-content:flex-end;opacity:1;}
+/* ── ASSIGN ICON PICKER ── */
+.ico-picker{display:flex;flex-wrap:wrap;gap:4px;max-height:100px;overflow-y:auto;background:var(--inp);border-radius:9px;padding:6px;}
+.ico-opt{width:32px;height:32px;border-radius:7px;border:2px solid transparent;background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .1s;}
+.ico-opt.sel{border-color:var(--g2);background:var(--gp);}
+.ico-opt:active{transform:scale(.9);}
+/* ── WEATHER 3 CITIES ── */
+.w3-tabs{display:flex;gap:4px;margin-bottom:8px;}
+.w3-tab{flex:1;padding:6px 4px;border-radius:8px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;text-align:center;color:var(--soft);}
+.w3-tab.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+/* ── HOURLY FORECAST ── */
+.hourly-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:6px 0;}
+.hourly-scroll::-webkit-scrollbar{display:none;}
+.h-slot{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--inp);border-radius:10px;padding:7px 8px;min-width:52px;}
+.h-slot.now{background:var(--gp);border:2px solid var(--g2);}
+.h-time{font-size:9px;font-weight:800;color:var(--soft);}
+.h-ico{font-size:18px;}
+.h-temp{font-size:12px;font-weight:900;color:var(--text);}
+.h-rain{font-size:8px;color:var(--b);font-weight:700;}
+/* ── CATEGORY EDITOR NEW ── */
+.cat-chore-row{display:flex;align-items:center;gap:5px;padding:6px;background:var(--inp);border-radius:9px;margin-bottom:5px;border:1.5px solid var(--border);}
+.cat-chore-ico-inp{width:42px;padding:4px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);font-size:16px;text-align:center;font-family:var(--font);outline:none;}
+.cat-chore-name-inp{flex:1;padding:5px 7px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);font-family:var(--font);font-size:12px;font-weight:700;color:var(--text);outline:none;}
+.cat-chore-pts-inp{width:44px;padding:5px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);font-family:var(--font);font-size:12px;font-weight:700;text-align:center;outline:none;}
+.cat-chore-vis{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;}
+.cat-chore-vis.on{background:var(--g2);border-color:var(--g2);color:#fff;}
+.cat-chore-del{border:none;background:none;cursor:pointer;font-size:14px;color:var(--soft);padding:2px 4px;flex-shrink:0;}
+/* ── CHAT ON TODAY ── */
+#todayChatMini{background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;}
+.tcm-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1.5px solid var(--border);cursor:pointer;}
+.tcm-feed{max-height:120px;overflow-y:auto;padding:8px 10px;}
+.tcm-msg{display:flex;gap:6px;margin-bottom:5px;align-items:flex-end;}
+.tcm-msg.mine{flex-direction:row-reverse;}
+.tcm-bbl{background:var(--inp);border-radius:12px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--text);max-width:75%;}
+.tcm-msg.mine .tcm-bbl{background:var(--g2);color:#fff;}
+.tcm-bar{display:flex;gap:5px;padding:7px 10px;border-top:1.5px solid var(--border);}
+.tcm-inp{flex:1;padding:7px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;outline:none;}
+.tcm-send{width:32px;height:32px;border-radius:50%;border:none;background:var(--g2);color:#fff;cursor:pointer;font-size:14px;}
+/* ── EVENT EDIT MODAL ── */
 </style>
 </head>
 <body>
@@ -672,6 +741,12 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       </div>
       <div id="schedRowsContainer"></div>
     </div>
+    <div class="s-lbl" style="margin-top:11px;">🌤️ Miasto pogody (opcja)</div>
+    <div style="display:flex;gap:6px;">
+      <input class="s-inp" id="setupWeatherCity" placeholder="np. Warszawa" style="flex:1;">
+      <button onclick="setupTestWeather()" style="padding:8px 10px;border-radius:9px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔍</button>
+    </div>
+    <div id="setupWeatherStatus" style="font-size:10px;color:var(--soft);min-height:14px;margin-top:3px;"></div>
     <button class="s-btn" onclick="doSetup()">Dołącz →</button>
   </div>
 </div>
@@ -738,6 +813,19 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="card">
       <div class="card-ttl">🌐 Rodzina online</div>
       <div class="online-row" id="onlineRow"></div>
+    </div>
+    <div id="todayChatMini">
+      <div class="tcm-hdr" onclick="toggleTodayChat()">
+        <span style="font-size:12px;font-weight:900;color:var(--text);">💬 Czat rodzinny</span>
+        <span id="todayChatToggle" style="font-size:10px;color:var(--soft);">▼ pokaż</span>
+      </div>
+      <div id="todayChatBody" style="display:none;">
+        <div class="tcm-feed" id="todayChatFeed"></div>
+        <div class="tcm-bar">
+          <input class="tcm-inp" id="todayChatInp" placeholder="Napisz…" onkeydown="if(event.key==='Enter')sendTodayChat()">
+          <button class="tcm-send" onclick="sendTodayChat()">➤</button>
+        </div>
+      </div>
     </div>
     <div class="card" id="weekCard">
       <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
@@ -884,6 +972,17 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <button onclick="requestChangeFamily()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">🔄 Wyślij prośbę dołączenia</button>
     </div>
     <div class="card">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>📆 Harmonogramy tygodniowe</span>
+      </div>
+      <div id="profileSchedulesPanel"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">📊 Dane i eksport</div>
+      <button onclick="exportFamilyData()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--b);background:rgba(59,130,246,.07);font-family:var(--font);font-size:12px;font-weight:800;color:var(--b);cursor:pointer;margin-bottom:7px;">📥 Eksportuj dane rodziny (JSON)</button>
+      <div id="streakPanel"></div>
+    </div>
+    <div class="card">
       <button onclick="leaveFamily()" style="width:100%;padding:10px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.05);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;">🚪 Opuść rodzinę</button>
       <button onclick="doSignOut()" style="width:100%;margin-top:7px;padding:10px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;color:var(--soft);cursor:pointer;" id="signOutBtn">🚪 Wyloguj się</button>
     </div>
@@ -892,7 +991,17 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   <!-- WEATHER FULL -->
   <div class="sec" id="sec-weather">
     <div class="sec-ttl">🌤️ Pogoda</div>
+    <div class="w3-tabs" id="w3tabs">
+      <button class="w3-tab sel" id="w3t0" onclick="selectWeatherCity(0)">🏠 Główne</button>
+      <button class="w3-tab" id="w3t1" onclick="selectWeatherCity(1)">📍 Miasto 2</button>
+      <button class="w3-tab" id="w3t2" onclick="selectWeatherCity(2)">📍 Miasto 3</button>
+    </div>
     <div id="weatherFull"></div>
+    <div id="weatherHourly" style="margin-top:8px;"></div>
+    <div class="card" style="margin-top:8px;">
+      <div class="card-ttl">🏙️ Zarządzaj miastami</div>
+      <div id="weatherCitiesManager"></div>
+    </div>
   </div>
 </div>
 
@@ -920,6 +1029,32 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   </div>
 </div>
 
+
+<!-- EVENT EDIT MODAL -->
+<div class="overlay" id="eventEditOverlay">
+  <div class="modal">
+    <div class="modal-ttl">✏️ Edytuj wydarzenie <span class="modal-close" onclick="closeOverlay('eventEditOverlay')">×</span></div>
+    <input type="hidden" id="evEditId">
+    <div class="f-lbl">Tytuł</div>
+    <input class="f-inp" id="evEditTitle" placeholder="np. Komunia Marka">
+    <div class="f-lbl">Typ</div>
+    <select class="f-inp" id="evEditType">
+      <option value="urodziny">🎂 Urodziny</option>
+      <option value="komunia">⛪ Komunia</option>
+      <option value="swieta">🎄 Święta</option>
+      <option value="wakacje">🏖️ Wakacje</option>
+      <option value="sylwester">🎆 Sylwester</option>
+      <option value="wyjazd">🚗 Wyjazd</option>
+      <option value="inne">📅 Inne</option>
+    </select>
+    <div class="f-lbl">Data</div>
+    <input class="f-inp" id="evEditDate" type="date">
+    <div class="f-lbl">Miejsce (opcjonalnie)</div>
+    <input class="f-inp" id="evEditLoc" placeholder="np. Kościół św. Jana">
+    <button class="modal-btn" onclick="submitEventEdit()">💾 Zapisz zmiany</button>
+    <button class="modal-btn red" onclick="delEventFromEdit()">🗑️ Usuń wydarzenie</button>
+  </div>
+</div>
 
 <!-- RETURN SCHEDULE MODAL -->
 <div class="overlay" id="returnSchedOverlay">
@@ -974,7 +1109,13 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div class="ac-list" id="acList" style="display:none;"></div>
     </div>
     <div style="display:flex;gap:7px;margin-top:6px;">
-      <div style="flex:1"><div class="f-lbl">Ikona</div><input class="f-inp" id="mIco" placeholder="📌" maxlength="4" style="font-size:17px;"></div>
+      <div style="flex:1"><div class="f-lbl">Ikona</div>
+        <div style="display:flex;gap:5px;align-items:center;">
+          <input class="f-inp" id="mIco" placeholder="📌" maxlength="4" style="font-size:17px;width:56px;">
+          <button onclick="toggleIconPicker()" style="padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">☺ Wybierz</button>
+        </div>
+        <div id="iconPickerWrap" style="display:none;margin-top:5px;"></div>
+      </div>
       <div style="flex:1"><div class="f-lbl">Punkty</div><input class="f-inp" id="mPts" type="number" value="10" min="1" max="50"></div>
     </div>
     <div class="f-lbl">Dla kogo</div>
@@ -1001,17 +1142,23 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   </div>
 </div>
 
-<!-- CATEGORY MODAL -->
+<!-- CATEGORY MODAL — nowy edytor per-row -->
 <div class="overlay" id="catOverlay">
-  <div class="modal">
+  <div class="modal" style="max-height:92vh;overflow-y:auto;">
     <div class="modal-ttl"><span id="catModalTtl">📂 Kategoria</span><span class="modal-close" onclick="closeOverlay('catOverlay')">×</span></div>
-    <div class="f-lbl">Ikona</div>
-    <input class="f-inp" id="catIco" placeholder="🏠" maxlength="4" style="font-size:20px;width:68px;">
-    <div class="f-lbl">Nazwa</div>
-    <input class="f-inp" id="catName" placeholder="np. Ogród">
-    <div class="f-lbl">Zadania (ikona nazwa | punkty)</div>
-    <textarea class="f-inp" id="catChores" rows="4" placeholder="🌱 Grabienie liści | 10&#10;💦 Podlewanie | 6" style="resize:vertical;font-size:11px;"></textarea>
-    <button class="modal-btn" onclick="saveCategory()">💾 Zapisz</button>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:9px;">
+      <input class="f-inp" id="catIco" placeholder="🏠" maxlength="4" style="font-size:20px;width:56px;text-align:center;">
+      <input class="f-inp" id="catName" placeholder="Nazwa kategorii" style="flex:1;">
+    </div>
+    <div class="f-lbl" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>Zadania</span>
+      <button onclick="addCatChoreRow()" style="border:none;background:var(--gp);color:var(--g2);border-radius:6px;padding:3px 9px;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">+ Dodaj</button>
+    </div>
+    <div style="display:grid;grid-template-columns:36px 1fr 44px 22px 22px;gap:4px;font-size:8px;font-weight:800;color:var(--soft);text-transform:uppercase;padding:3px 2px;margin-bottom:3px;">
+      <span>Ico</span><span>Nazwa</span><span>Pkt</span><span>Pokaż</span><span></span>
+    </div>
+    <div id="catChoreRows"></div>
+    <button class="modal-btn" onclick="saveCategory()">💾 Zapisz kategorię</button>
     <button class="modal-btn gray" onclick="closeOverlay('catOverlay')">Anuluj</button>
   </div>
 </div>
@@ -1068,13 +1215,24 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 <!-- REFERRAL STAR -->
 <button id="referralStar" onclick="toggleReferralPanel()" title="Zaproś do rodziny">⭐</button>
 <div id="referralPanel">
-  <div class="ref-title">🏠 Zaproś do Domowy Patrol!</div>
-  <div class="ref-sub">Wyślij link przez dowolny komunikator — wystarczy kliknąć żeby dołączyć do Twojej rodziny.</div>
-  <button class="ref-btn" onclick="shareInviteLink()">🔗 Wyślij link zaproszenia</button>
-  <button class="ref-btn" style="background:linear-gradient(135deg,#1e3a5f,#2563eb);" onclick="copyInviteLink();toggleReferralPanel()">📋 Kopiuj link</button>
+  <div class="ref-title">📨 Zaproś kogoś</div>
+  <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px;">
+    <div style="background:var(--gp);border-radius:10px;padding:9px;">
+      <div style="font-size:11px;font-weight:900;color:var(--g2);margin-bottom:3px;">🏠 Do rodziny</div>
+      <div style="font-size:10px;color:var(--soft);margin-bottom:7px;">Osoba dołączy do Twojej rodziny w aplikacji i będzie widzieć zadania, czat i wyniki.</div>
+      <button class="ref-btn" style="margin-bottom:4px;" onclick="shareInviteLink()">🔗 Wyślij link do rodziny</button>
+      <button class="ref-btn" style="background:transparent;border:2px solid var(--g2);color:var(--g2);" onclick="copyInviteLink();toggleReferralPanel()">📋 Kopiuj link</button>
+    </div>
+    <div style="background:var(--inp);border-radius:10px;padding:9px;border:2px solid var(--border);">
+      <div style="font-size:11px;font-weight:900;color:var(--text);margin-bottom:3px;">📱 Do aplikacji</div>
+      <div style="font-size:10px;color:var(--soft);margin-bottom:7px;">Osoba pobierze aplikację i założy własną rodzinę lub dołączy do innej.</div>
+      <button class="ref-btn" style="background:linear-gradient(135deg,#1e3a5f,#2563eb);" onclick="shareAppLink()">🔗 Wyślij link do aplikacji</button>
+    </div>
+  </div>
   <div class="ref-close" onclick="dismissReferral()">✕ Nie pokazuj ponownie</div>
 </div>
 
+<div id="stickyEditorOverlay"></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -1287,6 +1445,13 @@ window.addEventListener('resize',applyDesktopMode);
 let selectedDay=null;
 let editCatId=null;
 let weatherCache=null,weatherCity=localStorage.getItem('dp-weather-city')||'';
+let weatherCaches=[null,null,null]; // 3 city caches
+let weatherCities=JSON.parse(localStorage.getItem('dp-weather-cities')||'null')||[
+  {name:localStorage.getItem('dp-weather-city')||'',lat:0,lng:0},
+  {name:'',lat:0,lng:0},
+  {name:'',lat:0,lng:0}
+];
+let activeWeatherCity=0;
 let pendingFamilyCode='';
 let inviteFamilyCode='';
 let activeFamilyTab='chat';
@@ -1427,6 +1592,9 @@ async function doSetup(){
   const profile={name,role:selectedRole,avatar:selectedAvatar,code,photoURL:currentUser.photoURL||'',email:currentUser.email||'',uid:currentUser.uid,points:0,createdAt:Date.now()};
   await set(ref(db,`users/${currentUser.uid}/profile`),profile);
   const famSnap=await get(ref(db,`families/${code}/members`));
+  // Zapisz miasto pogody z setupu
+  const swCity=document.getElementById('setupWeatherCity')?.value?.trim();
+  if(swCity){weatherCity=swCity;localStorage.setItem('dp-weather-city',swCity);}
   if(!famSnap.exists()||!Object.keys(famSnap.val()||{}).length){
     await set(ref(db,`families/${code}`),{name:code,createdAt:Date.now(),createdBy:currentUser.uid});
     await set(ref(db,`families/${code}/members/${currentUser.uid}`),{name,avatar:currentUser.photoURL||selectedAvatar,role:selectedRole,points:0,photoURL:currentUser.photoURL||''});
@@ -1591,6 +1759,7 @@ function launchApp(){
   renderAll();fetchWeather();
   selectedDay=null;weekOffset=0;renderWeek();
   renderFamilyTabs();
+  renderTodayChatFeed();
   renderBirthdays();
   // Inicjalizuj gwiazdkę zaproszenia
   setTimeout(initReferralStar, 500);
@@ -1605,7 +1774,7 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/curfews`),s=>{live.curfews=s.val()||{};if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')renderCurfewPanel();});
     onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderDistancePanel();}});
     onValue(ref(db,`families/${fCode}/joinRequests`),s=>{live.joinReqs=s.val()||{};renderJoinRequests();});
-    onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChat();});
+    onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChatV2();if(todayChatOpen)renderTodayChatFeed();});
     onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);});
     onValue(ref(db,`families/${fCode}/wishes`),s=>{const r=s.val()||{};live.wishes=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));if(activeFamilyTab==='wishes')renderWishes();});
     onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
@@ -1848,10 +2017,42 @@ async function fetchWeatherGPS(){navigator.geolocation.getCurrentPosition(async 
 window.fetchWeatherGPS=fetchWeatherGPS;
 async function fetchWeatherByCity(){const city=document.getElementById('weatherCityInput')?.value?.trim()||weatherCity;if(!city) return;weatherCity=city;localStorage.setItem('dp-weather-city',city);try{const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);const gd=await geo.json();if(!gd.results?.length){showToast('❌ Nie znaleziono miasta');return;}await fetchWeatherCoords(gd.results[0].latitude,gd.results[0].longitude,city);}catch(e){showToast('❌ Błąd pogody');}}
 window.fetchWeatherByCity=fetchWeatherByCity;
-async function fetchWeatherCoords(lat,lng,city){
-  try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weathercode,apparent_temperature,windspeed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=auto&forecast_days=3&past_days=1`);const d=await r.json();const c=d.current;const dl=d.daily;
-  weatherCache={city:city||'',lat,lng,now:{temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),code:c.weathercode,wind:Math.round(c.windspeed_10m),rain:c.precipitation},yesterday:{max:Math.round(dl.temperature_2m_max[0]),min:Math.round(dl.temperature_2m_min[0]),code:dl.weathercode[0]},today:{max:Math.round(dl.temperature_2m_max[1]),min:Math.round(dl.temperature_2m_min[1]),code:dl.weathercode[1],rain:dl.precipitation_sum[1]},tomorrow:{max:Math.round(dl.temperature_2m_max[2]),min:Math.round(dl.temperature_2m_min[2]),code:dl.weathercode[2],rain:dl.precipitation_sum[2]}};
-  renderWeatherStrip();renderWeatherFull();}catch(e){}}
+async function fetchWeatherCoords(lat,lng,city,cityIdx){
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weathercode,apparent_temperature,windspeed_10m,precipitation,surface_pressure,uv_index&hourly=temperature_2m,weathercode,precipitation_probability,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,weathercode,precipitation_sum&timezone=auto&forecast_days=3&past_days=1`);
+    const d=await r.json();const cur=d.current;const dl=d.daily;
+    const nowH=new Date().getHours();
+    // Hourly — dzisiejsze godziny
+    const hTimes=d.hourly?.time||[];
+    const hTemps=d.hourly?.temperature_2m||[];
+    const hCodes=d.hourly?.weathercode||[];
+    const hRains=d.hourly?.precipitation_probability||[];
+    const hourly=hTimes.map((t,i)=>({
+      h:parseInt(t.split('T')[1])||0,
+      temp:Math.round(hTemps[i]||0),
+      code:hCodes[i]||0,
+      rain:hRains[i]||0
+    })).filter(x=>x.h%2===0).slice(nowH>0?Math.floor(nowH/2):0,Math.floor(nowH/2)+12);
+
+    const cache={city:city||'',lat,lng,
+      now:{temp:Math.round(cur.temperature_2m),feels:Math.round(cur.apparent_temperature),code:cur.weathercode,wind:Math.round(cur.windspeed_10m),rain:cur.precipitation,pressure:Math.round(cur.surface_pressure||0),uv:Math.round(cur.uv_index||0)},
+      yesterday:{max:Math.round(dl.temperature_2m_max[0]),min:Math.round(dl.temperature_2m_min[0]),code:dl.weathercode[0]},
+      today:{max:Math.round(dl.temperature_2m_max[1]),min:Math.round(dl.temperature_2m_min[1]),code:dl.weathercode[1],rain:dl.precipitation_sum[1]},
+      tomorrow:{max:Math.round(dl.temperature_2m_max[2]),min:Math.round(dl.temperature_2m_min[2]),code:dl.weathercode[2],rain:dl.precipitation_sum[2]},
+      hourly
+    };
+    if(cityIdx!==undefined&&cityIdx>=0&&cityIdx<3){
+      weatherCaches[cityIdx]=cache;
+      weatherCities[cityIdx]={name:city||'',lat,lng};
+      localStorage.setItem('dp-weather-cities',JSON.stringify(weatherCities));
+    }
+    weatherCache=cache;
+    weatherCity=city||'';
+    localStorage.setItem('dp-weather-city',weatherCity);
+    renderWeatherStrip();renderWeatherFull();renderWeatherHourly();
+    renderWeatherCitiesManager();
+  }catch(e){console.warn('Weather error',e);}
+}
 function wmoIcon(c){if(c===0)return'☀️';if(c<=3)return'⛅';if(c<=49)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌦️';return'⛈️';}
 function wmoText(c){if(c===0)return'Bezchmurnie';if(c<=3)return'Częściowo zachmurzono';if(c<=49)return'Mgła';if(c<=67)return'Deszcz';if(c<=77)return'Śnieg';if(c<=82)return'Przelotne opady';return'Burza';}
 function outfitSuggestion(w){const f=w.now.feels;const rain=w.today.rain>0;const wind=w.now.wind>30;let t='';if(f<0)t='🧥❄️ Bardzo zimno! Kurtka zimowa, czapka, szalik i rękawiczki.';else if(f<8)t='🧥 Chłodno — gruba kurtka lub płaszcz.';else if(f<14)t='🧤 Lekko chłodno — kurtka lub bluza z kapturem.';else if(f<20)t='👕 Przyjemnie — cienka kurtka lub bluza.';else if(f<26)t='😎 Ciepło — T-shirt. Idealnie!';else t='🌡️ Gorąco — lekkie ubrania i dużo wody!';if(rain)t+=' ☔ Weź parasol.';if(wind)t+=' 💨 Silny wiatr.';return t;}
@@ -1864,6 +2065,17 @@ function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherF
   </div>
   <div class="w-diff" style="color:${dClr}">${dTxt}</div>
   <div class="outfit-card"><div class="outfit-title">👔 Co dzisiaj założyć?</div><div class="outfit-text">${outfitSuggestion(w)}</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;">
+    <div style="background:var(--card);border-radius:10px;padding:8px;text-align:center;box-shadow:var(--sh);">
+      <div style="font-size:16px;">🌬️</div><div style="font-size:11px;font-weight:900;color:var(--text);">${w.now.wind} km/h</div><div style="font-size:9px;color:var(--soft);">Wiatr</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:8px;text-align:center;box-shadow:var(--sh);">
+      <div style="font-size:16px;">🔵</div><div style="font-size:11px;font-weight:900;color:var(--text);">${w.now.pressure||'—'} hPa</div><div style="font-size:9px;color:var(--soft);">Ciśnienie</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:8px;text-align:center;box-shadow:var(--sh);">
+      <div style="font-size:16px;">☀️</div><div style="font-size:11px;font-weight:900;color:var(--text);">UV ${w.now.uv||0}</div><div style="font-size:9px;color:var(--soft);">Indeks UV</div>
+    </div>
+  </div>
   <div class="weather-loc-row" style="margin-top:9px;"><input id="weatherCityInput2" placeholder="Zmień miasto" value="${w.city||''}"><button onclick="document.getElementById('weatherCityInput').value=document.getElementById('weatherCityInput2').value;fetchWeatherByCity()">🔍</button></div>`;}
 
 /* ── LOCATION ── */
@@ -2073,7 +2285,7 @@ function renderChores(){
     if(isCollapsed){html+=``;return;}
     html+=`<div class="chore-list">`;
     cat.chores.filter(ch=>choreVisibility[ch.id]!==false).forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
-    html+=`<div class="chore ${done?'done':''}" onclick="${!done?`doToggleChore('${ch.id}',${ch.pts})`:''}">
+    html+=`<div class="chore ${done?'done':''}" data-chore-id="${ch.id}" data-chore-pts="${ch.pts}" onclick="${!done?`doToggleChore('${ch.id}',${ch.pts})`:''}">
       <div class="chore-ico">${ch.ico}</div>
       <div class="chore-info">
         <div class="chore-name">${ch.name}</div>
@@ -2081,12 +2293,12 @@ function renderChores(){
       </div>
       <div class="chore-right">
         ${done
-          ?`<div class="done-badge" style="font-size:10px;">✓${reps>1?' ×'+reps:''}</div>
-            <button class="undo-btn" onclick="undoChore(event,'${ch.id}',${ch.pts})" title="Cofnij">↩️</button>
+          ?`<div class="done-badge" style="font-size:10px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${allKeys.map(k=>live.done[k]?.who||'').join(', ')}">${allKeys.map(k=>(live.done[k]?.who||'?').split(' ')[0]).join(', ')}</div>
+            <button class="undo-btn" onclick="undoMyChore(event,'${ch.id}',${ch.pts})" title="Cofnij swoje">↩️</button>
             ${ch.repeatable?`<button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})" title="+1">+1</button>`:''}`
           :`<div class="chore-pts">+${ch.pts}⭐</div>
             <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;" onclick="openEditChore(event,'${cat.id}',${idx})" title="Edytuj">✏️</button>
-            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;color:var(--b);border-color:rgba(59,130,246,.3);" onclick="duplicateChore(event,'${ch.id}','${cat.id}')" title="Duplikuj">⧉</button>`
+            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;color:var(--b);border-color:rgba(59,130,246,.3);" onclick="duplicateChore(event,'${ch.id}','${cat.id}')" title="+1 dziś">⧉</button>`
         }
       </div>
     </div>`;});
@@ -2099,6 +2311,22 @@ async function doToggleChore(choreId,pts){const uid=getMyUid();if(live.done[chor
 window.doToggleChore=doToggleChore;
 async function undoChore(e,choreId,pts){e.stopPropagation();const uid=getMyUid();const toRm=Object.keys(live.done).filter(k=>k===choreId||k.startsWith(choreId+'_'));if(isDemo){toRm.forEach(k=>delete live.done[k]);if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts*toRm.length);showToast('↩️ Cofnięto');renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}for(const k of toRm) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts*toRm.length)});await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts*toRm.length)});showToast('↩️ Cofnięto');}
 window.undoChore=undoChore;
+async function undoMyChore(e,choreId,pts){
+  e.stopPropagation();
+  const uid=getMyUid();
+  // Znajdź tylko wpisy tego usera
+  const myKeys=Object.keys(live.done).filter(k=>(k===choreId||k.startsWith(choreId+'_'))&&live.done[k]?.uid===uid);
+  if(!myKeys.length){showToast('⚠️ Nie masz czego cofać');return;}
+  // Usuń jeden (ostatni) wpis
+  const toRm=myKeys.slice(-1);
+  if(isDemo){toRm.forEach(k=>delete live.done[k]);if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts);showToast('↩️ Cofnięto swoje');renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}
+  for(const k of toRm) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
+  const cur=live.members[uid]?.points||0;
+  await update(ref(db,`families/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts)});
+  await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts)});
+  showToast('↩️ Cofnięto swoje wykonanie');
+}
+window.undoMyChore=undoMyChore;
 async function repeatChore(e,choreId,pts){e.stopPropagation();const uid=getMyUid();const rk=`${choreId}_${Date.now()}`;if(isDemo){live.done[rk]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;const c=findChore(choreId);live.history.unshift({ico:c?.ico||'✅',name:(c?.name||choreId)+' (powtórzenie)',who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`+1 powtórzenie! +${pts} pkt`);renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}const c=findChore(choreId);await set(ref(db,`f/${fCode}/done/${todayKey}/${rk}`),{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+pts});await update(ref(db,`users/${uid}/profile`),{points:cur+pts});await push(ref(db,`f/${fCode}/history`),{ico:c?.ico||'✅',name:(c?.name||choreId)+' +1',who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`+1 powtórzenie! +${pts} pkt`);}
 window.repeatChore=repeatChore;
 
@@ -2394,47 +2622,112 @@ async function sendChatV2(){
 window.sendChatV2=sendChatV2;
 
 /* ── SHOPPING WEEK ── */
+function makeShopItem(n,key){
+  return`<div class="si ${n.done?'bought':''}" data-shop-id="${n.id}" data-shop-key="${key}">
+    <div class="si-swipe-hint">✓ Kupię</div>
+    <div class="si-txt">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);margin-left:5px;">→ ${n.assignedTo}</span>`:''}</div>
+    <div class="si-cb ${n.will&&!n.done?'will':''}" onclick="shopWill('${key}','${n.id}')" title="Kupię">${n.will&&!n.done?'✓':''}</div>
+    <div style="font-size:8px;color:var(--soft);margin:0 2px;">Kupię</div>
+    <div class="si-cb ${n.done?'done':''}" onclick="shopDone('${key}','${n.id}')" title="Kupione">${n.done?'✓':''}</div>
+    <div style="font-size:8px;color:var(--soft);margin:0 2px;">Kup.</div>
+    <button onclick="shopAssign('${key}','${n.id}')" style="border:none;background:none;font-size:12px;cursor:pointer;padding:1px 3px;" title="Zleć komuś">👤</button>
+    <div onclick="deleteNote('${key}','${n.id}')" style="font-size:11px;cursor:pointer;color:var(--soft);padding:2px 4px;">✕</div>
+  </div>`;
+}
+
 function renderShoppingWeek(){
-  const todayDow=new Date().getDay()||7; // 1=Mon..7=Sun, JS: 0=Sun
-  const days=[1,2,3,4,5,6,0]; // Mon-Sun
-  const bar=days.map(d=>`<button class="sw-day ${d===new Date().getDay()?'tod':''} ${d===activeShopDay?'act':''}" onclick="setShopDay(${d})">${DN_SHORT[d]}</button>`).join('');
-  const key='shop_'+activeShopDay;
-  const items=(live.notes[key]||[]);
-  const bought=items.filter(i=>i.done).length;
-  let rows='';
-  items.forEach(n=>{
-    rows+=`<div class="si ${n.done?'bought':''}">
-      <div class="si-cb ${n.will&&!n.done?'will':''}" onclick="shopWill('${key}','${n.id}')" title="Kupię">${n.will&&!n.done?'✓':''}</div>
-      <div class="si-txt">${n.text}</div>
-      <div class="si-lbl">Kupię</div>
-      <div class="si-cb ${n.done?'done':''}" onclick="shopDone('${key}','${n.id}')" title="Kupione" style="margin-left:3px;">${n.done?'✓':''}</div>
-      <div class="si-lbl">Kupione</div>
-      <div style="font-size:9px;font-weight:800;color:var(--o);margin-left:3px;">+1⭐</div>
-      <div onclick="deleteNote('${key}','${n.id}')" style="font-size:11px;cursor:pointer;color:var(--soft);padding:2px 5px;">✕</div>
-    </div>`;
-  });
-  if(!items.length) rows=`<div class="empty"><div class="big">🛒</div><p>Brak zakupów na ${DN_FULL[activeShopDay]||DN_FULL[0]}</p></div>`;
-  document.getElementById('familyTabContent').innerHTML=`
-    <div class="card">
-      <div class="sw-bar">${bar}</div>
-      <div style="font-size:11px;font-weight:700;color:var(--soft);margin-bottom:8px;">${DN_FULL[activeShopDay]||DN_FULL[0]} · ${bought}/${items.length} kupionych</div>
-      ${rows}
-      <div class="note-add-row" style="margin-top:8px;">
-        <input class="note-add-inp" id="shopInp" placeholder="Co kupić?" onkeydown="if(event.key==='Enter')addShopItem()">
-        <button class="note-add-btn" onclick="addShopItem()">+</button>
+  const todayDow=new Date().getDay();
+  const days=[1,2,3,4,5,6,0];
+  const todayKey2=todayDow===0?0:todayDow;
+  let html='';
+  days.forEach(d=>{
+    const key='shop_'+d;
+    const items=live.notes[key]||[];
+    const bought=items.filter(i=>i.done).length;
+    const isToday=d===todayDow;
+    const open=isToday||d===activeShopDay;
+    html+=`<div class="shop-day-section">
+      <div class="shop-day-header ${isToday?'today-hdr':''}" onclick="toggleShopDay(${d})">
+        <span class="shop-day-nm ${isToday?'today-nm':''}">${DN_FULL[d]||DN_FULL[0]}${isToday?' 📍':''}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${items.length?`<span class="shop-day-cnt">${bought}/${items.length} ✓</span>`:''}
+          <span style="font-size:12px;color:var(--soft);">${open?'▲':'▼'}</span>
+        </div>
+      </div>
+      <div class="shop-day-body" id="shopBody_${d}" style="${open?'':'display:none;'}">
+        ${items.map(n=>makeShopItem(n,key)).join('')}
+        ${!items.length?`<div style="text-align:center;padding:8px;color:var(--soft);font-size:11px;">Pusto — dodaj coś!</div>`:''}
+        <div class="note-add-row" style="margin-top:6px;">
+          <input class="note-add-inp" id="shopInp_${d}" placeholder="Dodaj do ${DN_SHORT[d]}…" onkeydown="if(event.key==='Enter')addShopItemDay(${d})">
+          <button class="note-add-btn" onclick="addShopItemDay(${d})">+</button>
+        </div>
       </div>
     </div>`;
+  });
+  document.getElementById('familyTabContent').innerHTML=html;
+  initShopSwipe();
 }
+window.toggleShopDay=function(d){
+  const el=document.getElementById('shopBody_'+d);
+  if(el){const vis=el.style.display!=='none';el.style.display=vis?'none':'block';activeShopDay=vis?activeShopDay:d;}
+};
 function setShopDay(d){activeShopDay=d;renderShoppingWeek();}
 window.setShopDay=setShopDay;
-async function addShopItem(){
-  const inp=document.getElementById('shopInp');const text=inp?.value?.trim();if(!text)return;inp.value='';
-  const key='shop_'+activeShopDay;
+
+window.addShopItemDay=async function(d){
+  const inp=document.getElementById('shopInp_'+d);const text=inp?.value?.trim();if(!text)return;inp.value='';
+  const key='shop_'+d;
   const item={id:'s'+Date.now(),text,will:false,done:false,who:myProfile.name,ts:Date.now()};
   if(!live.notes[key]) live.notes[key]=[];
   live.notes[key].push(item);
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),live.notes[key]);
   renderShoppingWeek();
+};
+
+window.shopAssign=function(key,id){
+  const item=(live.notes[key]||[]).find(n=>n.id===id);if(!item)return;
+  const members=Object.values(live.members).filter(m=>m.uid!==getMyUid()||true);
+  const sel=prompt('Komu zlecić? ('+members.map(m=>m.name).join(' / ')+')');
+  if(!sel)return;
+  const found=members.find(m=>m.name.toLowerCase().includes(sel.toLowerCase()));
+  if(!found){showToast('⚠️ Nie znaleziono');return;}
+  item.assignedTo=found.name;
+  // Dodaj do assigned
+  const task={name:'🛒 '+item.text,ico:'🛒',forUid:found.uid||'',forName:found.name,forAvatar:found.avatar||'👤',pts:2,date:fmt(new Date()),dueTs:Date.now()+86400000,assignedBy:myProfile.name,assignedAvatar:myProfile.avatar,ts:Date.now(),done:false};
+  if(isDemo){live.assigned['st_'+Date.now()]=task;}
+  else{push(ref(db,`f/${fCode}/assigned`),task);set(ref(db,`families/${fCode}/notes/${key}`),live.notes[key]);}
+  renderShoppingWeek();showToast(`🛒 Zlecono: ${found.name}`);
+};
+
+function initShopSwipe(){
+  let sx=0,sy=0,target=null;
+  document.querySelectorAll('.si').forEach(el=>{
+    el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;target=el;},{passive:true});
+    el.addEventListener('touchmove',e=>{
+      if(!target||target!==el)return;
+      const dx=e.touches[0].clientX-sx;
+      const dy=Math.abs(e.touches[0].clientY-sy);
+      if(dy>25){target=null;return;}
+      el.classList.toggle('swipe-r',dx>20);
+      el.classList.toggle('swipe-l',dx<-20);
+    },{passive:true});
+    el.addEventListener('touchend',e=>{
+      if(!target||target!==el){el.classList.remove('swipe-r','swipe-l');return;}
+      const dx=e.changedTouches[0].clientX-sx;
+      const dy=Math.abs(e.changedTouches[0].clientY-sy);
+      el.classList.remove('swipe-r','swipe-l');
+      if(Math.abs(dx)>55&&dy<35){
+        const key=el.dataset.shopKey;const id=el.dataset.shopId;
+        if(dx>0) shopWill(key,id);
+        else shopDone(key,id);
+      }
+      target=null;
+    },{passive:true});
+  });
+}
+async function addShopItem(){
+  // Legacy — redirect to today's day
+  return addShopItemDay(new Date().getDay());
 }
 window.addShopItem=addShopItem;
 async function shopWill(key,id){
@@ -2460,34 +2753,92 @@ window.shopDone=shopDone;
 
 /* ── STICKY NOTES ── */
 const SCOLORS=[{id:'sc-y',bg:'#fef08a'},{id:'sc-g',bg:'#bbf7d0'},{id:'sc-b',bg:'#bae6fd'},{id:'sc-p',bg:'#e9d5ff'},{id:'sc-o',bg:'#fed7aa'}];
+let stickyEditId=null;
+
 function renderStickyNotes(){
   const notes=(live.notes['misc']||[]);
-  const colorPicker=SCOLORS.map((sc,i)=>`<div class="scolor-dot ${sc.id} ${activeStickyColor===sc.id?'sel':''}" style="background:${sc.bg};" onclick="setStickyColor('${sc.id}')"></div>`).join('');
-  let grid=notes.map(n=>`<div class="sticky ${n.color||'sc-y'}">
-    <div class="sticky-txt">${(n.text||'').replace(/</g,'&lt;')}</div>
-    <div class="sticky-meta">${n.who||''} · ${getAgo(n.ts)}</div>
-    <div class="sticky-x" onclick="deleteNote('misc','${n.id}')">✕</div>
-  </div>`).join('');
-  if(!grid) grid=`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--soft);font-size:12px;font-weight:700;">📝 Brak kartek</div>`;
+  const colorPicker=SCOLORS.map(sc=>`<div class="scolor-dot ${sc.id} ${activeStickyColor===sc.id?'sel':''}" style="background:${sc.bg};" onclick="setStickyColor('${sc.id}')"></div>`).join('');
+  let grid=notes.map(n=>{
+    const lines=(n.body||n.text||'').split('\n');
+    const preview=lines.slice(0,2).join(' · ').slice(0,60)+(lines.length>2?'…':'');
+    return`<div class="sticky ${n.color||'sc-y'}" onclick="openStickyEditor('${n.id}')">
+      <div class="sticky-title">${(n.title||n.text||'Notatka').replace(/</g,'&lt;')}</div>
+      ${preview?`<div class="sticky-preview">${preview.replace(/</g,'&lt;')}</div>`:''}
+      <div class="sticky-meta">${n.who||''} · ${getAgo(n.ts)}</div>
+      <div class="sticky-x" onclick="event.stopPropagation();deleteNote('misc','${n.id}')">✕</div>
+    </div>`;
+  }).join('');
+  if(!grid) grid=`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--soft);font-size:12px;font-weight:700;">📝 Brak kartek · kliknij +</div>`;
   document.getElementById('familyTabContent').innerHTML=`
     <div class="scolor-row">${colorPicker}</div>
     <div class="sticky-grid">${grid}</div>
     <div class="note-add-row">
-      <input class="note-add-inp" id="stickyInp" placeholder="Nowa karteczka…" onkeydown="if(event.key==='Enter')addStickyNote()">
+      <input class="note-add-inp" id="stickyInp" placeholder="Tytuł nowej karteczki…" onkeydown="if(event.key==='Enter')addStickyNote()">
       <button class="note-add-btn" onclick="addStickyNote()">+</button>
     </div>`;
 }
 function setStickyColor(id){activeStickyColor=id;renderStickyNotes();}
 window.setStickyColor=setStickyColor;
+
 async function addStickyNote(){
-  const inp=document.getElementById('stickyInp');const text=inp?.value?.trim();if(!text)return;inp.value='';
-  const note={id:'n'+Date.now(),text,color:activeStickyColor,who:myProfile.name,ts:Date.now()};
+  const inp=document.getElementById('stickyInp');const title=inp?.value?.trim();if(!title)return;inp.value='';
+  const note={id:'n'+Date.now(),title,body:'',color:activeStickyColor,who:myProfile.name,ts:Date.now()};
   if(!live.notes.misc) live.notes.misc=[];
   live.notes.misc.push(note);
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
   renderStickyNotes();
+  // Otwórz edytor od razu
+  setTimeout(()=>openStickyEditor(note.id),80);
 }
 window.addStickyNote=addStickyNote;
+
+window.openStickyEditor=function(id){
+  const note=(live.notes['misc']||[]).find(n=>n.id===id);if(!note)return;
+  stickyEditId=id;
+  const col=SCOLORS.find(s=>s.id===(note.color||'sc-y'))||SCOLORS[0];
+  let el=document.getElementById('stickyEditorOverlay');
+  if(!el){
+    el=document.createElement('div');el.id='stickyEditorOverlay';document.body.appendChild(el);
+  }
+  el.className='';
+  el.innerHTML=`<div class="sticky-editor" style="background:${col.bg};">
+    <input class="sticky-editor-title" id="seTitle" value="${(note.title||'').replace(/"/g,'&quot;')}" placeholder="Tytuł karteczki">
+    <div class="scolor-row" style="margin-bottom:8px;">${SCOLORS.map(sc=>`<div class="scolor-dot ${sc.id} ${(note.color||'sc-y')===sc.id?'sel':''}" style="background:${sc.bg};" onclick="changeStickyColor('${id}','${sc.id}',this)"></div>`).join('')}</div>
+    <textarea class="sticky-editor-body" id="seBody" placeholder="Treść, podpunkty, lista… (Enter = nowa linia)">${(note.body||note.text||'').replace(/</g,'&lt;')}</textarea>
+    <div class="sticky-editor-actions">
+      <button class="sticky-editor-btn" style="background:rgba(0,0,0,.15);color:#1a1a1a;flex:1;" onclick="saveStickyEditor()">💾 Zapisz</button>
+      <button class="sticky-editor-btn" style="background:rgba(232,64,64,.15);color:#c00;" onclick="deleteStickyFromEditor('${id}')">🗑️ Usuń</button>
+      <button class="sticky-editor-btn" style="background:rgba(0,0,0,.08);color:#1a1a1a;" onclick="closeStickyEditor()">✕</button>
+    </div>
+  </div>`;
+  el.classList.add('show');
+};
+window.openStickyEditor=window.openStickyEditor;
+
+window.changeStickyColor=function(id,colorId,dotEl){
+  const col=SCOLORS.find(s=>s.id===colorId)||SCOLORS[0];
+  const editor=document.querySelector('.sticky-editor');if(editor)editor.style.background=col.bg;
+  dotEl.closest('.scolor-row').querySelectorAll('.scolor-dot').forEach(d=>d.classList.remove('sel'));
+  dotEl.classList.add('sel');
+  const note=(live.notes['misc']||[]).find(n=>n.id===id);if(note)note.color=colorId;
+};
+
+window.saveStickyEditor=async function(){
+  const title=document.getElementById('seTitle')?.value?.trim()||'Notatka';
+  const body=document.getElementById('seBody')?.value||'';
+  const note=(live.notes['misc']||[]).find(n=>n.id===stickyEditId);
+  if(note){note.title=title;note.body=body;note.ts=Date.now();}
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
+  closeStickyEditor();renderStickyNotes();
+};
+window.closeStickyEditor=function(){
+  const el=document.getElementById('stickyEditorOverlay');if(el)el.classList.remove('show');
+};
+window.deleteStickyFromEditor=async function(id){
+  if(!confirm('Usunąć karteczkę?'))return;
+  await deleteNote('misc',id);
+  closeStickyEditor();
+};
 
 /* ── EVENTS ── */
 const EV_TYPES=[{id:'urodziny',ico:'🎂',label:'Urodziny'},{id:'komunia',ico:'⛪',label:'Komunia'},{id:'swieta',ico:'🎄',label:'Święta'},{id:'wakacje',ico:'🏖️',label:'Wakacje'},{id:'sylwester',ico:'🎆',label:'Sylwester'},{id:'wyjazd',ico:'🚗',label:'Wyjazd'},{id:'inne',ico:'📅',label:'Inne'}];
@@ -2515,7 +2866,7 @@ function renderEventsTab(){
     html+=`<div class="ev-card ${cls}">
       <div class="ev-badge ${dl===0?'gs':dl<=7?'yn':''}"><div class="ev-bd">${d.getDate()}</div><div class="ev-bm">${MO_SHORT[d.getMonth()]}</div></div>
       <div class="ev-info"><div class="ev-title">${e.ico||'📅'} ${e.title}</div>${e.loc?`<div class="ev-loc">📍 ${e.loc}</div>`:''}<div class="ev-cnt" style="color:${dl<=3?'var(--r)':dl<=7?'var(--o)':'var(--soft)'};">${badge}</div></div>
-      ${myProfile?.role==='parent'?`<button onclick="delEvent('${e.id}')" style="border:none;background:none;cursor:pointer;font-size:13px;color:var(--soft);">🗑️</button>`:''}
+      ${myProfile?.role==='parent'?`<div style="display:flex;flex-direction:column;gap:3px;"><button onclick="openEventEdit('${e.id}')" style="border:none;background:none;cursor:pointer;font-size:13px;">✏️</button><button onclick="delEvent('${e.id}')" style="border:none;background:none;cursor:pointer;font-size:13px;color:var(--soft);">🗑️</button></div>`:''}
     </div>`;
   });
   if(past.length){
@@ -3025,6 +3376,23 @@ function goTab(id){
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   if(id==='scores'){renderScores();renderStats();renderRewards();renderHistory();renderSummary();renderScorePeriodStats();}
   if(id==='family'){renderFamilyTabs();}
+  if(id==='profile'){
+    // Harmonogramy
+    const psp=document.getElementById('profileSchedulesPanel');
+    if(psp) renderSchedulesInProfile(psp);
+    // Streak panel
+    const sp=document.getElementById('streakPanel');if(sp){
+      const children=Object.entries(live.members).filter(([,m])=>m.role==='child');
+      sp.innerHTML=children.map(([uid,m])=>{
+        const streak=getChildStreak(uid);
+        return`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:20px;">${m.avatar||'👤'}</span>
+          <span style="font-size:12px;font-weight:800;color:var(--text);flex:1;">${m.name}</span>
+          <span style="font-size:11px;font-weight:800;color:${streak>=7?'var(--o)':streak>=3?'var(--g2)':'var(--soft)'};">🔥 ${streak} dni z rzędu</span>
+        </div>`;
+      }).join('')||'<div style="font-size:11px;color:var(--soft);">Brak danych</div>';
+    }
+  }
   if(id==='settings'){
     renderCategoryMgmt();renderCatVisibilitySettings();renderThemeGrid();renderWeatherFull();renderChoreVisSettings();
     // Pokaż status lokalizacji domu
@@ -3033,7 +3401,10 @@ function goTab(id){
     // Pokaż status GCal
     _gcalUpdateUI(!!gcalToken);renderReferralSetting();
   }
-  if(id==='weather'){renderWeatherFull();}
+  if(id==='weather'){renderWeatherFull();renderWeatherHourly();renderWeatherCitiesManager();
+    // Update city tab labels
+    weatherCities.forEach((wc,i)=>{const el=document.getElementById('w3t'+i);if(el&&wc?.name)el.textContent=(i===0?'🏠 ':'')+wc.name.slice(0,8);});
+  }
 }
 
 /* ── SCORE PERIOD (dzień / tydzień / miesiąc) ── */
@@ -3097,15 +3468,703 @@ function renderScorePeriodStats(){
 }
 
 /* ── DUPLIKUJ ZADANIE ── */
-window.duplicateChore=function(e,choreId,catId){
+window.duplicateChore=async function(e,choreId,catId){
   e.stopPropagation();
-  const cat=cats.find(c=>c.id===catId);if(!cat)return;
-  const orig=cat.chores.find(ch=>ch.id===choreId);if(!orig)return;
-  const newCh={...orig,id:'c_dup_'+Date.now(),name:orig.name+' (kopia)'};
-  const target=cat.editable?cat:(cats.find(c=>c.id==='custom')||cat);
-  target.chores.push(newCh);
-  saveCats();renderChores();
-  showToast('⧉ Zduplikowano: '+orig.name);
+  // Duplikat tymczasowy — działa jak "zrób ponownie" (repeatChore)
+  // Nie dodaje na stałe do listy zadań — następnego dnia znika
+  const uid=getMyUid();
+  const rk=choreId+'_dup_'+Date.now();
+  const ch=findChore(choreId);
+  if(isDemo){
+    live.done[rk]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};
+    if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+(ch?.pts||0);
+    live.history.unshift({ico:ch?.ico||'✅',name:(ch?.name||choreId)+' +1',who:myProfile.name,avatar:myProfile.avatar,uid,pts:ch?.pts||0,ts:Date.now()});
+    renderChores();renderStats();renderScores();renderRewards();updateProgress();
+    showToast('⧉ +1 dziś · jutro wróci do normy');return;
+  }
+  await set(ref(db,`f/${fCode}/done/${todayKey}/${rk}`),{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});
+  const cur=live.members[uid]?.points||0;
+  await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+(ch?.pts||0)});
+  await update(ref(db,`users/${uid}/profile`),{points:cur+(ch?.pts||0)});
+  if(ch) await push(ref(db,`f/${fCode}/history`),{ico:ch.ico,name:ch.name+' +1',who:myProfile.name,avatar:myProfile.avatar,uid,pts:ch.pts,ts:Date.now()});
+  showToast('⧉ +1 wykonanie dziś · jutro wróci do normy');
+};
+
+
+/* ══════════════════════════════════════════════
+   v17 — NOWE FUNKCJE
+   ══════════════════════════════════════════════ */
+
+/* ── SWIPE NA KAFELKACH ZADAŃ ── */
+(function initChoreSwipe(){
+  let sx=0,sy=0,target=null;
+  document.addEventListener('touchstart',e=>{
+    const ch=e.target.closest('.chore');
+    if(!ch) return;
+    sx=e.touches[0].clientX;
+    sy=e.touches[0].clientY;
+    target=ch;
+  },{passive:true});
+  document.addEventListener('touchmove',e=>{
+    if(!target) return;
+    const dx=e.touches[0].clientX-sx;
+    const dy=Math.abs(e.touches[0].clientY-sy);
+    if(dy>30){target=null;return;}
+    if(Math.abs(dx)>15){
+      target.classList.toggle('swipe-right',dx>15);
+      target.classList.toggle('swipe-left',dx<-15);
+    }
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(!target) return;
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=Math.abs(e.changedTouches[0].clientY-sy);
+    target.classList.remove('swipe-right','swipe-left');
+    if(Math.abs(dx)>60&&dy<40){
+      const choreId=target.getAttribute('data-chore-id');
+      const pts=parseInt(target.getAttribute('data-chore-pts'))||0;
+      if(choreId){
+        if(dx>0){
+          // Swipe prawo — zaznacz jako zrobione
+          const isDone=target.classList.contains('done');
+          if(!isDone) doToggleChore(choreId,pts);
+          else showToast('↩️ Przesuń w lewo aby cofnąć');
+        } else {
+          // Swipe lewo — cofnij
+          undoChore({stopPropagation:()=>{}},choreId,pts);
+        }
+      }
+    }
+    target=null;
+  },{passive:true});
+})();
+
+/* ── HARMONOGRAMY — zakładka w rodzinie ── */
+const SCHED_DAYS=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+const SCHED_DAYS_FULL=['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
+let schedEditUid='';
+
+function renderSchedulesTab(){
+  const members=Object.entries(live.members);
+  let html=`<div style="margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:14px;font-weight:900;color:var(--text);">📆 Harmonogramy tygodniowe</div>
+  </div>`;
+
+  if(!members.length){
+    html+=`<div class="empty"><div class="big">👨‍👩‍👧</div><p>Brak członków rodziny</p></div>`;
+  }
+
+  members.forEach(([uid,mem])=>{
+    const scheds=returnSchedules[uid]||[];
+    const role=mem.role;
+    html+=`<div class="card" style="margin-bottom:8px;">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>${mem.avatar||'👤'} ${mem.name} ${role==='parent'?'👑 (praca)':'(szkoła)'}</span>
+        <button class="card-act" onclick="openSchedEdit('${uid}')">✏️ Edytuj</button>
+      </div>`;
+
+    if(!scheds.length){
+      html+=`<div style="font-size:11px;color:var(--soft);padding:4px 0;">Brak harmonogramu — kliknij Edytuj</div>`;
+    } else {
+      const byDay={};scheds.forEach(s=>byDay[s.day]=s);
+      html+=`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:4px;">`;
+      [1,2,3,4,5,6,0].forEach(d=>{
+        const s=byDay[d];
+        html+=`<div style="text-align:center;padding:3px 1px;border-radius:6px;background:${s?'var(--gp)':'var(--inp)'};border:1.5px solid ${s?'var(--g2)':'var(--border)'};">
+          <div style="font-size:8px;font-weight:800;color:${s?'var(--g2)':'var(--soft)'};">${SCHED_DAYS[d]}</div>
+          ${s?`<div style="font-size:7px;font-weight:700;color:var(--text);">${s.time||''}</div>
+               <div style="font-size:6px;color:var(--soft);">${s.eta||''}</div>`
+            :`<div style="font-size:9px;color:var(--border);">—</div>`}
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+  });
+
+  document.getElementById('familyTabContent').innerHTML=html;
+}
+window.renderSchedulesTab=renderSchedulesTab;
+
+window.openSchedEdit=function(uid){
+  schedEditUid=uid;
+  const mem=live.members[uid]||{};
+  const scheds=returnSchedules[uid]||[];
+  const byDay={};scheds.forEach(s=>byDay[s.day]=s);
+  const role=mem.role;
+  const defEnd=role==='child'?'15:30':'17:00';
+  const defEta=role==='child'?'16:00':'17:30';
+  const typeLabel=role==='child'?'Szkoła':'Praca';
+
+  let rows='';
+  [1,2,3,4,5,6,0].forEach(d=>{
+    const s=byDay[d]||{};
+    rows+=`<div style="display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:3px;align-items:center;margin-bottom:4px;">
+      <span style="font-size:10px;font-weight:800;color:var(--soft);">${SCHED_DAYS[d]}</span>
+      <input class="sched-inp" type="time" id="se_end_${d}" value="${s.time||''}">
+      <input class="sched-inp" type="time" id="se_eta_${d}" value="${s.eta||''}">
+      <button onclick="clearSchedDay(${d})" style="border:none;background:none;cursor:pointer;font-size:12px;color:var(--soft);" title="Wyczyść">✕</button>
+    </div>`;
+  });
+
+  document.getElementById('familyTabContent').innerHTML=`
+    <div class="card">
+      <div class="card-ttl">${mem.avatar||'👤'} ${mem.name} — ${typeLabel}</div>
+      <div style="display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:3px;font-size:9px;font-weight:800;color:var(--soft);text-transform:uppercase;margin-bottom:5px;">
+        <span></span><span>Koniec zajęć</span><span>Powrót ~</span><span></span>
+      </div>
+      ${rows}
+      <div style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px;background:var(--inp);border-radius:8px;">
+        <input type="checkbox" id="schedRepeatAll" checked style="width:16px;height:16px;">
+        <label for="schedRepeatAll" style="font-size:11px;font-weight:800;color:var(--text);cursor:pointer;">Powtarzaj co tydzień automatycznie</label>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button onclick="saveSchedEdit()" style="flex:1;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
+        <button onclick="switchFamilyTab('schedules')" style="padding:10px 14px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:700;cursor:pointer;color:var(--soft);">Anuluj</button>
+      </div>
+    </div>`;
+};
+
+window.clearSchedDay=function(d){
+  const e=document.getElementById('se_end_'+d);
+  const eta=document.getElementById('se_eta_'+d);
+  if(e)e.value='';if(eta)eta.value='';
+};
+
+window.saveSchedEdit=async function(){
+  const uid=schedEditUid;if(!uid)return;
+  const mem=live.members[uid]||{};
+  const scheds=[];
+  [1,2,3,4,5,6,0].forEach(d=>{
+    const endEl=document.getElementById('se_end_'+d);
+    const etaEl=document.getElementById('se_eta_'+d);
+    if(endEl?.value){
+      scheds.push({day:d,time:endEl.value,eta:etaEl?.value||'',label:mem.role==='child'?'Szkoła':'Praca'});
+    }
+  });
+  returnSchedules[uid]=scheds;
+  localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));
+  if(!isDemo&&fCode) set(ref(db,`families/${fCode}/returnSchedules/${uid}`),scheds.length?scheds:null).catch(()=>{});
+  renderReturnSchedulePanel();
+  showToast('✅ Harmonogram zapisany!');
+  switchFamilyTab('schedules');
+};
+
+/* ── POGODA — zapisz miasto z setupu ── */
+window.setupTestWeather=async function(){
+  const inp=document.getElementById('setupWeatherCity');
+  const st=document.getElementById('setupWeatherStatus');
+  const city=inp?.value?.trim();
+  if(!city){showToast('⚠️ Wpisz miasto');return;}
+  if(st) st.textContent='🔍 Szukam…';
+  try{
+    const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+    const gd=await geo.json();
+    if(!gd.results?.length){if(st)st.textContent='❌ Nie znaleziono';return;}
+    const r=gd.results[0];
+    weatherCity=city;
+    localStorage.setItem('dp-weather-city',city);
+    if(st) st.textContent=`✅ Znaleziono: ${r.name}, ${r.country}`;
+  }catch(e){if(st)st.textContent='❌ Błąd sieci';}
+};
+
+/* ── ZAPROŚ DO APLIKACJI (bez rodziny) ── */
+window.shareAppLink=function(){
+  const appUrl=location.origin+location.pathname;
+  if(navigator.share){
+    navigator.share({title:'Domowy Patrol 🏠',text:'Spróbuj tej aplikacji do organizacji rodziny!',url:appUrl})
+      .then(()=>showToast('✅ Wysłano!'))
+      .catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(appUrl).then(()=>showToast('📋 Skopiowano link do aplikacji!'));
+  }
+  toggleReferralPanel();
+};
+
+
+/* ══════════════════════════════════════════════
+   v18 — NOWE FUNKCJE
+   ══════════════════════════════════════════════ */
+
+/* ── FAB DRAGGABLE ── */
+(function initFabDrag(){
+  const fab=document.getElementById('fabBtn');if(!fab)return;
+  let dragging=false,ox=0,oy=0,fabX=0,fabY=0;
+  let fabTimer=null;
+  // Initial peek
+  function peekFab(){fab.classList.add('fab-open');clearTimeout(fabTimer);fabTimer=setTimeout(()=>{if(!dragging)fab.classList.remove('fab-open');},3000);}
+  fab.addEventListener('mouseenter',peekFab);
+
+  fab.addEventListener('pointerdown',e=>{
+    ox=e.clientX;oy=e.clientY;
+    const r=fab.getBoundingClientRect();fabX=r.left;fabY=r.top;
+    fab.setPointerCapture(e.pointerId);
+    dragging=false;
+    fab.classList.add('fab-open');
+  });
+  fab.addEventListener('pointermove',e=>{
+    if(!fab.hasPointerCapture(e.pointerId))return;
+    const dx=e.clientX-ox,dy=e.clientY-oy;
+    if(Math.abs(dx)>5||Math.abs(dy)>5){
+      dragging=true;fab.classList.add('dragging');
+      const nx=Math.max(0,Math.min(window.innerWidth-50,fabX+dx));
+      const ny=Math.max(80,Math.min(window.innerHeight-80,fabY+dy));
+      fab.style.left=nx+'px';fab.style.top=ny+'px';
+      fab.style.right='auto';fab.style.bottom='auto';
+    }
+  });
+  fab.addEventListener('pointerup',e=>{
+    fab.classList.remove('dragging');
+    if(!dragging){
+      if(fab.classList.contains('fab-open')) openAssignModal();
+    }
+    setTimeout(()=>{dragging=false;},100);
+    fabTimer=setTimeout(()=>fab.classList.remove('fab-open'),3000);
+  });
+  setTimeout(peekFab,2000);
+})();
+
+/* ── CZAT MINI NA STRONIE GŁÓWNEJ ── */
+let todayChatOpen=false;
+window.toggleTodayChat=function(){
+  todayChatOpen=!todayChatOpen;
+  const body=document.getElementById('todayChatBody');
+  const tog=document.getElementById('todayChatToggle');
+  if(body){body.style.display=todayChatOpen?'block':'none';}
+  if(tog){tog.textContent=todayChatOpen?'▲ schowaj':'▼ pokaż';}
+  if(todayChatOpen) renderTodayChatFeed();
+};
+function renderTodayChatFeed(){
+  const el=document.getElementById('todayChatFeed');if(!el)return;
+  const uid=getMyUid();
+  const msgs=(live.chat||[]).filter(m=>!m.room||m.room==='family').slice(-8);
+  el.innerHTML=msgs.map(m=>{
+    const mine=m.uid===uid;
+    return`<div class="tcm-msg ${mine?'mine':''}">
+      <div class="tcm-bbl">${(m.msg||'').replace(/</g,'&lt;')}</div>
+    </div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+window.sendTodayChat=async function(){
+  const inp=document.getElementById('todayChatInp');const msg=inp?.value?.trim();if(!msg)return;inp.value='';
+  const entry={uid:getMyUid(),who:myProfile.name,avatar:myProfile.avatar,photoURL:myProfile.photoURL||currentUser?.photoURL||'',msg,room:'family',ts:Date.now()};
+  if(isDemo){live.chat=[...(live.chat||[]),entry];renderTodayChatFeed();return;}
+  await push(ref(db,`families/${fCode}/chat`),entry);
+};
+// Auto-refresh chat feed
+setInterval(()=>{if(todayChatOpen)renderTodayChatFeed();},15000);
+
+/* ── POGODA — 3 MIASTA + HOURLY ── */
+window.selectWeatherCity=async function(idx){
+  activeWeatherCity=idx;
+  ['w3t0','w3t1','w3t2'].forEach((id,i)=>{
+    const el=document.getElementById(id);if(el) el.className='w3-tab'+(i===idx?' sel':'');
+  });
+  if(weatherCaches[idx]){
+    weatherCache=weatherCaches[idx];
+    renderWeatherFull();renderWeatherHourly();
+  } else if(weatherCities[idx]?.name){
+    const city=weatherCities[idx];
+    if(city.lat&&city.lng) await fetchWeatherCoords(city.lat,city.lng,city.name,idx);
+    else await fetchWeatherByCityIdx(city.name,idx);
+  }
+};
+
+async function fetchWeatherByCityIdx(name,idx){
+  if(!name)return;
+  try{
+    const geo=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1`);
+    const gd=await geo.json();
+    if(!gd.results?.length){showToast('❌ Nie znaleziono: '+name);return;}
+    const r=gd.results[0];
+    await fetchWeatherCoords(r.latitude,r.longitude,r.name,idx);
+  }catch(e){}
+}
+
+function renderWeatherHourly(){
+  const el=document.getElementById('weatherHourly');if(!el)return;
+  const w=weatherCache;if(!w?.hourly?.length){el.innerHTML='';return;}
+  const nowH=new Date().getHours();
+  const slots=w.hourly.map(h=>{
+    const isNow=Math.abs(h.h-nowH)<=1;
+    return`<div class="h-slot ${isNow?'now':''}">
+      <div class="h-time">${String(h.h).padStart(2,'0')}:00</div>
+      <div class="h-ico">${wmoIcon(h.code)}</div>
+      <div class="h-temp">${h.temp}°</div>
+      ${h.rain>20?`<div class="h-rain">💧${h.rain}%</div>`:''}
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">🕐 Prognoza godzinowa</div>
+    <div class="hourly-scroll">${slots}</div>`;
+}
+
+function renderWeatherCitiesManager(){
+  const el=document.getElementById('weatherCitiesManager');if(!el)return;
+  el.innerHTML=['Główne','Miasto 2','Miasto 3'].map((label,i)=>`
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:7px;">
+      <span style="font-size:10px;font-weight:800;color:var(--soft);width:60px;">${label}</span>
+      <input class="f-inp" style="flex:1;padding:6px 9px;font-size:11px;" id="wCity_${i}"
+        placeholder="np. Warszawa" value="${weatherCities[i]?.name||''}">
+      <button onclick="saveWeatherCity(${i})" style="padding:6px 10px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🔍</button>
+    </div>`).join('');
+}
+window.saveWeatherCity=async function(idx){
+  const name=document.getElementById('wCity_'+idx)?.value?.trim();
+  if(!name)return;
+  weatherCities[idx]={name,lat:0,lng:0};
+  localStorage.setItem('dp-weather-cities',JSON.stringify(weatherCities));
+  const btn=document.getElementById('w3t'+idx);if(btn)btn.textContent=(idx===0?'🏠 ':'')+name.slice(0,8);
+  await fetchWeatherByCityIdx(name,idx);
+  showToast('✅ Miasto '+idx+' ustawione: '+name);
+};
+
+/* ── HARMONOGRAM — godzina startu + alarm ── */
+// Uzupełnij openSchedEdit o pole startTime
+const _origOpenSchedEdit=window.openSchedEdit;
+window.openSchedEdit=function(uid){
+  _origOpenSchedEdit&&_origOpenSchedEdit(uid);
+  // Dodaj kolumnę "start" do edytora — patch po renderze
+  setTimeout(()=>{
+    const hdr=document.querySelector('#familyTabContent .card-ttl');
+    if(!hdr) return;
+    const grid=document.querySelector('#familyTabContent [style*="grid-template-columns:28px 1fr 1fr"]');
+    if(grid){
+      grid.style.gridTemplateColumns='28px 1fr 1fr 1fr 28px';
+      grid.innerHTML=grid.innerHTML.replace('<span>Koniec zajęć</span>','<span>Start</span><span>Koniec</span>');
+    }
+    [1,2,3,4,5,6,0].forEach(d=>{
+      const row=document.querySelector(`#se_end_${d}`)?.closest('div[style*="grid-template-columns"]');
+      if(row&&!document.getElementById('se_start_'+d)){
+        const startInp=document.createElement('input');
+        startInp.className='sched-inp';startInp.type='time';startInp.id='se_start_'+d;
+        const scheds=returnSchedules[uid]||[];
+        const s=scheds.find(x=>x.day===d)||{};
+        startInp.value=s.startTime||'';
+        row.insertBefore(startInp,document.getElementById('se_end_'+d));
+        row.style.gridTemplateColumns='28px 1fr 1fr 1fr 28px';
+      }
+    });
+  },80);
+};
+
+// saveSchedEdit — include startTime
+const _origSaveSchedEdit=window.saveSchedEdit;
+window.saveSchedEdit=async function(){
+  const uid=window.schedEditUid||'';if(!uid)return;
+  const mem=live.members[uid]||{};
+  const scheds=[];
+  [1,2,3,4,5,6,0].forEach(d=>{
+    const endEl=document.getElementById('se_end_'+d);
+    const etaEl=document.getElementById('se_eta_'+d);
+    const startEl=document.getElementById('se_start_'+d);
+    if(endEl?.value){
+      scheds.push({day:d,startTime:startEl?.value||'',time:endEl.value,eta:etaEl?.value||'',label:mem.role==='child'?'Szkoła':'Praca'});
+    }
+  });
+  returnSchedules[uid]=scheds;
+  localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));
+  if(!isDemo&&fCode) set(ref(db,`families/${fCode}/returnSchedules/${uid}`),scheds.length?scheds:null).catch(()=>{});
+  // Zaplanuj powiadomienia
+  scheds.forEach(s=>scheduleSchoolAlarm(uid,s));
+  renderReturnSchedulePanel();
+  showToast('✅ Harmonogram zapisany!');
+  switchFamilyTab('schedules');
+};
+
+function scheduleSchoolAlarm(uid,sched){
+  if(!sched.startTime)return;
+  const mem=live.members[uid]||{};
+  const[sh,sm]=sched.startTime.split(':').map(Number);
+  const now=new Date();
+  const start=new Date();start.setHours(sh,sm,0,0);
+  const diffMs=start.getTime()-now.getTime()-3600000; // 1h przed
+  if(diffMs<=0||diffMs>86400000)return;
+  setTimeout(()=>{
+    sendPersistentNotif(`⏰ Godzina do ${sched.label||'szkoły'}!`,
+      `${mem.name} musi wyjść za ~1 godz. (${sched.startTime})`,
+      {tag:'sched-alarm-'+uid,persist:true,renotify:true,
+       actions:['✅ OK'],actionData:{a0:'open_app'}});
+    sendBrowserNotif(`⏰ Godzina do ${sched.label}!`,`${mem.name} wychodzi o ${sched.startTime}`);
+  },diffMs);
+  // Spróbuj otworzyć alarm systemowy (Android)
+  window.openSystemAlarm=function(timeStr){
+    try{window.open(`intent://alarm?time=${timeStr}&message=${encodeURIComponent(mem.name+' - '+sched.label)}&vibrate=true#Intent;scheme=alarm;package=com.android.alarmclock;end`,'_blank');}catch(e){}
+    // iOS — można tylko wysłać powiadomienie lokalne
+  };
+}
+
+/* ── IKONKI PICKER ── */
+const EMOJI_LIST=['📌','✅','🧹','🚿','🗑️','🍽️','🧺','🌿','🐕','🐱','📖','🛒','🚗','☕','🎮','💊','🔧','📦','🪴','💦','🧼','🛏️','📮','❄️','🎾','🪣','⛽','🔦','🎯','🏆','🎁','🎂','📅','🏠','👨‍👩‍👧','🌟','⭐','💪','🏃','🎨','📝','🔔','🔑','💡','🧊','🌙','☀️','🌅'];
+let iconPickerOpen=false;
+window.toggleIconPicker=function(){
+  iconPickerOpen=!iconPickerOpen;
+  const wrap=document.getElementById('iconPickerWrap');if(!wrap)return;
+  if(iconPickerOpen){
+    wrap.style.display='block';
+    wrap.innerHTML=`<div class="ico-picker">${EMOJI_LIST.map(e=>`<div class="ico-opt" onclick="selectIcon('${e}')">${e}</div>`).join('')}</div>`;
+  } else {
+    wrap.style.display='none';
+  }
+};
+window.selectIcon=function(ico){
+  const inp=document.getElementById('mIco');if(inp)inp.value=ico;
+  iconPickerOpen=false;
+  const wrap=document.getElementById('iconPickerWrap');if(wrap)wrap.style.display='none';
+};
+
+/* ── EDYCJA WYDARZEŃ ── */
+window.openEventEdit=function(id){
+  const ev=(live.events||[]).find(e=>e.id===id);if(!ev)return;
+  document.getElementById('evEditId').value=id;
+  document.getElementById('evEditTitle').value=ev.title||'';
+  document.getElementById('evEditType').value=ev.type||'inne';
+  document.getElementById('evEditDate').value=ev.date||'';
+  document.getElementById('evEditLoc').value=ev.loc||'';
+  document.getElementById('eventEditOverlay').classList.add('show');
+};
+window.submitEventEdit=async function(){
+  const id=document.getElementById('evEditId').value;
+  const title=document.getElementById('evEditTitle').value.trim();if(!title){showToast('⚠️ Wpisz tytuł');return;}
+  const date=document.getElementById('evEditDate').value;if(!date){showToast('⚠️ Wybierz datę');return;}
+  const type=document.getElementById('evEditType').value;
+  const loc=document.getElementById('evEditLoc').value.trim();
+  const ico=EV_TYPES.find(t=>t.id===type)?.ico||'📅';
+  if(isDemo){
+    const ev=(live.events||[]).find(e=>e.id===id);
+    if(ev){Object.assign(ev,{title,date,type,loc,ico});}
+    live.events.sort((a,b)=>a.date>b.date?1:-1);
+    renderEventsTab();renderEventsTopPanel();
+  } else {
+    const snap=await get(ref(db,`families/${fCode}/events`));
+    const kv=Object.entries(snap.val()||{}).find(([,v])=>v.id===id);
+    if(kv) await update(ref(db,`families/${fCode}/events/${kv[0]}`),{title,date,type,loc,ico});
+  }
+  showToast('✅ Wydarzenie zaktualizowane!');
+  closeOverlay('eventEditOverlay');
+};
+window.delEventFromEdit=async function(){
+  const id=document.getElementById('evEditId').value;
+  if(!confirm('Usunąć wydarzenie?'))return;
+  closeOverlay('eventEditOverlay');
+  await delEvent(id);
+};
+
+/* ── KATEGORIA — nowy edytor per-row ── */
+window.addCatChoreRow=function(chore){
+  const container=document.getElementById('catChoreRows');if(!container)return;
+  const id='ccr_'+Date.now();
+  const vis=chore?choreVisibility[chore.id]!==false:true;
+  const row=document.createElement('div');
+  row.className='cat-chore-row';row.id=id;
+  row.innerHTML=`
+    <input class="cat-chore-ico-inp" value="${chore?.ico||'✅'}" maxlength="4" placeholder="🏠">
+    <input class="cat-chore-name-inp" value="${chore?.name||''}" placeholder="Nazwa zadania">
+    <input class="cat-chore-pts-inp" type="number" value="${chore?.pts||8}" min="1" max="99">
+    <div class="cat-chore-vis ${vis?'on':''}" onclick="this.classList.toggle('on')" title="Pokaż/ukryj">✓</div>
+    <button class="cat-chore-del" onclick="this.closest('.cat-chore-row').remove()">✕</button>`;
+  if(chore) row.dataset.choreId=chore.id;
+  container.appendChild(row);
+};
+
+// Patch openEditCat to use new editor
+const _origOpenEditCat=window.openEditCat;
+window.openEditCat=function(id){
+  editCatId=id;
+  const cat=cats.find(c=>c.id===id);if(!cat)return;
+  document.getElementById('catModalTtl').textContent='✏️ '+cat.label;
+  const parts=cat.label.split(' ');
+  document.getElementById('catIco').value=parts[0]||'';
+  document.getElementById('catName').value=parts.slice(1).join(' ');
+  const container=document.getElementById('catChoreRows');
+  if(container){
+    container.innerHTML='';
+    cat.chores.forEach(ch=>addCatChoreRow(ch));
+  }
+  document.getElementById('catOverlay').classList.add('show');
+};
+window.openAddChore=function(catId){
+  window.openEditCat(catId);
+};
+
+// Patch openCategoryModal for new cat
+const _origOpenCategoryModal=window.openCategoryModal;
+window.openCategoryModal=function(){
+  editCatId=null;
+  document.getElementById('catModalTtl').textContent='📂 Nowa kategoria';
+  document.getElementById('catIco').value='';
+  document.getElementById('catName').value='';
+  const container=document.getElementById('catChoreRows');
+  if(container) container.innerHTML='';
+  document.getElementById('catOverlay').classList.add('show');
+};
+
+// Patch saveCategory to read new row format
+const _origSaveCategory=window.saveCategory;
+window.saveCategory=function(){
+  const ico=document.getElementById('catIco').value.trim()||'📂';
+  const name=document.getElementById('catName').value.trim();
+  if(!name){showToast('⚠️ Wpisz nazwę');return;}
+  const label=`${ico} ${name}`;
+  const rows=document.querySelectorAll('#catChoreRows .cat-chore-row');
+  const chores=[];
+  rows.forEach((row,i)=>{
+    const cico=row.querySelector('.cat-chore-ico-inp')?.value?.trim()||'✅';
+    const cname=row.querySelector('.cat-chore-name-inp')?.value?.trim();
+    const pts=parseInt(row.querySelector('.cat-chore-pts-inp')?.value)||8;
+    const vis=row.querySelector('.cat-chore-vis')?.classList.contains('on')!==false;
+    const existingId=row.dataset.choreId;
+    if(cname){
+      const ch={id:existingId||`c_${editCatId||'new'}_${i}_${Date.now()}`,ico:cico,name:cname,desc:'',pts};
+      chores.push(ch);
+      if(!vis) choreVisibility[ch.id]=false;
+      else delete choreVisibility[ch.id];
+    }
+  });
+  localStorage.setItem('dp-chore-vis',JSON.stringify(choreVisibility));
+  if(editCatId){
+    const idx=cats.findIndex(c=>c.id===editCatId);
+    if(idx>=0){cats[idx]={...cats[idx],label,chores};showToast('✅ Zaktualizowano');}
+  } else {
+    cats.push({id:`cat_${Date.now()}`,label,editable:true,chores});showToast('✅ Dodano');
+  }
+  saveCats();renderChores();renderCategoryMgmt();closeOverlay('catOverlay');
+};
+
+/* ── NAGRODY KONFIGUROWALNE ── */
+let customRewards=JSON.parse(localStorage.getItem('dp-rewards-custom')||'null');
+if(customRewards) {
+  // Merge custom with defaults
+  window._getRewards=()=>customRewards;
+} else {
+  window._getRewards=()=>REWARDS;
+}
+
+/* ── STREAK DZIECI ── */
+function getChildStreak(uid){
+  const hist=live.history||[];
+  const days=new Set();
+  hist.filter(h=>h.uid===uid&&h.pts>0).forEach(h=>{
+    const d=new Date(h.ts);
+    days.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+  });
+  let streak=0;
+  const now=new Date();
+  for(let i=0;i<365;i++){
+    const d=new Date(now);d.setDate(now.getDate()-i);
+    const key=`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    if(days.has(key)) streak++;
+    else if(i>0) break;
+  }
+  return streak;
+}
+
+/* ── BUDŻET RODZINNY (prosta wersja) ── */
+// Dodaj zakładkę w Wyniki — prosta widżet budżetu
+// Zaimplementowane jako osobna sekcja w profilu
+
+/* ── EKSPORT DANYCH ── */
+window.exportFamilyData=function(){
+  const data={
+    exportDate:new Date().toISOString(),
+    family:fCode,
+    members:live.members,
+    history:(live.history||[]).slice(0,200),
+    events:live.events||[],
+    birthdays:live.birthdays||{},
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`domowy-patrol-${fCode}-${fmt(new Date())}.json`;a.click();
+  URL.revokeObjectURL(url);
+  showToast('📥 Eksport gotowy!');
+};
+
+/* ── goTab — init weather manager + chat mini ── */
+
+function renderSchedulesInProfile(el){
+  const members=Object.entries(live.members);
+  if(!members.length){el.innerHTML='<div style="font-size:11px;color:var(--soft);">Brak członków rodziny</div>';return;}
+  el.innerHTML=members.map(([uid,mem])=>{
+    const scheds=returnSchedules[uid]||[];
+    const byDay={};scheds.forEach(s=>byDay[s.day]=s);
+    const role=mem.role;
+    const grid=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+    return`<div style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+        <span style="font-size:12px;font-weight:800;">${mem.avatar||'👤'} ${mem.name} ${role==='parent'?'👑':''}</span>
+        <button class="card-act" onclick="openSchedEditProfile('${uid}')">✏️ Edytuj</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
+        ${[1,2,3,4,5,6,0].map(d=>{const s=byDay[d];return`<div style="text-align:center;padding:3px 1px;border-radius:5px;background:${s?'var(--gp)':'var(--inp)'};border:1.5px solid ${s?'var(--g2)':'var(--border)'};">
+          <div style="font-size:8px;font-weight:800;color:${s?'var(--g2)':'var(--soft)'};">${grid[d]}</div>
+          ${s?`<div style="font-size:6px;color:var(--text);">${s.startTime||''}</div><div style="font-size:6px;font-weight:700;color:var(--text);">${s.time||''}</div>`:`<div style="font-size:9px;color:var(--border);">—</div>`}
+        </div>`;}).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.openSchedEditProfile=function(uid){
+  // Tymczasowo przełącz na profil edit mode
+  schedEditUid=uid;
+  const mem=live.members[uid]||{};
+  const scheds=returnSchedules[uid]||[];
+  const byDay={};scheds.forEach(s=>byDay[s.day]=s);
+  const daysLabel=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+
+  let rows='';
+  [1,2,3,4,5,6,0].forEach(d=>{
+    const s=byDay[d]||{};
+    rows+=`<div style="display:grid;grid-template-columns:24px 1fr 1fr 1fr 24px;gap:3px;align-items:center;margin-bottom:4px;">
+      <span style="font-size:9px;font-weight:800;color:var(--soft);">${daysLabel[d]}</span>
+      <input class="sched-inp" type="time" id="pse_start_${d}" value="${s.startTime||''}" placeholder="Start">
+      <input class="sched-inp" type="time" id="pse_end_${d}" value="${s.time||''}" placeholder="Koniec">
+      <input class="sched-inp" type="time" id="pse_eta_${d}" value="${s.eta||''}" placeholder="Powrót">
+      <button onclick="clearPSchedDay(${d})" style="border:none;background:none;cursor:pointer;font-size:11px;color:var(--soft);">✕</button>
+    </div>`;
+  });
+
+  const overlay=document.createElement('div');
+  overlay.className='overlay show';overlay.id='schedProfileOverlay';
+  overlay.innerHTML=`<div class="modal" style="max-height:85vh;overflow-y:auto;">
+    <div class="modal-ttl">${mem.avatar||'👤'} ${mem.name} — Harmonogram<span class="modal-close" onclick="document.getElementById('schedProfileOverlay').remove()">×</span></div>
+    <div style="display:grid;grid-template-columns:24px 1fr 1fr 1fr 24px;gap:3px;font-size:8px;font-weight:800;color:var(--soft);text-transform:uppercase;margin-bottom:5px;">
+      <span></span><span>Start</span><span>Koniec</span><span>Powrót</span><span></span>
+    </div>
+    ${rows}
+    <div style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px;background:var(--inp);border-radius:8px;">
+      <input type="checkbox" id="pSchedRepeat" checked style="width:16px;height:16px;">
+      <label for="pSchedRepeat" style="font-size:11px;font-weight:800;cursor:pointer;">Powtarzaj co tydzień automatycznie</label>
+    </div>
+    <button onclick="savePSchedEdit('${uid}')" style="width:100%;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;margin-top:5px;">💾 Zapisz</button>
+  </div>`;
+  document.body.appendChild(overlay);
+};
+window.clearPSchedDay=function(d){
+  ['pse_start_','pse_end_','pse_eta_'].forEach(p=>{const el=document.getElementById(p+d);if(el)el.value='';});
+};
+window.savePSchedEdit=async function(uid){
+  const mem=live.members[uid]||{};
+  const scheds=[];
+  [1,2,3,4,5,6,0].forEach(d=>{
+    const startEl=document.getElementById('pse_start_'+d);
+    const endEl=document.getElementById('pse_end_'+d);
+    const etaEl=document.getElementById('pse_eta_'+d);
+    if(endEl?.value){
+      scheds.push({day:d,startTime:startEl?.value||'',time:endEl.value,eta:etaEl?.value||'',label:mem.role==='child'?'Szkoła':'Praca'});
+    }
+  });
+  returnSchedules[uid]=scheds;
+  localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));
+  if(!isDemo&&fCode) set(ref(db,`families/${fCode}/returnSchedules/${uid}`),scheds.length?scheds:null).catch(()=>{});
+  scheds.forEach(s=>scheduleSchoolAlarm(uid,s));
+  renderReturnSchedulePanel();
+  const ov=document.getElementById('schedProfileOverlay');if(ov)ov.remove();
+  showToast('✅ Harmonogram zapisany!');
+  // Odśwież panel
+  const psp=document.getElementById('profileSchedulesPanel');
+  if(psp)renderSchedulesInProfile(psp);
 };
 
 window.goTab=goTab;
