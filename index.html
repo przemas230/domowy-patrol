@@ -675,6 +675,49 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 .tcm-inp{flex:1;padding:7px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;outline:none;}
 .tcm-send{width:32px;height:32px;border-radius:50%;border:none;background:var(--g2);color:#fff;cursor:pointer;font-size:14px;}
 /* ── EVENT EDIT MODAL ── */
+
+/* ── CZAT MODERN (Messenger style) ── */
+.chat-wrap{display:flex;flex-direction:column;height:420px;background:var(--bg);border-radius:var(--rr);box-shadow:var(--sh);overflow:hidden;margin-bottom:10px;}
+.chat-rooms{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:8px 10px 6px;background:var(--card);border-bottom:1px solid var(--border);}
+.chat-rooms::-webkit-scrollbar{display:none;}
+.chat-rm-btn{flex-shrink:0;padding:5px 12px;border-radius:20px;border:none;background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);}
+.chat-rm-btn.sel{background:var(--g2);color:#fff;}
+.chat-feed{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:3px;background:var(--bg);}
+.cm{display:flex;align-items:flex-end;gap:6px;max-width:100%;margin-bottom:2px;}
+.cm.mine{flex-direction:row-reverse;}
+.cm-av-img{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.cm-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--inp);}
+.cm-col{max-width:72%;display:flex;flex-direction:column;}
+.cm.mine .cm-col{align-items:flex-end;}
+.cm-who{font-size:9px;font-weight:800;color:var(--soft);padding:0 8px;margin-bottom:2px;}
+.cm-bbl{padding:9px 13px;border-radius:20px;font-size:13px;font-weight:600;line-height:1.45;word-break:break-word;position:relative;}
+.cm:not(.mine) .cm-bbl{background:var(--card);color:var(--text);border-bottom-left-radius:5px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.cm.mine .cm-bbl{background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;border-bottom-right-radius:5px;}
+.cm-ts{font-size:9px;color:var(--soft);padding:2px 8px;margin-top:1px;}
+.cm.mine .cm-ts{text-align:right;}
+.chat-dsep{text-align:center;font-size:9px;font-weight:800;color:var(--soft);margin:8px 0 4px;background:var(--inp);border-radius:99px;padding:3px 10px;align-self:center;}
+.chat-bar{display:flex;gap:7px;padding:9px 12px;border-top:1px solid var(--border);background:var(--card);align-items:flex-end;}
+.chat-bar-inp{flex:1;padding:10px 14px;border-radius:22px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;color:var(--text);outline:none;max-height:80px;resize:none;overflow-y:auto;}
+.chat-bar-inp:focus{border-color:var(--g2);}
+.chat-bar-btn{width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(45,106,16,.4);}
+.chat-typing{font-size:10px;color:var(--soft);padding:3px 12px;font-style:italic;}
+
+/* ── EMOJI PICKER DROPDOWN ── */
+.emoji-picker-overlay{position:fixed;inset:0;z-index:400;display:none;}
+.emoji-picker-overlay.show{display:block;}
+.emoji-picker-box{position:fixed;background:var(--card);border-radius:14px;box-shadow:0 4px 24px rgba(0,0,0,.2);border:2px solid var(--border);z-index:401;width:280px;max-height:320px;display:flex;flex-direction:column;overflow:hidden;}
+.emoji-cat-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);background:var(--inp);}
+.emoji-cat-tabs::-webkit-scrollbar{display:none;}
+.emoji-cat-tab{flex-shrink:0;padding:7px 10px;border:none;background:none;font-size:14px;cursor:pointer;opacity:.5;transition:opacity .15s;}
+.emoji-cat-tab.sel{opacity:1;border-bottom:2px solid var(--g2);}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;padding:8px;overflow-y:auto;flex:1;}
+.emoji-item{width:30px;height:30px;border-radius:7px;border:none;background:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s;}
+.emoji-item:hover{background:var(--gp);}
+.emoji-search{padding:7px 10px;border:none;border-bottom:1px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;outline:none;width:100%;}
+
+/* ── RETURN SCHEDULE — start time ── */
+.rs-time-col{display:flex;flex-direction:column;font-size:9px;color:rgba(255,255,255,.7);}
+.rs-time-main{font-size:12px;font-weight:800;color:#fff;}
 </style>
 </head>
 <body>
@@ -1068,6 +1111,8 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <option value="3">Środa</option><option value="4">Czwartek</option>
       <option value="5">Piątek</option><option value="6">Sobota</option><option value="0">Niedziela</option>
     </select>
+    <div class="f-lbl">Początek zajęć / pracy</div>
+    <input class="f-inp" id="rsStartTime" type="time" value="08:00">
     <div class="f-lbl">Koniec zajęć / pracy</div>
     <input class="f-inp" id="rsEndTime" type="time" value="15:30">
     <div class="f-lbl">Szacowany powrót do domu</div>
@@ -1086,7 +1131,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="f-lbl">Zadanie</div>
     <input class="f-inp" id="ctName" placeholder="np. Umyj zęby">
     <div class="f-lbl">Ikona</div>
-    <input class="f-inp" id="ctIco" placeholder="🦷" maxlength="4" style="font-size:18px;width:68px;">
+    <input class="f-inp" id="ctIco" placeholder="🦷" maxlength="4" style="font-size:18px;width:68px;" readonly onclick="openEmojiPickerFor('ctIco',event)">
     <div class="f-lbl">Dla kogo</div>
     <select class="f-inp" id="ctWho"></select>
     <div class="f-lbl">Czas na wykonanie (minuty)</div>
@@ -1112,7 +1157,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div style="flex:1"><div class="f-lbl">Ikona</div>
         <div style="display:flex;gap:5px;align-items:center;">
           <input class="f-inp" id="mIco" placeholder="📌" maxlength="4" style="font-size:17px;width:56px;">
-          <button onclick="toggleIconPicker()" style="padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">☺ Wybierz</button>
+          <button onclick="openEmojiPickerFor('mIco',event)" style="padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">☺ Wybierz</button>
         </div>
         <div id="iconPickerWrap" style="display:none;margin-top:5px;"></div>
       </div>
@@ -1147,7 +1192,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   <div class="modal" style="max-height:92vh;overflow-y:auto;">
     <div class="modal-ttl"><span id="catModalTtl">📂 Kategoria</span><span class="modal-close" onclick="closeOverlay('catOverlay')">×</span></div>
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:9px;">
-      <input class="f-inp" id="catIco" placeholder="🏠" maxlength="4" style="font-size:20px;width:56px;text-align:center;">
+      <input class="f-inp" id="catIco" placeholder="🏠" maxlength="4" style="font-size:20px;width:56px;text-align:center;" readonly onclick="openEmojiPickerFor('catIco',event)">
       <input class="f-inp" id="catName" placeholder="Nazwa kategorii" style="flex:1;">
     </div>
     <div class="f-lbl" style="display:flex;align-items:center;justify-content:space-between;">
@@ -1183,7 +1228,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   <div class="modal">
     <div class="modal-ttl">🎁 Dodaj marzenie <span class="modal-close" onclick="closeOverlay('wishOverlay')">×</span></div>
     <div class="f-lbl">Ikona</div>
-    <input class="f-inp" id="wishIco" placeholder="🎮" maxlength="4" style="font-size:20px;width:68px;">
+    <input class="f-inp" id="wishIco" placeholder="🎮" maxlength="4" style="font-size:20px;width:68px;" readonly onclick="openEmojiPickerFor('wishIco',event)">
     <div class="f-lbl">Nazwa prezentu / życzenia</div>
     <input class="f-inp" id="wishName" placeholder="np. Nowa gra PS5">
     <div class="f-lbl">Szacowana cena (opcja)</div>
@@ -1233,6 +1278,14 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 </div>
 
 <div id="stickyEditorOverlay"></div>
+<!-- EMOJI PICKER -->
+<div class="emoji-picker-overlay" id="emojiPickerOverlay" onclick="closeEmojiPicker()"></div>
+<div class="emoji-picker-box" id="emojiPickerBox" style="display:none;">
+  <input class="emoji-search" id="emojiSearch" placeholder="🔍 Szukaj emoji…" oninput="filterEmoji(this.value)">
+  <div class="emoji-cat-tabs" id="emojiCatTabs"></div>
+  <div class="emoji-grid" id="emojiGrid"></div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -1253,6 +1306,7 @@ document.getElementById('myDomain').textContent=location.origin;
 const GCAL_CLIENT_ID="71160418880-plh2nv7rg31t1ski2m03euqp7f0eofjv.apps.googleusercontent.com";
 // ── PERSISTENT STATE — zapamiętywane między sesjami ──
 let gcalToken=localStorage.getItem('dp-gcal-token')||sessionStorage.getItem('dp-gcal')||null;
+let gcalEvents=[];
 let collapsedCats=JSON.parse(localStorage.getItem('dp-collapsed')||'{}');
 let sortMode=localStorage.getItem('dp-sort')||'default';
 let catVisibility=JSON.parse(localStorage.getItem('dp-cat-vis')||'{}');
@@ -1755,7 +1809,10 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/returnSchedules`),s=>{if(s.val()){const fb=s.val();Object.assign(returnSchedules,fb);localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));renderReturnSchedulePanel();}});
   renderThemeGrid();renderGlobalIntervalRow();renderCategoryMgmt();
   // Pokaż status GCal
-  if(gcalToken){ _gcalUpdateUI(true); }
+  if(gcalToken){
+    _gcalUpdateUI(true);
+    setTimeout(fetchGCalEvents, 1500);
+  }
   renderAll();fetchWeather();
   selectedDay=null;weekOffset=0;renderWeek();
   renderFamilyTabs();
@@ -2131,6 +2188,8 @@ function updateReturnBanner(){
   if(myProfile?.role!=='child'){document.getElementById('returnBanner').style.display='none';clearReturnTimers();return;}
   const uid=getMyUid();const curfew=live.curfews[uid];const banner=document.getElementById('returnBanner');
   if(!curfew||!curfew.active){banner.style.display='none';clearReturnTimers();return;}
+  // Nie pokazuj jeśli dziecko już zgłosiło powrót dziś
+  if(localStorage.getItem('dp-curfew-dismissed-'+todayKey)==='1'){banner.style.display='none';clearReturnTimers();return;}
   const now=new Date();const[hh,mm]=curfew.time.split(':').map(Number);
   const rt=new Date(now);rt.setHours(hh,mm,0,0);
   const diffMs=rt.getTime()-now.getTime();
@@ -2139,7 +2198,19 @@ function updateReturnBanner(){
   banner.style.display='block';
 
   // Auto-ukryj baner 30 minut po czasie powrotu
-  if(diffMin < -30){banner.style.display='none';clearReturnTimers();return;}
+  if(diffMin < -30){
+    banner.style.display='none';clearReturnTimers();
+    // Wyślij "wracasz już?" do dziecka jeśli jeszcze nie wysłano
+    const sentKey='dp-sent-miss-'+uid+'-'+todayKey;
+    if(!localStorage.getItem(sentKey)&&!isDemo){
+      localStorage.setItem(sentKey,'1');
+      setTimeout(async()=>{
+        const botMsg={uid:'__system__',who:'Domowy Patrol',avatar:'🏠',photoURL:'',msg:`Hej ${myProfile?.name||''}! Już powinieneś być w domu. Wracasz już? Tęsknimy 😊`,room:'room_'+uid,ts:Date.now(),system:false};
+        await push(ref(db,`families/${fCode}/chat`),botMsg).catch(()=>{});
+      },2000);
+    }
+    return;
+  }
 
   if(diffMin>60){
     banner.innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏠</div><div class="rb-info"><div class="rb-title">Wracaj o ${curfew.time} · przez ${curfew.setBy}</div><div class="rb-sub">Za ${diffMin} min · co ${interval} min</div></div><div class="rb-btns"><button class="rb-btn" onclick="dismissCurfewBanner()">✕ Ukryj</button></div></div>`;
@@ -2164,7 +2235,38 @@ window.dismissCurfewBanner=function(){
 };
 function scheduleReturnReminders(time,intMin){clearReturnTimers();const[hh,mm]=time.split(':').map(Number);const rt=new Date();rt.setHours(hh,mm,0,0);const diff=rt.getTime()-Date.now();if(diff<=0)return;const steps=Math.ceil(diff/(intMin*MS.min));for(let i=1;i<=steps;i++){const fa=Date.now()+i*intMin*MS.min;if(fa<rt.getTime()+60000)returnTimers.push(setTimeout(()=>{const left=Math.round((rt.getTime()-Date.now())/MS.min);sendBrowserNotif('🏠 Czas wracać!',`Zostało ${left} min (${time})`);sendPersistentNotif('🏠 Czas wracać!', `Zostało ${left} min. Powrót: ${time}`, {tag:'dp-curfew', persist:true, renotify:true, actions:['🏃 Wracam!','Jeszcze chwilę'], actionData:{a0:'heading_home',a1:'not_yet'}});showToast(`🏠 ~${left} min!`);updateReturnBanner();},fa-Date.now()));}}
 function clearReturnTimers(){returnTimers.forEach(clearTimeout);returnTimers=[];}
-async function iAmHeading(){clearReturnTimers();const uid=getMyUid();document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;if(!isDemo){const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});}sendBrowserNotif('🏃 W drodze!','Bezpiecznej drogi!');setTimeout(()=>{if(!isDemo)remove(ref(db,`families/${fCode}/curfews/${uid}`));else delete live.curfews[uid];document.getElementById('returnBanner').style.display='none';},30*MS.min);}
+async function iAmHeading(){
+  clearReturnTimers();
+  const uid=getMyUid();
+  document.getElementById('returnBanner').innerHTML=`<div class="rb rb-green"><div class="rb-ico">🏃</div><div class="rb-info"><div class="rb-title">Zgłosiłeś/aś powrót 🎉</div><div class="rb-sub">Rodzice dostali powiadomienie</div></div></div>`;
+  if(!isDemo){
+    // Powiadomienia dla rodziców
+    const ps=Object.entries(live.members).filter(([,m])=>m.role==='parent');
+    for(const[puid] of ps) await push(ref(db,`f/${fCode}/notifications`),{targetUid:puid,type:'heading_home',msg:`🏃 ${myProfile.name} jest w drodze!`,ts:Date.now(),read:false});
+    // Wyślij wiadomość na czat do pokoju dziecka
+    const roomId='room_'+uid;
+    const chatMsg={uid:'__system__',who:'System',avatar:'🏠',photoURL:'',msg:`🏃 ${myProfile.name} wraca do domu!`,room:roomId,ts:Date.now(),system:true};
+    await push(ref(db,`families/${fCode}/chat`),chatMsg);
+    // Też wyślij rodzicom automatyczną wiadomość od bota z pytaniem
+    setTimeout(async()=>{
+      const botMsg={uid:'__system__',who:'Domowy Patrol',avatar:'🏠',photoURL:'',msg:`Hej ${myProfile.name}! Wracasz już? Tęsknimy 😊`,room:roomId,ts:Date.now(),system:false};
+      await push(ref(db,`families/${fCode}/chat`),botMsg);
+    }, 5000);
+  } else {
+    // Demo
+    const botMsg={uid:'__system__',who:'Domowy Patrol',avatar:'🏠',photoURL:'',msg:`Hej ${myProfile.name}! Wracasz już? Tęsknimy 😊`,room:'room_'+uid,ts:Date.now()+5000,system:false};
+    setTimeout(()=>{live.chat=[...(live.chat||[]),botMsg];if(activeChatRoom==='room_'+uid)renderChatV2();},5000);
+  }
+  sendBrowserNotif('🏃 W drodze!','Bezpiecznej drogi!');
+  // Schowaj baner — pokaż ponownie dopiero następnego dnia
+  const dismissKey='dp-curfew-dismissed-'+todayKey;
+  localStorage.setItem(dismissKey,'1');
+  setTimeout(()=>{
+    if(!isDemo) remove(ref(db,`families/${fCode}/curfews/${uid}`));
+    else delete live.curfews[uid];
+    document.getElementById('returnBanner').style.display='none';
+  }, 30*MS.min);
+}
 
 window.iAmHeading=iAmHeading;
 window.notYet=function(){const uid=getMyUid();const c=live.curfews[uid];if(!c)return;showToast(`⏸️ Pamiętaj o ${c.time}!`);sendBrowserNotif('🏠 Pamiętaj!',`Powrót o ${c.time}`);};
@@ -2182,7 +2284,7 @@ function getWeekStart(offset){
 
 function shiftWeek(dir){
   const newOffset=weekOffset+dir;
-  if(newOffset>0) return; // nie w przyszłość
+  if(newOffset>1) return; // max 1 tydzień do przodu
   if(newOffset<-8){showToast('⚠️ Max 8 tygodni wstecz');return;}
   weekOffset=newOffset;
   selectedDay=null;
@@ -2216,7 +2318,7 @@ function renderWeek(){
   }
   // Strzałka do przodu tylko gdy jesteśmy w przeszłości
   const nxtBtn=document.getElementById('weekNextBtn');
-  if(nxtBtn) nxtBtn.disabled=weekOffset>=0;
+  if(nxtBtn) nxtBtn.disabled=weekOffset>=1;
   // Zaznaczony dzień label
   const sl=document.getElementById('selectedDayLabel');
   if(sl){if(selectedDay&&selectedDay!==todayKey){const sd=new Date(selectedDay);sl.textContent=`✏️ ${sd.getDate()}.${d2(sd.getMonth()+1)}`;}else sl.textContent=weekOffset<0?'(historia)':'';}
@@ -2225,7 +2327,7 @@ function renderWeek(){
 function selectDay(k){
   const now2=new Date(todayKey);const d=new Date(k);
   const diff=Math.round((now2-d)/MS.day);
-  if(diff<0){showToast('⚠️ Nie można edytować przyszłości');return;}
+  if(diff<-14){showToast('⚠️ Max 2 tygodnie w przyszłość');return;}
   selectedDay=k===todayKey?null:k;
   renderWeek();
   if(selectedDay){loadPastDay(k);}else{renderChores();}
@@ -2293,12 +2395,12 @@ function renderChores(){
       </div>
       <div class="chore-right">
         ${done
-          ?`<div class="done-badge" style="font-size:10px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${allKeys.map(k=>live.done[k]?.who||'').join(', ')}">${allKeys.map(k=>(live.done[k]?.who||'?').split(' ')[0]).join(', ')}</div>
-            <button class="undo-btn" onclick="undoMyChore(event,'${ch.id}',${ch.pts})" title="Cofnij swoje">↩️</button>
-            ${ch.repeatable?`<button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})" title="+1">+1</button>`:''}`
+          ?`<div class="done-badge" style="font-size:10px;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${allKeys.map(k=>live.done[k]?.who||'').join(', ')}">${allKeys.map(k=>(live.done[k]?.who||'?').split(' ')[0]).join(', ')}</div>
+            <button class="undo-btn" onclick="undoMyChore(event,'${ch.id}',${ch.pts})" title="Cofnij swoje wykonanie">↩️</button>
+            <button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})" title="Wykonaj ponownie">+1</button>`
           :`<div class="chore-pts">+${ch.pts}⭐</div>
-            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;" onclick="openEditChore(event,'${cat.id}',${idx})" title="Edytuj">✏️</button>
-            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;color:var(--b);border-color:rgba(59,130,246,.3);" onclick="duplicateChore(event,'${ch.id}','${cat.id}')" title="+1 dziś">⧉</button>`
+            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;" onclick="openEmojiPickerFor('mIco',event);openEditChore(event,'${cat.id}',${idx})" title="Edytuj">✏️</button>
+            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;color:var(--b);border-color:rgba(59,130,246,.3);" onclick="duplicateChore(event,'${ch.id}','${cat.id}')" title="+1 dziś (tymczasowo)">⧉</button>`
         }
       </div>
     </div>`;});
@@ -2309,7 +2411,27 @@ function renderChores(){
 function renderChoresCompact(){let html='';cats.forEach(cat=>{if(!cat.chores.length) return;html+=`<div class="compact-cat-lbl">${cat.label}</div><div class="compact-grid">`;cat.chores.forEach(ch=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[0]]:null;html+=`<div class="compact-tile ${done?'done':''}" onclick="doToggleChore('${ch.id}',${ch.pts})"><div class="ct-ico">${ch.ico}</div><div class="ct-nm">${ch.name}</div>${done?`<div class="ct-done">✓ ${dn?.who?.split(' ')[0]||''}${reps>1?' ×'+reps:''}</div>`:`<div class="ct-pts">+${ch.pts}⭐</div>`}</div>`;});html+=`</div>`;});document.getElementById('choreContainer').innerHTML=html;}
 async function doToggleChore(choreId,pts){const uid=getMyUid();if(live.done[choreId]){showToast('↩️ Użyj przycisku Cofnij aby odhaczyć');return;}if(isDemo){live.done[choreId]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;const c=findChore(choreId);live.history.unshift({ico:c?.ico||'✅',name:c?.name||choreId,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`🎉 +${pts} pkt!`);renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}const r=ref(db,`f/${fCode}/done/${todayKey}/${choreId}`);const s=await get(r);if(!s.exists()){const c=findChore(choreId);await set(r,{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+pts});await update(ref(db,`users/${uid}/profile`),{points:cur+pts});await push(ref(db,`f/${fCode}/history`),{ico:c?.ico||'✅',name:c?.name||choreId,who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`🎉 +${pts} pkt!`);}}
 window.doToggleChore=doToggleChore;
-async function undoChore(e,choreId,pts){e.stopPropagation();const uid=getMyUid();const toRm=Object.keys(live.done).filter(k=>k===choreId||k.startsWith(choreId+'_'));if(isDemo){toRm.forEach(k=>delete live.done[k]);if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts*toRm.length);showToast('↩️ Cofnięto');renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}for(const k of toRm) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts*toRm.length)});await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts*toRm.length)});showToast('↩️ Cofnięto');}
+async function undoChore(e,choreId,pts){
+  e.stopPropagation();
+  const uid=getMyUid();
+  // Zbierz WSZYSTKIE klucze tego zadania
+  const allKeys=Object.keys(live.done).filter(k=>k===choreId||k.startsWith(choreId+'_'));
+  if(!allKeys.length){showToast('⚠️ Nic do cofnięcia');return;}
+  // Oblicz ile punktów faktycznie przyznano (na podstawie kluczy)
+  const totalPts=allKeys.length*pts;
+  if(isDemo){
+    allKeys.forEach(k=>delete live.done[k]);
+    if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-totalPts);
+    showToast('↩️ Cofnięto (−'+totalPts+' pkt)');
+    renderChores();renderStats();renderScores();renderRewards();updateProgress();return;
+  }
+  for(const k of allKeys) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
+  const cur=(await get(ref(db,`families/${fCode}/members/${uid}`))).val()?.points||0;
+  const newPts=Math.max(0,cur-totalPts);
+  await update(ref(db,`families/${fCode}/members/${uid}`),{points:newPts});
+  await update(ref(db,`users/${uid}/profile`),{points:newPts});
+  showToast('↩️ Cofnięto (−'+totalPts+' pkt)');
+}
 window.undoChore=undoChore;
 async function undoMyChore(e,choreId,pts){
   e.stopPropagation();
@@ -2409,6 +2531,43 @@ function _gcalUpdateUI(connected){
   if(st2){st2.textContent=connected?'✅ Połączono z Google Calendar':'';st2.style.display=connected?'block':'none';}
   if(btnC) btnC.style.display=connected?'none':'';
   if(btnD) btnD.style.display=connected?'':'none';
+}
+
+async function fetchGCalEvents(){
+  if(!gcalToken) return;
+  try{
+    const now=new Date().toISOString();
+    const maxTime=new Date(Date.now()+30*86400000).toISOString();
+    const r=await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${now}&timeMax=${maxTime}&maxResults=20&singleEvents=true&orderBy=startTime`,
+      {headers:{Authorization:`Bearer ${gcalToken}`}});
+    if(!r.ok){if(r.status===401){gcalToken=null;localStorage.removeItem('dp-gcal-token');_gcalUpdateUI(false);}return;}
+    const d=await r.json();
+    gcalEvents=(d.items||[]).map(ev=>({
+      id:'gcal_'+ev.id,
+      title:ev.summary||'(bez tytułu)',
+      date:(ev.start?.date||ev.start?.dateTime||'').slice(0,10),
+      startTime:(ev.start?.dateTime||'').slice(11,16)||'',
+      loc:ev.location||'',
+      ico:'📅',source:'gcal',gcalLink:ev.htmlLink||''
+    })).filter(ev=>ev.date);
+    renderEventsTopPanel();
+    if(typeof activeFamilyTab!=='undefined'&&activeFamilyTab==='events') renderEventsTab();
+    scheduleGCalNotifications(gcalEvents);
+  }catch(e){console.warn('GCal fetch error',e);}
+}
+window.fetchGCalEvents=fetchGCalEvents;
+
+function scheduleGCalNotifications(events){
+  const now=Date.now();
+  events.forEach(ev=>{
+    if(!ev.startTime)return;
+    const[h,m]=(ev.startTime||'00:00').split(':').map(Number);
+    const evDate=new Date(ev.date+'T'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':00');
+    const diff=evDate.getTime()-now;
+    if(diff<=0||diff>86400000)return;
+    if(diff>3600000) setTimeout(()=>sendPersistentNotif(`📅 Za 1h: ${ev.title}`,ev.loc||'GCal',{tag:'gc-'+ev.id+'-1h'}),diff-3600000);
+    if(diff>900000) setTimeout(()=>sendPersistentNotif(`📅 Za 15 min: ${ev.title}`,ev.startTime,{tag:'gc-'+ev.id+'-15m',persist:true,renotify:true,actions:['✅ OK'],actionData:{a0:'open_app'}}),diff-900000);
+  });
 }
 
 /* ── GCAL FIXED — token zapisywany trwale ── */
@@ -2582,22 +2741,37 @@ function renderChatV2(){
   const uid=getMyUid();
   const rooms=getChatRooms();
   const allMsgs=live.chat||[];
-  const msgs=activeChatRoom==='family'?allMsgs.filter(m=>!m.room||m.room==='family'):allMsgs.filter(m=>m.room===activeChatRoom);
+  const msgs=activeChatRoom==='family'
+    ?allMsgs.filter(m=>!m.room||m.room==='family')
+    :allMsgs.filter(m=>m.room===activeChatRoom);
   const roomBar=rooms.map(r=>`<button class="chat-rm-btn ${activeChatRoom===r.id?'sel':''}" onclick="setChatRoom('${r.id}')">${r.icon} ${r.label}</button>`).join('');
-  let feed='';let lastD='';
+  let feed='';let lastD='';let lastUid='';
   msgs.forEach(m=>{
     const mine=m.uid===uid;
     const mem=live.members[m.uid]||{avatar:m.avatar||'👤',photoURL:''};
-    const ds=fmtDMY(m.ts);if(ds!==lastD){feed+=`<div class="chat-dsep">${ds}</div>`;lastD=ds;}
-    const av=mem.photoURL?`<img src="${mem.photoURL}" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=cm-av>${mem.avatar||'👤'}</div>'">`:`<div class="cm-av">${mem.avatar||'👤'}</div>`;
-    feed+=`<div class="cm ${mine?'mine':''}">
-      ${av}
+    const ds=fmtDMY(m.ts);
+    if(ds!==lastD){
+      feed+=`<div class="chat-dsep">${ds}</div>`;
+      lastD=ds;lastUid='';
+    }
+    const showAv=!mine&&(m.uid!==lastUid);
+    const av=mem.photoURL
+      ?`<img src="${mem.photoURL}" class="cm-av-img" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.className='cm-av';this.textContent='${mem.avatar||'👤'}';">`
+      :`<div class="cm-av">${mem.avatar||'👤'}</div>`;
+    const isSystem=m.system===true;
+    if(isSystem){
+      feed+=`<div style="text-align:center;padding:4px 0;"><span style="font-size:10px;color:var(--soft);background:var(--inp);border-radius:99px;padding:3px 10px;">${(m.msg||'').replace(/</g,'&lt;')}</span></div>`;
+      lastUid='';return;
+    }
+    feed+=`<div class="cm ${mine?'mine':''}" style="${!showAv&&!mine?'padding-left:34px;':''}">
+      ${!mine?`<div style="width:28px;flex-shrink:0;">${showAv?av:''}</div>`:''}
       <div class="cm-col">
-        ${!mine?`<div class="cm-who">${m.who}</div>`:''}
-        <div class="cm-bbl">${(m.msg||'').replace(/</g,'&lt;')}</div>
+        ${!mine&&showAv?`<div class="cm-who">${m.who}</div>`:''}
+        <div class="cm-bbl">${(m.msg||'').replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>
         <div class="cm-ts">${fmtHM(m.ts)}</div>
       </div>
     </div>`;
+    lastUid=m.uid;
   });
   if(!feed) feed=`<div class="empty"><div class="big">💬</div><p>Napisz coś!</p></div>`;
   document.getElementById('familyTabContent').innerHTML=`
@@ -2605,7 +2779,9 @@ function renderChatV2(){
       <div class="chat-rooms">${roomBar}</div>
       <div class="chat-feed" id="chatMsgs">${feed}</div>
       <div class="chat-bar">
-        <input class="chat-bar-inp" id="chatInput" placeholder="Napisz…" onkeydown="if(event.key==='Enter')sendChatV2()" autocomplete="off">
+        <textarea class="chat-bar-inp" id="chatInput" placeholder="Napisz wiadomość…" rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatV2();}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
         <button class="chat-bar-btn" onclick="sendChatV2()">➤</button>
       </div>
     </div>`;
@@ -2844,14 +3020,23 @@ window.deleteStickyFromEditor=async function(id){
 const EV_TYPES=[{id:'urodziny',ico:'🎂',label:'Urodziny'},{id:'komunia',ico:'⛪',label:'Komunia'},{id:'swieta',ico:'🎄',label:'Święta'},{id:'wakacje',ico:'🏖️',label:'Wakacje'},{id:'sylwester',ico:'🎆',label:'Sylwester'},{id:'wyjazd',ico:'🚗',label:'Wyjazd'},{id:'inne',ico:'📅',label:'Inne'}];
 function renderEventsTopPanel(){
   const el=document.getElementById('eventsTopPanel');if(!el)return;
-  const upco=(live.events||[]).filter(e=>daysLeft(e.date)>=0).slice(0,3);
-  if(!upco.length){el.innerHTML='';return;}
-  el.innerHTML=`<div class="card"><div class="card-ttl">📅 Nadchodzące wydarzenia</div>`+
-    upco.map(e=>{const dl=daysLeft(e.date);const badge=dl===0?'Dziś!':dl===1?'Jutro':`za ${dl} dni`;
-    return`<div style="display:flex;align-items:center;gap:8px;padding:7px;background:var(--inp);border-radius:9px;margin-bottom:5px;cursor:pointer;" onclick="goTab('family');setTimeout(()=>switchFamilyTab('events'),80)">
-      <div style="font-size:20px;">${e.ico||'📅'}</div>
-      <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.title}</div><div style="font-size:10px;color:${dl<=3?'var(--r)':dl<=7?'var(--o)':'var(--soft)'};">${badge}${e.loc?' · '+e.loc:''}</div></div>
-    </div>`;}).join('')+`</div>`;
+  const appUpco=(live.events||[]).filter(e=>daysLeft(e.date)>=0).slice(0,3);
+  const calUpco=(gcalEvents||[]).filter(e=>daysLeft(e.date)>=0).slice(0,3);
+  if(!appUpco.length&&!calUpco.length){el.innerHTML='';return;}
+  const makeRow=(e,fromGCal)=>{
+    const dl=daysLeft(e.date);
+    const badge=dl===0?'Dziś!':dl===1?'Jutro':`za ${dl} dni`;
+    const src=fromGCal?`<span style="font-size:8px;background:rgba(66,133,244,.15);color:#4285f4;border-radius:4px;padding:1px 4px;font-weight:800;margin-left:4px;">GCal</span>`:'';
+    return`<div style="display:flex;align-items:center;gap:8px;padding:7px;background:var(--inp);border-radius:9px;margin-bottom:5px;cursor:pointer;" onclick="${fromGCal&&e.gcalLink?`window.open('${e.gcalLink}','_blank')`:"goTab('family');setTimeout(()=>switchFamilyTab('events'),80)"}">
+      <div style="font-size:18px;">${e.ico||'📅'}</div>
+      <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.title}${src}</div><div style="font-size:10px;color:${dl<=3?'var(--r)':dl<=7?'var(--o)':'var(--soft)'};">${badge}${e.loc?' · '+e.loc:''}</div></div>
+    </div>`;
+  };
+  let html=`<div class="card"><div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;"><span>📅 Nadchodzące</span>${gcalToken?`<span style="font-size:9px;color:var(--soft);">+ GCal</span>`:''}</div>`;
+  appUpco.forEach(e=>html+=makeRow(e,false));
+  calUpco.forEach(e=>html+=makeRow(e,true));
+  html+=`</div>`;
+  el.innerHTML=html;
 }
 function renderEventsTab(){
   const events=(live.events||[]);
@@ -3189,7 +3374,7 @@ function renderReturnSchedulePanel(){
       rows+=`<div class="rs-row">
         <div class="rs-day">${mem.avatar||'👤'}</div>
         <div class="rs-info">
-          <div class="rs-time">${mem.name} — ${sched.label||'Zajęcia'} do ${sched.time}</div>
+          <div class="rs-time">${mem.name} — ${sched.label||'Zajęcia'}${sched.startTime?' od '+sched.startTime:''} do ${sched.time}</div>
           <div class="rs-eta">${status}${etaStr}</div>
         </div>
         ${myProfile?.role==='parent'?`<button class="rs-btn" onclick="openReturnSchedModal('${uid}')">✏️</button><button class="rs-btn" onclick="deleteReturnSched('${uid}',${sched.day})" style="margin-left:3px;color:rgba(255,100,100,.9);">🗑️</button>`:''}
@@ -3221,9 +3406,15 @@ function openReturnSchedModal(uid){
   if(uid&&returnSchedules[uid]?.length){
     const s=returnSchedules[uid][0];
     const rsDay=document.getElementById('rsDay');if(rsDay)rsDay.value=s.day||1;
+    const rsStart=document.getElementById('rsStartTime');if(rsStart)rsStart.value=s.startTime||'08:00';
     const rsEnd=document.getElementById('rsEndTime');if(rsEnd)rsEnd.value=s.time||'15:30';
     const rsEta=document.getElementById('rsEta');if(rsEta)rsEta.value=s.eta||'16:00';
     const rsLbl=document.getElementById('rsLabel');if(rsLbl)rsLbl.value=s.label||'';
+  } else {
+    const rsStart=document.getElementById('rsStartTime');if(rsStart)rsStart.value='08:00';
+    const rsEnd=document.getElementById('rsEndTime');if(rsEnd)rsEnd.value='15:30';
+    const rsEta=document.getElementById('rsEta');if(rsEta)rsEta.value='16:00';
+    const rsLbl=document.getElementById('rsLabel');if(rsLbl)rsLbl.value='';
   }
   document.getElementById('returnSchedOverlay').classList.add('show');
 }
@@ -3232,13 +3423,14 @@ window.openReturnSchedModal=openReturnSchedModal;
 function saveReturnSchedule(){
   const uid=document.getElementById('rsWho').value;
   const day=parseInt(document.getElementById('rsDay').value);
+  const startTime=document.getElementById('rsStartTime')?.value||'';
   const time=document.getElementById('rsEndTime').value;
   const eta=document.getElementById('rsEta').value;
   const label=document.getElementById('rsLabel').value.trim();
   if(!uid||!time){showToast('⚠️ Wypełnij dane');return;}
   if(!returnSchedules[uid]) returnSchedules[uid]=[];
   const idx=returnSchedules[uid].findIndex(s=>s.day===day);
-  const entry={day,time,eta,label};
+  const entry={day,startTime,time,eta,label};
   if(idx>=0) returnSchedules[uid][idx]=entry; else returnSchedules[uid].push(entry);
   localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));
   // Zapisz też do Firebase — trwale dla całej rodziny
@@ -3276,8 +3468,15 @@ function scheduleReturnNotifications(uid,sched){
 function renderChildTasksPanel(){
   const el=document.getElementById('childTasksPanel');if(!el)return;
   const myUid=getMyUid();
-  // Dla dziecka — pokaż aktywne zadania z timerem
-  const activeTasks=(live.childTasks||[]).filter(t=>t.forUid===myUid&&!t.done);
+  const now=Date.now();
+  // Usuń przedawnione (>2h po deadline) z widoku
+  const activeTasks=(live.childTasks||[]).filter(t=>{
+    if(t.done) return false;
+    if(t.forUid!==myUid) return false;
+    const deadline=t.startTs+(t.minutes||10)*60000;
+    if(now-deadline>2*60*60*1000) return false; // 2h po deadline — znika
+    return true;
+  });
   if(!activeTasks.length){el.innerHTML='';return;}
   let rows='';
   activeTasks.forEach(t=>{
@@ -3295,7 +3494,13 @@ function renderChildTasksPanel(){
         </div>
       </div>
       <div class="ct-timer">${left>0?left+'min':'⏰'}</div>
-      <button class="ct-done-btn ${t.doneByChild?'done-state':''}" onclick="markChildTaskDone('${t.id}')">${t.doneByChild?'✓ Zrobione':'✅ Gotowe!'}</button>
+      ${!t.doneByChild
+        ?`<button class="ct-done-btn" onclick="markChildTaskDone('${t.id}')">✅ Gotowe!</button>`
+        :`<div style="display:flex;flex-direction:column;gap:3px;">
+            <button class="ct-done-btn done-state">✓ Zrobione</button>
+            <button class="ct-done-btn" style="font-size:9px;background:rgba(255,255,255,.15);" onclick="undoChildTask('${t.id}')">↩️ Cofnij</button>
+          </div>`
+      }
     </div>`;
   });
   el.innerHTML=`<div class="child-task-card"><div class="ct-title">📋 Twoje zadania teraz</div>${rows}</div>`;
@@ -3358,6 +3563,19 @@ async function markChildTaskDone(taskId){
   }
 }
 window.markChildTaskDone=markChildTaskDone;
+
+window.undoChildTask=async function(taskId){
+  if(!confirm('Cofnąć wykonanie zadania?'))return;
+  if(isDemo){
+    const t=(live.childTasks||[]).find(x=>x.id===taskId);
+    if(t){t.doneByChild=false;delete t.doneTs;}
+    renderChildTasksPanel();showToast('↩️ Cofnięto');return;
+  }
+  const snap=await get(ref(db,`families/${fCode}/childTasks`));
+  const kv=Object.entries(snap.val()||{}).find(([,v])=>v.id===taskId);
+  if(kv) await update(ref(db,`families/${fCode}/childTasks/${kv[0]}`),{doneByChild:false,doneTs:null});
+  showToast('↩️ Cofnięto wykonanie zadania');
+};
 
 /* ── Aktualizuj panele co minutę ── */
 setInterval(()=>{renderReturnSchedulePanel();renderChildTasksPanel();},60000);
@@ -3895,22 +4113,86 @@ function scheduleSchoolAlarm(uid,sched){
 }
 
 /* ── IKONKI PICKER ── */
-const EMOJI_LIST=['📌','✅','🧹','🚿','🗑️','🍽️','🧺','🌿','🐕','🐱','📖','🛒','🚗','☕','🎮','💊','🔧','📦','🪴','💦','🧼','🛏️','📮','❄️','🎾','🪣','⛽','🔦','🎯','🏆','🎁','🎂','📅','🏠','👨‍👩‍👧','🌟','⭐','💪','🏃','🎨','📝','🔔','🔑','💡','🧊','🌙','☀️','🌅'];
+const EMOJI_CATS=[
+  {id:'dom',label:'🏠 Dom',emojis:['🏠','🛏️','🪑','🚿','🛁','🚽','🧹','🧺','🪣','🧼','🪤','🔑','🚪','🪞','🖼️','🛋️','🪟','🏡','🏢','🔒']},
+  {id:'kuchnia',label:'🍽️ Kuchnia',emojis:['🍽️','🥘','🍳','🫕','🥗','🧁','🍕','🥪','🫖','☕','🧃','🍎','🥦','🥕','🧅','🧄','🥚','🧈','🫙','🥫']},
+  {id:'zwierzeta',label:'🐾 Zwierzęta',emojis:['🐕','🐱','🐠','🐦','🐇','🦜','🐢','🐹','🦎','🐾','🦮','🐩','🐈','🪺','🐟','🦴','🎾','🪺','🛁','💊']},
+  {id:'szkola',label:'📚 Szkoła',emojis:['📖','📚','✏️','📝','🎒','📐','📏','🔬','🔭','🖊️','📓','📒','📃','📜','🖋️','🎓','🏫','📊','📈','🧮']},
+  {id:'sport',label:'🏃 Sport',emojis:['🏃','🚴','🏊','⚽','🏀','🎾','🏈','⛸️','🥊','🏋️','🤸','🧘','🎿','🏄','🚵','🤾','⛺','🎯','🏆','🥇']},
+  {id:'samochod',label:'🚗 Samochód',emojis:['🚗','🚘','⛽','🔧','🪛','🛞','🧽','🚿','🅿️','🚦','🗺️','🔋','🪫','🔦','⚡','🚗','🛻','🚙','🏎️','🚐']},
+  {id:'ogrod',label:'🌿 Ogród',emojis:['🌿','🌱','🌻','🌹','🪴','🌳','🍂','🍃','🌺','💐','🌾','🍀','🌵','🎋','🪻','🌼','🍁','🌿','🪨','💧']},
+  {id:'zakupy',label:'🛒 Zakupy',emojis:['🛒','🛍️','💳','💰','🏷️','📦','🎁','🧧','🪙','💵','🏬','🛁','🧴','🪥','🧻','🛁','🪒','💄','👔','👗']},
+  {id:'zdrowie',label:'💊 Zdrowie',emojis:['💊','🩺','🩻','🩹','💉','🧬','🏥','🧪','🫀','🫁','🦷','👁️','🤒','😷','🩼','👩‍⚕️','🧘','💆','🛌','🧖']},
+  {id:'tech',label:'💻 Tech',emojis:['💻','📱','🖥️','⌨️','🖱️','🖨️','📷','📸','🎥','📺','📻','🎮','🕹️','🔌','🔋','💾','💿','📀','🖲️','📡']},
+  {id:'czas',label:'⏰ Czas',emojis:['⏰','⏱️','⏲️','🕐','🕑','🕒','🕓','🕔','📅','📆','🗓️','⌚','⏳','⌛','🗺️','🌅','🌄','🌃','🌆','🌇']},
+  {id:'uczucia',label:'😊 Emocje',emojis:['😊','😍','🥰','😎','🤩','😴','🤔','😅','🎉','🎊','❤️','💪','👏','🙌','👍','✨','🌟','⭐','💫','🏆']},
+];
+let _emojiTarget=null;
+let _emojiActiveCat='dom';
+
+window.openEmojiPickerFor=function(inputId,event){
+  if(event) event.stopPropagation();
+  _emojiTarget=document.getElementById(inputId);
+  const box=document.getElementById('emojiPickerBox');
+  const overlay=document.getElementById('emojiPickerOverlay');
+  if(!box||!overlay)return;
+  // Position near target
+  if(_emojiTarget){
+    const r=_emojiTarget.getBoundingClientRect();
+    box.style.top=Math.min(r.bottom+4,window.innerHeight-330)+'px';
+    box.style.left=Math.max(4,Math.min(r.left,window.innerWidth-290))+'px';
+  } else {
+    box.style.top='50%';box.style.left='50%';box.style.transform='translate(-50%,-50%)';
+  }
+  box.style.display='flex';
+  box.style.flexDirection='column';
+  overlay.classList.add('show');
+  renderEmojiPicker('');
+  const search=document.getElementById('emojiSearch');
+  if(search){search.value='';search.focus();}
+};
+
+function renderEmojiPicker(filter){
+  const tabsEl=document.getElementById('emojiCatTabs');
+  const gridEl=document.getElementById('emojiGrid');
+  if(!tabsEl||!gridEl)return;
+  if(filter){
+    const all=EMOJI_CATS.flatMap(cat=>cat.emojis);
+    gridEl.innerHTML=all.map(e=>`<button class="emoji-item" onclick="pickEmoji('${e}')">${e}</button>`).join('');
+    tabsEl.innerHTML='';
+    return;
+  }
+  tabsEl.innerHTML=EMOJI_CATS.map(cat=>`<button class="emoji-cat-tab ${_emojiActiveCat===cat.id?'sel':''}" onclick="switchEmojiCat('${cat.id}')" title="${cat.label}">${cat.emojis[0]}</button>`).join('');
+  const cat=EMOJI_CATS.find(x=>x.id===_emojiActiveCat)||EMOJI_CATS[0];
+  gridEl.innerHTML=cat.emojis.map(e=>`<button class="emoji-item" onclick="pickEmoji('${e}')">${e}</button>`).join('');
+}
+
+window.switchEmojiCat=function(id){
+  _emojiActiveCat=id;renderEmojiPicker('');
+};
+window.filterEmoji=function(q){
+  renderEmojiPicker(q.trim());
+};
+window.pickEmoji=function(e){
+  if(_emojiTarget) _emojiTarget.value=e;
+  closeEmojiPicker();
+};
+window.closeEmojiPicker=function(){
+  const box=document.getElementById('emojiPickerBox');
+  const overlay=document.getElementById('emojiPickerOverlay');
+  if(box)box.style.display='none';
+  if(overlay)overlay.classList.remove('show');
+  _emojiTarget=null;
+};
+
+// Backwards compat
 let iconPickerOpen=false;
 window.toggleIconPicker=function(){
-  iconPickerOpen=!iconPickerOpen;
-  const wrap=document.getElementById('iconPickerWrap');if(!wrap)return;
-  if(iconPickerOpen){
-    wrap.style.display='block';
-    wrap.innerHTML=`<div class="ico-picker">${EMOJI_LIST.map(e=>`<div class="ico-opt" onclick="selectIcon('${e}')">${e}</div>`).join('')}</div>`;
-  } else {
-    wrap.style.display='none';
-  }
+  openEmojiPickerFor('mIco',null);
 };
 window.selectIcon=function(ico){
   const inp=document.getElementById('mIco');if(inp)inp.value=ico;
-  iconPickerOpen=false;
-  const wrap=document.getElementById('iconPickerWrap');if(wrap)wrap.style.display='none';
+  closeEmojiPicker();
 };
 
 /* ── EDYCJA WYDARZEŃ ── */
