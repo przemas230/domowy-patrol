@@ -1806,6 +1806,9 @@ function launchApp(){
     // Wczytaj lokalizację domu rodziny
     onValue(ref(db,`families/${fCode}/homeLocation`),s=>{if(s.val()){homeLocation=s.val();localStorage.setItem('dp-home-loc',JSON.stringify(homeLocation));}});
     // Wczytaj harmonogramy powrotów z Firebase
+    // Natychmiastowy fetch harmonogramów — get() nie czeka na połączenie
+    get(ref(db,`families/${fCode}/returnSchedules`)).then(s=>{if(s.val()){const fb=s.val();Object.assign(returnSchedules,fb);localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));renderReturnSchedulePanel();}}).catch(()=>{});
+    // Następnie ustaw listener na zmiany
     onValue(ref(db,`families/${fCode}/returnSchedules`),s=>{if(s.val()){const fb=s.val();Object.assign(returnSchedules,fb);localStorage.setItem('dp-return-schedules',JSON.stringify(returnSchedules));renderReturnSchedulePanel();}});
   renderThemeGrid();renderGlobalIntervalRow();renderCategoryMgmt();
   // Pokaż status GCal
@@ -1837,11 +1840,14 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
     onValue(ref(db,`families/${fCode}/events`),s=>{const r=s.val()||{};live.events=Object.values(r).sort((a,b)=>a.date>b.date?1:-1);renderEventsTopPanel();if(activeFamilyTab==='events')renderEventsTab();});
     if(myProfile.role==='child') startLocationSharing();
+    // Rodzic opcjonalnie dzieli się lokalizacją żeby dzieci widziały odległość
+    if(myProfile.role==='parent') setTimeout(startParentLocationSharing,2000);
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   } else {
     setInterval(()=>{if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')checkAfter19();},60000);
   }
   checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();applyLang();
+  setTimeout(loadTodayReturns,800);
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();renderScorePeriodStats();}
 
@@ -2137,26 +2143,55 @@ function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherF
 
 /* ── LOCATION ── */
 function startLocationSharing(){
-  if(!navigator.geolocation) return;
+  if(!navigator.geolocation){showToast('📍 Przeglądarka nie obsługuje GPS');return;}
   const uid=currentUser?.uid;if(!uid) return;
   let lastSend=0;
+  let watchId=null;
+
   function sendPos(pos){
     const now=Date.now();
-    if(now-lastSend<30000) return; // max co 30s — oszczędność baterii
+    if(now-lastSend<20000) return; // max co 20s
     lastSend=now;
-    const data={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy||0),ts:now,name:myProfile.name,avatar:myProfile.avatar||'👤'};
-    update(ref(db,`families/${fCode}/locations/${uid}`),data);
-    console.log('GPS:',data.lat.toFixed(5),data.lng.toFixed(5),'±'+data.acc+'m');
+    const data={
+      lat:pos.coords.latitude,
+      lng:pos.coords.longitude,
+      acc:Math.round(pos.coords.accuracy||0),
+      ts:now,
+      name:myProfile.name,
+      avatar:myProfile.avatar||'👤',
+      uid
+    };
+    update(ref(db,`families/${fCode}/locations/${uid}`),data)
+      .catch(e=>console.warn('GPS write error:',e));
   }
   function onErr(e){
-    const msgs={1:'Brak uprawnień GPS — włącz w ustawieniach',2:'Brak sygnału GPS',3:'GPS timeout'};
-    console.warn('GPS:',msgs[e.code]||e.message);
-    if(e.code===1) showToast('📍 '+msgs[1]);
+    if(e.code===1){
+      showToast('📍 Brak uprawnień lokalizacji — zezwól w ustawieniach przeglądarki');
+    } else if(e.code===2){
+      console.warn('GPS: brak sygnału, retry...');
+      // Spróbuj ponownie za 15s
+      setTimeout(()=>navigator.geolocation.getCurrentPosition(sendPos,()=>{},{enableHighAccuracy:false,timeout:10000}),15000);
+    }
   }
-  const opts={enableHighAccuracy:true,maximumAge:30000,timeout:30000};
-  navigator.geolocation.watchPosition(sendPos,onErr,opts);
-  // Backup co 60s dla Androidów które zatrzymują watch w tle
-  setInterval(()=>navigator.geolocation.getCurrentPosition(sendPos,()=>{},opts),60000);
+  // Wysoka dokładność dla foreground
+  const opts={enableHighAccuracy:true,maximumAge:15000,timeout:20000};
+  watchId=navigator.geolocation.watchPosition(sendPos,onErr,opts);
+  // Backup co 45s (Android background fix)
+  setInterval(()=>{
+    navigator.geolocation.getCurrentPosition(sendPos,()=>{},{enableHighAccuracy:false,maximumAge:60000,timeout:15000});
+  },45000);
+  // Wyślij od razu pierwsze położenie
+  navigator.geolocation.getCurrentPosition(sendPos,onErr,{enableHighAccuracy:true,timeout:10000});
+}
+
+// Rodzic też może udostępnić lokalizację (opcjonalnie)
+function startParentLocationSharing(){
+  if(!navigator.geolocation||!currentUser?.uid) return;
+  const uid=currentUser.uid;
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const data={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy||0),ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤',uid,role:'parent'};
+    update(ref(db,`families/${fCode}/locations/${uid}`),data).catch(()=>{});
+  },()=>{},{enableHighAccuracy:true,timeout:8000});
 }
 
 /* ── RETURN HOME ── */
@@ -2171,7 +2206,9 @@ function renderCurfewPanel(){
     const locAge=loc?Math.round((Date.now()-loc.ts)/60000):null;
     const locStr=loc?(locAge<2?'📍 Teraz':`📍 ${locAge} min temu`):'📍 Brak GPS';
     const avHtml=child.photoURL?`<img src="${child.photoURL}" class="cr-photo" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.outerHTML='<span class=cr-av>'+('${child.avatar||'👤'}')+'</span>'">`:`<div class="cr-av">${child.avatar||'👤'}</div>`;
-    html+=`<div class="child-row">${avHtml}<div class="cr-info"><div class="cr-nm">${child.name}</div><div class="cr-detail">${locStr}${c?` · 🏠 ${c.time}`:(h>=19?' · <span style="color:#fca5a5">⚠️</span>':'')}</div></div><button class="cr-btn" onclick="openCurfewModal('${uid}','${child.name}')">${c?'✏️':'🏠'}</button></div>`;
+    const cameHome=localStorage.getItem('dp-returned-'+uid+'-'+todayKey)==='1';
+    html+=`<div class="child-row">${avHtml}<div class="cr-info"><div class="cr-nm">${child.name}</div><div class="cr-detail">${cameHome?'✅ Wrócił/a do domu':(locStr+(c?` · 🏠 ${c.time}`:(h>=19?' · <span style="color:#fca5a5">⚠️</span>':'')))}</div></div><div style="display:flex;gap:4px;">${c&&!cameHome?`<button class="cr-btn" style="background:rgba(74,158,34,.3);" onclick="confirmChildReturn('${uid}','${child.name}')">✅</button>`:''}
+      <button class="cr-btn" onclick="openCurfewModal('${uid}','${child.name}')">${c?'✏️':'🏠'}</button></div></div>`;
   });
   html+=`</div>`;
   document.getElementById('curfewPanel').style.display='block';
@@ -2220,7 +2257,7 @@ function updateReturnBanner(){
     banner.innerHTML=`<div class="rb rb-orange"><div class="rb-ico" style="animation:bob .8s ease-in-out infinite">🏃</div><div class="rb-info"><div class="rb-title">⏰ Zostało ${diffMin} min (${curfew.time})</div><div class="rb-sub">${curfew.setBy}</div></div><div class="rb-btns"><button class="rb-btn" onclick="notYet()">Jeszcze chwilę</button><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button></div></div>`;
     clearReturnTimers();scheduleReturnReminders(curfew.time,interval);
   } else {
-    banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica · ${curfew.time}</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button><button class="rb-btn" onclick="dismissCurfewBanner()">✕</button></div></div>`;
+    banner.innerHTML=`<div class="rb rb-red"><div class="rb-ico">❗</div><div class="rb-info"><div class="rb-title">POWINIENEŚ JUŻ BYĆ W DOMU!</div><div class="rb-sub">Zadzwoń do rodzica · ${curfew.time}</div></div><div class="rb-btns"><button class="rb-btn solid" onclick="iAmHeading()">Wracam! 🏃</button><button class="rb-btn" style="background:rgba(74,158,34,.5);" onclick="confirmMyReturn()">✅ Wróciłem</button><button class="rb-btn" onclick="dismissCurfewBanner()">✕</button></div></div>`;
     sendBrowserNotif('❗ Czas minął!',`Miałeś/aś wrócić o ${curfew.time}!`);
     sendPersistentNotif('❗ Czas minął!', `Powinieneś być w domu! (${curfew.time})`, {
       tag:'dp-curfew-late', persist:true, renotify:true,
@@ -2388,7 +2425,7 @@ function renderChores(){
     html+=`<div class="chore-list">`;
     cat.chores.filter(ch=>choreVisibility[ch.id]!==false).forEach((ch,idx)=>{const allKeys=Object.keys(live.done).filter(k=>k===ch.id||k.startsWith(ch.id+'_'));const done=allKeys.length>0;const reps=allKeys.length;const dn=done?live.done[allKeys[allKeys.length-1]]:null;const member=dn?Object.values(live.members).find(m=>m.name===dn.who):null;
     html+=`<div class="chore ${done?'done':''}" data-chore-id="${ch.id}" data-chore-pts="${ch.pts}" onclick="${!done?`doToggleChore('${ch.id}',${ch.pts})`:''}">
-      <div class="chore-ico">${ch.ico}</div>
+      <div class="chore-ico" onclick="if(!event.target.closest('.chore-right'))openChoreIcoChange(event,'${ch.id}','${cat.id}')" title="Zmień ikonę">${ch.ico}</div>
       <div class="chore-info">
         <div class="chore-name">${ch.name}</div>
         <div class="chore-meta">${done?`${member?.photoURL?``:(dn?.avatar||'')} ${dn?.who}`:ch.desc}</div>
@@ -2399,7 +2436,7 @@ function renderChores(){
             <button class="undo-btn" onclick="undoMyChore(event,'${ch.id}',${ch.pts})" title="Cofnij swoje wykonanie">↩️</button>
             <button class="repeat-btn" onclick="repeatChore(event,'${ch.id}',${ch.pts})" title="Wykonaj ponownie">+1</button>`
           :`<div class="chore-pts">+${ch.pts}⭐</div>
-            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;" onclick="openEmojiPickerFor('mIco',event);openEditChore(event,'${cat.id}',${idx})" title="Edytuj">✏️</button>
+            <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;" onclick="openChoreEditModal(event,'${ch.id}','${cat.id}')" title="Edytuj zadanie">✏️</button>
             <button class="cat-mini-btn" style="font-size:11px;padding:3px 7px;color:var(--b);border-color:rgba(59,130,246,.3);" onclick="duplicateChore(event,'${ch.id}','${cat.id}')" title="+1 dziś (tymczasowo)">⧉</button>`
         }
       </div>
@@ -3294,33 +3331,51 @@ function renderDistancePanel(){
   const el=document.getElementById('distancePanel');if(!el)return;
   if(myProfile?.role!=='parent'){el.innerHTML='';return;}
   const locs=Object.entries(live.locations||{});
-  if(!locs.length){el.innerHTML='';return;}
+  if(!locs.length){
+    // Pokaż empty state z podpowiedzią
+    el.innerHTML=`<div class="dist-panel" style="opacity:.7;">
+      <div class="dist-title">📍 Lokalizacje dzieci</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.7);text-align:center;padding:8px;">Brak danych GPS dzieci.<br>Dzieci muszą mieć otwartą aplikację z włączonym GPS.</div>
+    </div>`;
+    return;
+  }
   const now=Date.now();
   let rows='';
   locs.forEach(([uid,loc])=>{
+    if(!loc?.lat||!loc?.lng) return;
     const mem=live.members[uid]||{name:'?',avatar:'👤'};
-    if(mem.role==='parent') return; // pokaż tylko dzieci
     const ageMin=Math.round((now-loc.ts)/60000);
-    const fresh=ageMin<5;
-    let dist='?';
-    // Odległość od DOMU (homeLocation), nie od rodzica
+    const fresh=ageMin<3;
+    const stale=ageMin>15;
+    // Odległość od DOMU
+    let distHome='—';
     if(homeLocation&&loc.lat&&loc.lng){
-      dist=fmtDist(haversine(homeLocation.lat,homeLocation.lng,loc.lat,loc.lng));
+      distHome=fmtDist(haversine(homeLocation.lat,homeLocation.lng,loc.lat,loc.lng));
     }
-    const mapUrl=`https://www.openstreetmap.org/?mlat=${loc.lat}&mlon=${loc.lng}&zoom=15`;
-    rows+=`<div class="dist-row" style="cursor:pointer;" onclick="window.open('${mapUrl}','_blank')">
+    // Odległość od rodzica (jeśli rodzic też ma lokalizację)
+    const myLoc=live.locations[getMyUid()];
+    let distMe='';
+    if(myLoc?.lat&&loc.lat){
+      distMe=` · 👤 ${fmtDist(haversine(myLoc.lat,myLoc.lng,loc.lat,loc.lng))}`;
+    }
+    const mapUrl=`https://www.openstreetmap.org/?mlat=${loc.lat}&mlon=${loc.lng}&zoom=16`;
+    const roleLabel=mem.role==='parent'?'👑 ':'';
+    rows+=`<div class="dist-row" style="cursor:pointer;opacity:${stale?.6:1};" onclick="window.open('${mapUrl}','_blank')">
       <div class="dist-av">${mem.avatar||'👤'}</div>
       <div class="dist-info">
-        <div class="dist-name">${mem.name} <span style="font-size:9px;color:rgba(255,255,255,.6);">🗺️ mapa</span></div>
-        <div class="dist-detail">${fresh?'📍 Teraz':'📍 '+ageMin+' min temu'}${loc.acc?' ±'+loc.acc+'m':''}</div>
+        <div class="dist-name">${roleLabel}${mem.name} <span style="font-size:9px;color:rgba(255,255,255,.5);">🗺️</span></div>
+        <div class="dist-detail">${fresh?'📍 Właśnie':stale?`⚠️ ${ageMin} min temu`:`📍 ${ageMin} min temu`}${loc.acc?' ±'+loc.acc+'m':''}${distMe}</div>
       </div>
-      <div class="dist-val">${homeLocation?dist:'—'}</div>
-      <div class="dist-dot" style="background:${fresh?'#22c55e':'#f59e0b'}"></div>
+      <div class="dist-val" style="font-size:${distHome.length>4?'11px':'13px'};">${distHome}</div>
+      <div class="dist-dot" style="background:${fresh?'#22c55e':stale?'#ef4444':'#f59e0b'}"></div>
     </div>`;
   });
   if(!rows){el.innerHTML='';return;}
-  const homeTxt=homeLocation?'':`<div style="font-size:9px;color:rgba(255,255,255,.6);margin-top:4px;">⚠️ Ustaw lokalizację domu w Opcjach aby widzieć odległości</div>`;
-  el.innerHTML=`<div class="dist-panel"><div class="dist-title">📍 Lokalizacje dzieci</div>${rows}${homeTxt}</div>`;
+  const homeTxt=homeLocation?
+    `<div style="font-size:8px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">📏 od domu · 👤 ode mnie</div>`:
+    `<div style="font-size:9px;color:rgba(255,255,255,.6);margin-top:4px;">⚠️ Ustaw lokalizację domu w Opcjach</div>`;
+  const shareBtn=`<button onclick="startParentLocationSharing();showToast('📍 Wysłano Twoją lokalizację');" style="font-size:9px;color:rgba(255,255,255,.6);background:none;border:none;cursor:pointer;margin-top:4px;">📍 Udostępnij swoją lokalizację</button>`;
+  el.innerHTML=`<div class="dist-panel"><div class="dist-title">📍 Lokalizacje rodziny</div>${rows}${homeTxt}${shareBtn}</div>`;
 }
 
 window.captureHomeGPS_settings=function(){
@@ -4447,6 +4502,136 @@ window.savePSchedEdit=async function(uid){
   // Odśwież panel
   const psp=document.getElementById('profileSchedulesPanel');
   if(psp)renderSchedulesInProfile(psp);
+};
+
+
+/* ══════════════════════════════════════════════
+   v20 — NOWE FUNKCJE
+   ══════════════════════════════════════════════ */
+
+/* ── POTWIERDZENIE POWROTU ── */
+window.confirmChildReturn=async function(uid,name){
+  if(!confirm(`Potwierdzić powrót ${name} do domu?`))return;
+  // Zapisz że wróciło — widoczne dla wszystkich
+  localStorage.setItem('dp-returned-'+uid+'-'+todayKey,'1');
+  if(!isDemo) await set(ref(db,`families/${fCode}/returns/${todayKey}/${uid}`),{ts:Date.now(),confirmedBy:myProfile.name}).catch(()=>{});
+  // Usuń curfew
+  if(!isDemo) remove(ref(db,`families/${fCode}/curfews/${uid}`)).catch(()=>{});
+  else delete live.curfews[uid];
+  // Wiadomość na czacie
+  const welcomeMsg={uid:'__system__',who:'Domowy Patrol',avatar:'🏠',photoURL:'',
+    msg:`🎉 ${name} wrócił/a do domu! Potwierdził/a: ${myProfile.name}`,
+    room:'room_'+uid,ts:Date.now(),system:false};
+  if(!isDemo) push(ref(db,`families/${fCode}/chat`),welcomeMsg).catch(()=>{});
+  else live.chat=[...(live.chat||[]),welcomeMsg];
+  renderCurfewPanel();
+  sendBrowserNotif('🏠 '+name+' wrócił/a!','Powrót potwierdzony');
+  showToast('✅ '+name+' wrócił/a do domu!');
+};
+
+window.confirmMyReturn=async function(){
+  const uid=getMyUid();
+  if(!confirm('Potwierdzić że już jesteś w domu?'))return;
+  localStorage.setItem('dp-returned-'+uid+'-'+todayKey,'1');
+  localStorage.setItem('dp-curfew-dismissed-'+todayKey,'1');
+  if(!isDemo){
+    await set(ref(db,`families/${fCode}/returns/${todayKey}/${uid}`),{ts:Date.now(),confirmedBy:myProfile.name}).catch(()=>{});
+    remove(ref(db,`families/${fCode}/curfews/${uid}`)).catch(()=>{});
+    const botMsg={uid:'__system__',who:'Domowy Patrol',avatar:'🏠',photoURL:'',
+      msg:`✅ ${myProfile.name} potwierdził/a powrót do domu!`,
+      room:'room_'+uid,ts:Date.now(),system:false};
+    push(ref(db,`families/${fCode}/chat`),botMsg).catch(()=>{});
+  } else {
+    delete live.curfews[uid];
+  }
+  document.getElementById('returnBanner').style.display='none';
+  clearReturnTimers();
+  showToast('🏠 Powrót potwierdzony!');
+};
+
+// Wczytaj powroty z Firebase przy starcie
+function loadTodayReturns(){
+  if(isDemo)return;
+  get(ref(db,`families/${fCode}/returns/${todayKey}`)).then(s=>{
+    if(!s.val())return;
+    Object.keys(s.val()).forEach(uid=>{
+      localStorage.setItem('dp-returned-'+uid+'-'+todayKey,'1');
+    });
+    renderCurfewPanel();
+    updateReturnBanner();
+  }).catch(()=>{});
+}
+
+/* ── EDYCJA ZADANIA — pełny modal ── */
+window.openChoreEditModal=function(e,choreId,catId){
+  e.stopPropagation();
+  const cat=cats.find(x=>x.id===catId);if(!cat)return;
+  const ch=cat.chores.find(x=>x.id===choreId);if(!ch)return;
+  // Stwórz lub otwórz modal edycji
+  let ov=document.getElementById('choreEditOverlay');
+  if(!ov){
+    ov=document.createElement('div');ov.className='overlay';ov.id='choreEditOverlay';
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML=`<div class="modal">
+    <div class="modal-ttl">✏️ Edytuj zadanie <span class="modal-close" onclick="closeOverlay('choreEditOverlay')">×</span></div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:9px;">
+      <input id="ceIco" class="f-inp" value="${ch.ico||'✅'}" style="width:56px;font-size:20px;text-align:center;" readonly onclick="openEmojiPickerFor('ceIco',event)">
+      <input id="ceName" class="f-inp" value="${(ch.name||'').replace(/"/g,'&quot;')}" placeholder="Nazwa" style="flex:1;">
+    </div>
+    <div class="f-lbl">Opis / godzina</div>
+    <input id="ceDesc" class="f-inp" value="${(ch.desc||'').replace(/"/g,'&quot;')}" placeholder="np. Rano">
+    <div class="f-lbl">Punkty</div>
+    <input id="cePts" class="f-inp" type="number" value="${ch.pts||8}" min="1" max="99">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--inp);border-radius:8px;margin:8px 0;">
+      <input type="checkbox" id="ceRepeat" ${ch.repeatable?'checked':''} style="width:16px;height:16px;">
+      <label for="ceRepeat" style="font-size:12px;font-weight:800;cursor:pointer;">Można wykonywać wielokrotnie (+1)</label>
+    </div>
+    <button class="modal-btn" onclick="saveChoreEdit('${choreId}','${catId}')">💾 Zapisz</button>
+    <button class="modal-btn red" onclick="deleteChoreFromEdit('${choreId}','${catId}')">🗑️ Usuń zadanie</button>
+  </div>`;
+  ov.classList.add('show');
+};
+
+window.saveChoreEdit=function(choreId,catId){
+  const cat=cats.find(x=>x.id===catId);if(!cat)return;
+  const idx=cat.chores.findIndex(x=>x.id===choreId);if(idx<0)return;
+  cat.chores[idx]={
+    ...cat.chores[idx],
+    ico:document.getElementById('ceIco')?.value||'✅',
+    name:document.getElementById('ceName')?.value?.trim()||cat.chores[idx].name,
+    desc:document.getElementById('ceDesc')?.value||'',
+    pts:parseInt(document.getElementById('cePts')?.value)||cat.chores[idx].pts,
+    repeatable:document.getElementById('ceRepeat')?.checked||false,
+  };
+  saveCats();renderChores();renderCategoryMgmt();
+  closeOverlay('choreEditOverlay');
+  showToast('✅ Zadanie zaktualizowane');
+};
+
+window.deleteChoreFromEdit=function(choreId,catId){
+  if(!confirm('Usunąć to zadanie?'))return;
+  const cat=cats.find(x=>x.id===catId);if(!cat)return;
+  cat.chores=cat.chores.filter(x=>x.id!==choreId);
+  saveCats();renderChores();renderCategoryMgmt();
+  closeOverlay('choreEditOverlay');
+  showToast('🗑️ Zadanie usunięte');
+};
+
+/* ── ZMIEŃ IKONĘ ZADANIA INLINE ── */
+window.openChoreIcoChange=function(e,choreId,catId){
+  e.stopPropagation();
+  _emojiTarget={
+    _choreId:choreId,_catId:catId,
+    get value(){return '';},
+    set value(ico){
+      const cat=cats.find(x=>x.id===catId);if(!cat)return;
+      const ch=cat.chores.find(x=>x.id===choreId);if(!ch)return;
+      ch.ico=ico;saveCats();renderChores();
+    }
+  };
+  openEmojiPickerFor(null,e);
+  // Override pickEmoji for this special target
 };
 
 window.goTab=goTab;
