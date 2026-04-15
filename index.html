@@ -718,6 +718,42 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 /* ── RETURN SCHEDULE — start time ── */
 .rs-time-col{display:flex;flex-direction:column;font-size:9px;color:rgba(255,255,255,.7);}
 .rs-time-main{font-size:12px;font-weight:800;color:#fff;}
+
+/* ── STICKY DRAG & DROP ── */
+.sticky{cursor:grab;user-select:none;}
+.sticky.dragging-note{opacity:.5;cursor:grabbing;}
+.sticky.drag-over-note{outline:3px dashed var(--g2);outline-offset:2px;}
+/* ── STICKY RICH TEXT TOOLBAR ── */
+.sticky-toolbar{display:flex;gap:3px;flex-wrap:wrap;padding:5px 0 8px;border-bottom:1px solid var(--border);margin-bottom:6px;}
+.stb-btn{width:28px;height:28px;border-radius:6px;border:1.5px solid var(--border);background:var(--inp);font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);}
+.stb-btn.active{background:var(--g2);color:#fff;border-color:var(--g2);}
+.stb-btn:hover{background:var(--gp);}
+.sticky-editor-body{outline:none;min-height:150px;line-height:1.7;font-size:13px;padding:4px 2px;}
+.sticky-editor-body b,.sticky-editor-body strong{font-weight:900;}
+.sticky-editor-body h2{font-size:16px;font-weight:900;margin:6px 0 3px;}
+.sticky-editor-body h3{font-size:14px;font-weight:800;margin:4px 0 2px;}
+.sticky-editor-body ul{padding-left:18px;margin:4px 0;}
+.sticky-editor-body li{margin:2px 0;}
+.sticky-editor-body blockquote{border-left:3px solid var(--g2);padding-left:8px;color:var(--soft);margin:4px 0;}
+/* ── TODAY WIDGETS ── */
+#todayShopMini{background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;}
+.twm-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer;}
+.twm-body{padding:8px 12px;}
+/* ── EVENT LOCATION ── */
+.ev-map-row{display:flex;gap:6px;align-items:center;margin-top:6px;}
+.ev-map-inp{flex:1;padding:7px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;outline:none;}
+.ev-travel{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px;}
+.ev-travel-item{background:var(--inp);border-radius:8px;padding:7px;text-align:center;}
+.ev-travel-ico{font-size:18px;}
+.ev-travel-val{font-size:11px;font-weight:900;color:var(--text);}
+.ev-travel-lbl{font-size:8px;color:var(--soft);font-weight:700;}
+/* ── HOME WIDGET CONFIG ── */
+.widget-cfg-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.widget-cfg-row:last-child{border:none;}
+.widget-drag-handle{font-size:16px;color:var(--soft);cursor:grab;padding:0 4px;}
+.widget-cfg-chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;}
+.widget-cfg-chk:checked{accent-color:var(--g2);}
+.widget-cfg-lbl{font-size:12px;font-weight:800;color:var(--text);flex:1;}
 </style>
 </head>
 <body>
@@ -846,13 +882,13 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 
   <!-- TODAY -->
   <div class="sec on" id="sec-today">
+    <div id="childTasksPanel"></div>
     <div id="joinRequestsPanel"></div>
     <div id="bdayPanel"></div>
     <div id="eventsTopPanel"></div>
     <div id="curfewPanel"></div>
     <div id="distancePanel"></div>
     <div id="returnSchedulePanel"></div>
-    <div id="childTasksPanel"></div>
     <div class="card">
       <div class="card-ttl">🌐 Rodzina online</div>
       <div class="online-row" id="onlineRow"></div>
@@ -869,6 +905,13 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           <button class="tcm-send" onclick="sendTodayChat()">➤</button>
         </div>
       </div>
+    </div>
+    <div id="todayShopMini">
+      <div class="twm-hdr" onclick="toggleTodayShop()">
+        <span style="font-size:12px;font-weight:900;color:var(--text);">🛒 Zakupy dziś</span>
+        <span id="todayShopToggle" style="font-size:10px;color:var(--soft);">▼ pokaż</span>
+      </div>
+      <div id="todayShopBody" style="display:none;"></div>
     </div>
     <div class="card" id="weekCard">
       <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
@@ -1021,6 +1064,23 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div id="profileSchedulesPanel"></div>
     </div>
     <div class="card">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>🏠 Ekran główny — widżety</span>
+        <button onclick="saveWidgetConfig()" style="padding:5px 10px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
+      </div>
+      <div style="font-size:10px;color:var(--soft);margin-bottom:8px;">Przeciągnij żeby zmienić kolejność. Zaznacz co ma być widoczne.</div>
+      <div id="widgetConfigList"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>🗑️ Historia punktów</span>
+        <span style="font-size:9px;color:var(--soft);">Tylko rodzic</span>
+      </div>
+      <div style="font-size:10px;color:var(--soft);margin-bottom:7px;">Usuń historię od wybranej daty. Punkty zostaną przeliczone.</div>
+      <input class="f-inp" id="histDeleteFrom" type="date" style="margin-bottom:7px;">
+      <button onclick="deleteHistoryFrom()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.07);font-family:var(--font);font-size:12px;font-weight:800;color:var(--r);cursor:pointer;">🗑️ Usuń historię od tej daty i przelicz punkty</button>
+    </div>
+    <div class="card">
       <div class="card-ttl">📊 Dane i eksport</div>
       <button onclick="exportFamilyData()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--b);background:rgba(59,130,246,.07);font-family:var(--font);font-size:12px;font-weight:800;color:var(--b);cursor:pointer;margin-bottom:7px;">📥 Eksportuj dane rodziny (JSON)</button>
       <div id="streakPanel"></div>
@@ -1067,7 +1127,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="f-lbl">Data</div>
     <input class="f-inp" id="evDate" type="date">
     <div class="f-lbl">Miejsce (opcjonalnie)</div>
-    <input class="f-inp" id="evLoc" placeholder="np. Kościół św. Jana, Warszawa">
+    <div class="ev-map-row">
+      <input class="ev-map-inp" id="evLoc" placeholder="np. Kościół św. Jana, Warszawa">
+      <button onclick="geocodeEventLoc('evLoc','evTravelInfo')" style="padding:7px 10px;border-radius:8px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔍</button>
+    </div>
+    <div id="evTravelInfo"></div>
     <button class="modal-btn" onclick="submitEvent()">📅 Dodaj wydarzenie</button>
   </div>
 </div>
@@ -1093,7 +1157,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="f-lbl">Data</div>
     <input class="f-inp" id="evEditDate" type="date">
     <div class="f-lbl">Miejsce (opcjonalnie)</div>
-    <input class="f-inp" id="evEditLoc" placeholder="np. Kościół św. Jana">
+    <div class="ev-map-row">
+      <input class="ev-map-inp" id="evEditLoc" placeholder="np. Kościół św. Jana">
+      <button onclick="geocodeEventLoc('evEditLoc','evEditTravelInfo')" style="padding:7px 10px;border-radius:8px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🔍</button>
+    </div>
+    <div id="evEditTravelInfo"></div>
     <button class="modal-btn" onclick="submitEventEdit()">💾 Zapisz zmiany</button>
     <button class="modal-btn red" onclick="delEventFromEdit()">🗑️ Usuń wydarzenie</button>
   </div>
@@ -1835,7 +1903,7 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderDistancePanel();}});
     onValue(ref(db,`families/${fCode}/joinRequests`),s=>{live.joinReqs=s.val()||{};renderJoinRequests();});
     onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChatV2();if(todayChatOpen)renderTodayChatFeed();});
-    onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);});
+    onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);if(todayShopOpen)renderTodayShop();});
     onValue(ref(db,`families/${fCode}/wishes`),s=>{const r=s.val()||{};live.wishes=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));if(activeFamilyTab==='wishes')renderWishes();});
     onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
     onValue(ref(db,`families/${fCode}/events`),s=>{const r=s.val()||{};live.events=Object.values(r).sort((a,b)=>a.date>b.date?1:-1);renderEventsTopPanel();if(activeFamilyTab==='events')renderEventsTab();});
@@ -1848,6 +1916,7 @@ function launchApp(){
   }
   checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();applyLang();
   setTimeout(loadTodayReturns,800);
+  applyWidgetConfig();
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();renderScorePeriodStats();}
 
@@ -2450,40 +2519,76 @@ async function doToggleChore(choreId,pts){const uid=getMyUid();if(live.done[chor
 window.doToggleChore=doToggleChore;
 async function undoChore(e,choreId,pts){
   e.stopPropagation();
+  if(_undoLock[choreId]){showToast('⏳ Czekaj…');return;}
+  _undoLock[choreId]=true;
+  setTimeout(()=>delete _undoLock[choreId],2000);
   const uid=getMyUid();
-  // Zbierz WSZYSTKIE klucze tego zadania
   const allKeys=Object.keys(live.done).filter(k=>k===choreId||k.startsWith(choreId+'_'));
-  if(!allKeys.length){showToast('⚠️ Nic do cofnięcia');return;}
-  // Oblicz ile punktów faktycznie przyznano (na podstawie kluczy)
-  const totalPts=allKeys.length*pts;
+  if(!allKeys.length){delete _undoLock[choreId];showToast('⚠️ Nic do cofnięcia');return;}
+  // Policz punkty tylko za wpisy tego użytkownika
+  const myKeys=allKeys.filter(k=>live.done[k]?.uid===uid);
+  const myPts=myKeys.length*pts;
   if(isDemo){
     allKeys.forEach(k=>delete live.done[k]);
-    if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-totalPts);
-    showToast('↩️ Cofnięto (−'+totalPts+' pkt)');
-    renderChores();renderStats();renderScores();renderRewards();updateProgress();return;
+    if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-myPts);
+    showToast('↩️ Cofnięto (−'+myPts+' pkt)');
+    renderChores();renderStats();renderScores();renderRewards();updateProgress();
+    delete _undoLock[choreId];return;
   }
-  for(const k of allKeys) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
-  const cur=(await get(ref(db,`families/${fCode}/members/${uid}`))).val()?.points||0;
-  const newPts=Math.max(0,cur-totalPts);
-  await update(ref(db,`families/${fCode}/members/${uid}`),{points:newPts});
-  await update(ref(db,`users/${uid}/profile`),{points:newPts});
-  showToast('↩️ Cofnięto (−'+totalPts+' pkt)');
+  try{
+    for(const k of allKeys) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
+    const snap=await get(ref(db,`families/${fCode}/members/${uid}`));
+    const cur=snap.val()?.points||0;
+    const newPts=Math.max(0,cur-myPts);
+    await update(ref(db,`families/${fCode}/members/${uid}`),{points:newPts});
+    await update(ref(db,`users/${uid}/profile`),{points:newPts});
+    if(live.members[uid]) live.members[uid].points=newPts;
+    showToast('↩️ Cofnięto (−'+myPts+' pkt) · nowe: '+newPts+' pkt');
+  }catch(err){showToast('❌ Błąd cofania');console.error(err);}
+  delete _undoLock[choreId];
 }
 window.undoChore=undoChore;
+const _undoLock={};
 async function undoMyChore(e,choreId,pts){
   e.stopPropagation();
+  // Debounce — zapobiega podwójnemu kliknięciu
+  if(_undoLock[choreId]){showToast('⏳ Czekaj…');return;}
+  _undoLock[choreId]=true;
+  setTimeout(()=>delete _undoLock[choreId],2000);
+
   const uid=getMyUid();
-  // Znajdź tylko wpisy tego usera
+  // Znajdź TYLKO moje wpisy dla tego zadania
   const myKeys=Object.keys(live.done).filter(k=>(k===choreId||k.startsWith(choreId+'_'))&&live.done[k]?.uid===uid);
-  if(!myKeys.length){showToast('⚠️ Nie masz czego cofać');return;}
-  // Usuń jeden (ostatni) wpis
+  if(!myKeys.length){
+    delete _undoLock[choreId];
+    showToast('⚠️ Nie masz czego cofać');return;
+  }
+  // Usuń JEDEN (ostatni) mój wpis
   const toRm=myKeys.slice(-1);
-  if(isDemo){toRm.forEach(k=>delete live.done[k]);if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts);showToast('↩️ Cofnięto swoje');renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}
-  for(const k of toRm) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
-  const cur=live.members[uid]?.points||0;
-  await update(ref(db,`families/${fCode}/members/${uid}`),{points:Math.max(0,cur-pts)});
-  await update(ref(db,`users/${uid}/profile`),{points:Math.max(0,cur-pts)});
-  showToast('↩️ Cofnięto swoje wykonanie');
+  if(isDemo){
+    toRm.forEach(k=>delete live.done[k]);
+    if(live.members[uid]) live.members[uid].points=Math.max(0,(live.members[uid].points||0)-pts);
+    showToast('↩️ Cofnięto (−'+pts+' pkt)');
+    renderChores();renderStats();renderScores();renderRewards();updateProgress();
+    delete _undoLock[choreId];return;
+  }
+  try{
+    // Usuń wpisy z Firebase
+    for(const k of toRm) await set(ref(db,`f/${fCode}/done/${todayKey}/${k}`),null);
+    // ZAWSZE pobierz aktualne punkty z Firebase — nie z cache
+    const snap=await get(ref(db,`families/${fCode}/members/${uid}`));
+    const cur=snap.val()?.points||0;
+    const newPts=Math.max(0,cur-pts);
+    await update(ref(db,`families/${fCode}/members/${uid}`),{points:newPts});
+    await update(ref(db,`users/${uid}/profile`),{points:newPts});
+    // Zaktualizuj lokalny cache
+    if(live.members[uid]) live.members[uid].points=newPts;
+    showToast('↩️ Cofnięto (−'+pts+' pkt) · nowe: '+newPts+' pkt');
+  }catch(err){
+    showToast('❌ Błąd cofania — spróbuj ponownie');
+    console.error('undoMyChore error:',err);
+  }
+  delete _undoLock[choreId];
 }
 window.undoMyChore=undoMyChore;
 async function repeatChore(e,choreId,pts){e.stopPropagation();const uid=getMyUid();const rk=`${choreId}_${Date.now()}`;if(isDemo){live.done[rk]={who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()};if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+pts;const c=findChore(choreId);live.history.unshift({ico:c?.ico||'✅',name:(c?.name||choreId)+' (powtórzenie)',who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`+1 powtórzenie! +${pts} pkt`);renderChores();renderStats();renderScores();renderRewards();updateProgress();return;}const c=findChore(choreId);await set(ref(db,`f/${fCode}/done/${todayKey}/${rk}`),{who:myProfile.name,avatar:myProfile.avatar,uid,ts:Date.now()});const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+pts});await update(ref(db,`users/${uid}/profile`),{points:cur+pts});await push(ref(db,`f/${fCode}/history`),{ico:c?.ico||'✅',name:(c?.name||choreId)+' +1',who:myProfile.name,avatar:myProfile.avatar,uid,pts,ts:Date.now()});showToast(`+1 powtórzenie! +${pts} pkt`);}
@@ -3329,6 +3434,26 @@ function fmtDist(m){return m<1000?m+'m':(m/1000).toFixed(1)+'km';}
 
 function renderDistancePanel(){
   const el=document.getElementById('distancePanel');if(!el)return;
+  if(myProfile?.role==='child'){
+    // Dziecko widzi swój status GPS + przycisk odśwież
+    const myLoc=live.locations[getMyUid()];
+    if(myLoc){
+      const d=new Date(myLoc.ts);
+      const timeStr=`${d.getDate()}.${d.getMonth()+1} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      el.innerHTML=`<div style="background:var(--inp);border-radius:10px;padding:9px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">📍</span>
+        <div style="flex:1;font-size:10px;color:var(--soft);">Ostatnia lokalizacja: <b style="color:var(--text);">${timeStr}</b></div>
+        <button onclick="refreshMyLocation()" style="padding:5px 10px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🔄</button>
+      </div>`;
+    } else {
+      el.innerHTML=`<div style="background:var(--inp);border-radius:10px;padding:9px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">📍</span>
+        <div style="flex:1;font-size:10px;color:var(--soft);">GPS nieaktywny</div>
+        <button onclick="refreshMyLocation()" style="padding:5px 10px;border-radius:7px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">📍 Wyślij GPS</button>
+      </div>`;
+    }
+    return;
+  }
   if(myProfile?.role!=='parent'){el.innerHTML='';return;}
   const locs=Object.entries(live.locations||{});
   if(!locs.length){
@@ -3347,6 +3472,8 @@ function renderDistancePanel(){
     const ageMin=Math.round((now-loc.ts)/60000);
     const fresh=ageMin<3;
     const stale=ageMin>15;
+    const locDate=new Date(loc.ts);
+    const locTimeStr=`${locDate.getDate()}.${locDate.getMonth()+1} ${String(locDate.getHours()).padStart(2,'0')}:${String(locDate.getMinutes()).padStart(2,'0')}`;
     // Odległość od DOMU
     let distHome='—';
     if(homeLocation&&loc.lat&&loc.lng){
@@ -3364,7 +3491,7 @@ function renderDistancePanel(){
       <div class="dist-av">${mem.avatar||'👤'}</div>
       <div class="dist-info">
         <div class="dist-name">${roleLabel}${mem.name} <span style="font-size:9px;color:rgba(255,255,255,.5);">🗺️</span></div>
-        <div class="dist-detail">${fresh?'📍 Właśnie':stale?`⚠️ ${ageMin} min temu`:`📍 ${ageMin} min temu`}${loc.acc?' ±'+loc.acc+'m':''}${distMe}</div>
+        <div class="dist-detail">${fresh?'📍 Właśnie':stale?`⚠️ ${ageMin} min temu`:`📍 ${ageMin} min temu`} · ${locTimeStr}${loc.acc?' ±'+loc.acc+'m':''}${distMe}</div>
       </div>
       <div class="dist-val" style="font-size:${distHome.length>4?'11px':'13px'};">${distHome}</div>
       <div class="dist-dot" style="background:${fresh?'#22c55e':stale?'#ef4444':'#f59e0b'}"></div>
@@ -3672,7 +3799,7 @@ function goTab(id){
     const hst=document.getElementById('homeLocSettingsStatus');
     if(hst){hst.textContent=homeLocation?`✅ Dom ustawiony: ${homeLocation.lat.toFixed(4)}, ${homeLocation.lng.toFixed(4)}`:'⚠️ Nie ustawiono lokalizacji domu';}
     // Pokaż status GCal
-    _gcalUpdateUI(!!gcalToken);renderReferralSetting();
+    _gcalUpdateUI(!!gcalToken);renderReferralSetting();renderWidgetConfig();
   }
   if(id==='weather'){renderWeatherFull();renderWeatherHourly();renderWeatherCitiesManager();
     // Update city tab labels
@@ -4632,6 +4759,307 @@ window.openChoreIcoChange=function(e,choreId,catId){
   };
   openEmojiPickerFor(null,e);
   // Override pickEmoji for this special target
+};
+
+
+/* ══════════════════════════════════════════════
+   v21 — NOWE FUNKCJE
+   ══════════════════════════════════════════════ */
+
+/* ── STICKY — DRAG & DROP + RICH TEXT ── */
+function renderStickyNotesV2(){
+  const notes=(live.notes['misc']||[]);
+  const SCOLORS_REF=[{id:'sc-y',bg:'#fef08a'},{id:'sc-g',bg:'#bbf7d0'},{id:'sc-b',bg:'#bae6fd'},{id:'sc-p',bg:'#e9d5ff'},{id:'sc-o',bg:'#fed7aa'}];
+  const colorPicker=SCOLORS_REF.map(sc=>`<div class="scolor-dot ${sc.id} ${activeStickyColor===sc.id?'sel':''}" style="background:${sc.bg};" onclick="setStickyColor('${sc.id}')"></div>`).join('');
+  let grid=notes.map((n,i)=>{
+    const lines=(n.body||n.text||'').replace(/<[^>]+>/g,'').slice(0,60);
+    return`<div class="sticky ${n.color||'sc-y'}" draggable="true"
+      data-note-idx="${i}"
+      ondragstart="noteDragStart(event,${i})"
+      ondragover="noteDragOver(event)"
+      ondrop="noteDrop(event,${i})"
+      ondragleave="noteDragLeave(event)"
+      onclick="openStickyEditor('${n.id}')">
+      <div class="sticky-title">${(n.title||n.text||'Notatka').replace(/</g,'&lt;')}</div>
+      ${lines?`<div class="sticky-preview">${lines.replace(/</g,'&lt;')}</div>`:''}
+      <div class="sticky-meta">${n.who||''} · ${getAgo(n.ts)}</div>
+      <div class="sticky-x" onclick="event.stopPropagation();deleteNote('misc','${n.id}')">✕</div>
+    </div>`;
+  }).join('');
+  if(!grid) grid=`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--soft);font-size:12px;font-weight:700;">📝 Kliknij + żeby dodać</div>`;
+  document.getElementById('familyTabContent').innerHTML=`
+    <div class="scolor-row">${colorPicker}</div>
+    <div class="sticky-grid" id="stickyGrid">${grid}</div>
+    <div class="note-add-row">
+      <input class="note-add-inp" id="stickyInp" placeholder="Tytuł nowej karteczki…" onkeydown="if(event.key==='Enter')addStickyNote()">
+      <button class="note-add-btn" onclick="addStickyNote()">+</button>
+    </div>`;
+}
+
+// Override renderStickyNotes
+window._origRenderStickyNotes=window.renderStickyNotes;
+window.renderStickyNotes=renderStickyNotesV2;
+
+// Drag & drop state
+let _noteDragIdx=-1;
+window.noteDragStart=function(e,idx){_noteDragIdx=idx;e.target.classList.add('dragging-note');};
+window.noteDragOver=function(e){e.preventDefault();e.target.closest('.sticky')?.classList.add('drag-over-note');};
+window.noteDragLeave=function(e){e.target.closest('.sticky')?.classList.remove('drag-over-note');};
+window.noteDrop=async function(e,targetIdx){
+  e.preventDefault();
+  const el=e.target.closest('.sticky');if(el)el.classList.remove('drag-over-note');
+  if(_noteDragIdx<0||_noteDragIdx===targetIdx){_noteDragIdx=-1;return;}
+  const notes=live.notes['misc']||[];
+  const moved=notes.splice(_noteDragIdx,1)[0];
+  notes.splice(targetIdx,0,moved);
+  live.notes['misc']=notes;
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),notes);
+  renderStickyNotes();
+  _noteDragIdx=-1;
+};
+
+// Rich text editor — override openStickyEditor
+window._origOpenStickyEditor=window.openStickyEditor;
+window.openStickyEditor=function(id){
+  const note=(live.notes['misc']||[]).find(n=>n.id===id);if(!note)return;
+  stickyEditId=id;
+  const SCOLORS_REF=[{id:'sc-y',bg:'#fef08a'},{id:'sc-g',bg:'#bbf7d0'},{id:'sc-b',bg:'#bae6fd'},{id:'sc-p',bg:'#e9d5ff'},{id:'sc-o',bg:'#fed7aa'}];
+  const col=SCOLORS_REF.find(s=>s.id===(note.color||'sc-y'))||SCOLORS_REF[0];
+  let el=document.getElementById('stickyEditorOverlay');
+  if(!el){el=document.createElement('div');el.id='stickyEditorOverlay';document.body.appendChild(el);}
+  el.className='';
+  const toolbar=`<div class="sticky-toolbar">
+    <button class="stb-btn" onclick="stbCmd('bold')" title="Pogrubienie"><b>B</b></button>
+    <button class="stb-btn" onclick="stbCmd('italic')" title="Kursywa"><i>I</i></button>
+    <button class="stb-btn" onclick="stbCmd('underline')" title="Podkreślenie"><u>U</u></button>
+    <button class="stb-btn" onclick="stbCmd('strikeThrough')" title="Przekreślenie"><s>S</s></button>
+    <button class="stb-btn" style="font-size:10px;" onclick="stbInsert('<h2>Nagłówek</h2>')" title="Nagłówek">H</button>
+    <button class="stb-btn" onclick="stbCmd('insertUnorderedList')" title="Lista punktowana">•</button>
+    <button class="stb-btn" onclick="stbCmd('insertOrderedList')" title="Lista numerowana">1.</button>
+    <button class="stb-btn" onclick="stbInsert('<blockquote>Cytat</blockquote>')" title="Cytat">❝</button>
+    <button class="stb-btn" onclick="stbCmd('removeFormat')" title="Usuń formatowanie">✕</button>
+  </div>`;
+  el.innerHTML=`<div class="sticky-editor" style="background:${col.bg};">
+    <input class="sticky-editor-title" id="seTitle" value="${(note.title||'').replace(/"/g,'&quot;')}" placeholder="Tytuł karteczki">
+    <div class="scolor-row" style="margin-bottom:5px;">${SCOLORS_REF.map(sc=>`<div class="scolor-dot ${sc.id} ${(note.color||'sc-y')===sc.id?'sel':''}" style="background:${sc.bg};" onclick="changeStickyColor('${id}','${sc.id}',this)"></div>`).join('')}</div>
+    ${toolbar}
+    <div class="sticky-editor-body" id="seBody" contenteditable="true">${note.body||note.text||''}</div>
+    <div class="sticky-editor-actions">
+      <button class="sticky-editor-btn" style="background:rgba(0,0,0,.15);color:#1a1a1a;flex:1;" onclick="saveStickyEditorV2()">💾 Zapisz</button>
+      <button class="sticky-editor-btn" style="background:rgba(232,64,64,.15);color:#c00;" onclick="deleteStickyFromEditor('${id}')">🗑️</button>
+      <button class="sticky-editor-btn" style="background:rgba(0,0,0,.08);color:#1a1a1a;" onclick="closeStickyEditor()">✕</button>
+    </div>
+  </div>`;
+  el.classList.add('show');
+  setTimeout(()=>document.getElementById('seBody')?.focus(),100);
+};
+window.stbCmd=function(cmd){document.execCommand(cmd,false,null);document.getElementById('seBody')?.focus();};
+window.stbInsert=function(html){document.execCommand('insertHTML',false,html);};
+window.saveStickyEditorV2=async function(){
+  const title=document.getElementById('seTitle')?.value?.trim()||'Notatka';
+  const body=document.getElementById('seBody')?.innerHTML||'';
+  const note=(live.notes['misc']||[]).find(n=>n.id===stickyEditId);
+  if(note){note.title=title;note.body=body;note.ts=Date.now();}
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
+  closeStickyEditor();renderStickyNotes();
+};
+window.saveStickyEditor=window.saveStickyEditorV2;
+
+/* ── ZAKUPY MINI NA DZIŚ ── */
+let todayShopOpen=false;
+window.toggleTodayShop=function(){
+  todayShopOpen=!todayShopOpen;
+  const body=document.getElementById('todayShopBody');
+  const tog=document.getElementById('todayShopToggle');
+  if(body)body.style.display=todayShopOpen?'block':'none';
+  if(tog)tog.textContent=todayShopOpen?'▲ schowaj':'▼ pokaż';
+  if(todayShopOpen) renderTodayShop();
+};
+function renderTodayShop(){
+  const el=document.getElementById('todayShopBody');if(!el)return;
+  const dow=new Date().getDay();
+  const key='shop_'+dow;
+  const items=(live.notes[key]||[]).filter(n=>!n.done);
+  if(!items.length){
+    el.innerHTML=`<div style="padding:10px;text-align:center;font-size:11px;color:var(--soft);">Brak zakupów na dziś 🎉</div>`;return;
+  }
+  el.innerHTML=`<div style="padding:8px 12px;">${items.slice(0,8).map(n=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">
+      <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;background:${n.will?'var(--g2)':'var(--inp)'}" onclick="shopWill('${key}','${n.id}');renderTodayShop()"></div>
+      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);"> → ${n.assignedTo}</span>`:''}</span>
+      <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;background:${n.done?'var(--g2)':'var(--inp)'}" onclick="shopDone('${key}','${n.id}');renderTodayShop()"></div>
+    </div>`).join('')}
+    ${items.length>8?`<div style="font-size:10px;color:var(--soft);text-align:center;padding-top:5px;">...i ${items.length-8} więcej</div>`:''}
+    <div style="padding-top:6px;"><button onclick="goTab('family');setTimeout(()=>switchFamilyTab('shopping'),80);" style="width:100%;padding:6px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);">📋 Pełna lista zakupów</button></div>
+  </div>`;
+}
+// Odśwież przy zmianach notatek
+const _origRenderNotesOld=window.renderNotes;
+
+/* ── WIDGET CONFIG — konfigurowalny ekran główny ── */
+const DEFAULT_WIDGETS=[
+  {id:'childTasks',label:'🧒 Zadania dzieci',show:true},
+  {id:'joinReqs',label:'🔔 Prośby dołączenia',show:true},
+  {id:'bday',label:'🎂 Urodziny',show:true},
+  {id:'events',label:'📅 Wydarzenia',show:true},
+  {id:'curfew',label:'🏠 Powrót dzieci',show:true},
+  {id:'distance',label:'📍 Lokalizacje',show:true},
+  {id:'schedule',label:'📆 Harmonogram powrotów',show:true},
+  {id:'chat',label:'💬 Czat mini',show:true},
+  {id:'shop',label:'🛒 Zakupy dziś',show:true},
+  {id:'week',label:'📅 Tydzień / Kalendarz',show:true},
+];
+let widgetConfig=JSON.parse(localStorage.getItem('dp-widgets')||'null')||DEFAULT_WIDGETS;
+function saveWidgetConfig(){
+  const rows=document.querySelectorAll('#widgetConfigList .widget-cfg-row');
+  widgetConfig=Array.from(rows).map(row=>({
+    id:row.dataset.id,
+    label:row.querySelector('.widget-cfg-lbl')?.textContent||'',
+    show:row.querySelector('.widget-cfg-chk')?.checked||false,
+  }));
+  localStorage.setItem('dp-widgets',JSON.stringify(widgetConfig));
+  applyWidgetConfig();
+  showToast('✅ Konfiguracja widżetów zapisana!');
+}
+window.saveWidgetConfig=saveWidgetConfig;
+
+function applyWidgetConfig(){
+  const map={
+    childTasks:'childTasksPanel',
+    joinReqs:'joinRequestsPanel',
+    bday:'bdayPanel',
+    events:'eventsTopPanel',
+    curfew:'curfewPanel',
+    distance:'distancePanel',
+    schedule:'returnSchedulePanel',
+    chat:'todayChatMini',
+    shop:'todayShopMini',
+    week:'weekCard',
+  };
+  widgetConfig.forEach(w=>{
+    const el=document.getElementById(map[w.id]);
+    if(el) el.style.display=w.show?'':'none';
+  });
+}
+
+function renderWidgetConfig(){
+  const el=document.getElementById('widgetConfigList');if(!el)return;
+  el.innerHTML=widgetConfig.map((w,i)=>`
+    <div class="widget-cfg-row" data-id="${w.id}" draggable="true"
+      ondragstart="wCfgDragStart(event,${i})"
+      ondragover="wCfgDragOver(event)"
+      ondrop="wCfgDrop(event,${i})"
+      ondragleave="wCfgDragLeave(event)">
+      <span class="widget-drag-handle">⠿</span>
+      <input type="checkbox" class="widget-cfg-chk" ${w.show?'checked':''}>
+      <span class="widget-cfg-lbl">${w.label}</span>
+    </div>`).join('');
+}
+let _wCfgDragIdx=-1;
+window.wCfgDragStart=function(e,i){_wCfgDragIdx=i;e.target.style.opacity='.4';};
+window.wCfgDragOver=function(e){e.preventDefault();e.currentTarget.style.background='var(--gp)';};
+window.wCfgDragLeave=function(e){e.currentTarget.style.background='';};
+window.wCfgDrop=function(e,targetIdx){
+  e.currentTarget.style.background='';
+  if(_wCfgDragIdx<0||_wCfgDragIdx===targetIdx){_wCfgDragIdx=-1;return;}
+  const moved=widgetConfig.splice(_wCfgDragIdx,1)[0];
+  widgetConfig.splice(targetIdx,0,moved);
+  renderWidgetConfig();_wCfgDragIdx=-1;
+};
+
+/* ── HISTORIA PUNKTÓW — kasowanie od daty ── */
+window.deleteHistoryFrom=async function(){
+  if(myProfile?.role!=='parent'){showToast('⚠️ Tylko rodzic może kasować historię');return;}
+  const fromDate=document.getElementById('histDeleteFrom')?.value;
+  if(!fromDate){showToast('⚠️ Wybierz datę');return;}
+  if(!confirm(`Usunąć historię od ${fromDate} i przeliczyć punkty?`))return;
+  const fromTs=new Date(fromDate).getTime();
+  if(isDemo){
+    live.history=live.history.filter(h=>h.ts<fromTs);
+    // Przelicz punkty każdego członka
+    const pts={};
+    live.history.filter(h=>h.pts>0).forEach(h=>{pts[h.uid]=(pts[h.uid]||0)+h.pts;});
+    Object.entries(live.members).forEach(([uid,mem])=>{
+      live.members[uid].points=pts[uid]||0;
+    });
+    renderHistory();renderScores();renderStats();showToast('✅ Historia wyczyszczona (demo)');return;
+  }
+  try{
+    // Pobierz całą historię
+    const histSnap=await get(ref(db,`f/${fCode}/history`));
+    const histObj=histSnap.val()||{};
+    // Usuń wpisy od daty
+    const toDelete=Object.entries(histObj).filter(([,v])=>v.ts>=fromTs);
+    for(const[k] of toDelete) await set(ref(db,`f/${fCode}/history/${k}`),null);
+    // Przelicz punkty każdego członka od nowa
+    const remaining=Object.values(histObj).filter(v=>v.ts<fromTs);
+    const newPts={};
+    remaining.filter(h=>h.pts>0).forEach(h=>{newPts[h.uid]=(newPts[h.uid]||0)+h.pts;});
+    for(const[uid,mem] of Object.entries(live.members)){
+      const p=newPts[uid]||0;
+      await update(ref(db,`families/${fCode}/members/${uid}`),{points:p});
+      await update(ref(db,`users/${uid}/profile`),{points:p});
+    }
+    showToast('✅ Historia wyczyszczona · punkty przeliczone!');
+  }catch(e){showToast('❌ Błąd: '+e.message);}
+};
+
+/* ── EVENTS — GEOCODING + ODLEGŁOŚĆ + CZAS DOJAZDU ── */
+window.geocodeEventLoc=async function(inputId,resultId){
+  const inp=document.getElementById(inputId);
+  const res=document.getElementById(resultId);
+  const addr=(inp?.value||'').trim();
+  if(!addr){if(res)res.innerHTML='';return;}
+  if(res)res.innerHTML=`<div style="font-size:10px;color:var(--soft);padding:4px;">🔍 Szukam…</div>`;
+  try{
+    // Geocode przez Nominatim
+    const geo=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1`,
+      {headers:{'Accept-Language':'pl','User-Agent':'DomowPatrol/1.0'}});
+    const gd=await geo.json();
+    if(!gd?.length){if(res)res.innerHTML=`<div style="font-size:10px;color:var(--r);padding:4px;">❌ Nie znaleziono</div>`;return;}
+    const {lat,lon,display_name}=gd[0];
+    const toLat=parseFloat(lat),toLng=parseFloat(lon);
+    // Oblicz odległość od domu
+    let distStr='';
+    if(homeLocation){
+      const dm=haversine(homeLocation.lat,homeLocation.lng,toLat,toLng);
+      distStr=`📏 ${fmtDist(dm)} od domu`;
+    }
+    // Czas dojazdu przez OSRM (darmowe, bez klucza)
+    let travelHtml='';
+    if(homeLocation){
+      try{
+        const [carR,bikeR,footR]=await Promise.all([
+          fetch(`https://router.project-osrm.org/route/v1/driving/${homeLocation.lng},${homeLocation.lat};${toLng},${toLat}?overview=false`),
+          fetch(`https://router.project-osrm.org/route/v1/cycling/${homeLocation.lng},${homeLocation.lat};${toLng},${toLat}?overview=false`),
+          fetch(`https://router.project-osrm.org/route/v1/foot/${homeLocation.lng},${homeLocation.lat};${toLng},${toLat}?overview=false`),
+        ]);
+        const [carD,bikeD,footD]=await Promise.all([carR.json(),bikeR.json(),footR.json()]);
+        const fmtMin=s=>{const m=Math.round(s/60);return m<60?m+'min':`${Math.floor(m/60)}h${m%60?m%60+'min':''}`};
+        travelHtml=`<div class="ev-travel">
+          <div class="ev-travel-item"><div class="ev-travel-ico">🚗</div><div class="ev-travel-val">${fmtMin(carD.routes?.[0]?.duration||0)}</div><div class="ev-travel-lbl">Samochodem</div></div>
+          <div class="ev-travel-item"><div class="ev-travel-ico">🚴</div><div class="ev-travel-val">${fmtMin(bikeD.routes?.[0]?.duration||0)}</div><div class="ev-travel-lbl">Rowerem</div></div>
+          <div class="ev-travel-item"><div class="ev-travel-ico">🚶</div><div class="ev-travel-val">${fmtMin(footD.routes?.[0]?.duration||0)}</div><div class="ev-travel-lbl">Pieszo</div></div>
+        </div>`;
+      }catch(e){travelHtml=`<div style="font-size:10px;color:var(--soft);padding:4px;">Czas dojazdu niedostępny</div>`;}
+    }
+    if(res)res.innerHTML=`<div style="font-size:10px;color:var(--soft);padding:4px 0;">${display_name.slice(0,60)}${distStr?'<br>'+distStr:''}</div>${travelHtml}
+      <a href="https://www.google.com/maps/search/${encodeURIComponent(addr)}" target="_blank" style="font-size:10px;color:var(--b);font-weight:800;text-decoration:none;">🗺️ Otwórz w Google Maps</a>`;
+    // Zapisz współrzędne do inputa jako data attribute
+    if(inp){inp.dataset.lat=toLat;inp.dataset.lng=toLng;}
+  }catch(e){if(res)res.innerHTML=`<div style="font-size:10px;color:var(--r);">❌ Błąd: ${e.message}</div>`;}
+};
+
+/* ── LOKALIZACJA DZIECKA — przycisk odśwież ── */
+window.refreshMyLocation=function(){
+  if(!navigator.geolocation||!currentUser?.uid){showToast('⚠️ Brak GPS');return;}
+  showToast('📍 Pobieranie lokalizacji…');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const uid=currentUser.uid;
+    const data={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:Math.round(pos.coords.accuracy||0),ts:Date.now(),name:myProfile.name,avatar:myProfile.avatar||'👤',uid};
+    if(!isDemo) update(ref(db,`families/${fCode}/locations/${uid}`),data).then(()=>showToast('✅ Lokalizacja zaktualizowana!'));
+    else{live.locations[uid]=data;showToast('✅ Lokalizacja zaktualizowana!');}
+  },()=>showToast('❌ Brak sygnału GPS'),{enableHighAccuracy:true,timeout:8000});
 };
 
 window.goTab=goTab;
