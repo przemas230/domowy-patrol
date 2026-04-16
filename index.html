@@ -920,6 +920,13 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       </div>
       <div id="todayShopBody" style="display:none;"></div>
     </div>
+    <div id="todayNotesMini" style="display:none;background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;">
+      <div class="twm-hdr" onclick="toggleTodayNotes()">
+        <span style="font-size:12px;font-weight:900;color:var(--text);">📝 Notatki</span>
+        <span id="todayNotesToggle" style="font-size:10px;color:var(--soft);">▼ pokaż</span>
+      </div>
+      <div id="todayNotesBody" style="display:none;"></div>
+    </div>
     <div class="card" id="weekCard">
       <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
         <button onclick="shiftWeek(-1)" style="border:none;background:var(--inp);border-radius:7px;padding:3px 9px;font-size:14px;cursor:pointer;color:var(--text);">◀</button>
@@ -1918,7 +1925,7 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderDistancePanel();}});
     onValue(ref(db,`families/${fCode}/joinRequests`),s=>{live.joinReqs=s.val()||{};renderJoinRequests();});
     onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChatV2();if(todayChatOpen)renderTodayChatFeed();});
-    onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);if(todayShopOpen)renderTodayShop();});
+    onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);if(todayShopOpen)renderTodayShop();if(todayNotesOpen)renderTodayNotes();});
     onValue(ref(db,`families/${fCode}/wishes`),s=>{const r=s.val()||{};live.wishes=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));if(activeFamilyTab==='wishes')renderWishes();});
     onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
     onValue(ref(db,`families/${fCode}/events`),s=>{const r=s.val()||{};live.events=Object.values(r).sort((a,b)=>a.date>b.date?1:-1);renderEventsTopPanel();if(activeFamilyTab==='events')renderEventsTab();});
@@ -2204,7 +2211,7 @@ function wmoIcon(c){if(c===0)return'☀️';if(c<=3)return'⛅';if(c<=49)return'
 function wmoText(c){if(c===0)return'Bezchmurnie';if(c<=3)return'Częściowo zachmurzono';if(c<=49)return'Mgła';if(c<=67)return'Deszcz';if(c<=77)return'Śnieg';if(c<=82)return'Przelotne opady';return'Burza';}
 function outfitSuggestion(w){const f=w.now.feels;const rain=w.today.rain>0;const wind=w.now.wind>30;let t='';if(f<0)t='🧥❄️ Bardzo zimno! Kurtka zimowa, czapka, szalik i rękawiczki.';else if(f<8)t='🧥 Chłodno — gruba kurtka lub płaszcz.';else if(f<14)t='🧤 Lekko chłodno — kurtka lub bluza z kapturem.';else if(f<20)t='👕 Przyjemnie — cienka kurtka lub bluza.';else if(f<26)t='😎 Ciepło — T-shirt. Idealnie!';else t='🌡️ Gorąco — lekkie ubrania i dużo wody!';if(rain)t+=' ☔ Weź parasol.';if(wind)t+=' 💨 Silny wiatr.';return t;}
 function renderWeatherStrip(){if(!weatherCache) return;const w=weatherCache;const diff=w.today.max-w.yesterday.max;const ds=diff>0?`▲${diff}°C`:diff<0?`▼${Math.abs(diff)}°C`:'';const s=document.getElementById('weatherStrip');s.style.display='flex';s.innerHTML=`<div class="ws-ico">${wmoIcon(w.now.code)}</div><div class="ws-temp">${w.now.temp}°C</div><div class="ws-desc">${wmoText(w.now.code)} · jutro ${w.tomorrow.min}–${w.tomorrow.max}°C ${wmoIcon(w.tomorrow.code)}</div>${ds?`<div class="ws-diff">${ds} vs wczoraj</div>`:''}`;document.getElementById('weatherStrip').style.display='flex';}
-function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherFull').innerHTML='<div class="empty"><div class="big">🌤️</div><p>Brak danych · wpisz miasto w Opcjach</p></div>';return;}const w=weatherCache;const diff=w.today.max-w.yesterday.max;const dTxt=diff>0?`▲ ${diff}°C cieplej niż wczoraj`:diff<0?`▼ ${Math.abs(diff)}°C zimniej niż wczoraj`:'Tyle samo co wczoraj';const dClr=diff>0?'var(--r)':diff<0?'var(--b)':'var(--soft)';document.getElementById('weatherFull').innerHTML=`${w.city?`<div style="font-size:11px;color:var(--soft);margin-bottom:8px;">📍 ${w.city}</div>`:''}
+function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherFull').innerHTML='<div class="empty"><div class="big">🌤️</div><p>Brak danych · wpisz miasto poniżej</p><div class="weather-loc-row" style="margin-top:9px;"><input id="weatherCityInput2" placeholder="np. Warszawa"><button onclick="weatherCity=document.getElementById(\'weatherCityInput2\').value;localStorage.setItem(\'dp-weather-city\',weatherCity);fetchWeatherByCity()">🔍</button></div></div>';return;}const w=weatherCache;const diff=w.today.max-w.yesterday.max;const dTxt=diff>0?`▲ ${diff}°C cieplej niż wczoraj`:diff<0?`▼ ${Math.abs(diff)}°C zimniej niż wczoraj`:'Tyle samo co wczoraj';const dClr=diff>0?'var(--r)':diff<0?'var(--b)':'var(--soft)';document.getElementById('weatherFull').innerHTML=`${w.city?`<div style="font-size:11px;color:var(--soft);margin-bottom:8px;">📍 ${w.city}</div>`:''}
   <div class="weather-main">
     <div class="w-day-card"><div class="w-day-lbl">Wczoraj</div><div class="w-day-ico">${wmoIcon(w.yesterday.code)}</div><div class="w-day-temp">${w.yesterday.min}–${w.yesterday.max}°C</div></div>
     <div class="w-day-card" style="border:2px solid var(--g2);"><div class="w-day-lbl" style="color:var(--g2)">Dziś</div><div class="w-day-ico">${wmoIcon(w.today.code)}</div><div class="w-day-temp">${w.today.min}–${w.today.max}°C</div><div class="w-day-feel">Odcz. ${w.now.feels}°C</div></div>
@@ -2223,7 +2230,7 @@ function renderWeatherFull(){if(!weatherCache){document.getElementById('weatherF
       <div style="font-size:16px;">☀️</div><div style="font-size:11px;font-weight:900;color:var(--text);">UV ${w.now.uv||0}</div><div style="font-size:9px;color:var(--soft);">Indeks UV</div>
     </div>
   </div>
-  <div class="weather-loc-row" style="margin-top:9px;"><input id="weatherCityInput2" placeholder="Zmień miasto" value="${w.city||''}"><button onclick="document.getElementById('weatherCityInput').value=document.getElementById('weatherCityInput2').value;fetchWeatherByCity()">🔍</button></div>`;}
+  <div class="weather-loc-row" style="margin-top:9px;"><input id="weatherCityInput2" placeholder="Zmień miasto" value="${w.city||''}"><button onclick="weatherCity=document.getElementById('weatherCityInput2').value;localStorage.setItem('dp-weather-city',weatherCity);fetchWeatherByCity()">🔍</button></div>`;}
 
 /* ── LOCATION ── */
 function startLocationSharing(){
@@ -2738,35 +2745,81 @@ function renderRewards(){const uid=getMyUid();const myPts=live.members[uid]?.poi
 async function redeem(id,cost,name){const uid=getMyUid();const cur=live.members[uid]?.points||0;if(cur<cost)return;if(isDemo){live.members[uid].points=cur-cost;live.history.unshift({ico:'🎁',name:`Nagroda: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts:-cost,ts:Date.now()});renderRewards();renderScores();showToast(`🎁 Odebrano: ${name}!`);return;}await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur-cost});await update(ref(db,`users/${uid}/profile`),{points:cur-cost});await push(ref(db,`f/${fCode}/history`),{ico:'🎁',name:`Nagroda: ${name}`,who:myProfile.name,avatar:myProfile.avatar,uid,pts:-cost,ts:Date.now()});showToast(`🎁 Odebrano: ${name}!`);}
 window.redeem=redeem;
 function renderSummary(){const hist=live.history;const dow=today.getDay();const mon=new Date(today);mon.setDate(today.getDate()-((dow+6)%7));const sun=new Date(mon);sun.setDate(mon.getDate()+6);const wH=hist.filter(h=>h.ts&&h.ts>=mon.getTime()&&h.ts<=sun.getTime()+MS.day&&h.pts>0);const wPts=wH.reduce((a,h)=>a+h.pts,0);const byM={};wH.forEach(h=>{byM[h.who]=(byM[h.who]||{pts:0,n:0,av:h.avatar});byM[h.who].pts+=h.pts;byM[h.who].n++;});const champ=Object.entries(byM).sort((a,b)=>b[1].pts-a[1].pts)[0];document.getElementById('weeklySummary')&&(document.getElementById('weeklySummary').innerHTML=`<div class="sum-hero"><div class="sum-title">📅 Tydzień ${d2(mon.getDate())}.${d2(mon.getMonth()+1)} – ${d2(sun.getDate())}.${d2(sun.getMonth()+1)}</div><div class="sum-grid"><div class="sum-cell"><div class="sum-val">${wH.length}</div><div class="sum-lbl">Zadań</div></div><div class="sum-cell"><div class="sum-val">${wPts}</div><div class="sum-lbl">Punktów</div></div><div class="sum-cell"><div class="sum-val">${Object.keys(byM).length}</div><div class="sum-lbl">Aktywnych</div></div></div>${champ?`<div class="sum-champ"><div class="sum-champ-av">${champ[1].av||'🏆'}</div><div><div class="sum-champ-lbl">⭐ Mistrz tygodnia</div><div class="sum-champ-nm">${champ[0]} — ${champ[1].pts} pkt</div></div></div>`:''}</div>`);const mS=new Date(today.getFullYear(),today.getMonth(),1);const mE=new Date(today.getFullYear(),today.getMonth()+1,0);const mH=hist.filter(h=>h.ts&&h.ts>=mS.getTime()&&h.ts<=mE.getTime()+MS.day&&h.pts>0);const mPts=mH.reduce((a,h)=>a+h.pts,0);const mChamp=Object.entries(mH.reduce((b,h)=>{b[h.who]=(b[h.who]||{pts:0,av:h.avatar});b[h.who].pts+=h.pts;return b;},{})).sort((a,b)=>b[1].pts-a[1].pts)[0];document.getElementById('monthlySummary')&&(document.getElementById('monthlySummary').innerHTML=`<div class="card"><div class="card-ttl">${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;${mChamp?'margin-bottom:8px;':''}"><div style="background:var(--inp);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--g2)">${mH.length}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Zadań</div></div><div style="background:var(--inp);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--g2)">${mPts}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Punktów</div></div><div style="background:var(--inp);border-radius:8px;padding:8px;text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--g2)">${new Set(mH.map(h=>h.who)).size}</div><div style="font-size:9px;color:var(--soft);font-weight:700">Aktywnych</div></div></div>${mChamp?`<div style="display:flex;align-items:center;gap:7px;background:var(--inp);border-radius:8px;padding:8px;"><div style="font-size:22px">${mChamp[1].av||'🏆'}</div><div><div style="font-size:9px;color:var(--soft);font-weight:700">🏆 Mistrz miesiąca</div><div style="font-size:12px;font-weight:900;color:var(--text);">${mChamp[0]} — ${mChamp[1].pts} pkt</div></div></div>`:''}</div>`);}
+let _histOpenPeriod='today';
 function renderHistory(){
   const myUid=getMyUid();
   const isParent=myProfile?.role==='parent';
-  document.getElementById('histList').innerHTML=live.history.length
-    ?live.history.slice(0,30).map((x,i)=>{
-      const canUndo=isParent||(x.uid===myUid&&x.pts>0);
-      return`<div class="hi"><div class="hi-ico">${x.ico||'✅'}</div><div class="hi-info"><div class="hi-nm">${x.name}</div><div class="hi-who">${x.avatar||''} ${x.who} · ${getAgo(x.ts)}</div></div><div class="hi-pts">${x.pts>0?'+':''}${x.pts}⭐</div>${canUndo?`<button onclick="undoHistEntry(${i})" style="margin-left:5px;padding:2px 7px;border-radius:7px;border:1.5px solid rgba(232,64,64,.4);background:rgba(232,64,64,.07);color:var(--r);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;" title="Cofnij ten wpis">↩️</button>`:''}
-      </div>`;
-    }).join('')
-    :'<div class="empty"><div class="big">📭</div><p>Brak historii</p></div>';
+  const now=Date.now();
+  const startOfDay=new Date();startOfDay.setHours(0,0,0,0);
+  const periods=[
+    {id:'today',label:'📆 Dziś',from:startOfDay.getTime(),to:now},
+    {id:'week',label:'📅 Ostatni tydzień',from:now-7*86400000,to:now},
+    {id:'two_weeks',label:'🗓️ Ostatnie 2 tygodnie',from:now-14*86400000,to:now},
+    {id:'month',label:'🗓️ Ostatni miesiąc',from:now-30*86400000,to:now},
+  ];
+  const el=document.getElementById('histList');if(!el)return;
+  if(!live.history.length){el.innerHTML='<div class="empty"><div class="big">📭</div><p>Brak historii</p></div>';return;}
+
+  function makeEntry(x,i){
+    const canUndo=isParent||(x.uid===myUid&&x.pts>0);
+    return`<div class="hi"><div class="hi-ico">${x.ico||'✅'}</div><div class="hi-info"><div class="hi-nm">${x.name}</div><div class="hi-who">${x.avatar||''} ${x.who} · ${getAgo(x.ts)}</div></div><div class="hi-pts">${x.pts>0?'+':''}${x.pts}⭐</div>${canUndo?`<button onclick="undoHistEntry(${i})" style="margin-left:5px;padding:2px 7px;border-radius:7px;border:1.5px solid rgba(232,64,64,.4);background:rgba(232,64,64,.07);color:var(--r);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">↩️</button>`:''}</div>`;
+  }
+
+  let html='';
+  periods.forEach(p=>{
+    const entries=live.history.map((x,i)=>({x,i})).filter(({x})=>x.ts>=p.from&&x.ts<=p.to);
+    // "Dziś" nie duplikuje się w innych — inne okresy wykluczają dziś
+    const filtered=p.id==='today'?entries:live.history.map((x,i)=>({x,i})).filter(({x})=>x.ts>=p.from&&x.ts<startOfDay.getTime());
+    const open=_histOpenPeriod===p.id;
+    const pts=filtered.reduce((a,{x})=>a+(x.pts>0?x.pts:0),0);
+    html+=`<div style="border-bottom:1px solid var(--border);margin-bottom:2px;">
+      <div onclick="toggleHistPeriod('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;padding:8px 4px;cursor:pointer;user-select:none;">
+        <span style="font-size:11px;font-weight:800;color:var(--text);">${p.label}</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;font-weight:800;color:var(--g2);">${filtered.length} wpisów · +${pts}⭐</span>
+          <span style="font-size:11px;color:var(--soft);">${open?'▲':'▼'}</span>
+        </div>
+      </div>
+      <div id="histPer_${p.id}" style="${open?'':'display:none;'}">
+        ${filtered.length?filtered.slice(0,30).map(({x,i})=>makeEntry(x,i)).join(''):'<div style="font-size:11px;color:var(--soft);padding:6px 4px;">Brak wpisów w tym okresie</div>'}
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
 }
+window.toggleHistPeriod=function(id){
+  _histOpenPeriod=_histOpenPeriod===id?null:id;
+  renderHistory();
+};
 window.undoHistEntry=async function(idx){
   const x=live.history[idx];if(!x)return;
   if(!confirm(`Cofnąć: ${x.name} (${x.pts>0?'+':''}${x.pts}⭐)?`))return;
   const uid=x.uid;
+  const ptsToSubtract=x.pts>0?x.pts:0; // cofamy tylko pozytywne punkty
   if(isDemo){
     live.history.splice(idx,1);
-    if(uid&&live.members[uid]&&x.pts){live.members[uid].points=Math.max(0,(live.members[uid].points||0)-x.pts);}
+    if(uid&&live.members[uid]&&ptsToSubtract){
+      live.members[uid].points=Math.max(0,(live.members[uid].points||0)-ptsToSubtract);
+    }
     renderHistory();renderScores();renderStats();showToast('↩️ Cofnięto wpis');return;
   }
   try{
+    // 1. Usuń wpis z historii Firebase
     if(x._fbKey) await set(ref(db,`f/${fCode}/history/${x._fbKey}`),null);
-    if(uid&&x.pts){
-      const cur=live.members[uid]?.points||0;
-      const np=Math.max(0,cur-x.pts);
-      await update(ref(db,`families/${fCode}/members/${uid}`),{points:np});
-      await update(ref(db,`users/${uid}/profile`),{points:np});
+    // 2. Przelicz punkty od nowa z pozostałej historii (nie tylko odejmuj — unika dryftu)
+    const histSnap=await get(ref(db,`f/${fCode}/history`));
+    const histObj=histSnap.val()||{};
+    const newPts={};
+    Object.values(histObj).filter(h=>h.pts>0).forEach(h=>{
+      if(h.uid) newPts[h.uid]=(newPts[h.uid]||0)+h.pts;
+    });
+    // 3. Zaktualizuj wszystkich członków
+    for(const[mUid] of Object.entries(live.members)){
+      const p=newPts[mUid]||0;
+      await update(ref(db,`families/${fCode}/members/${mUid}`),{points:p});
+      await update(ref(db,`users/${mUid}/profile`),{points:p});
     }
-    showToast('↩️ Cofnięto wpis · punkty przeliczone');
+    showToast('↩️ Cofnięto wpis · punkty przeliczone z historii');
   }catch(e){showToast('❌ Błąd: '+e.message);}
 };
 function updateProgress(){const total=cats.reduce((a,c)=>a+c.chores.length,0);const done=Object.keys(live.done).length;document.getElementById('progFill').style.width=(total>0?Math.round(done/total*100):0)+'%';document.getElementById('progLbl').textContent=`${done}/${total}`;}
@@ -3068,18 +3121,26 @@ window.sendChatV2=sendChatV2;
 
 /* ── SHOPPING WEEK ── */
 function makeShopItem(n,key){
+  const membersOpts=Object.values(live.members).map(m=>`<option value="${esc(m.name)}">${m.avatar||'👤'} ${m.name}</option>`).join('');
+  const willName=n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'kupię';
+  const doneName=n.done&&n.doneBy?n.doneBy.split(' ')[0]:'kup.';
   return`<div class="si ${n.done?'bought':''}" data-shop-id="${n.id}" data-shop-key="${key}">
     <div class="si-swipe-hint">✓ Kupię</div>
     <div class="si-txt">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);margin-left:5px;">→ ${n.assignedTo}</span>`:''}</div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
-      <div class="si-cb ${n.will&&!n.done?'will':''}" onclick="shopWill('${key}','${n.id}')" title="Planuję kupić">${n.will&&!n.done?'✓':''}</div>
-      <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};white-space:nowrap;">kup</div>
+      <div class="si-cb ${n.will&&!n.done?'will':''}" onclick="shopWill('${key}','${n.id}')" title="Kupię">${n.will&&!n.done?'✓':''}</div>
+      <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};white-space:nowrap;max-width:38px;overflow:hidden;text-overflow:ellipsis;">${willName}</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
-      <div class="si-cb ${n.done?'done':''}" onclick="shopDone('${key}','${n.id}')" title="Kupione!">${n.done?'✓':''}</div>
-      <div style="font-size:7px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};white-space:nowrap;">got</div>
+      <div class="si-cb ${n.done?'done':''}" onclick="shopDone('${key}','${n.id}')" title="Kupione">${n.done?'✓':''}</div>
+      <div style="font-size:7px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};white-space:nowrap;max-width:38px;overflow:hidden;text-overflow:ellipsis;">${doneName}</div>
     </div>
-    <button onclick="shopAssign('${key}','${n.id}')" style="border:none;background:none;font-size:12px;cursor:pointer;padding:1px 3px;" title="Zleć komuś">👤</button>
+    <div style="position:relative;flex-shrink:0;width:20px;height:28px;">
+      <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value=''" style="opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:2;">
+        <option value="">👤</option>${membersOpts}
+      </select>
+      <span style="font-size:14px;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">👤</span>
+    </div>
     <div onclick="deleteNote('${key}','${n.id}')" style="font-size:11px;cursor:pointer;color:var(--soft);padding:2px 4px;">✕</div>
   </div>`;
 }
@@ -3181,7 +3242,8 @@ async function addShopItem(){
 window.addShopItem=addShopItem;
 async function shopWill(key,id){
   const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
-  n.will=!n.will;if(n.will)n.done=false;
+  n.will=!n.will;
+  if(n.will){n.done=false;n.willBy=myProfile.name;}else{n.willBy='';}
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
   renderShoppingWeek();
 }
@@ -3189,16 +3251,29 @@ window.shopWill=shopWill;
 async function shopDone(key,id){
   const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
   n.done=!n.done;
-  if(n.done&&!n.pointed){
-    n.pointed=true;n.will=false;
-    const uid=getMyUid();if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+1;
-    if(!isDemo){const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+1});}
-    showToast('+1⭐ zakupy!');
-  }
+  if(n.done){
+    n.doneBy=myProfile.name;n.will=false;n.willBy='';
+    if(!n.pointed){
+      n.pointed=true;
+      const uid=getMyUid();if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+1;
+      if(!isDemo){const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+1});}
+      showToast('+1⭐ zakupy!');
+    }
+  }else{n.doneBy='';}
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
   renderShoppingWeek();
 }
 window.shopDone=shopDone;
+
+window.shopAssignMember=async function(key,id,name){
+  if(!name)return;
+  const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
+  n.assignedTo=name;
+  // Jeśli nie zaznaczono "kupię" — ustaw automatycznie
+  if(!n.will&&!n.done){n.will=true;n.willBy=name;}
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
+  renderShoppingWeek();showToast(`👤 ${name} kupi: ${n.text}`);
+};
 
 /* ── STICKY NOTES ── */
 const SCOLORS=[{id:'sc-y',bg:'#fef08a'},{id:'sc-g',bg:'#bbf7d0'},{id:'sc-b',bg:'#bae6fd'},{id:'sc-p',bg:'#e9d5ff'},{id:'sc-o',bg:'#fed7aa'}];
@@ -3230,13 +3305,14 @@ function setStickyColor(id){activeStickyColor=id;renderStickyNotes();}
 window.setStickyColor=setStickyColor;
 
 async function addStickyNote(){
-  const inp=document.getElementById('stickyInp');const title=inp?.value?.trim();if(!title)return;inp.value='';
-  const note={id:'n'+Date.now(),title,body:'',color:activeStickyColor,who:myProfile.name,ts:Date.now()};
+  const inp=document.getElementById('stickyInp');
+  const title=(inp?.value?.trim())||'';
+  if(inp) inp.value='';
+  const note={id:'n'+Date.now(),title:title||'Nowa notatka',body:'',color:activeStickyColor,who:myProfile.name,ts:Date.now(),_draft:!title};
   if(!live.notes.misc) live.notes.misc=[];
   live.notes.misc.push(note);
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
   renderStickyNotes();
-  // Otwórz edytor od razu
   setTimeout(()=>openStickyEditor(note.id),80);
 }
 window.addStickyNote=addStickyNote;
@@ -3280,8 +3356,18 @@ window.saveStickyEditor=async function(){
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
   closeStickyEditor();renderStickyNotes();
 };
-window.closeStickyEditor=function(){
+window.closeStickyEditor=async function(){
   const el=document.getElementById('stickyEditorOverlay');if(el)el.classList.remove('show');
+  // Jeśli to był draft (nie miał tytułu) i nie zapisano — usuń
+  if(stickyEditId){
+    const note=(live.notes['misc']||[]).find(n=>n.id===stickyEditId);
+    if(note&&note._draft){
+      live.notes.misc=(live.notes.misc||[]).filter(n=>n.id!==stickyEditId);
+      if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
+      renderStickyNotes();
+    }
+    stickyEditId=null;
+  }
 };
 window.deleteStickyFromEditor=async function(id){
   if(!confirm('Usunąć karteczkę?'))return;
@@ -4990,10 +5076,15 @@ window.openStickyEditor=function(id){
 window.stbCmd=function(cmd){document.execCommand(cmd,false,null);document.getElementById('seBody')?.focus();};
 window.stbInsert=function(html){document.execCommand('insertHTML',false,html);};
 window.saveStickyEditorV2=async function(){
-  const title=document.getElementById('seTitle')?.value?.trim()||'Notatka';
+  const titleRaw=document.getElementById('seTitle')?.value?.trim();
+  if(!titleRaw){
+    const inp=document.getElementById('seTitle');
+    if(inp){inp.style.border='2px solid red';inp.placeholder='⚠️ Wpisz tytuł!';}
+    showToast('⚠️ Wpisz tytuł notatki');return;
+  }
   const body=document.getElementById('seBody')?.innerHTML||'';
   const note=(live.notes['misc']||[]).find(n=>n.id===stickyEditId);
-  if(note){note.title=title;note.body=body;note.ts=Date.now();}
+  if(note){note.title=titleRaw;note.body=body;note.ts=Date.now();delete note._draft;}
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
   closeStickyEditor();renderStickyNotes();
 };
@@ -5017,11 +5108,24 @@ function renderTodayShop(){
   if(!items.length){
     el.innerHTML=`<div style="padding:10px;text-align:center;font-size:11px;color:var(--soft);">Brak zakupów na dziś 🎉</div>`;return;
   }
+  const membersOpts=Object.values(live.members).map(m=>`<option value="${esc(m.name)}">${m.avatar||'👤'} ${m.name}</option>`).join('');
   el.innerHTML=`<div style="padding:8px 12px;">${items.slice(0,8).map(n=>`
-    <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">
-      <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;background:${n.will?'var(--g2)':'var(--inp)'}" onclick="shopWill('${key}','${n.id}');renderTodayShop()"></div>
+    <div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border);">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
+        <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;background:${n.will&&!n.done?'var(--b)':'var(--inp)'};color:${n.will&&!n.done?'#fff':'transparent'};" onclick="shopWill('${key}','${n.id}');renderTodayShop()">✓</div>
+        <div style="font-size:6px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};max-width:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'kupię'}</div>
+      </div>
       <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);"> → ${n.assignedTo}</span>`:''}</span>
-      <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;background:${n.done?'var(--g2)':'var(--inp)'}" onclick="shopDone('${key}','${n.id}');renderTodayShop()"></div>
+      <div style="position:relative;flex-shrink:0;width:20px;height:24px;">
+        <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value='';renderTodayShop()" style="opacity:0;position:absolute;inset:0;width:100%;cursor:pointer;z-index:2;">
+          <option value="">👤</option>${membersOpts}
+        </select>
+        <span style="font-size:13px;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">👤</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
+        <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;background:${n.done?'var(--g2)':'var(--inp)'};color:${n.done?'#fff':'transparent'};" onclick="shopDone('${key}','${n.id}');renderTodayShop()">✓</div>
+        <div style="font-size:6px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};max-width:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.done&&n.doneBy?n.doneBy.split(' ')[0]:'kup.'}</div>
+      </div>
     </div>`).join('')}
     ${items.length>8?`<div style="font-size:10px;color:var(--soft);text-align:center;padding-top:5px;">...i ${items.length-8} więcej</div>`:''}
     <div style="padding-top:6px;"><button onclick="goTab('family');setTimeout(()=>switchFamilyTab('shopping'),80);" style="width:100%;padding:6px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);">📋 Pełna lista zakupów</button></div>
@@ -5030,7 +5134,58 @@ function renderTodayShop(){
 // Odśwież przy zmianach notatek
 const _origRenderNotesOld=window.renderNotes;
 
-/* ── WIDGET CONFIG — konfigurowalny ekran główny ── */
+/* ── NOTATKI MINI NA DZIŚ ── */
+let todayNotesOpen=false;
+window.toggleTodayNotes=function(){
+  todayNotesOpen=!todayNotesOpen;
+  const body=document.getElementById('todayNotesBody');
+  const tog=document.getElementById('todayNotesToggle');
+  if(body)body.style.display=todayNotesOpen?'block':'none';
+  if(tog)tog.textContent=todayNotesOpen?'▲ schowaj':'▼ pokaż';
+  if(todayNotesOpen) renderTodayNotes();
+};
+function renderTodayNotes(){
+  const el=document.getElementById('todayNotesBody');if(!el)return;
+  const notes=(live.notes['misc']||[]);
+  if(!notes.length){el.innerHTML='<div style="padding:10px;text-align:center;font-size:11px;color:var(--soft);">Brak notatek 📝</div>';return;}
+  const SCOLORS_REF=[{id:'sc-y',bg:'#fef08a'},{id:'sc-g',bg:'#bbf7d0'},{id:'sc-b',bg:'#bae6fd'},{id:'sc-p',bg:'#e9d5ff'},{id:'sc-o',bg:'#fed7aa'}];
+  el.innerHTML=`<div style="padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+    ${notes.map((n,i)=>{
+      const col=SCOLORS_REF.find(s=>s.id===(n.color||'sc-y'))||SCOLORS_REF[0];
+      const preview=(n.body||n.text||'').replace(/<[^>]+>/g,'').slice(0,40);
+      return`<div style="background:${col.bg};border-radius:10px;padding:8px;cursor:pointer;position:relative;min-height:52px;"
+        draggable="true"
+        data-note-idx="${i}"
+        ondragstart="todayNoteDragStart(event,${i})"
+        ondragover="todayNoteDragOver(event)"
+        ondrop="todayNoteDrop(event,${i})"
+        ondragleave="event.currentTarget.style.outline=''"
+        onclick="goTab('family');setTimeout(()=>{switchFamilyTab('misc');setTimeout(()=>openStickyEditor('${n.id}'),80)},80)">
+        <div style="font-size:11px;font-weight:900;color:#1a1a1a;padding-right:14px;">${(n.title||'Notatka').replace(/</g,'&lt;')}</div>
+        ${preview?`<div style="font-size:9px;color:rgba(0,0,0,.5);margin-top:2px;">${preview.replace(/</g,'&lt;')}</div>`:''}
+      </div>`;
+    }).join('')}
+    <div style="background:var(--inp);border-radius:10px;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:52px;border:2px dashed var(--border);" onclick="goTab('family');setTimeout(()=>{switchFamilyTab('misc');setTimeout(addStickyNote,80)},80)">
+      <span style="font-size:20px;color:var(--soft);">+</span>
+    </div>
+  </div>`;
+}
+let _todayNoteDragIdx=-1;
+window.todayNoteDragStart=function(e,idx){_todayNoteDragIdx=idx;e.target.style.opacity='.5';};
+window.todayNoteDragOver=function(e){e.preventDefault();e.currentTarget.style.outline='2px dashed var(--g2)';};
+window.todayNoteDrop=async function(e,targetIdx){
+  e.preventDefault();e.currentTarget.style.outline='';
+  if(_todayNoteDragIdx<0||_todayNoteDragIdx===targetIdx){_todayNoteDragIdx=-1;return;}
+  const notes=live.notes['misc']||[];
+  const moved=notes.splice(_todayNoteDragIdx,1)[0];
+  notes.splice(targetIdx,0,moved);
+  live.notes['misc']=notes;
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),notes);
+  renderTodayNotes();
+  _todayNoteDragIdx=-1;
+};
+
+
 const DEFAULT_WIDGETS=[
   {id:'childTasks',label:'🧒 Zadania dzieci',show:true},
   {id:'joinReqs',label:'🔔 Prośby dołączenia',show:true},
@@ -5041,9 +5196,12 @@ const DEFAULT_WIDGETS=[
   {id:'schedule',label:'📆 Harmonogram powrotów',show:true},
   {id:'chat',label:'💬 Czat mini',show:true},
   {id:'shop',label:'🛒 Zakupy dziś',show:true},
+  {id:'notes',label:'📝 Notatki mini',show:false},
   {id:'week',label:'📅 Tydzień / Kalendarz',show:true},
 ];
 let widgetConfig=JSON.parse(localStorage.getItem('dp-widgets')||'null')||DEFAULT_WIDGETS;
+// Migracja: dodaj brakujące widżety z DEFAULT_WIDGETS
+DEFAULT_WIDGETS.forEach(dw=>{if(!widgetConfig.find(w=>w.id===dw.id))widgetConfig.push(dw);});
 function saveWidgetConfig(){
   const rows=document.querySelectorAll('#widgetConfigList .widget-cfg-row');
   widgetConfig=Array.from(rows).map(row=>({
@@ -5068,6 +5226,7 @@ function applyWidgetConfig(){
     schedule:'returnSchedulePanel',
     chat:'todayChatMini',
     shop:'todayShopMini',
+    notes:'todayNotesMini',
     week:'weekCard',
   };
   widgetConfig.forEach(w=>{
