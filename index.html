@@ -57,6 +57,24 @@
   --hdr:linear-gradient(135deg,#1a5c28,#34c759 60%,#30d160);
   --tab:rgba(249,249,249,.94);--tab-blur:20px;
 }
+[data-theme="xbox"]{
+  --g1:#0a2e0a;--g2:#107c10;--g3:#52b043;--gp:#e6f5e6;
+  --y:#ffb900;--o:#f7630c;--r:#e81123;--b:#00b4d8;
+  --bg:#0d0d0d;--card:#1a1a1a;--text:#e8e8e8;--soft:#888;
+  --border:#2a2a2a;--sh:0 2px 16px rgba(0,0,0,.6);
+  --rr:6px;--font:'Segoe UI','DM Sans',sans-serif;--inp:#111;
+  --hdr:linear-gradient(135deg,#0a1a0a,#107c10 55%,#52b043);
+  --tab:#1a1a1a;--tab-blur:0px;
+}
+[data-theme="ps5"]{
+  --g1:#00049e;--g2:#003791;--g3:#0070cc;--gp:#e0e8ff;
+  --y:#f5d800;--o:#ff6600;--r:#e60000;--b:#00aaff;
+  --bg:#f0f0f5;--card:#fff;--text:#0a0a1a;--soft:#6666aa;
+  --border:#c0c0e0;--sh:0 2px 16px rgba(0,0,56,.12);
+  --rr:12px;--font:'Segoe UI','DM Sans',sans-serif;--inp:#f5f5ff;
+  --hdr:linear-gradient(135deg,#00049e,#003791 55%,#0070cc);
+  --tab:#fff;--tab-blur:0px;
+}
 
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:80px;transition:background .3s,color .3s;}
@@ -1460,11 +1478,43 @@ document.addEventListener('DOMContentLoaded',applyLang);
 if(document.readyState!=='loading') applyLang();
 
 /* ── THEMES ── */
-const THEMES=[{id:'light',ico:'☀️',nm:'Jasny'},{id:'dark',ico:'🌙',nm:'Ciemny'},{id:'win',ico:'🪟',nm:'Win'},{id:'android',ico:'🤖',nm:'Droid'},{id:'ios',ico:'🍎',nm:'iOS'}];
+const THEMES=[
+  {id:'light',ico:'☀️',nm:'Jasny'},
+  {id:'dark',ico:'🌙',nm:'Ciemny'},
+  {id:'win',ico:'🪟',nm:'Win'},
+  {id:'android',ico:'🤖',nm:'Droid'},
+  {id:'ios',ico:'🍎',nm:'iOS'},
+  {id:'xbox',ico:'🎮',nm:'Xbox'},
+  {id:'ps5',ico:'🎮',nm:'PS5'},
+];
 let curTheme=localStorage.getItem('dp-theme')||'light';
-function applyTheme(t){curTheme=t;document.documentElement.dataset.theme=t;localStorage.setItem('dp-theme',t);renderThemeGrid();}
+function applyTheme(t){
+  curTheme=t;
+  document.documentElement.dataset.theme=t;
+  localStorage.setItem('dp-theme',t);
+  // Gaming themes: replace header logo
+  const appName=document.querySelector('.app-name');
+  if(appName){
+    if(t==='xbox') appName.innerHTML='<span style="color:#52b043;">⬛</span> Xbox Patrol';
+    else if(t==='ps5') appName.innerHTML='<span style="color:#0070cc;">🔷</span> PS Patrol';
+    else appName.innerHTML='🏠 Domowy Patrol';
+  }
+  renderThemeGrid();
+}
 applyTheme(curTheme);
 window.applyTheme=applyTheme;
+
+// Gaming icon map — replaces standard emojis in chores when gaming theme active
+const GAMING_ICONS={
+  '🧹':'🎯','🚿':'💧','🗑️':'🗡️','🍽️':'⚔️','🧺':'🛡️','🛒':'🎒',
+  '🐕':'🐲','📖':'📜','🪴':'🌿','🧼':'✨','🍳':'🔥','🧽':'🔧',
+  '🧹':'🎯','🔦':'💡','📦':'📦','🛁':'🏊','🌅🐕':'⚔️🐲',
+};
+function getGameIco(ico){
+  if(curTheme!=='xbox'&&curTheme!=='ps5') return ico;
+  return GAMING_ICONS[ico]||ico;
+}
+window.getGameIco=getGameIco;
 function renderThemeGrid(){document.getElementById('themeGrid').innerHTML=THEMES.map(th=>`<button class="theme-btn ${curTheme===th.id?'sel':''}" onclick="applyTheme('${th.id}')"><span class="t-ico">${th.ico}</span><span class="t-nm">${th.nm}</span></button>`).join('');}
 
 /* ── CATEGORIES ── */
@@ -1919,7 +1969,7 @@ function launchApp(){
     set(ref(db,`families/${fCode}/members/${currentUser.uid}`),memberData);
     onValue(ref(db,`f/${fCode}/done/${todayKey}`),s=>{live.done=s.val()||{};renderChores();renderWeek();updateProgress();});
     onValue(ref(db,`families/${fCode}/members`),s=>{live.members=s.val()||{};renderOnline();renderScores();renderStats();rebuildAssignSelect();if(myProfile.role==='parent')renderCurfewPanel();renderFamilyMembersListV22();});
-    onValue(ref(db,`f/${fCode}/history`),s=>{const r=s.val()||{};live.history=Object.entries(r).map(([k,v])=>({...v,_fbKey:k})).sort((a,b)=>(b.ts||0)-(a.ts||0));renderHistory();renderSummary();});
+    onValue(ref(db,`f/${fCode}/history`),s=>{const r=s.val()||{};live.history=Object.entries(r).map(([k,v])=>({...v,_fbKey:k})).sort((a,b)=>(b.ts||0)-(a.ts||0));renderHistory();renderSummary();renderScorePeriodStats();});
     onValue(ref(db,`f/${fCode}/assigned`),s=>{live.assigned=s.val()||{};renderAssigned();});
     onValue(ref(db,`families/${fCode}/curfews`),s=>{live.curfews=s.val()||{};if(myProfile.role==='child')updateReturnBanner();if(myProfile.role==='parent')renderCurfewPanel();});
     onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderDistancePanel();}});
@@ -2652,26 +2702,36 @@ function renderFamilyMembersListV22(){
   if(!members.length){el.innerHTML='<div style="font-size:11px;color:var(--soft);padding:6px 0;">Ładowanie…</div>';return;}
   el.innerHTML=members.map(([uid,m])=>{
     const isMe=uid===myUid;
-    const roleLabel=m.role==='parent'?'👑 Rodzic':'🧒 Dziecko';
     const roleColor=m.role==='parent'?'var(--g2)':'var(--b)';
     const canChangeRole=isParent&&!isMe;
+    const roleButtons=canChangeRole?`
+      <div style="display:flex;gap:4px;flex-shrink:0;">
+        <button onclick="setMemberRoleV22('${uid}','parent')"
+          style="padding:4px 8px;border-radius:7px;border:1.5px solid ${m.role==='parent'?'var(--g2)':'var(--border)'};background:${m.role==='parent'?'var(--gp)':'var(--inp)'};font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;color:${m.role==='parent'?'var(--g2)':'var(--soft)'};">
+          👑 Rodzic
+        </button>
+        <button onclick="setMemberRoleV22('${uid}','child')"
+          style="padding:4px 8px;border-radius:7px;border:1.5px solid ${m.role==='child'?'var(--b)':'var(--border)'};background:${m.role==='child'?'rgba(59,130,246,.1)':'var(--inp)'};font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;color:${m.role==='child'?'var(--b)':'var(--soft)'};">
+          🧒 Dziecko
+        </button>
+      </div>`:`<div style="font-size:10px;font-weight:800;color:${roleColor};">${m.role==='parent'?'👑 Rodzic':'🧒 Dziecko'}</div>`;
     return`<div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);">
       <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--inp);font-size:22px;flex-shrink:0;">
         ${m.photoURL?`<img src="${m.photoURL}" style="width:34px;height:34px;object-fit:cover;border-radius:50%;" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.outerHTML='${m.avatar||'👤'}'">`:m.avatar||'👤'}
       </div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:800;color:var(--text);">${m.name}${isMe?' <span style="font-size:9px;color:var(--soft);">(Ty)</span>':''}</div>
-        <div style="font-size:10px;font-weight:800;color:${roleColor};">${roleLabel} · ${m.points||0}⭐</div>
+        <div style="font-size:10px;color:var(--soft);">${m.points||0}⭐</div>
       </div>
-      ${canChangeRole?`<button onclick="toggleMemberRoleV22('${uid}','${m.role}')" style="padding:4px 9px;border-radius:7px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;color:var(--soft);white-space:nowrap;">${m.role==='parent'?'→ Dziecko':'→ Rodzic'}</button>`:''}
+      ${roleButtons}
     </div>`;
   }).join('');
 }
 window.renderFamilyMembersListV22=renderFamilyMembersListV22;
 
-window.toggleMemberRoleV22=async function(uid,currentRole){
-  const newRole=currentRole==='parent'?'child':'parent';
+window.setMemberRoleV22=async function(uid,newRole){
   const m=live.members[uid];if(!m)return;
+  if(m.role===newRole)return; // już taka rola
   const label=newRole==='parent'?'Rodzic':'Dziecko';
   if(!confirm(`Zmienić rolę ${m.name} na ${label}?`))return;
   if(isDemo){live.members[uid].role=newRole;renderFamilyMembersListV22();showToast(`✅ ${m.name} → ${label}`);return;}
@@ -2794,32 +2854,32 @@ window.toggleHistPeriod=function(id){
 window.undoHistEntry=async function(idx){
   const x=live.history[idx];if(!x)return;
   if(!confirm(`Cofnąć: ${x.name} (${x.pts>0?'+':''}${x.pts}⭐)?`))return;
-  const uid=x.uid;
-  const ptsToSubtract=x.pts>0?x.pts:0; // cofamy tylko pozytywne punkty
   if(isDemo){
     live.history.splice(idx,1);
-    if(uid&&live.members[uid]&&ptsToSubtract){
-      live.members[uid].points=Math.max(0,(live.members[uid].points||0)-ptsToSubtract);
-    }
-    renderHistory();renderScores();renderStats();showToast('↩️ Cofnięto wpis');return;
+    // Przelicz punkty od zera z pozostałej historii
+    const newPts={};
+    live.history.filter(h=>h.pts>0).forEach(h=>{if(h.uid)newPts[h.uid]=(newPts[h.uid]||0)+h.pts;});
+    Object.keys(live.members).forEach(uid=>{live.members[uid].points=newPts[uid]||0;});
+    renderHistory();renderScores();renderStats();renderScorePeriodStats();showToast('↩️ Cofnięto wpis');return;
   }
   try{
-    // 1. Usuń wpis z historii Firebase
     if(x._fbKey) await set(ref(db,`f/${fCode}/history/${x._fbKey}`),null);
-    // 2. Przelicz punkty od nowa z pozostałej historii (nie tylko odejmuj — unika dryftu)
+    // Pobierz historię PO usunięciu
     const histSnap=await get(ref(db,`f/${fCode}/history`));
     const histObj=histSnap.val()||{};
     const newPts={};
     Object.values(histObj).filter(h=>h.pts>0).forEach(h=>{
       if(h.uid) newPts[h.uid]=(newPts[h.uid]||0)+h.pts;
     });
-    // 3. Zaktualizuj wszystkich członków
+    // Zaktualizuj Firebase i lokalny cache od razu
     for(const[mUid] of Object.entries(live.members)){
       const p=newPts[mUid]||0;
+      live.members[mUid].points=p; // lokalnie natychmiast
       await update(ref(db,`families/${fCode}/members/${mUid}`),{points:p});
       await update(ref(db,`users/${mUid}/profile`),{points:p});
     }
-    showToast('↩️ Cofnięto wpis · punkty przeliczone z historii');
+    renderScores();renderStats();renderScorePeriodStats();
+    showToast('↩️ Cofnięto · punkty przeliczone');
   }catch(e){showToast('❌ Błąd: '+e.message);}
 };
 function updateProgress(){const total=cats.reduce((a,c)=>a+c.chores.length,0);const done=Object.keys(live.done).length;document.getElementById('progFill').style.width=(total>0?Math.round(done/total*100):0)+'%';document.getElementById('progLbl').textContent=`${done}/${total}`;}
@@ -3122,26 +3182,28 @@ window.sendChatV2=sendChatV2;
 /* ── SHOPPING WEEK ── */
 function makeShopItem(n,key){
   const membersOpts=Object.values(live.members).map(m=>`<option value="${esc(m.name)}">${m.avatar||'👤'} ${m.name}</option>`).join('');
-  const willName=n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'kupię';
-  const doneName=n.done&&n.doneBy?n.doneBy.split(' ')[0]:'kup.';
-  return`<div class="si ${n.done?'bought':''}" data-shop-id="${n.id}" data-shop-key="${key}">
+  const willLine2=n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'';
+  const doneLine2=n.done&&n.doneBy?n.doneBy.split(' ')[0]:'';
+  const willLabel=willLine2?`${willLine2}<br>kup`:'kupię';
+  const doneLabel=doneLine2?`${doneLine2}<br>kupione`:'kupione';
+  return`<div class="si ${n.done?'bought':''}" data-shop-id="${n.id}" data-shop-key="${key}" style="gap:3px;align-items:center;">
     <div class="si-swipe-hint">✓ Kupię</div>
     <div class="si-txt">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);margin-left:5px;">→ ${n.assignedTo}</span>`:''}</div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
-      <div class="si-cb ${n.will&&!n.done?'will':''}" onclick="shopWill('${key}','${n.id}')" title="Kupię">${n.will&&!n.done?'✓':''}</div>
-      <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};white-space:nowrap;max-width:38px;overflow:hidden;text-overflow:ellipsis;">${willName}</div>
+    <div onclick="shopWill('${key}','${n.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:48px;cursor:pointer;padding:4px 2px;border-radius:7px;background:${n.will&&!n.done?'rgba(59,130,246,.08)':'transparent'};">
+      <div style="width:22px;height:22px;border-radius:5px;border:2.5px solid ${n.will&&!n.done?'var(--b)':'var(--border)'};background:${n.will&&!n.done?'var(--b)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;">${n.will&&!n.done?'✓':''}</div>
+      <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};text-align:center;line-height:1.3;white-space:nowrap;">${willLabel}</div>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
-      <div class="si-cb ${n.done?'done':''}" onclick="shopDone('${key}','${n.id}')" title="Kupione">${n.done?'✓':''}</div>
-      <div style="font-size:7px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};white-space:nowrap;max-width:38px;overflow:hidden;text-overflow:ellipsis;">${doneName}</div>
+    <div onclick="shopDone('${key}','${n.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:54px;cursor:pointer;padding:4px 2px;border-radius:7px;background:${n.done?'rgba(74,158,34,.08)':'transparent'};">
+      <div style="width:22px;height:22px;border-radius:5px;border:2.5px solid ${n.done?'var(--g2)':'var(--border)'};background:${n.done?'var(--g2)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;">${n.done?'✓':''}</div>
+      <div style="font-size:7px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};text-align:center;line-height:1.3;white-space:nowrap;">${doneLabel}</div>
     </div>
-    <div style="position:relative;flex-shrink:0;width:20px;height:28px;">
+    <div style="position:relative;flex-shrink:0;width:22px;height:32px;">
       <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value=''" style="opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:2;">
-        <option value="">👤</option>${membersOpts}
+        <option value="">—</option>${membersOpts}
       </select>
-      <span style="font-size:14px;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">👤</span>
+      <span style="font-size:15px;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">👤</span>
     </div>
-    <div onclick="deleteNote('${key}','${n.id}')" style="font-size:11px;cursor:pointer;color:var(--soft);padding:2px 4px;">✕</div>
+    <div onclick="deleteNote('${key}','${n.id}')" style="font-size:11px;cursor:pointer;color:var(--soft);padding:2px 3px;flex-shrink:0;">✕</div>
   </div>`;
 }
 
@@ -3268,11 +3330,14 @@ window.shopDone=shopDone;
 window.shopAssignMember=async function(key,id,name){
   if(!name)return;
   const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
+  const prevAssigned=n.assignedTo;
   n.assignedTo=name;
-  // Jeśli nie zaznaczono "kupię" — ustaw automatycznie
-  if(!n.will&&!n.done){n.will=true;n.willBy=name;}
+  // Ustaw willBy na wybraną osobę (zastępuje poprzednią)
+  n.will=true;
+  n.willBy=name;
+  if(n.done&&n.doneBy!==name){n.done=false;n.pointed=false;n.doneBy='';}
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
-  renderShoppingWeek();showToast(`👤 ${name} kupi: ${n.text}`);
+  renderShoppingWeek();showToast(`👤 ${name}: kup ${n.text}`);
 };
 
 /* ── STICKY NOTES ── */
@@ -3308,7 +3373,13 @@ async function addStickyNote(){
   const inp=document.getElementById('stickyInp');
   const title=(inp?.value?.trim())||'';
   if(inp) inp.value='';
-  const note={id:'n'+Date.now(),title:title||'Nowa notatka',body:'',color:activeStickyColor,who:myProfile.name,ts:Date.now(),_draft:!title};
+  // Auto-number "Nowa notatka"
+  let defaultTitle='Nowa notatka';
+  if(!title){
+    const existing=(live.notes.misc||[]).filter(n=>n.title&&n.title.startsWith('Nowa notatka'));
+    if(existing.length>0) defaultTitle=`Nowa notatka ${existing.length+1}`;
+  }
+  const note={id:'n'+Date.now(),title:title||defaultTitle,body:'',color:activeStickyColor,who:myProfile.name,ts:Date.now(),_draft:!title};
   if(!live.notes.misc) live.notes.misc=[];
   live.notes.misc.push(note);
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/misc`),live.notes.misc);
@@ -5104,33 +5175,51 @@ function renderTodayShop(){
   const el=document.getElementById('todayShopBody');if(!el)return;
   const dow=new Date().getDay();
   const key='shop_'+dow;
-  const items=(live.notes[key]||[]).filter(n=>!n.done);
-  if(!items.length){
-    el.innerHTML=`<div style="padding:10px;text-align:center;font-size:11px;color:var(--soft);">Brak zakupów na dziś 🎉</div>`;return;
-  }
+  const allItems=live.notes[key]||[];
+  const items=allItems.filter(n=>!n.done);
   const membersOpts=Object.values(live.members).map(m=>`<option value="${esc(m.name)}">${m.avatar||'👤'} ${m.name}</option>`).join('');
-  el.innerHTML=`<div style="padding:8px 12px;">${items.slice(0,8).map(n=>`
-    <div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border);">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
-        <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;background:${n.will&&!n.done?'var(--b)':'var(--inp)'};color:${n.will&&!n.done?'#fff':'transparent'};" onclick="shopWill('${key}','${n.id}');renderTodayShop()">✓</div>
-        <div style="font-size:6px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};max-width:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'kupię'}</div>
+  const listHtml=items.length?items.slice(0,10).map(n=>{
+    const willLine2=n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'';
+    const doneLine2=n.done&&n.doneBy?n.doneBy.split(' ')[0]:'';
+    return`<div style="display:flex;align-items:center;gap:3px;padding:4px 0;border-bottom:1px solid var(--border);">
+      <div onclick="shopWill('${key}','${n.id}');renderTodayShop()" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:46px;cursor:pointer;padding:3px 2px;border-radius:6px;background:${n.will&&!n.done?'rgba(59,130,246,.08)':'transparent'};">
+        <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${n.will&&!n.done?'var(--b)':'var(--border)'};background:${n.will&&!n.done?'var(--b)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${n.will&&!n.done?'✓':''}</div>
+        <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupię${willLine2?`<br>${willLine2}`:''}</div>
       </div>
-      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);"> → ${n.assignedTo}</span>`:''}</span>
-      <div style="position:relative;flex-shrink:0;width:20px;height:24px;">
-        <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value='';renderTodayShop()" style="opacity:0;position:absolute;inset:0;width:100%;cursor:pointer;z-index:2;">
-          <option value="">👤</option>${membersOpts}
+      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);"> →${n.assignedTo}</span>`:''}</span>
+      <div style="position:relative;flex-shrink:0;width:20px;height:26px;">
+        <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value='';renderTodayShop()" style="opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:2;">
+          <option value="">—</option>${membersOpts}
         </select>
         <span style="font-size:13px;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">👤</span>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
-        <div style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;background:${n.done?'var(--g2)':'var(--inp)'};color:${n.done?'#fff':'transparent'};" onclick="shopDone('${key}','${n.id}');renderTodayShop()">✓</div>
-        <div style="font-size:6px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};max-width:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.done&&n.doneBy?n.doneBy.split(' ')[0]:'kup.'}</div>
+      <div onclick="shopDone('${key}','${n.id}');renderTodayShop()" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:50px;cursor:pointer;padding:3px 2px;border-radius:6px;background:${n.done?'rgba(74,158,34,.08)':'transparent'};">
+        <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${n.done?'var(--g2)':'var(--border)'};background:${n.done?'var(--g2)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${n.done?'✓':''}</div>
+        <div style="font-size:7px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupione${doneLine2?`<br>${doneLine2}`:''}</div>
       </div>
-    </div>`).join('')}
-    ${items.length>8?`<div style="font-size:10px;color:var(--soft);text-align:center;padding-top:5px;">...i ${items.length-8} więcej</div>`:''}
+    </div>`;
+  }).join(''):`<div style="text-align:center;padding:6px;color:var(--soft);font-size:11px;">Brak zakupów na dziś 🎉</div>`;
+  el.innerHTML=`<div style="padding:8px 12px;">
+    ${listHtml}
+    ${items.length>10?`<div style="font-size:10px;color:var(--soft);text-align:center;padding:4px 0;">...i ${items.length-10} więcej</div>`:''}
+    <div style="display:flex;gap:6px;margin-top:8px;">
+      <input id="todayShopInp" class="note-add-inp" style="flex:1;" placeholder="Dodaj zakup na dziś…" onkeydown="if(event.key==='Enter')addTodayShopItem()">
+      <button class="note-add-btn" onclick="addTodayShopItem()">+</button>
+    </div>
     <div style="padding-top:6px;"><button onclick="goTab('family');setTimeout(()=>switchFamilyTab('shopping'),80);" style="width:100%;padding:6px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);">📋 Pełna lista zakupów</button></div>
   </div>`;
 }
+window.addTodayShopItem=async function(){
+  const inp=document.getElementById('todayShopInp');
+  const text=inp?.value?.trim();if(!text)return;inp.value='';
+  const dow=new Date().getDay();
+  const key='shop_'+dow;
+  const item={id:'s'+Date.now(),text,will:false,done:false,who:myProfile.name,ts:Date.now()};
+  if(!live.notes[key]) live.notes[key]=[];
+  live.notes[key].push(item);
+  if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),live.notes[key]);
+  renderTodayShop();
+};
 // Odśwież przy zmianach notatek
 const _origRenderNotesOld=window.renderNotes;
 
@@ -5231,7 +5320,7 @@ function applyWidgetConfig(){
   };
   widgetConfig.forEach(w=>{
     const el=document.getElementById(map[w.id]);
-    if(el) el.style.display=w.show?'':'none';
+    if(el) el.style.display=w.show?'block':'none';
   });
 }
 
