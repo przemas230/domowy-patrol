@@ -772,6 +772,71 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 .widget-cfg-chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;}
 .widget-cfg-chk:checked{accent-color:var(--g2);}
 .widget-cfg-lbl{font-size:12px;font-weight:800;color:var(--text);flex:1;}
+
+/* ── V23: NTFY / PUSHOVER ── */
+.notif-provider-row{display:flex;gap:6px;margin-bottom:10px;}
+.notif-prov-btn{flex:1;padding:8px 5px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);text-align:center;transition:all .15s;}
+.notif-prov-btn.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+.notif-info-box{background:var(--inp);border-radius:9px;padding:9px;font-size:10px;color:var(--soft);line-height:1.6;margin-bottom:8px;border:1.5px solid var(--border);}
+.notif-info-box a{color:var(--b);}
+.notif-test-row{display:flex;gap:6px;align-items:center;margin-top:8px;}
+.notif-test-btn{padding:7px 12px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;}
+.notif-status{font-size:10px;font-weight:700;padding:4px 8px;border-radius:6px;background:var(--inp);}
+.notif-status.ok{color:var(--g2);background:var(--gp);}
+.notif-status.err{color:var(--r);background:rgba(232,64,64,.08);}
+
+/* ── V23: APPLIANCE WIDGET ── */
+.appliance-widget{background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--rr);padding:11px;margin-bottom:10px;color:#fff;}
+.appl-title{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:8px;}
+.appl-row{display:flex;align-items:center;gap:8px;padding:8px;background:rgba(255,255,255,.1);border-radius:10px;margin-bottom:6px;}
+.appl-row:last-child{margin-bottom:0;}
+.appl-ico{font-size:26px;flex-shrink:0;}
+.appl-info{flex:1;min-width:0;}
+.appl-name{font-size:12px;font-weight:900;}
+.appl-detail{font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;}
+.appl-timer{font-size:13px;font-weight:900;color:var(--y);min-width:38px;text-align:right;}
+.appl-btn{padding:6px 11px;border-radius:8px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;}
+.appl-btn.running{background:rgba(232,64,64,.25);border-color:rgba(232,64,64,.6);}
+.appl-btn.done{background:rgba(74,158,34,.3);border-color:rgba(74,158,34,.7);color:#b6f7a6;}
+.appl-prog{height:4px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden;margin-top:5px;}
+.appl-prog-fill{height:100%;background:linear-gradient(90deg,var(--y),var(--o));border-radius:99px;transition:width 10s linear;}
+
+/* ── V23: WEATHER TABS EXTENDED ── */
+.wx-sub-tabs{display:flex;gap:4px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none;}
+.wx-sub-tabs::-webkit-scrollbar{display:none;}
+.wx-sub-tab{flex-shrink:0;padding:5px 10px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--soft);}
+.wx-sub-tab.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+/* Meteorogram */
+.meteo-wrap{background:var(--card);border-radius:10px;overflow:hidden;box-shadow:var(--sh);}
+.meteo-wrap img{width:100%;max-width:100%;display:block;}
+.meteo-note{font-size:9px;color:var(--soft);text-align:center;padding:4px;background:var(--inp);}
+/* IMGW */
+.imgw-station-card{background:var(--card);border-radius:10px;padding:10px;box-shadow:var(--sh);margin-bottom:8px;}
+.imgw-station-name{font-size:13px;font-weight:900;color:var(--text);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.imgw-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.imgw-item{background:var(--inp);border-radius:8px;padding:8px;text-align:center;}
+.imgw-val{font-size:16px;font-weight:900;color:var(--text);}
+.imgw-lbl{font-size:9px;font-weight:800;color:var(--soft);margin-top:2px;}
+.imgw-all{max-height:280px;overflow-y:auto;}
+.imgw-mini-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:var(--inp);margin-bottom:4px;cursor:pointer;border:1.5px solid var(--border);}
+.imgw-mini-row:hover{border-color:var(--g2);}
+.imgw-mini-name{flex:1;font-size:11px;font-weight:800;color:var(--text);}
+.imgw-mini-temp{font-size:12px;font-weight:900;color:var(--b);}
+
+/* ── V23: PARENT LOCATION MAP (child view) ── */
+.parent-locbtn-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.parent-locbtn{flex:1;min-width:100px;display:flex;align-items:center;gap:7px;padding:10px;border-radius:10px;border:2px solid var(--border);background:var(--card);cursor:pointer;box-shadow:var(--sh);transition:all .15s;}
+.parent-locbtn:active{transform:scale(.97);}
+.parent-locbtn .plb-av{font-size:22px;}
+.parent-locbtn .plb-info{flex:1;}
+.parent-locbtn .plb-name{font-size:12px;font-weight:800;color:var(--text);}
+.parent-locbtn .plb-sub{font-size:9px;color:var(--soft);margin-top:1px;}
+.parent-locbtn .plb-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;}
+.parent-locbtn.online .plb-dot{background:#22c55e;box-shadow:0 0 5px #22c55e;}
+.parent-locbtn.stale .plb-dot{background:var(--y);}
+.loc-map-wrap{border-radius:var(--rr);overflow:hidden;box-shadow:var(--sh);margin-bottom:8px;background:var(--inp);}
+.loc-map-wrap #parentMap{height:220px;}
+#childLocPanel .card{margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -912,7 +977,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div id="bdayPanel"></div>
     <div id="eventsTopPanel"></div>
     <div id="curfewPanel"></div>
+    <!-- V23 [14]: Parent location panel for children -->
+    <div id="childLocPanel"></div>
     <div id="distancePanel"></div>
+    <!-- V23 [38]: Appliance widget -->
+    <div id="applianceWidget"></div>
     <div id="returnSchedulePanel"></div>
     <div class="card">
       <div class="card-ttl">🌐 Rodzina online</div>
@@ -1053,6 +1122,70 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div id="homeLocSettingsStatus" style="font-size:11px;font-weight:800;color:var(--g2);margin-bottom:8px;"></div>
       <button onclick="captureHomeGPS_settings()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--g2);background:var(--gp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--g2);">📍 Ustaw lokalizację domu (GPS)</button>
     </div>
+
+    <!-- V23 [15][16]: POWIADOMIENIA PUSH -->
+    <div class="card">
+      <div class="card-ttl">🔔 Powiadomienia Push</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:10px;">Wybierz metodę powiadomień na telefon. Działa bez serwera i bez kosztów.</div>
+      <div class="notif-provider-row">
+        <button class="notif-prov-btn sel" id="ntfyProvBtn" onclick="selectNotifProvider('ntfy')">📡 ntfy.sh</button>
+        <button class="notif-prov-btn" id="pushoverProvBtn" onclick="selectNotifProvider('pushover')">📲 Pushover</button>
+        <button class="notif-prov-btn" id="offProvBtn" onclick="selectNotifProvider('off')">🔕 Wyłącz</button>
+      </div>
+      <!-- ntfy panel -->
+      <div id="ntfyPanel">
+        <div class="notif-info-box">
+          📱 <b>Jak skonfigurować ntfy.sh:</b><br>
+          1. Zainstaluj apkę <b>ntfy</b> na telefonie (<a href="https://ntfy.sh" target="_blank">ntfy.sh</a>)<br>
+          2. W apce kliknij ➕ i wpisz topic poniżej<br>
+          3. Każdy z rodziny może subskrybować ten sam lub osobny topic<br>
+          4. Powiadomienia są <b>bezpłatne</b> — zero rejestracji
+        </div>
+        <div class="f-lbl">Twój topic ntfy (unikalny dla rodziny)</div>
+        <input class="f-inp" id="ntfyTopicInp" placeholder="np. domowy-patrol-KOWALSKI2025" style="font-size:12px;margin-bottom:8px;">
+        <div class="notif-test-row">
+          <button class="notif-test-btn" onclick="testNtfy()">🧪 Wyślij testowe</button>
+          <span id="ntfyStatus" class="notif-status"></span>
+        </div>
+        <button onclick="saveNtfyConfig()" style="width:100%;margin-top:8px;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz topic ntfy</button>
+      </div>
+      <!-- Pushover panel -->
+      <div id="pushoverPanel" style="display:none;">
+        <div class="notif-info-box">
+          📲 <b>Jak skonfigurować Pushover:</b><br>
+          1. Utwórz konto na <a href="https://pushover.net" target="_blank">pushover.net</a> (jednorazowa opłata ~5$)<br>
+          2. Skopiuj swój <b>User Key</b> z głównej strony<br>
+          3. Utwórz nową aplikację → skopiuj <b>API Token</b><br>
+          4. Wklej oba klucze poniżej
+        </div>
+        <div class="f-lbl">User Key</div>
+        <input class="f-inp" id="pushoverUserKey" placeholder="xxxxxxxxxxxxxx" style="font-size:12px;margin-bottom:6px;">
+        <div class="f-lbl">API Token</div>
+        <input class="f-inp" id="pushoverApiToken" placeholder="xxxxxxxxxxxxxx" style="font-size:12px;margin-bottom:8px;">
+        <div class="notif-test-row">
+          <button class="notif-test-btn" onclick="testPushover()">🧪 Wyślij testowe</button>
+          <span id="pushoverStatus" class="notif-status"></span>
+        </div>
+        <button onclick="savePushoverConfig()" style="width:100%;margin-top:8px;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz Pushover</button>
+      </div>
+    </div>
+
+    <!-- V23 [38]: CZASY URZĄDZEŃ -->
+    <div class="card">
+      <div class="card-ttl">🫧 Czas trwania urządzeń</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Ustaw ile trwa cykl pralki i zmywarki</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px;">
+        <span style="font-size:18px;">🫧</span>
+        <span style="font-size:12px;font-weight:800;flex:1;color:var(--text);">Pralka (minuty)</span>
+        <input id="washerDuration" type="number" value="120" min="30" max="300" style="width:70px;padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:800;color:var(--text);text-align:center;outline:none;">
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="font-size:18px;">🍽️</span>
+        <span style="font-size:12px;font-weight:800;flex:1;color:var(--text);">Zmywarka (minuty)</span>
+        <input id="dishwasherDuration" type="number" value="90" min="30" max="180" style="width:70px;padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:800;color:var(--text);text-align:center;outline:none;">
+      </div>
+      <button onclick="saveApplianceDurations()" style="width:100%;margin-top:8px;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz czasy</button>
+    </div>
   </div>
 
   <!-- PROFILE -->
@@ -1136,11 +1269,46 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <button class="w3-tab" id="w3t1" onclick="selectWeatherCity(1)">📍 Miasto 2</button>
       <button class="w3-tab" id="w3t2" onclick="selectWeatherCity(2)">📍 Miasto 3</button>
     </div>
-    <div id="weatherFull"></div>
-    <div id="weatherHourly" style="margin-top:8px;"></div>
-    <div class="card" style="margin-top:8px;">
-      <div class="card-ttl">🏙️ Zarządzaj miastami</div>
-      <div id="weatherCitiesManager"></div>
+    <!-- V23: sub-tabs for weather views -->
+    <div class="wx-sub-tabs" id="wxSubTabs">
+      <button class="wx-sub-tab sel" onclick="selectWxSubTab('forecast')">📊 Prognoza</button>
+      <button class="wx-sub-tab" onclick="selectWxSubTab('meteorogram')">🌡️ Meteorogram</button>
+      <button class="wx-sub-tab" onclick="selectWxSubTab('imgw')">🏭 Stacje IMGW</button>
+    </div>
+    <!-- Forecast tab (existing) -->
+    <div id="wxTabForecast">
+      <div id="weatherFull"></div>
+      <div id="weatherHourly" style="margin-top:8px;"></div>
+      <div class="card" style="margin-top:8px;">
+        <div class="card-ttl">🏙️ Zarządzaj miastami</div>
+        <div id="weatherCitiesManager"></div>
+      </div>
+    </div>
+    <!-- V23 [18]: Meteorogram ICM tab -->
+    <div id="wxTabMeteoram" style="display:none;">
+      <div class="card">
+        <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+          🌡️ Meteorogram ICM
+          <button onclick="refreshMeteoram()" style="padding:4px 9px;border-radius:6px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🔄</button>
+        </div>
+        <div style="font-size:10px;color:var(--soft);margin-bottom:8px;">Prognoza z modelu UM Centrum Modelowania Meteorologicznego IMGW</div>
+        <div id="meteoramContent">
+          <div style="text-align:center;padding:20px;color:var(--soft);font-size:12px;">📍 Włącz GPS lub ustaw miasto, aby zobaczyć meteorogram</div>
+        </div>
+        <div style="font-size:9px;color:var(--soft);margin-top:6px;text-align:center;">Źródło: <a href="https://www.meteo.pl" target="_blank" style="color:var(--b);">meteo.pl</a> / ICM UW</div>
+      </div>
+    </div>
+    <!-- V23 [19]: IMGW stations tab -->
+    <div id="wxTabImgw" style="display:none;">
+      <div class="card">
+        <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+          🏭 Stacje IMGW
+          <button onclick="refreshImgw()" style="padding:4px 9px;border-radius:6px;border:none;background:var(--g2);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🔄</button>
+        </div>
+        <div id="imgwNearestStation"></div>
+        <div style="font-size:10px;font-weight:800;color:var(--soft);margin:8px 0 4px;">Inne pobliskie stacje</div>
+        <div id="imgwAllStations" class="imgw-all"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -5607,6 +5775,658 @@ window.toggleReferralVisibility=function(){
 
 /* ── Inicjalizuj gwiazdkę po zalogowaniu ── */
 // (wywoływane z launchApp)
+
+
+/* ══════════════════════════════════════════════════════════
+   v23 — NOWE FUNKCJE
+   ══════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────
+   [15] ntfy.sh INTEGRATION
+   ───────────────────────────────────────────────────────── */
+let ntfyConfig = JSON.parse(localStorage.getItem('dp-ntfy') || 'null') || { provider: 'ntfy', topic: '' };
+
+function saveNtfyConfig() {
+  const topic = document.getElementById('ntfyTopicInp')?.value?.trim();
+  if (!topic) { showToast('⚠️ Wpisz topic ntfy'); return; }
+  ntfyConfig = { provider: 'ntfy', topic };
+  localStorage.setItem('dp-ntfy', JSON.stringify(ntfyConfig));
+  showToast('✅ Topic ntfy zapisany!');
+}
+window.saveNtfyConfig = saveNtfyConfig;
+
+async function sendNtfy(title, body, priority = 3) {
+  if (ntfyConfig.provider !== 'ntfy' || !ntfyConfig.topic) return false;
+  try {
+    const r = await fetch(`https://ntfy.sh/${encodeURIComponent(ntfyConfig.topic)}`, {
+      method: 'POST',
+      headers: { 'Title': title, 'Priority': String(priority), 'Content-Type': 'text/plain; charset=utf-8' },
+      body: body || title
+    });
+    return r.ok;
+  } catch (e) { return false; }
+}
+window.sendNtfy = sendNtfy;
+
+window.testNtfy = async function () {
+  const topic = document.getElementById('ntfyTopicInp')?.value?.trim();
+  if (!topic) { showToast('⚠️ Wpisz topic'); return; }
+  const st = document.getElementById('ntfyStatus');
+  if (st) st.textContent = '⏳ Wysyłanie…';
+  try {
+    const r = await fetch(`https://ntfy.sh/${encodeURIComponent(topic)}`, {
+      method: 'POST',
+      headers: { 'Title': '🏠 Domowy Patrol — test', 'Priority': '3' },
+      body: 'Powiadomienia ntfy działają! ✅'
+    });
+    if (r.ok) {
+      if (st) { st.textContent = '✅ Wysłano!'; st.className = 'notif-status ok'; }
+    } else {
+      if (st) { st.textContent = '❌ Błąd ' + r.status; st.className = 'notif-status err'; }
+    }
+  } catch (e) {
+    if (st) { st.textContent = '❌ ' + e.message; st.className = 'notif-status err'; }
+  }
+};
+
+/* ─────────────────────────────────────────────────────────
+   [16] PUSHOVER INTEGRATION
+   ───────────────────────────────────────────────────────── */
+let pushoverConfig = JSON.parse(localStorage.getItem('dp-pushover') || 'null') || { userKey: '', apiToken: '' };
+
+window.savePushoverConfig = function () {
+  const userKey = document.getElementById('pushoverUserKey')?.value?.trim();
+  const apiToken = document.getElementById('pushoverApiToken')?.value?.trim();
+  if (!userKey || !apiToken) { showToast('⚠️ Wpisz oba klucze'); return; }
+  pushoverConfig = { userKey, apiToken };
+  ntfyConfig.provider = 'pushover';
+  localStorage.setItem('dp-pushover', JSON.stringify(pushoverConfig));
+  localStorage.setItem('dp-ntfy', JSON.stringify(ntfyConfig));
+  showToast('✅ Pushover zapisany!');
+};
+
+async function sendPushover(title, message, priority = 0) {
+  if (!pushoverConfig.userKey || !pushoverConfig.apiToken) return false;
+  try {
+    const fd = new FormData();
+    fd.append('token', pushoverConfig.apiToken);
+    fd.append('user', pushoverConfig.userKey);
+    fd.append('title', title);
+    fd.append('message', message || title);
+    fd.append('priority', String(priority));
+    const r = await fetch('https://api.pushover.net/1/messages.json', { method: 'POST', body: fd });
+    return r.ok;
+  } catch (e) { return false; }
+}
+window.sendPushover = sendPushover;
+
+window.testPushover = async function () {
+  const userKey = document.getElementById('pushoverUserKey')?.value?.trim();
+  const apiToken = document.getElementById('pushoverApiToken')?.value?.trim();
+  const st = document.getElementById('pushoverStatus');
+  if (!userKey || !apiToken) { showToast('⚠️ Wpisz oba klucze'); return; }
+  if (st) st.textContent = '⏳ Wysyłanie…';
+  try {
+    const fd = new FormData();
+    fd.append('token', apiToken); fd.append('user', userKey);
+    fd.append('title', '🏠 Domowy Patrol — test');
+    fd.append('message', 'Powiadomienia Pushover działają! ✅');
+    const r = await fetch('https://api.pushover.net/1/messages.json', { method: 'POST', body: fd });
+    const data = await r.json();
+    if (data.status === 1) {
+      if (st) { st.textContent = '✅ Wysłano!'; st.className = 'notif-status ok'; }
+    } else {
+      if (st) { st.textContent = '❌ ' + (data.errors || []).join(', '); st.className = 'notif-status err'; }
+    }
+  } catch (e) {
+    if (st) { st.textContent = '❌ ' + e.message; st.className = 'notif-status err'; }
+  }
+};
+
+/* Helper — wyślij powiadomienie przez aktywnego providera */
+async function sendExternalNotif(title, body, priority) {
+  if (ntfyConfig.provider === 'ntfy') return sendNtfy(title, body, priority || 3);
+  if (ntfyConfig.provider === 'pushover') return sendPushover(title, body, priority || 0);
+  return false;
+}
+window.sendExternalNotif = sendExternalNotif;
+
+/* Zarządzanie providerem w UI */
+window.selectNotifProvider = function (prov) {
+  ntfyConfig.provider = prov;
+  localStorage.setItem('dp-ntfy', JSON.stringify(ntfyConfig));
+  ['ntfy', 'pushover', 'off'].forEach(p => {
+    const btn = document.getElementById(p + 'ProvBtn');
+    if (btn) btn.className = 'notif-prov-btn' + (p === prov ? ' sel' : '');
+  });
+  document.getElementById('ntfyPanel').style.display = prov === 'ntfy' ? '' : 'none';
+  document.getElementById('pushoverPanel').style.display = prov === 'pushover' ? '' : 'none';
+};
+
+function initNotifSettingsUI() {
+  const prov = ntfyConfig.provider || 'ntfy';
+  ['ntfy', 'pushover', 'off'].forEach(p => {
+    const btn = document.getElementById(p + 'ProvBtn');
+    if (btn) btn.className = 'notif-prov-btn' + (p === prov ? ' sel' : '');
+  });
+  const ntfyInp = document.getElementById('ntfyTopicInp');
+  if (ntfyInp) ntfyInp.value = ntfyConfig.topic || '';
+  const uk = document.getElementById('pushoverUserKey');
+  if (uk) uk.value = pushoverConfig.userKey || '';
+  const at = document.getElementById('pushoverApiToken');
+  if (at) at.value = pushoverConfig.apiToken || '';
+  document.getElementById('ntfyPanel').style.display = prov === 'ntfy' ? '' : 'none';
+  document.getElementById('pushoverPanel').style.display = prov === 'pushover' ? '' : 'none';
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   [18] METEOROGRAM ICM
+   ───────────────────────────────────────────────────────── */
+
+/* Weather sub-tab switcher */
+let activeWxSubTab = 'forecast';
+window.selectWxSubTab = function (tab) {
+  activeWxSubTab = tab;
+  document.querySelectorAll('.wx-sub-tab').forEach(b => b.classList.remove('sel'));
+  event?.target?.classList.add('sel');
+  document.getElementById('wxTabForecast').style.display = tab === 'forecast' ? '' : 'none';
+  document.getElementById('wxTabMeteoram').style.display = tab === 'meteorogram' ? '' : 'none';
+  document.getElementById('wxTabImgw').style.display = tab === 'imgw' ? '' : 'none';
+  if (tab === 'meteorogram') renderMeteoram();
+  if (tab === 'imgw') fetchImgwData();
+};
+
+/* Oblicz kolumnę/rząd ICM z współrzędnych (siatka ~0.067° lon, 0.05° lat) */
+function coordsToIcmGrid(lat, lng) {
+  // Siata UM: SW corner ~46.5N, 14.1E; krok ~2km
+  const col = Math.round((lng - 14.1) / 0.067);
+  const row = Math.round((lat - 46.5) / 0.050);
+  return { row: Math.max(1, Math.min(400, row)), col: Math.max(1, Math.min(500, col)) };
+}
+
+async function renderMeteoram() {
+  const el = document.getElementById('meteoramContent');
+  if (!el) return;
+  // Najpierw spróbuj z aktywnego cache pogody (ma lat/lng)
+  let lat = null, lng = null;
+  if (weatherCaches[activeWeatherCity]?.lat) {
+    lat = weatherCaches[activeWeatherCity].lat;
+    lng = weatherCaches[activeWeatherCity].lng;
+  } else if (homeLocation) {
+    lat = homeLocation.lat; lng = homeLocation.lng;
+  }
+  if (!lat) {
+    el.innerHTML = `<div style="padding:14px;text-align:center;font-size:11px;color:var(--soft);">
+      📍 Brak lokalizacji — ustaw miasto w Pogodzie lub dom w Opcjach</div>`;
+    return;
+  }
+  const { row, col } = coordsToIcmGrid(lat, lng);
+  const url = `https://www.meteo.pl/meteorogram_map_um/meteorogram_map.php?ntype=0u&fdate=&row=${row}&col=${col}&lang=pl`;
+  el.innerHTML = `<div class="meteo-wrap">
+    <img src="${url}" alt="Meteorogram ICM" loading="lazy" onerror="this.parentElement.innerHTML='<div style=padding:12px;text-align:center;font-size:11px;color:var(--soft);>⚠️ Nie udało się załadować meteorogramu. Spróbuj za chwilę.</div>'">
+  </div>
+  <div class="meteo-note">📍 Punkt ${lat.toFixed(2)}°N ${lng.toFixed(2)}°E · Kliknij obraz aby powiększyć</div>`;
+  el.querySelector('img')?.addEventListener('click', () => {
+    window.open(url, '_blank');
+  });
+}
+window.refreshMeteoram = renderMeteoram;
+
+
+/* ─────────────────────────────────────────────────────────
+   [19] IMGW API — STACJE SYNOPTYCZNE
+   ───────────────────────────────────────────────────────── */
+
+let imgwCache = null;
+let imgwCacheTs = 0;
+
+async function fetchImgwData() {
+  const nearEl = document.getElementById('imgwNearestStation');
+  const allEl = document.getElementById('imgwAllStations');
+  if (!nearEl) return;
+
+  nearEl.innerHTML = '<div style="text-align:center;padding:10px;font-size:11px;color:var(--soft);">⏳ Ładowanie danych IMGW…</div>';
+
+  try {
+    // Cache na 10 minut
+    if (!imgwCache || Date.now() - imgwCacheTs > 600000) {
+      const r = await fetch('https://danepubliczne.imgw.pl/api/data/synop');
+      imgwCache = await r.json();
+      imgwCacheTs = Date.now();
+    }
+    const stations = imgwCache;
+
+    // Ustal punkt odniesienia
+    let refLat = null, refLng = null;
+    if (weatherCaches[activeWeatherCity]?.lat) {
+      refLat = weatherCaches[activeWeatherCity].lat;
+      refLng = weatherCaches[activeWeatherCity].lng;
+    } else if (homeLocation) {
+      refLat = homeLocation.lat; refLng = homeLocation.lng;
+    }
+
+    // Stacje z prawidłowymi koordynatami
+    const stationsWithCoords = stations.filter(s => s.geoszer && s.geodlug);
+
+    let sorted = stationsWithCoords;
+    if (refLat) {
+      sorted = stationsWithCoords.map(s => ({
+        ...s,
+        dist: haversine(refLat, refLng, parseFloat(s.geoszer), parseFloat(s.geodlug))
+      })).sort((a, b) => a.dist - b.dist);
+    }
+
+    const nearest = sorted[0];
+    if (!nearest) { nearEl.innerHTML = '<div style="padding:10px;color:var(--soft);font-size:11px;">Brak danych</div>'; return; }
+
+    function windDir(deg) {
+      if (deg == null || deg === '') return '—';
+      const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      return dirs[Math.round(deg / 45) % 8];
+    }
+
+    function renderStation(s) {
+      const temp = s.temperatura != null && s.temperatura !== '' ? `${s.temperatura}°C` : '—';
+      const press = s.cisnienie != null && s.cisnienie !== '' ? `${s.cisnienie} hPa` : '—';
+      const wind = s.predkosc_wiatru != null ? `${s.predkosc_wiatru} m/s ${windDir(s.kierunek_wiatru)}` : '—';
+      const hum = s.wilgotnosc_wzgledna != null ? `${s.wilgotnosc_wzgledna}%` : '—';
+      return `<div class="imgw-station-card">
+        <div class="imgw-station-name">
+          🏭 ${s.stacja}
+          ${s.dist != null ? `<span style="font-size:9px;color:var(--soft);font-weight:700;">${fmtDist(s.dist)}</span>` : ''}
+        </div>
+        <div class="imgw-grid">
+          <div class="imgw-item"><div class="imgw-val">🌡️ ${temp}</div><div class="imgw-lbl">Temperatura</div></div>
+          <div class="imgw-item"><div class="imgw-val">🌬️ ${wind}</div><div class="imgw-lbl">Wiatr</div></div>
+          <div class="imgw-item"><div class="imgw-val">🔵 ${press}</div><div class="imgw-lbl">Ciśnienie</div></div>
+          <div class="imgw-item"><div class="imgw-val">💧 ${hum}</div><div class="imgw-lbl">Wilgotność</div></div>
+        </div>
+        <div style="font-size:9px;color:var(--soft);margin-top:6px;">⏱️ ${s.data_pomiaru || ''} ${s.godzina_pomiaru || ''} UTC</div>
+      </div>`;
+    }
+
+    nearEl.innerHTML = renderStation(nearest);
+
+    if (allEl) {
+      allEl.innerHTML = sorted.slice(1, 12).map(s => {
+        const temp = s.temperatura != null ? `${s.temperatura}°C` : '—';
+        return `<div class="imgw-mini-row" onclick="showImgwStation(${JSON.stringify(s).replace(/"/g, '&quot;')})">
+          <div class="imgw-mini-name">${s.stacja}</div>
+          ${s.dist != null ? `<span style="font-size:9px;color:var(--soft);">${fmtDist(s.dist)}</span>` : ''}
+          <div class="imgw-mini-temp">${temp}</div>
+        </div>`;
+      }).join('');
+    }
+  } catch (e) {
+    nearEl.innerHTML = `<div style="padding:10px;font-size:11px;color:var(--r);">❌ Błąd pobierania danych IMGW: ${e.message}</div>`;
+  }
+}
+window.refreshImgw = fetchImgwData;
+
+window.showImgwStation = function (s) {
+  // przenosi zaznaczoną stację na górę
+  const nearEl = document.getElementById('imgwNearestStation');
+  if (!nearEl) return;
+  const temp = s.temperatura != null ? `${s.temperatura}°C` : '—';
+  const press = s.cisnienie != null ? `${s.cisnienie} hPa` : '—';
+  const wind = s.predkosc_wiatru != null ? `${s.predkosc_wiatru} m/s` : '—';
+  const hum = s.wilgotnosc_wzgledna != null ? `${s.wilgotnosc_wzgledna}%` : '—';
+  nearEl.innerHTML = `<div class="imgw-station-card">
+    <div class="imgw-station-name">🏭 ${s.stacja} <span style="font-size:9px;color:var(--soft);">(wybrana)</span></div>
+    <div class="imgw-grid">
+      <div class="imgw-item"><div class="imgw-val">🌡️ ${temp}</div><div class="imgw-lbl">Temperatura</div></div>
+      <div class="imgw-item"><div class="imgw-val">🌬️ ${wind}</div><div class="imgw-lbl">Wiatr</div></div>
+      <div class="imgw-item"><div class="imgw-val">🔵 ${press}</div><div class="imgw-lbl">Ciśnienie</div></div>
+      <div class="imgw-item"><div class="imgw-val">💧 ${hum}</div><div class="imgw-lbl">Wilgotność</div></div>
+    </div>
+  </div>`;
+};
+
+
+/* ─────────────────────────────────────────────────────────
+   [38] LICZNIK PRALKI / ZMYWARKI
+   ───────────────────────────────────────────────────────── */
+
+let applianceState = JSON.parse(localStorage.getItem('dp-appliances') || '{}');
+// Format: { washer: { startTs, durationMin, startedBy }, dishwasher: { ... } }
+
+function saveApplianceState() {
+  localStorage.setItem('dp-appliances', JSON.stringify(applianceState));
+  if (!isDemo && fCode) {
+    set(ref(db, `families/${fCode}/appliances`), applianceState).catch(() => {});
+  }
+}
+
+window.saveApplianceDurations = function () {
+  const wd = parseInt(document.getElementById('washerDuration')?.value) || 120;
+  const dd = parseInt(document.getElementById('dishwasherDuration')?.value) || 90;
+  localStorage.setItem('dp-appl-durations', JSON.stringify({ washer: wd, dishwasher: dd }));
+  showToast('✅ Czasy urządzeń zapisane!');
+};
+
+function getApplianceDurations() {
+  return JSON.parse(localStorage.getItem('dp-appl-durations') || '{"washer":120,"dishwasher":90}');
+}
+
+window.startAppliance = async function (type) {
+  const dur = getApplianceDurations();
+  const durationMin = type === 'washer' ? dur.washer : dur.dishwasher;
+  const entry = { startTs: Date.now(), durationMin, startedBy: myProfile?.name || 'Ktoś', startedAvatar: myProfile?.avatar || '👤' };
+  applianceState[type] = entry;
+  saveApplianceState();
+  renderApplianceWidget();
+  showToast(`${type === 'washer' ? '🫧 Pralka' : '🍽️ Zmywarka'} uruchomiona! Koniec ~${getApplianceEndTime(entry)}`);
+  // Schedule notification
+  const waitMs = entry.startTs + durationMin * 60000 - Date.now();
+  if (waitMs > 0) setTimeout(() => {
+    const label = type === 'washer' ? '🫧 Pralka' : '🍽️ Zmywarka';
+    sendBrowserNotif(`${label} gotowa!`, 'Czas wyjąć pranie!');
+    sendExternalNotif(`${label} gotowa! 🏠 Domowy Patrol`, 'Czas wyjąć pranie!', 3);
+    showToast(`${label} skończyła! ✅`);
+    if (applianceState[type]) { applianceState[type].done = true; saveApplianceState(); renderApplianceWidget(); }
+  }, waitMs);
+};
+
+window.stopAppliance = function (type) {
+  delete applianceState[type];
+  saveApplianceState();
+  renderApplianceWidget();
+  showToast(`${type === 'washer' ? '🫧 Pralka' : '🍽️ Zmywarka'} — zresetowano`);
+};
+
+function getApplianceEndTime(entry) {
+  const end = new Date(entry.startTs + entry.durationMin * 60000);
+  return `${d2(end.getHours())}:${d2(end.getMinutes())}`;
+}
+
+function getApplianceProgress(entry) {
+  const elapsed = Date.now() - entry.startTs;
+  const total = entry.durationMin * 60000;
+  return Math.min(100, Math.round(elapsed / total * 100));
+}
+
+function getApplianceTimeLeft(entry) {
+  const endTs = entry.startTs + entry.durationMin * 60000;
+  const left = endTs - Date.now();
+  if (left <= 0) return '✅ Gotowe!';
+  const m = Math.floor(left / 60000);
+  const h = Math.floor(m / 60);
+  return h > 0 ? `${h}h ${m % 60}min` : `${m} min`;
+}
+
+function renderApplianceWidget() {
+  const el = document.getElementById('applianceWidget');
+  if (!el) return;
+
+  const types = [
+    { id: 'washer', ico: '🫧', name: 'Pralka' },
+    { id: 'dishwasher', ico: '🍽️', name: 'Zmywarka' }
+  ];
+
+  // Sprawdź czy cokolwiek jest aktywne lub niedawno skończyło
+  const active = types.filter(t => applianceState[t.id]);
+  if (!active.length) {
+    el.innerHTML = `<div class="appliance-widget">
+      <div class="appl-title">🏠 Urządzenia domowe</div>
+      <div style="display:flex;gap:8px;">
+        ${types.map(t => `<button class="appl-btn" style="flex:1;padding:10px;font-size:13px;" onclick="startAppliance('${t.id}')">
+          ${t.ico} Start ${t.name}
+        </button>`).join('')}
+      </div>
+    </div>`;
+    return;
+  }
+
+  const rows = types.map(t => {
+    const state = applianceState[t.id];
+    if (!state) {
+      return `<div class="appl-row" style="opacity:.6;">
+        <div class="appl-ico">${t.ico}</div>
+        <div class="appl-info"><div class="appl-name">${t.name}</div><div class="appl-detail">Nie działa</div></div>
+        <button class="appl-btn" onclick="startAppliance('${t.id}')">▶ Start</button>
+      </div>`;
+    }
+    const done = state.done || Date.now() > state.startTs + state.durationMin * 60000;
+    const prog = getApplianceProgress(state);
+    const left = getApplianceTimeLeft(state);
+    const end = getApplianceEndTime(state);
+    return `<div class="appl-row">
+      <div class="appl-ico">${t.ico}</div>
+      <div class="appl-info">
+        <div class="appl-name">${t.name} ${done ? '✅' : '⏳'}</div>
+        <div class="appl-detail">${done ? 'Gotowe — wyjmij!' : `Koniec ~${end} · ${state.startedBy}`}</div>
+        ${!done ? `<div class="appl-prog"><div class="appl-prog-fill" style="width:${prog}%"></div></div>` : ''}
+      </div>
+      <div class="appl-timer">${done ? '✅' : left}</div>
+      <button class="appl-btn ${done ? 'done' : 'running'}" onclick="stopAppliance('${t.id}')">${done ? '✓ Koniec' : '■ Stop'}</button>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `<div class="appliance-widget">
+    <div class="appl-title">🏠 Urządzenia domowe</div>
+    ${rows}
+    <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">Odśwież stronę aby zaktualizować timer</div>
+  </div>`;
+}
+
+/* Aktualizuj timer urządzeń co 30 sekund */
+setInterval(() => { if (document.getElementById('applianceWidget')?.innerHTML) renderApplianceWidget(); }, 30000);
+
+/* Załaduj stan urządzeń z Firebase po zalogowaniu */
+function initApplianceFirebase() {
+  if (isDemo || !fCode) return;
+  onValue(ref(db, `families/${fCode}/appliances`), snap => {
+    if (snap.exists()) { applianceState = snap.val() || {}; renderApplianceWidget(); }
+  });
+}
+
+/* Ustaw czasy w ustawieniach na zapamiętane */
+function initApplianceDurationsUI() {
+  const d = getApplianceDurations();
+  const wd = document.getElementById('washerDuration');
+  const dd = document.getElementById('dishwasherDuration');
+  if (wd) wd.value = d.washer;
+  if (dd) dd.value = d.dishwasher;
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   [14] LOKALIZACJA RODZICÓW DLA DZIECI
+   ───────────────────────────────────────────────────────── */
+
+let parentMapInstance = null;
+let parentMapMarkers = {};
+
+function renderChildLocPanel() {
+  const el = document.getElementById('childLocPanel');
+  if (!el) return;
+  // Panel widoczny tylko dla dzieci
+  if (myProfile?.role !== 'child') { el.innerHTML = ''; return; }
+
+  const parents = Object.entries(live.members || {}).filter(([, m]) => m.role === 'parent');
+  if (!parents.length) { el.innerHTML = ''; return; }
+
+  const now = Date.now();
+  const btns = parents.map(([uid, mem]) => {
+    const loc = live.locations?.[uid];
+    const ageMin = loc ? Math.floor((now - (loc.ts || 0)) / 60000) : null;
+    const fresh = loc && ageMin < 5;
+    const stale = loc && ageMin >= 30;
+    const status = !loc ? 'Brak lokalizacji' : fresh ? 'Właśnie' : `${ageMin} min temu`;
+    return `<div class="parent-locbtn ${fresh ? 'online' : stale ? '' : loc ? 'online' : ''}" onclick="showParentOnMap('${uid}')">
+      <div class="plb-av">${mem.avatar || '👤'}</div>
+      <div class="plb-info">
+        <div class="plb-name">${mem.name}</div>
+        <div class="plb-sub">📍 ${status}</div>
+      </div>
+      <div class="plb-dot"></div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `<div class="card" id="childLocCard">
+    <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>📍 Gdzie są rodzice?</span>
+      <button onclick="refreshParentLocations()" style="padding:3px 8px;border-radius:6px;border:none;background:var(--gp);color:var(--g2);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🔄</button>
+    </div>
+    <div class="parent-locbtn-row">${btns}</div>
+    <div id="parentMapContainer" class="loc-map-wrap" style="display:none;">
+      <div id="parentMap"></div>
+    </div>
+    <div id="parentLocDetail" style="font-size:10px;color:var(--soft);margin-top:4px;"></div>
+  </div>`;
+}
+
+window.showParentOnMap = function (uid) {
+  const loc = live.locations?.[uid];
+  const mem = live.members?.[uid];
+  if (!loc?.lat) { showToast('📍 Brak lokalizacji rodzica'); return; }
+
+  const container = document.getElementById('parentMapContainer');
+  const mapEl = document.getElementById('parentMap');
+  if (!container || !mapEl) return;
+  container.style.display = '';
+
+  // Init Leaflet map
+  if (!window.L) {
+    // Dołącz Leaflet dynamicznie
+    if (!document.getElementById('leafletCss')) {
+      const css = document.createElement('link');
+      css.id = 'leafletCss'; css.rel = 'stylesheet';
+      css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(css);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = () => initParentMap(uid, loc, mem);
+    document.head.appendChild(script);
+  } else {
+    initParentMap(uid, loc, mem);
+  }
+
+  // Detail text
+  const ageMin = Math.floor((Date.now() - (loc.ts || 0)) / 60000);
+  const detail = document.getElementById('parentLocDetail');
+  if (detail) detail.innerHTML = `${mem?.avatar || '👤'} <b>${mem?.name}</b> · ${ageMin < 1 ? 'przed chwilą' : ageMin + ' min temu'} · ±${loc.acc || '?'}m`;
+};
+
+function initParentMap(uid, loc, mem) {
+  if (!window.L) return;
+  const mapEl = document.getElementById('parentMap');
+  if (!mapEl) return;
+
+  if (parentMapInstance) { parentMapInstance.remove(); parentMapInstance = null; }
+  parentMapInstance = L.map('parentMap', { zoomControl: true, attributionControl: false })
+    .setView([loc.lat, loc.lng], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(parentMapInstance);
+
+  // Marker rodzica
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));">${mem?.avatar || '👤'}</div>`,
+    iconSize: [30, 30], iconAnchor: [15, 15]
+  });
+  L.marker([loc.lat, loc.lng], { icon })
+    .addTo(parentMapInstance)
+    .bindPopup(`<b>${mem?.name || 'Rodzic'}</b><br>${Math.floor((Date.now() - (loc.ts || 0)) / 60000)} min temu`)
+    .openPopup();
+
+  // Marker dziecka (moja lokalizacja)
+  const myLoc = live.locations?.[getMyUid()];
+  if (myLoc?.lat) {
+    const myIcon = L.divIcon({
+      className: '',
+      html: `<div style="font-size:24px;">${myProfile?.avatar || '👧'}</div>`,
+      iconSize: [26, 26], iconAnchor: [13, 13]
+    });
+    L.marker([myLoc.lat, myLoc.lng], { icon: myIcon }).addTo(parentMapInstance).bindPopup('Ty jesteś tutaj');
+    // Linia łącząca
+    L.polyline([[myLoc.lat, myLoc.lng], [loc.lat, loc.lng]], { color: '#4a9e22', weight: 2, dashArray: '5,8', opacity: 0.7 }).addTo(parentMapInstance);
+    const dist = haversine(myLoc.lat, myLoc.lng, loc.lat, loc.lng);
+    const detail = document.getElementById('parentLocDetail');
+    if (detail) detail.innerHTML += ` · Odległość: <b>${fmtDist(dist)}</b>`;
+  }
+
+  setTimeout(() => parentMapInstance?.invalidateSize(), 200);
+}
+
+window.refreshParentLocations = function () {
+  // Odśwież własną lokalizację
+  if (navigator.geolocation && currentUser?.uid) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const uid = currentUser.uid;
+      const data = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy || 0), ts: Date.now(), name: myProfile.name, avatar: myProfile.avatar || '👤', uid };
+      if (!isDemo) update(ref(db, `families/${fCode}/locations/${uid}`), data).catch(() => {});
+      else live.locations[uid] = data;
+      renderChildLocPanel();
+      showToast('📍 Lokalizacja zaktualizowana!');
+    }, () => {}, { enableHighAccuracy: true, timeout: 8000 });
+  }
+};
+
+/* Udostępnianie lokalizacji przez rodzica (już istnieje startParentLocationSharing) */
+window.startParentLocationSharing = window.startParentLocationSharing || function () {
+  if (!navigator.geolocation || !currentUser?.uid) return;
+  navigator.geolocation.getCurrentPosition(pos => {
+    const uid = currentUser.uid;
+    const data = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy || 0), ts: Date.now(), name: myProfile.name, avatar: myProfile.avatar || '👤', uid };
+    if (!isDemo) update(ref(db, `families/${fCode}/locations/${uid}`), data).then(() => showToast('📍 Twoja lokalizacja wysłana!')).catch(() => {});
+    else { live.locations[uid] = data; showToast('📍 Twoja lokalizacja wysłana!'); }
+  }, () => showToast('❌ Brak GPS'), { enableHighAccuracy: true, timeout: 8000 });
+};
+
+
+/* ─────────────────────────────────────────────────────────
+   INIT — wywołaj nowe funkcje po załadowaniu aplikacji
+   ───────────────────────────────────────────────────────── */
+
+/* Patch launchApp — dołącz inicjalizacje v23 */
+const _origLaunchApp_v23 = window.launchApp;
+window.launchApp = function () {
+  _origLaunchApp_v23 && _origLaunchApp_v23();
+  // Inicjalizuj ustawienia powiadomień
+  setTimeout(initNotifSettingsUI, 300);
+  // Inicjalizuj czasy urządzeń
+  setTimeout(initApplianceDurationsUI, 300);
+  // Firebase listeners dla urządzeń
+  setTimeout(initApplianceFirebase, 500);
+  // Renderuj widget urządzeń
+  setTimeout(renderApplianceWidget, 400);
+  // Panel lokalizacji dzieci
+  setTimeout(renderChildLocPanel, 500);
+};
+
+/* Patch renderDistancePanel — dołącz renderowanie panelu dziecka */
+const _origRenderDist_v23 = window.renderDistancePanel;
+window.renderDistancePanel = function () {
+  _origRenderDist_v23 && _origRenderDist_v23();
+  renderChildLocPanel();
+};
+
+/* Patch goTab — init weather manager */
+const _origGoTab_v23 = window.goTab;
+window.goTab = function (id) {
+  _origGoTab_v23 && _origGoTab_v23(id);
+  if (id === 'weather') {
+    setTimeout(renderWeatherCitiesManager, 100);
+    // Reset sub-tab do forecast
+    document.getElementById('wxTabForecast').style.display = '';
+    document.getElementById('wxTabMeteoram').style.display = 'none';
+    document.getElementById('wxTabImgw').style.display = 'none';
+    document.querySelectorAll('.wx-sub-tab').forEach((b, i) => b.classList.toggle('sel', i === 0));
+  }
+  if (id === 'settings') {
+    setTimeout(initNotifSettingsUI, 100);
+    setTimeout(initApplianceDurationsUI, 100);
+  }
+  if (id === 'today') {
+    setTimeout(renderApplianceWidget, 100);
+    setTimeout(renderChildLocPanel, 100);
+  }
+};
+
+/* Auto-aktualizuj panel lokalizacji rodziców co 2 minuty */
+setInterval(renderChildLocPanel, 120000);
 
 </script>
 </body>
