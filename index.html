@@ -1114,6 +1114,47 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div id="categoryMgmt"></div>
     </div>
     <!-- Lokalizacja pogody przeniesiona do zakładki Pogoda -->
+    <!-- AI API KEYS CARD -->
+    <div class="card">
+      <div class="card-ttl">🤖 AI — klucze API</div>
+      <div style="font-size:10px;color:var(--soft);margin-bottom:10px;">Klucze zapisane tylko na tym urządzeniu (localStorage). Nigdy nie trafiają do Firebase ani naszych serwerów.</div>
+
+      <!-- Claude -->
+      <div style="background:var(--inp);border-radius:10px;padding:9px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+          <span style="font-size:16px;">🧠</span>
+          <span style="font-size:12px;font-weight:900;color:var(--text);">Claude API Key</span>
+          <span style="font-size:9px;background:var(--gp);color:var(--g2);padding:2px 6px;border-radius:10px;font-weight:800;">AI Kucharz</span>
+        </div>
+        <div style="font-size:10px;color:var(--soft);margin-bottom:6px;line-height:1.5;">
+          1. Idź na <b>console.anthropic.com</b><br>
+          2. Zaloguj się / utwórz konto<br>
+          3. Kliknij <b>API Keys → Create Key</b><br>
+          4. Skopiuj klucz (zaczyna się od <b>sk-ant-</b>)
+        </div>
+        <input class="f-inp" id="claudeApiKeyInp" type="password" placeholder="sk-ant-api03-..." style="font-size:11px;margin-bottom:0;" autocomplete="off">
+      </div>
+
+      <!-- Groq -->
+      <div style="background:var(--inp);border-radius:10px;padding:9px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+          <span style="font-size:16px;">⚡</span>
+          <span style="font-size:12px;font-weight:900;color:var(--text);">Groq API Key</span>
+          <span style="font-size:9px;background:#fef3c7;color:#d97706;padding:2px 6px;border-radius:10px;font-weight:800;">AI Asystent FAB</span>
+        </div>
+        <div style="font-size:10px;color:var(--soft);margin-bottom:6px;line-height:1.5;">
+          1. Idź na <b>console.groq.com</b><br>
+          2. Zaloguj się (darmowe konto!)<br>
+          3. Kliknij <b>API Keys → Create API Key</b><br>
+          4. Skopiuj klucz (zaczyna się od <b>gsk_</b>)<br>
+          <span style="color:var(--g2);">✅ Groq jest bezpłatny — 14 400 req/dzień</span>
+        </div>
+        <input class="f-inp" id="groqApiKeyInp" type="password" placeholder="gsk_..." style="font-size:11px;margin-bottom:0;" autocomplete="off">
+      </div>
+
+      <button onclick="saveAiKeys()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz klucze API</button>
+      <div id="aiKeysSavedMsg" style="display:none;text-align:center;font-size:11px;color:var(--g2);font-weight:800;margin-top:6px;">✅ Zapisano! Asystent 🤖 pojawi się na dole ekranu.</div>
+    </div>
     <div class="card">
       <div class="card-ttl">🔗 Zaproszenia</div>
       <div id="referralSettingRow"></div>
@@ -1284,8 +1325,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           <button class="vt-btn" onclick="filterPantry('warzywa')">🥦 Warzywa</button>
           <button class="vt-btn" onclick="filterPantry('owoce')">🍎 Owoce</button>
           <button class="vt-btn" onclick="filterPantry('napoje')">🥤 Napoje</button>
+          <button class="vt-btn" onclick="filterPantry('przyprawy')">🧂 Przyprawy</button>
           <button class="vt-btn" onclick="filterPantry('inne')">📦 Inne</button>
         </div>
+        <!-- Quick-add tiles shown when a filter is active -->
+        <div id="pantryFilterQuickTiles" style="display:none;margin-bottom:8px;"></div>
         <div id="pantryList" style="display:flex;flex-direction:column;gap:5px;"></div>
         <div id="pantryEmpty" style="display:none;">
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:8px 0;">
@@ -1306,6 +1350,9 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
             </button>
             <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('napoje'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
               <span>🥤</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Napoje</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('przyprawy'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>🧂</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Przyprawy</span>
             </button>
             <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('inne'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
               <span>📦</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Inne</span>
@@ -1349,6 +1396,44 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           <button onclick="openMealDBWeek()" style="flex:1;padding:7px;border-radius:8px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">📅 Losuj cały tydzień</button>
         </div>
         <div id="weekMenuGrid" style="display:flex;flex-direction:column;gap:6px;"></div>
+        <!-- [28] Generate shopping from menu -->
+        <div style="margin-top:8px;">
+          <button onclick="openShopFromMenu()" style="width:100%;padding:8px;border-radius:9px;border:none;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🛒 Generuj zakupy z menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- [29-31] AI KUCHARZ TAB -->
+    <div id="kitchenTabAI" style="display:none;">
+      <div class="card">
+        <div class="card-ttl">🤖 AI Kucharz <span style="font-size:9px;font-weight:700;color:var(--soft);">powered by Claude</span></div>
+        <div style="font-size:10px;color:var(--soft);margin-bottom:8px;">Klucz API wpisz w Opcje → AI. Dane nie trafiają do serwera.</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <button onclick="aiChef('pantry')" style="padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#059669,#10b981);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;text-align:left;">
+            🥘 Co ugotować z tego co mam?<br><span style="font-size:9px;font-weight:600;opacity:.85;">Analizuje spiżarnię i proponuje 3 dania</span>
+          </button>
+          <button onclick="aiChef('week')" style="padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;text-align:left;">
+            📅 Zaproponuj menu na tydzień<br><span style="font-size:9px;font-weight:600;opacity:.85;">Claude generuje 7-dniowy plan posiłków</span>
+          </button>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input class="f-inp" id="aiRecipeName" placeholder="Nazwa dania, np. żurek..." style="flex:1;margin:0;font-size:11px;">
+            <button onclick="aiChef('recipe')" style="padding:7px 10px;border-radius:9px;border:none;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;">📖 Przepis</button>
+          </div>
+        </div>
+        <div id="aiChefResult" style="margin-top:10px;display:none;"></div>
+      </div>
+    </div>
+
+    <!-- [40] SUBSKRYPCJE TAB -->
+    <div id="kitchenTabSubs" style="display:none;">
+      <div class="card">
+        <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>💳 Subskrypcje</span>
+          <button onclick="openSubModal()" style="padding:4px 10px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">+ Dodaj</button>
+        </div>
+        <div id="subsSummary" style="display:flex;gap:8px;margin-bottom:10px;"></div>
+        <div id="subsList" style="display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="subsEmpty" style="text-align:center;font-size:11px;color:var(--soft);padding:14px;display:none;">Brak subskrypcji — dodaj pierwszą!</div>
       </div>
     </div>
   </div>
@@ -1466,6 +1551,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
         <option value="warzywa">🥦 Warzywa</option>
         <option value="owoce">🍎 Owoce</option>
         <option value="napoje">🥤 Napoje</option>
+        <option value="przyprawy">🧂 Przyprawy</option>
         <option value="inne">📦 Inne</option>
       </select>
       <div class="f-lbl" style="margin-top:6px;">Data ważności (opcja)</div>
@@ -6737,31 +6823,88 @@ window.selectKitchenTab = function(tab) {
 let pantryItems = [];
 let pantryFilter = 'all';
 
-const PANTRY_CAT_ICONS = {nabiał:'🥛',mięso:'🥩',warzywa:'🥦',owoce:'🍎',napoje:'🥤',inne:'📦'};
-const PANTRY_CAT_LIST  = ['nabiał','mięso','warzywa','owoce','napoje','inne'];
+const PANTRY_CAT_ICONS = {nabiał:'🥛',mięso:'🥩',warzywa:'🥦',owoce:'🍎',napoje:'🥤',przyprawy:'🧂',inne:'📦'};
+const PANTRY_CAT_LIST  = ['nabiał','mięso','warzywa','owoce','napoje','przyprawy','inne'];
+
+/* Ikony per konkretny produkt — do wyświetlania obok nazwy w liście */
+const PANTRY_PRODUCT_ICONS = {
+  // Nabiał
+  'mleko':'🥛','jogurt':'🍶','ser żółty':'🧀','twaróg':'🧀','masło':'🧈','śmietana':'🥛',
+  'kefir':'🥛','jajka':'🥚','jajko':'🥚','ser biały':'🧀','maślanka':'🥛','ricotta':'🧀',
+  'mozzarella':'🧀','parmezan':'🧀','feta':'🧀','śmietanka':'🥛','ser kozi':'🧀',
+  // Mięso
+  'pierś z kurczaka':'🍗','mielone wołowe':'🥩','boczek':'🥓','szynka':'🍖','kiełbasa':'🌭',
+  'schab':'🥩','łosoś':'🐟','tuńczyk':'🐟','salami':'🍕','pstrąg':'🐟','pierś z indyka':'🦃',
+  'udziec z kurczaka':'🍗','wątróbka':'🥩','karkówka':'🥩','polędwica':'🥩','krewetki':'🦐',
+  'dorsz':'🐟','mintaj':'🐟','śledź':'🐟','makrela':'🐟','kabanosy':'🌭','parówki':'🌭',
+  // Warzywa
+  'pomidory':'🍅','pomidor':'🍅','ogórek':'🥒','marchew':'🥕','papryka':'🫑','cebula':'🧅',
+  'czosnek':'🧄','ziemniaki':'🥔','ziemniak':'🥔','brokuł':'🥦','szpinak':'🥬','sałata':'🥬',
+  'kapusta':'🥬','por':'🧅','seler':'🥬','pietruszka':'🌿','dynia':'🎃','cukinia':'🥒',
+  'bakłażan':'🍆','kukurydza':'🌽','groszek':'🫛','fasola':'🫘','buraki':'🫀','rzodkiewka':'🌱',
+  'kalafior':'🥦','jarmuż':'🥬','rukola':'🥬','szczypiorek':'🌿','awokado':'🥑',
+  // Owoce
+  'jabłka':'🍎','jabłko':'🍎','banany':'🍌','banan':'🍌','pomarańcze':'🍊','pomarańcza':'🍊',
+  'truskawki':'🍓','truskawka':'🍓','winogrona':'🍇','winogrono':'🍇','cytryna':'🍋',
+  'gruszki':'🍐','gruszka':'🍐','mandarynki':'🍊','mandarynka':'🍊','borówki':'🫐',
+  'borówka':'🫐','kiwi':'🥝','mango':'🥭','ananasy':'🍍','ananas':'🍍','melon':'🍈',
+  'arbuz':'🍉','śliwki':'🍑','brzoskwinie':'🍑','morele':'🍑','maliny':'🍓','jeżyny':'🫐',
+  // Napoje
+  'woda niegazowana':'💧','woda gazowana':'💧','sok pomarańczowy':'🧃','mleko':'🥛',
+  'herbata':'🍵','kawa':'☕','napój energetyczny':'⚡','kompot':'🧃','piwo':'🍺','wino':'🍷',
+  'sok jabłkowy':'🧃','sok pomidorowy':'🧃','lemoniada':'🍋','coca-cola':'🥤','pepsi':'🥤',
+  'sok multiwitamina':'🧃','yerba mate':'🧉','sok wiśniowy':'🧃',
+  // Przyprawy
+  'sól':'🧂','pieprz':'🌶️','papryka słodka':'🌶️','papryka ostra':'🌶️','kurkuma':'🌿',
+  'cynamon':'🌿','bazylia':'🌿','oregano':'🌿','tymianek':'🌿','majeranek':'🌿',
+  'curry':'🌿','kminek':'🌿','imbir':'🫚','gałka muszkatołowa':'🌿','ziele angielskie':'🌿',
+  'liść laurowy':'🌿','chilli':'🌶️','czubrica':'🌿','vegeta':'🧂','przyprawa do kurczaka':'🍗',
+  'ocet':'🫙','sos sojowy':'🫙','musztarda':'🟡','ketchup':'🍅','majonez':'🫙',
+  // Inne/Suche
+  'makaron':'🍝','ryż':'🍚','mąka':'🌾','cukier':'🍬','sól':'🧂','olej':'🫙',
+  'chleb':'🍞','bułki':'🥐','bułka':'🥐','płatki owsiane':'🥣','kasza':'🍚',
+  'oliwa':'🫙','ocet':'🫙','miód':'🍯','dżem':'🍯','masło orzechowe':'🥜',
+  'płatki kukurydziane':'🥣','musli':'🥣','granola':'🥣','chipsy':'🥔','krakersy':'🥨',
+  'orzeszki':'🥜','migdały':'🌰','orzechy włoskie':'🌰','pasta pomidorowa':'🍅',
+  'bulion':'🍲','koncentrat pomidorowy':'🍅','fasola w puszce':'🫘','kukurydza w puszce':'🌽',
+};
+
+function getPantryIcon(name, category) {
+  if (!name) return PANTRY_CAT_ICONS[category] || '📦';
+  const key = name.toLowerCase().trim();
+  // exact match
+  if (PANTRY_PRODUCT_ICONS[key]) return PANTRY_PRODUCT_ICONS[key];
+  // partial match — check if any key is contained in product name
+  for (const [k, ico] of Object.entries(PANTRY_PRODUCT_ICONS)) {
+    if (key.includes(k) || k.includes(key)) return ico;
+  }
+  return PANTRY_CAT_ICONS[category] || '📦';
+}
 
 /* Popularne produkty na kafelkach — per kategoria */
 const PANTRY_POPULAR = {
-  nabiał:  ['Mleko','Jogurt','Ser żółty','Twaróg','Masło','Śmietana','Kefir','Jajka','Ser biały','Maślanka'],
-  mięso:   ['Pierś z kurczaka','Mielone wołowe','Boczek','Szynka','Kiełbasa','Schab','Łosoś','Tuńczyk','Salami','Pstrąg'],
-  warzywa: ['Pomidory','Ogórek','Marchew','Papryka','Cebula','Czosnek','Ziemniaki','Brokuł','Szpinak','Sałata'],
-  owoce:   ['Jabłka','Banany','Pomarańcze','Truskawki','Winogrona','Cytryna','Gruszki','Mandarynki','Borówki','Kiwi'],
-  napoje:  ['Woda niegazowana','Woda gazowana','Sok pomarańczowy','Mleko','Herbata','Kawa','Napój energetyczny','Kompot','Piwo','Wino'],
-  inne:    ['Makaron','Ryż','Mąka','Cukier','Sól','Olej','Chleb','Bułki','Płatki owsiane','Kasza'],
+  nabiał:    ['Mleko','Jogurt','Ser żółty','Twaróg','Masło','Śmietana','Kefir','Jajka','Ser biały','Maślanka','Mozzarella','Parmezan','Feta','Ricotta','Śmietanka'],
+  mięso:     ['Pierś z kurczaka','Pierś z indyka','Mielone wołowe','Boczek','Szynka','Kiełbasa','Schab','Łosoś','Tuńczyk','Salami','Pstrąg','Udziec z kurczaka','Karkówka','Polędwica','Krewetki','Parówki','Kabanosy','Dorsz'],
+  warzywa:   ['Pomidory','Ogórek','Marchew','Papryka','Cebula','Czosnek','Ziemniaki','Brokuł','Szpinak','Sałata','Kapusta','Por','Kalafior','Cukinia','Bakłażan','Kukurydza','Groszek','Fasola','Buraki','Awokado','Rzodkiewka','Dynia'],
+  owoce:     ['Jabłka','Banany','Pomarańcze','Truskawki','Winogrona','Cytryna','Gruszki','Mandarynki','Borówki','Kiwi','Mango','Ananas','Maliny','Śliwki','Brzoskwinie','Arbuz','Melon','Jeżyny'],
+  napoje:    ['Woda niegazowana','Woda gazowana','Sok pomarańczowy','Herbata','Kawa','Napój energetyczny','Kompot','Piwo','Wino','Sok jabłkowy','Sok pomidorowy','Lemoniada','Yerba mate','Sok wiśniowy'],
+  przyprawy: ['Sól','Pieprz','Papryka słodka','Papryka ostra','Bazylia','Oregano','Tymianek','Majeranek','Curry','Kurkuma','Cynamon','Imbir','Chilli','Kminek','Vegeta','Przyprawa do kurczaka','Ziele angielskie','Liść laurowy','Musztarda','Ketchup','Majonez','Sos sojowy','Ocet'],
+  inne:      ['Makaron','Ryż','Mąka','Cukier','Olej','Oliwa','Chleb','Bułki','Płatki owsiane','Kasza','Miód','Dżem','Masło orzechowe','Musli','Granola','Orzeszki','Migdały','Orzechy włoskie','Pasta pomidorowa','Fasola w puszce','Kukurydza w puszce','Chipsy','Krakersy'],
 };
 
 /* Słownik kategorii auto-przypisania po nazwie */
 const PANTRY_NAME_TO_CAT = {
-  mleko:'nabiał',jogurt:'nabiał',ser:'nabiał',twaróg:'nabiał',masło:'nabiał',śmietana:'nabiał',kefir:'nabiał',jajka:'nabiał',maślanka:'nabiał',
-  kurczak:'mięso',wołowina:'mięso',boczek:'mięso',szynka:'mięso',kiełbasa:'mięso',schab:'mięso',łosoś:'mięso',tuńczyk:'mięso',mielone:'mięso',pstrąg:'mięso',salami:'mięso',
-  pomidor:'warzywa',ogórek:'warzywa',marchew:'warzywa',papryka:'warzywa',cebula:'warzywa',czosnek:'warzywa',ziemniak:'warzywa',brokuł:'warzywa',szpinak:'warzywa',sałata:'warzywa',
-  jabłko:'owoce',jabłka:'owoce',banan:'owoce',banany:'owoce',pomarańcz:'owoce',truskawka:'owoce',truskawki:'owoce',winogrono:'owoce',winogrona:'owoce',cytryna:'owoce',gruszka:'owoce',gruszki:'owoce',borówka:'owoce',kiwi:'owoce',
-  woda:'napoje',sok:'napoje',herbata:'napoje',kawa:'napoje',napój:'napoje',kompot:'napoje',piwo:'napoje',wino:'napoje',
-  makaron:'inne',ryż:'inne',mąka:'inne',cukier:'inne',sól:'inne',olej:'inne',chleb:'inne',bułka:'inne',bułki:'inne',płatki:'inne',kasza:'inne',
+  mleko:'nabiał',jogurt:'nabiał',ser:'nabiał',twaróg:'nabiał',masło:'nabiał',śmietana:'nabiał',kefir:'nabiał',jajka:'nabiał',maślanka:'nabiał',ricotta:'nabiał',mozzarella:'nabiał',parmezan:'nabiał',feta:'nabiał',
+  kurczak:'mięso',wołowina:'mięso',boczek:'mięso',szynka:'mięso',kiełbasa:'mięso',schab:'mięso',łosoś:'mięso',tuńczyk:'mięso',mielone:'mięso',pstrąg:'mięso',salami:'mięso',indyk:'mięso',karkówka:'mięso',polędwica:'mięso',krewetki:'mięso',parówki:'mięso',kabanosy:'mięso',dorsz:'mięso',
+  pomidor:'warzywa',ogórek:'warzywa',marchew:'warzywa',papryka:'warzywa',cebula:'warzywa',czosnek:'warzywa',ziemniak:'warzywa',brokuł:'warzywa',szpinak:'warzywa',sałata:'warzywa',kapusta:'warzywa',por:'warzywa',kalafior:'warzywa',cukinia:'warzywa',bakłażan:'warzywa',kukurydza:'warzywa',groszek:'warzywa',fasola:'warzywa',burak:'warzywa',awokado:'warzywa',rzodkiewka:'warzywa',dynia:'warzywa',
+  jabłko:'owoce',jabłka:'owoce',banan:'owoce',banany:'owoce',pomarańcz:'owoce',truskawka:'owoce',truskawki:'owoce',winogrono:'owoce',winogrona:'owoce',cytryna:'owoce',gruszka:'owoce',gruszki:'owoce',borówka:'owoce',kiwi:'owoce',mango:'owoce',ananas:'owoce',maliny:'owoce',malina:'owoce',śliwka:'owoce',brzoskwinia:'owoce',arbuz:'owoce',melon:'owoce',
+  woda:'napoje',sok:'napoje',herbata:'napoje',kawa:'napoje',napój:'napoje',kompot:'napoje',piwo:'napoje',wino:'napoje',lemoniada:'napoje',yerba:'napoje',
+  sól:'przyprawy',pieprz:'przyprawy',bazylia:'przyprawy',oregano:'przyprawy',tymianek:'przyprawy',majeranek:'przyprawy',curry:'przyprawy',kurkuma:'przyprawy',cynamon:'przyprawy',imbir:'przyprawy',chilli:'przyprawy',kminek:'przyprawy',vegeta:'przyprawy',musztarda:'przyprawy',ketchup:'przyprawy',majonez:'przyprawy',ocet:'przyprawy',
+  makaron:'inne',ryż:'inne',mąka:'inne',cukier:'inne',olej:'inne',oliwa:'inne',chleb:'inne',bułka:'inne',bułki:'inne',płatki:'inne',kasza:'inne',miód:'inne',dżem:'inne',granola:'inne',musli:'inne',orzeszki:'inne',migdały:'inne',orzechy:'inne',chipsy:'inne',
 };
 
 /* Jednostka domyślna per kategoria */
-const PANTRY_DEFAULT_UNIT = {nabiał:'szt',mięso:'g',warzywa:'szt',owoce:'szt',napoje:'l',inne:'szt'};
+const PANTRY_DEFAULT_UNIT = {nabiał:'szt',mięso:'g',warzywa:'szt',owoce:'szt',napoje:'l',przyprawy:'g',inne:'szt'};
 
 function guessCategoryFromName(name) {
   const lower = name.toLowerCase();
@@ -6788,9 +6931,80 @@ function deletePantryFromFirebase(fbKey) {
 window.filterPantry = function(cat) {
   pantryFilter = cat;
   document.querySelectorAll('#pantryFilters .vt-btn').forEach(b => b.classList.remove('sel'));
-  const idx = ['all','nabiał','mięso','warzywa','owoce','napoje','inne'].indexOf(cat);
+  const cats = ['all','nabiał','mięso','warzywa','owoce','napoje','przyprawy','inne'];
+  const idx = cats.indexOf(cat);
   document.querySelectorAll('#pantryFilters .vt-btn')[idx]?.classList.add('sel');
+
+  const qc = document.getElementById('pantryFilterQuickTiles');
+  if (cat === 'all') {
+    // Show category picker tiles
+    if (qc) {
+      qc.style.display = '';
+      qc.innerHTML = `
+        <div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">Szybki wybór kategorii:</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
+          ${[
+            {k:'nabiał',i:'🥛',l:'Nabiał'},{k:'mięso',i:'🥩',l:'Mięso'},
+            {k:'warzywa',i:'🥦',l:'Warzywa'},{k:'owoce',i:'🍎',l:'Owoce'},
+            {k:'napoje',i:'🥤',l:'Napoje'},{k:'przyprawy',i:'🧂',l:'Przyprawy'},
+            {k:'inne',i:'📦',l:'Inne'},
+            {k:'_add',i:'➕',l:'Dodaj'}
+          ].map(c => c.k === '_add'
+            ? `<button onclick="openPantryModal()" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:9px;border:2px dashed var(--g2);background:var(--gp);cursor:pointer;">
+                <span style="font-size:18px;">${c.i}</span>
+                <span style="font-size:9px;font-weight:800;color:var(--g2);">${c.l}</span>
+              </button>`
+            : `<button onclick="filterPantry('${c.k}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:9px;border:1.5px solid var(--border);background:var(--inp);cursor:pointer;">
+                <span style="font-size:18px;">${c.i}</span>
+                <span style="font-size:9px;font-weight:800;color:var(--soft);">${c.l}</span>
+              </button>`
+          ).join('')}
+        </div>`;
+    }
+  } else {
+    // Show quick-add product tiles for the selected category inline
+    if (qc) {
+      qc.style.display = '';
+      const popular = PANTRY_POPULAR[cat] || [];
+      const customKey = `dp-pantry-custom-${cat}`;
+      const custom = JSON.parse(localStorage.getItem(customKey) || '[]');
+      const all = [...custom, ...popular];
+      qc.innerHTML = `
+        <div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">Szybko dodaj ${PANTRY_CAT_ICONS[cat]||''}:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('${cat}'),60)"
+            style="display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:8px;border:2px dashed var(--g2);background:var(--gp);font-size:11px;font-weight:800;cursor:pointer;color:var(--g2);">
+            ➕ nowy
+          </button>
+          ${all.slice(0,16).map(name => {
+            const ico = getPantryIcon(name, cat);
+            const exists = pantryItems.some(i => i.name.toLowerCase() === name.toLowerCase());
+            return `<button onclick="pantryQuickFromFilter('${name.replace(/'/g,"\\'")}','${cat}')"
+              style="display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:8px;border:1.5px solid ${exists?'var(--g2)':'var(--border)'};background:${exists?'var(--gp)':'var(--inp)'};font-size:11px;font-weight:800;cursor:pointer;color:${exists?'var(--g2)':'var(--text)'};">
+              ${ico} ${name}
+            </button>`;
+          }).join('')}
+        </div>`;
+    }
+  }
   renderPantry();
+};
+
+window.pantryQuickFromFilter = function(name, cat) {
+  // If item already exists open edit, otherwise open add modal prefilled
+  const existing = pantryItems.find(i => i.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    editPantryItem(existing.id);
+    return;
+  }
+  openPantryModal();
+  setTimeout(() => {
+    pantrySelectCat(cat);
+    setTimeout(() => {
+      const inp = document.getElementById('pantryName');
+      if (inp) { inp.value = name; pantryTilePick(name, cat); }
+    }, 60);
+  }, 60);
 };
 
 function renderPantry() {
@@ -6828,7 +7042,7 @@ function renderPantry() {
         expiryHtml = `<span style="font-size:9px;color:var(--soft);">📅 ${item.expiry}</span>`;
       }
     }
-    const catIco = PANTRY_CAT_ICONS[item.category] || '📦';
+    const catIco = getPantryIcon(item.name, item.category);
     return `<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${bgColor};border:1px solid var(--border);border-radius:10px;">
       <span style="font-size:20px;">${catIco}</span>
       <div style="flex:1;min-width:0;">
@@ -6863,12 +7077,13 @@ function renderPantryCatGrid() {
   const grid = document.getElementById('pantryCatGrid');
   if (!grid) return;
   const cats = [
-    {key:'nabiał', ico:'🥛', label:'Nabiał'},
-    {key:'mięso',  ico:'🥩', label:'Mięso'},
-    {key:'warzywa',ico:'🥦', label:'Warzywa'},
-    {key:'owoce',  ico:'🍎', label:'Owoce'},
-    {key:'napoje', ico:'🥤', label:'Napoje'},
-    {key:'inne',   ico:'📦', label:'Inne'},
+    {key:'nabiał',    ico:'🥛', label:'Nabiał'},
+    {key:'mięso',     ico:'🥩', label:'Mięso'},
+    {key:'warzywa',   ico:'🥦', label:'Warzywa'},
+    {key:'owoce',     ico:'🍎', label:'Owoce'},
+    {key:'napoje',    ico:'🥤', label:'Napoje'},
+    {key:'przyprawy', ico:'🧂', label:'Przyprawy'},
+    {key:'inne',      ico:'📦', label:'Inne'},
   ];
   grid.innerHTML = cats.map(c => `
     <button onclick="pantrySelectCat('${c.key}')"
@@ -7503,5 +7718,582 @@ window.goTab = function(id) {
 setInterval(checkPantryExpiry, 1800000);
 
 </script>
+<!-- [28] SHOP FROM MENU OVERLAY -->
+<div class="overlay" id="shopFromMenuOverlay">
+  <div class="modal-box">
+    <div class="modal-ttl">🛒 Zakupy z menu <span class="modal-close" onclick="closeOverlay('shopFromMenuOverlay')">×</span></div>
+    <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Zaznacz pozycje do dodania do listy zakupów:</div>
+    <div style="display:flex;gap:5px;margin-bottom:8px;">
+      <button onclick="shopMenuSelectAll(true)" class="mf-btn" style="flex:1;">☑️ Zaznacz wszystkie</button>
+      <button onclick="shopMenuSelectAll(false)" class="mf-btn" style="flex:1;">☐ Odznacz wszystkie</button>
+    </div>
+    <div id="shopFromMenuList" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;"></div>
+    <div style="display:flex;gap:6px;margin-top:10px;">
+      <select class="f-inp" id="shopMenuTargetDay" style="flex:1;font-size:11px;">
+        <option value="1">Poniedziałek</option><option value="2">Wtorek</option>
+        <option value="3">Środa</option><option value="4">Czwartek</option>
+        <option value="5">Piątek</option><option value="6">Sobota</option><option value="0">Niedziela</option>
+      </select>
+      <button onclick="addCheckedToShop()" style="flex:1;padding:8px;border-radius:9px;border:none;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🛒 Dodaj do zakupów</button>
+    </div>
+  </div>
+</div>
+
+<!-- [40] SUBSCRIPTION MODAL -->
+<div class="overlay" id="subOverlay">
+  <div class="modal-box">
+    <div class="modal-ttl">💳 <span id="subModalTitle">Nowa subskrypcja</span> <span class="modal-close" onclick="closeOverlay('subOverlay')">×</span></div>
+    <input type="hidden" id="subEditId">
+    <div class="f-lbl">Nazwa</div>
+    <input class="f-inp" id="subName" placeholder="np. Netflix, Spotify..." maxlength="40">
+    <div style="display:flex;gap:8px;">
+      <div style="flex:1;"><div class="f-lbl">Kwota (PLN/mies.)</div><input class="f-inp" id="subAmount" type="number" min="0" step="0.01" placeholder="29.99"></div>
+      <div style="flex:1;"><div class="f-lbl">Dzień odnowienia</div><input class="f-inp" id="subRenewDay" type="number" min="1" max="31" placeholder="1"></div>
+    </div>
+    <div class="f-lbl">Kategoria</div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;" id="subCatGrid">
+      <button class="mf-btn sel" onclick="subSelectCat('streaming',this)">📺 Streaming</button>
+      <button class="mf-btn" onclick="subSelectCat('muzyka',this)">🎵 Muzyka</button>
+      <button class="mf-btn" onclick="subSelectCat('gry',this)">🎮 Gry</button>
+      <button class="mf-btn" onclick="subSelectCat('praca',this)">💼 Praca</button>
+      <button class="mf-btn" onclick="subSelectCat('zdrowie',this)">🏥 Zdrowie</button>
+      <button class="mf-btn" onclick="subSelectCat('inne',this)">📦 Inne</button>
+    </div>
+    <input type="hidden" id="subCat" value="streaming">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <input type="checkbox" id="subActive" checked style="width:16px;height:16px;cursor:pointer;">
+      <label for="subActive" style="font-size:12px;font-weight:800;cursor:pointer;">Aktywna</label>
+    </div>
+    <button onclick="saveSub()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
+  </div>
+</div>
+
+<!-- [36] GROQ AI ASSISTANT FLOATING -->
+<div id="groqFab" style="position:fixed;bottom:90px;right:14px;z-index:300;display:none;">
+  <button onclick="toggleGroqPanel()" style="width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#f97316,#f59e0b);color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(249,115,22,.5);display:flex;align-items:center;justify-content:center;" title="AI Asystent">🤖</button>
+</div>
+<div id="groqPanel" style="position:fixed;bottom:150px;right:14px;width:300px;max-height:420px;z-index:400;background:var(--card);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1.5px solid var(--border);display:none;flex-direction:column;">
+  <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:13px;font-weight:900;color:var(--text);">🤖 AI Asystent</span>
+    <div style="display:flex;gap:6px;">
+      <button onclick="groqQuick('tasks')" class="mf-btn">📋 Zadania</button>
+      <button onclick="groqQuick('week')" class="mf-btn">📅 Tydzień</button>
+      <span onclick="toggleGroqPanel()" style="font-size:18px;cursor:pointer;color:var(--soft);">×</span>
+    </div>
+  </div>
+  <div id="groqHistory" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:100px;max-height:260px;"></div>
+  <div style="padding:8px;border-top:1px solid var(--border);display:flex;gap:5px;">
+    <input class="f-inp" id="groqInput" placeholder="Zapytaj o rodzinę..." style="flex:1;margin:0;font-size:11px;" onkeydown="if(event.key==='Enter')sendGroqMsg()">
+    <button onclick="sendGroqMsg()" style="padding:6px 10px;border-radius:8px;border:none;background:linear-gradient(135deg,#f97316,#f59e0b);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">▶</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   [28] LISTA ZAKUPÓW Z MENU
+═══════════════════════════════════════════════════════════════ */
+window.openShopFromMenu = function() {
+  const items = [];
+  // Collect all non-empty menu slots
+  DAY_KEYS.forEach((dk, di) => {
+    MEAL_KEYS.forEach((mk, mi) => {
+      const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
+      arr.forEach((name, n) => {
+        if (name && name.trim()) {
+          items.push({
+            id: `${dk}_${mk}_${n}`,
+            text: name.trim(),
+            day: WEEK_DAYS[di],
+            meal: MEAL_TYPES[mi]
+          });
+        }
+      });
+    });
+  });
+
+  if (!items.length) { showToast('⚠️ Menu jest puste — najpierw wypełnij menu tygodniowe'); return; }
+
+  const list = document.getElementById('shopFromMenuList');
+  list.innerHTML = items.map(item => `
+    <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--inp);border-radius:8px;cursor:pointer;">
+      <input type="checkbox" data-item="${encodeURIComponent(item.text)}" checked style="width:15px;height:15px;cursor:pointer;flex-shrink:0;">
+      <span style="flex:1;">
+        <span style="font-size:11px;font-weight:800;color:var(--text);">${item.text}</span>
+        <span style="font-size:9px;color:var(--soft);margin-left:5px;">${item.day.slice(0,2)} ${item.meal.split(' ')[0]}</span>
+      </span>
+    </label>`).join('');
+
+  // Pre-select today's DOW in target day dropdown
+  const todayDow = new Date().getDay();
+  const sel = document.getElementById('shopMenuTargetDay');
+  if (sel) sel.value = String(todayDow === 0 ? 0 : todayDow);
+
+  document.getElementById('shopFromMenuOverlay').classList.add('show');
+};
+
+window.shopMenuSelectAll = function(checked) {
+  document.querySelectorAll('#shopFromMenuList input[type=checkbox]').forEach(cb => cb.checked = checked);
+};
+
+window.addCheckedToShop = async function() {
+  const day = parseInt(document.getElementById('shopMenuTargetDay')?.value ?? new Date().getDay());
+  const key = 'shop_' + day;
+  const checked = [...document.querySelectorAll('#shopFromMenuList input[type=checkbox]:checked')];
+  if (!checked.length) { showToast('⚠️ Nic nie zaznaczono'); return; }
+
+  if (!live.notes[key]) live.notes[key] = [];
+  let added = 0;
+  checked.forEach(cb => {
+    const text = decodeURIComponent(cb.dataset.item);
+    // Don't duplicate
+    if (!live.notes[key].find(n => n.text === text)) {
+      live.notes[key].push({ id: 's'+Date.now()+Math.random(), text, will: false, done: false, who: myProfile.name, ts: Date.now() });
+      added++;
+    }
+  });
+
+  if (!isDemo && fCode) await set(ref(db, `families/${fCode}/notes/${key}`), live.notes[key]);
+  closeOverlay('shopFromMenuOverlay');
+  showToast(`✅ Dodano ${added} pozycji do listy zakupów!`);
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   [29-31] CLAUDE AI KUCHARZ
+═══════════════════════════════════════════════════════════════ */
+function getClaudeKey() { return localStorage.getItem('dp-claude-api-key') || ''; }
+function getGroqKey()   { return localStorage.getItem('dp-groq-api-key')   || ''; }
+
+window.saveAiKeys = function() {
+  const ck = document.getElementById('claudeApiKeyInp')?.value?.trim();
+  const gk = document.getElementById('groqApiKeyInp')?.value?.trim();
+  if (ck) localStorage.setItem('dp-claude-api-key', ck);
+  if (gk) localStorage.setItem('dp-groq-api-key', gk);
+  // Show FAB immediately if Groq key set
+  const fab = document.getElementById('groqFab');
+  if (fab && getGroqKey()) fab.style.display = '';
+  const msg = document.getElementById('aiKeysSavedMsg');
+  if (msg) { msg.style.display = ''; setTimeout(() => msg.style.display = 'none', 4000); }
+  showToast('✅ Klucze API zapisane!');
+};
+
+// Populate key inputs on settings open
+const _origGoTab_v25 = window.goTab;
+window.goTab = function(id) {
+  _origGoTab_v25 && _origGoTab_v25(id);
+  if (id === 'settings') {
+    setTimeout(() => {
+      const ck = getClaudeKey();
+      const gk = getGroqKey();
+      const ci = document.getElementById('claudeApiKeyInp');
+      const gi = document.getElementById('groqApiKeyInp');
+      if (ci && ck) ci.value = ck;
+      if (gi && gk) gi.value = gk;
+    }, 100);
+  }
+  // Show Groq FAB when app is running
+  const fab = document.getElementById('groqFab');
+  if (fab && getGroqKey()) fab.style.display = '';
+};
+
+window.aiChef = async function(mode) {
+  const apiKey = getClaudeKey();
+  if (!apiKey) {
+    showToast('⚠️ Wpisz klucz Claude API w Opcje → AI');
+    return;
+  }
+
+  const resultEl = document.getElementById('aiChefResult');
+  resultEl.style.display = '';
+  resultEl.innerHTML = '<div style="text-align:center;font-size:28px;animation:bob 1s infinite;">🍳</div><div style="text-align:center;font-size:11px;color:var(--soft);margin-top:6px;">AI gotuje odpowiedź…</div>';
+
+  let prompt = '';
+  if (mode === 'pantry') {
+    const items = pantryItems.map(i => `${i.name} (${i.category})`).join(', ');
+    if (!items) { resultEl.innerHTML = '<div style="font-size:11px;color:var(--soft);">Spiżarnia jest pusta!</div>'; return; }
+    prompt = `Mam następujące produkty w spiżarni: ${items}.
+
+Zaproponuj 3 konkretne dania do ugotowania z tych składników. Dla każdego podaj: nazwę, czas przygotowania i krótki opis (2 zdania). Format: 1. **Nazwa** (X min) — opis. Odpowiedz po polsku, krótko i konkretnie.`;
+  } else if (mode === 'week') {
+    const dietFilters = [...activeMealFilters].map(f => f).join(', ') || 'brak ograniczeń';
+    prompt = `Zaproponuj zróżnicowane menu tygodniowe (poniedziałek–niedziela) z posiłkami: śniadanie, obiad, kolacja. Filtry: ${dietFilters}.
+
+Format odpowiedzi — TYLKO taki JSON bez żadnych komentarzy:
+{"mon":{"breakfast":"nazwa","lunch":"nazwa","dinner":"nazwa"},"tue":{...},"wed":{...},"thu":{...},"fri":{...},"sat":{...},"sun":{...}}
+
+Nazwy dań po polsku, krótkie (max 4 słowa).`;
+  } else if (mode === 'recipe') {
+    const dish = document.getElementById('aiRecipeName')?.value?.trim();
+    if (!dish) { showToast('⚠️ Wpisz nazwę dania'); resultEl.style.display = 'none'; return; }
+    prompt = `Podaj przepis krok po kroku na: ${dish}.
+
+Format:
+**Składniki** (dla 4 osób):
+- lista
+
+**Przygotowanie:**
+1. krok
+2. krok...
+
+**Czas:** X minut
+
+Odpowiedz po polsku.`;
+  }
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    const text = data.content?.[0]?.text || '';
+
+    if (mode === 'week') {
+      // Try to parse JSON and offer to insert
+      try {
+        const clean = text.replace(/```json|```/g, '').trim();
+        const parsed = JSON.parse(clean);
+        const preview = DAY_KEYS.map((dk, di) => {
+          const day = parsed[dk];
+          if (!day) return '';
+          return `<div style="padding:4px 0;border-bottom:1px solid var(--border);"><b style="font-size:10px;color:var(--g2);">${WEEK_DAYS[di]}</b><div style="font-size:10px;">🌅 ${day.breakfast||''} · 🍽️ ${day.lunch||''} · 🌙 ${day.dinner||''}</div></div>`;
+        }).join('');
+        resultEl.innerHTML = `
+          <div style="margin-bottom:8px;">${preview}</div>
+          <button onclick="aiInsertWeekMenu(${encodeURIComponent(JSON.stringify(parsed))})" style="width:100%;padding:8px;border-radius:9px;border:none;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">📅 Wstaw do planera menu</button>`;
+      } catch(e) {
+        resultEl.innerHTML = `<div style="font-size:11px;white-space:pre-wrap;line-height:1.5;">${text}</div>`;
+      }
+    } else {
+      // Format markdown bold
+      const formatted = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/
+/g, '<br>');
+      resultEl.innerHTML = `<div style="font-size:11px;line-height:1.6;">${formatted}</div>`;
+    }
+  } catch(e) {
+    resultEl.innerHTML = `<div style="font-size:11px;color:var(--r);">❌ Błąd: ${e.message}<br><small>Sprawdź klucz API w Opcje → AI</small></div>`;
+  }
+};
+
+window.aiInsertWeekMenu = function(encodedJson) {
+  try {
+    const parsed = JSON.parse(decodeURIComponent(encodedJson));
+    DAY_KEYS.forEach(dk => {
+      const day = parsed[dk];
+      if (!day) return;
+      MEAL_KEYS.forEach((mk, mi) => {
+        const mealMap = { breakfast: 'breakfast', lunch: 'lunch', dinner: 'dinner' };
+        const val = day[mealMap[mk]] || '';
+        if (val) {
+          const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
+          arr[0] = val;
+          weekMenu[`${dk}_${mk}`] = arr;
+        }
+      });
+    });
+    if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+    showToast('✅ Menu AI wstawione do planera!');
+    selectKitchenTab('menu');
+    renderWeekMenuGrid();
+  } catch(e) { showToast('❌ Błąd parsowania'); }
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   [40] SUBSKRYPCJE
+═══════════════════════════════════════════════════════════════ */
+let subsItems = [];
+const SUB_CAT_ICONS = { streaming:'📺', muzyka:'🎵', gry:'🎮', praca:'💼', zdrowie:'🏥', inne:'📦' };
+
+function loadSubsFirebase() {
+  if (isDemo || !fCode) return;
+  onValue(ref(db, `families/${fCode}/subscriptions`), snap => {
+    const raw = snap.val() || {};
+    subsItems = Object.entries(raw).map(([k,v]) => ({...v, _fbKey: k}));
+    renderSubs();
+    checkSubsAlerts();
+  });
+}
+
+function renderSubs() {
+  const list = document.getElementById('subsList');
+  const empty = document.getElementById('subsEmpty');
+  const summary = document.getElementById('subsSummary');
+  if (!list) return;
+
+  const active = subsItems.filter(s => s.active !== false);
+  const monthly = active.reduce((a, s) => a + (parseFloat(s.amount) || 0), 0);
+  const yearly = monthly * 12;
+
+  if (summary) summary.innerHTML = `
+    <div style="flex:1;background:var(--gp);border-radius:9px;padding:8px;text-align:center;">
+      <div style="font-size:9px;color:var(--soft);font-weight:800;">MIESIĘCZNIE</div>
+      <div style="font-size:16px;font-weight:900;color:var(--g2);">${monthly.toFixed(2)} zł</div>
+    </div>
+    <div style="flex:1;background:var(--inp);border-radius:9px;padding:8px;text-align:center;">
+      <div style="font-size:9px;color:var(--soft);font-weight:800;">ROCZNIE</div>
+      <div style="font-size:16px;font-weight:900;color:var(--text);">${yearly.toFixed(2)} zł</div>
+    </div>`;
+
+  if (!subsItems.length) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  // Sort by renew day
+  const sorted = [...subsItems].sort((a,b) => (a.renewDay||1) - (b.renewDay||1));
+  list.innerHTML = sorted.map(s => {
+    const icon = SUB_CAT_ICONS[s.category] || '📦';
+    const today = new Date().getDate();
+    const daysLeft = s.renewDay >= today ? s.renewDay - today : (31 - today + s.renewDay);
+    const alertClass = daysLeft <= 3 ? 'color:var(--r);' : 'color:var(--soft);';
+    const activeStyle = s.active === false ? 'opacity:.5;' : '';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--inp);border-radius:10px;${activeStyle}">
+      <div style="font-size:20px;">${icon}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:900;color:var(--text);">${s.name}</div>
+        <div style="font-size:10px;${alertClass}font-weight:700;">${s.renewDay}. dnia mies. · ${daysLeft <= 3 ? '⚠️ za '+daysLeft+' dni' : 'za '+daysLeft+' dni'}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:13px;font-weight:900;color:var(--g2);">${parseFloat(s.amount||0).toFixed(2)} zł</div>
+        <div style="display:flex;gap:4px;margin-top:3px;">
+          <button onclick="editSub('${s.id}')" style="padding:2px 6px;border-radius:5px;border:1.5px solid var(--border);background:var(--inp);font-size:9px;font-weight:800;cursor:pointer;color:var(--text);">✏️</button>
+          <button onclick="deleteSub('${s.id}')" style="padding:2px 6px;border-radius:5px;border:1.5px solid var(--r);background:transparent;font-size:9px;font-weight:800;cursor:pointer;color:var(--r);">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function checkSubsAlerts() {
+  const today = new Date().getDate();
+  subsItems.filter(s => s.active !== false).forEach(s => {
+    const daysLeft = s.renewDay >= today ? s.renewDay - today : (31 - today + s.renewDay);
+    if (daysLeft <= 3 && daysLeft >= 0) {
+      sendNtfy(`⚠️ Subskrypcja: ${s.name}`, `Odnowienie za ${daysLeft} dni (${s.amount} zł)`, 'warning');
+    }
+  });
+}
+
+let subSelectedCat = 'streaming';
+window.subSelectCat = function(cat, btn) {
+  subSelectedCat = cat;
+  document.getElementById('subCat').value = cat;
+  document.querySelectorAll('#subCatGrid .mf-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+};
+
+window.openSubModal = function(id) {
+  const sub = id ? subsItems.find(s => s.id === id) : null;
+  document.getElementById('subEditId').value = id || '';
+  document.getElementById('subModalTitle').textContent = sub ? 'Edytuj subskrypcję' : 'Nowa subskrypcja';
+  document.getElementById('subName').value = sub?.name || '';
+  document.getElementById('subAmount').value = sub?.amount || '';
+  document.getElementById('subRenewDay').value = sub?.renewDay || new Date().getDate();
+  document.getElementById('subActive').checked = sub ? sub.active !== false : true;
+  subSelectedCat = sub?.category || 'streaming';
+  document.getElementById('subCat').value = subSelectedCat;
+  document.querySelectorAll('#subCatGrid .mf-btn').forEach((b, i) => {
+    b.classList.toggle('sel', b.textContent.includes(Object.keys(SUB_CAT_ICONS)[i]?.slice(0,2) || ''));
+  });
+  // Reset selection
+  document.querySelectorAll('#subCatGrid .mf-btn').forEach(b => b.classList.remove('sel'));
+  const catKeys = Object.keys(SUB_CAT_ICONS);
+  const catIdx = catKeys.indexOf(subSelectedCat);
+  if (catIdx >= 0) document.querySelectorAll('#subCatGrid .mf-btn')[catIdx]?.classList.add('sel');
+  document.getElementById('subOverlay').classList.add('show');
+};
+
+window.editSub = function(id) { openSubModal(id); };
+
+window.saveSub = function() {
+  const id = document.getElementById('subEditId').value || ('sub_' + Date.now());
+  const name = document.getElementById('subName').value.trim();
+  const amount = parseFloat(document.getElementById('subAmount').value) || 0;
+  const renewDay = parseInt(document.getElementById('subRenewDay').value) || 1;
+  const active = document.getElementById('subActive').checked;
+  const category = document.getElementById('subCat').value || subSelectedCat;
+
+  if (!name) { showToast('⚠️ Wpisz nazwę'); return; }
+
+  const sub = { id, name, amount, renewDay, category, active, ts: Date.now() };
+  const idx = subsItems.findIndex(s => s.id === id);
+  if (idx >= 0) subsItems[idx] = { ...sub, _fbKey: subsItems[idx]._fbKey };
+  else subsItems.push(sub);
+
+  if (!isDemo && fCode) {
+    const fbKey = subsItems.find(s => s.id === id)?._fbKey;
+    if (fbKey) set(ref(db, `families/${fCode}/subscriptions/${fbKey}`), sub);
+    else push(ref(db, `families/${fCode}/subscriptions`), sub);
+  }
+
+  closeOverlay('subOverlay');
+  renderSubs();
+  showToast('✅ Subskrypcja zapisana!');
+};
+
+window.deleteSub = function(id) {
+  if (!confirm('Usunąć tę subskrypcję?')) return;
+  const idx = subsItems.findIndex(s => s.id === id);
+  if (idx < 0) return;
+  const fbKey = subsItems[idx]._fbKey;
+  subsItems.splice(idx, 1);
+  if (!isDemo && fCode && fbKey) remove(ref(db, `families/${fCode}/subscriptions/${fbKey}`));
+  renderSubs();
+  showToast('🗑️ Usunięto');
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   [36] GROQ AI ASYSTENT
+═══════════════════════════════════════════════════════════════ */
+let groqHistory = [];
+
+window.toggleGroqPanel = function() {
+  const panel = document.getElementById('groqPanel');
+  if (!panel) return;
+  const isVisible = panel.style.display === 'flex';
+  panel.style.display = isVisible ? 'none' : 'flex';
+  if (!isVisible) {
+    document.getElementById('groqInput')?.focus();
+    if (!groqHistory.length) renderGroqHistory();
+  }
+};
+
+function renderGroqHistory() {
+  const el = document.getElementById('groqHistory');
+  if (!el) return;
+  if (!groqHistory.length) {
+    el.innerHTML = '<div style="text-align:center;font-size:11px;color:var(--soft);padding:10px;">Cześć! Jestem AI asystentem Twojej rodziny. Zapytaj mnie o zadania, punkty dzieci lub zakupy.</div>';
+    return;
+  }
+  el.innerHTML = groqHistory.map(m => `
+    <div style="display:flex;${m.role==='user'?'justify-content:flex-end;':''}">
+      <div style="max-width:85%;padding:6px 9px;border-radius:${m.role==='user'?'10px 10px 3px 10px':'10px 10px 10px 3px'};background:${m.role==='user'?'linear-gradient(135deg,#f97316,#f59e0b)':'var(--inp)'};color:${m.role==='user'?'#fff':'var(--text)'};font-size:11px;line-height:1.5;">
+        ${m.content.replace(/
+/g,'<br>')}
+      </div>
+    </div>`).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+window.groqQuick = async function(type) {
+  const panel = document.getElementById('groqPanel');
+  if (panel) panel.style.display = 'flex';
+  const prompts = {
+    tasks: 'Podsumuj zadania rodziny: co zrobiono dziś, jakie punkty zdobyły dzieci i co jest zaległe?',
+    week: 'Przeanalizuj tydzień rodziny. Co można ulepszyć? Jakie zadania dzieci wykonały najlepiej?'
+  };
+  if (prompts[type]) await sendGroqWithText(prompts[type]);
+};
+
+window.sendGroqMsg = async function() {
+  const inp = document.getElementById('groqInput');
+  const text = inp?.value?.trim();
+  if (!text) return;
+  inp.value = '';
+  await sendGroqWithText(text);
+};
+
+async function sendGroqWithText(userText) {
+  const apiKey = getGroqKey();
+  if (!apiKey) { showToast('⚠️ Wpisz klucz Groq API w Opcje → AI'); return; }
+
+  // Build context
+  const membersSummary = Object.values(live.members || {}).map(m => `${m.name} (${m.role})`).join(', ');
+  const tasksDone = Object.values(live.assigned || {}).filter(t => t.done).length;
+  const tasksPending = Object.values(live.assigned || {}).filter(t => !t.done).length;
+  const shopToday = (live.notes?.['shop_'+new Date().getDay()] || []).filter(i => !i.done).length;
+  const menuToday = (() => {
+    const days = ['sun','mon','tue','wed','thu','fri','sat'];
+    const dk = days[new Date().getDay()];
+    return MEAL_KEYS.map((mk,mi) => {
+      const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
+      return arr[0] ? MEAL_TYPES[mi].split(' ')[1]+': '+arr[0] : '';
+    }).filter(Boolean).join(', ');
+  })();
+
+  const systemPrompt = `Jesteś przyjaznym asystentem aplikacji Domowy Patrol dla rodziny. Masz dostęp do danych rodziny:
+- Członkowie: ${membersSummary || 'brak danych'}
+- Zadania dziś: ${tasksDone} wykonanych, ${tasksPending} oczekujących
+- Zakupy dziś: ${shopToday} pozycji do kupienia
+- Menu dziś: ${menuToday || 'brak menu'}
+Odpowiadaj po polsku, krótko i przyjaźnie. Max 3-4 zdania.`;
+
+  groqHistory.push({ role: 'user', content: userText });
+  renderGroqHistory();
+
+  // Add loading indicator
+  const loadId = 'g_load_' + Date.now();
+  const el = document.getElementById('groqHistory');
+  if (el) el.innerHTML += `<div id="${loadId}" style="text-align:center;font-size:18px;animation:bob .8s infinite;">🤔</div>`;
+  if (el) el.scrollTop = el.scrollHeight;
+
+  try {
+    const messages = [
+      ...groqHistory.slice(-8).map(m => ({role: m.role, content: m.content}))
+    ];
+
+    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 400,
+        messages: [{ role: 'system', content: systemPrompt }, ...messages]
+      })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    const reply = data.choices?.[0]?.message?.content || 'Brak odpowiedzi';
+    groqHistory.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    groqHistory.push({ role: 'assistant', content: '❌ Błąd: ' + e.message });
+  }
+
+  document.getElementById(loadId)?.remove();
+  renderGroqHistory();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   KITCHEN TAB SWITCH — extend for AI + Subs
+═══════════════════════════════════════════════════════════════ */
+const _origSelectKitchenTab = window.selectKitchenTab;
+window.selectKitchenTab = function(tab) {
+  // Hide all tabs
+  ['pantry','menu','ai','subs'].forEach(t => {
+    const el = document.getElementById('kitchenTab' + t.charAt(0).toUpperCase() + t.slice(1));
+    if (el) el.style.display = t === tab ? '' : 'none';
+  });
+  // Update button sel state
+  document.querySelectorAll('#kitchenSubTabs .wx-sub-tab').forEach((b, i) => {
+    const tabs = ['pantry','menu','ai','subs'];
+    b.classList.toggle('sel', tabs[i] === tab);
+  });
+  if (tab === 'menu') renderWeekMenuGrid();
+  if (tab === 'pantry') renderPantry();
+  if (tab === 'subs') renderSubs();
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   PATCH launchApp — load subscriptions
+═══════════════════════════════════════════════════════════════ */
+const _origLaunchApp_v25 = window.launchApp;
+window.launchApp = function() {
+  _origLaunchApp_v25 && _origLaunchApp_v25();
+  setTimeout(() => {
+    loadSubsFirebase();
+    // Show Groq FAB if key exists
+    const fab = document.getElementById('groqFab');
+    if (fab && getGroqKey()) fab.style.display = '';
+  }, 800);
+};
+</script>
+
 </body>
 </html>
