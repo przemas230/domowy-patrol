@@ -154,8 +154,8 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 
 /* ── TABS ── */
 .tabs{display:flex;background:var(--tab);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(var(--tab-blur));}
-.tab{flex:1;padding:8px 1px 7px;border:none;background:none;font-family:var(--font);font-size:9px;font-weight:700;color:var(--soft);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s;position:relative;}
-.tab .ti{font-size:17px;}
+.tab{flex:1;padding:8px 1px 7px;border:none;background:none;font-family:var(--font);font-size:8px;font-weight:700;color:var(--soft);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s;position:relative;}
+.tab .ti{font-size:16px;}
 .tab.on{color:var(--g2);border-bottom-color:var(--g2);}
 .ndot{position:absolute;top:4px;right:calc(50% - 14px);width:6px;height:6px;border-radius:50%;background:var(--r);border:1.5px solid var(--tab);display:none;}
 .ndot.show{display:block;}
@@ -225,6 +225,8 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .view-toggle{display:flex;gap:6px;margin-bottom:8px;}
 .vt-btn{flex:1;padding:6px;border-radius:8px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);text-align:center;transition:all .15s;}
 .vt-btn.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
+.mf-btn{padding:3px 7px;border-radius:6px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;color:var(--text);text-align:center;transition:all .15s;}
+.mf-btn.sel{background:var(--gp);border-color:var(--g2);color:var(--g2);}
 
 /* ── CHORES ── */
 .cat-lbl{font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.6px;margin:9px 0 4px;display:flex;align-items:center;justify-content:space-between;}
@@ -967,6 +969,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <button class="tab" onclick="goTab('tasks')"><span class="ti">📌</span><span>Zlecone</span><div class="ndot" id="ndTasks"></div></button>
     <button class="tab" onclick="goTab('family')"><span class="ti">💬</span><span>Rodzina</span><div class="ndot" id="ndFamily"></div></button>
     <button class="tab" onclick="goTab('scores')"><span class="ti">🏆</span><span>Wyniki</span></button>
+    <button class="tab" onclick="goTab('kitchen')"><span class="ti">🍽️</span><span>Kuchnia</span><div class="ndot" id="ndKitchen"></div></button>
     <button class="tab" onclick="goTab('settings')"><span class="ti">⚙️</span><span>Opcje</span></button>
   </div>
 
@@ -1172,18 +1175,12 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 
     <!-- V23 [38]: CZASY URZĄDZEŃ -->
     <div class="card">
-      <div class="card-ttl">🫧 Czas trwania urządzeń</div>
-      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Ustaw ile trwa cykl pralki i zmywarki</div>
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px;">
-        <span style="font-size:18px;">🫧</span>
-        <span style="font-size:12px;font-weight:800;flex:1;color:var(--text);">Pralka (minuty)</span>
-        <input id="washerDuration" type="number" value="120" min="30" max="300" style="width:70px;padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:800;color:var(--text);text-align:center;outline:none;">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+        🫧 Czas trwania urządzeń
+        <button onclick="openAddApplianceModal()" style="padding:4px 9px;border-radius:7px;border:none;background:var(--gp);color:var(--g2);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">+ Dodaj</button>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <span style="font-size:18px;">🍽️</span>
-        <span style="font-size:12px;font-weight:800;flex:1;color:var(--text);">Zmywarka (minuty)</span>
-        <input id="dishwasherDuration" type="number" value="90" min="30" max="180" style="width:70px;padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:800;color:var(--text);text-align:center;outline:none;">
-      </div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Ustaw ile trwa cykl każdego urządzenia</div>
+      <div id="applianceDurationsSettings"></div>
       <button onclick="saveApplianceDurations()" style="width:100%;margin-top:8px;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz czasy</button>
     </div>
   </div>
@@ -1262,13 +1259,102 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
   </div>
 
   <!-- WEATHER FULL -->
+  <!-- KITCHEN [25][26][27] -->
+  <div class="sec" id="sec-kitchen">
+    <div class="sec-ttl">🍽️ Kuchnia</div>
+
+    <!-- Kitchen sub-tabs -->
+    <div class="wx-sub-tabs" id="kitchenSubTabs">
+      <button class="wx-sub-tab sel" onclick="selectKitchenTab('pantry')">🥫 Spiżarnia</button>
+      <button class="wx-sub-tab" onclick="selectKitchenTab('menu')">📅 Menu</button>
+    </div>
+
+    <!-- PANTRY TAB [25] -->
+    <div id="kitchenTabPantry">
+      <div class="card">
+        <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>🥫 Lodówka &amp; spiżarnia</span>
+          <button onclick="openPantryModal()" style="padding:4px 10px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">+ Dodaj</button>
+        </div>
+        <!-- Filter -->
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;" id="pantryFilters">
+          <button class="vt-btn sel" onclick="filterPantry('all')">Wszystkie</button>
+          <button class="vt-btn" onclick="filterPantry('nabiał')">🥛 Nabiał</button>
+          <button class="vt-btn" onclick="filterPantry('mięso')">🥩 Mięso</button>
+          <button class="vt-btn" onclick="filterPantry('warzywa')">🥦 Warzywa</button>
+          <button class="vt-btn" onclick="filterPantry('owoce')">🍎 Owoce</button>
+          <button class="vt-btn" onclick="filterPantry('napoje')">🥤 Napoje</button>
+          <button class="vt-btn" onclick="filterPantry('inne')">📦 Inne</button>
+        </div>
+        <div id="pantryList" style="display:flex;flex-direction:column;gap:5px;"></div>
+        <div id="pantryEmpty" style="display:none;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:8px 0;">
+            <button onclick="openPantryModal()" style="padding:14px 6px;border-radius:10px;border:2px dashed var(--g2);background:var(--gp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>➕</span><span style="font-size:9px;font-weight:800;color:var(--g2);">Dodaj</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('nabiał'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>🥛</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Nabiał</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('mięso'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>🥩</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Mięso</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('warzywa'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>🥦</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Warzywa</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('owoce'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>🍎</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Owoce</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('napoje'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>🥤</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Napoje</span>
+            </button>
+            <button onclick="openPantryModal();setTimeout(()=>pantrySelectCat('inne'),60)" style="padding:14px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--inp);font-size:20px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <span>📦</span><span style="font-size:9px;font-weight:800;color:var(--soft);">Inne</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENU TAB [26][27] -->
+    <div id="kitchenTabMenu" style="display:none;">
+      <div class="card">
+        <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>📅 Menu tygodniowe</span>
+          <div style="display:flex;gap:5px;">
+            <button onclick="saveWeekMenu()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
+          </div>
+        </div>
+        <!-- Filtry diety -->
+        <div style="margin-bottom:8px;">
+          <div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">🥗 Filtr diety (opcjonalnie)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;" id="mealDietFilters">
+            <button class="mf-btn" onclick="toggleMealFilter('vegetarian')" id="mf_vegetarian">🌿 Wegetariańskie</button>
+            <button class="mf-btn" onclick="toggleMealFilter('vegan')" id="mf_vegan">🥦 Wegańskie</button>
+            <button class="mf-btn" onclick="toggleMealFilter('seafood')" id="mf_seafood">🐟 Ryby/Owoce morza</button>
+            <button class="mf-btn" onclick="toggleMealFilter('pasta')" id="mf_pasta">🍝 Makarony</button>
+            <button class="mf-btn" onclick="toggleMealFilter('chicken')" id="mf_chicken">🍗 Drób</button>
+            <button class="mf-btn" onclick="toggleMealFilter('beef')" id="mf_beef">🥩 Wołowina</button>
+            <button class="mf-btn" onclick="toggleMealFilter('pork')" id="mf_pork">🐷 Wieprzowina</button>
+            <button class="mf-btn" onclick="toggleMealFilter('dessert')" id="mf_dessert">🍰 Desery</button>
+            <button class="mf-btn" onclick="toggleMealFilter('breakfast')" id="mf_breakfast">🥐 Śniadaniowe</button>
+            <button class="mf-btn" onclick="toggleMealFilter('glutenfree')" id="mf_glutenfree">🌾 Bez glutenu</button>
+            <button class="mf-btn" onclick="toggleMealFilter('lactosefree')" id="mf_lactosefree">🥛 Bez laktozy</button>
+            <button class="mf-btn" onclick="toggleMealFilter('lunchfilter')" id="mf_lunchfilter">🍲 Obiad</button>
+            <button class="mf-btn" onclick="toggleMealFilter('dinnerfilter')" id="mf_dinnerfilter">🍽️ Kolacja</button>
+          </div>
+        </div>
+        <!-- Przyciski losowania -->
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button onclick="openMealDBRandom()" style="flex:1;padding:7px;border-radius:8px;border:none;background:linear-gradient(135deg,#f07b20,#e84040);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🎲 Losuj 1 przepis</button>
+          <button onclick="openMealDBWeek()" style="flex:1;padding:7px;border-radius:8px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">📅 Losuj cały tydzień</button>
+        </div>
+        <div id="weekMenuGrid" style="display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="sec" id="sec-weather">
     <div class="sec-ttl">🌤️ Pogoda</div>
-    <div class="w3-tabs" id="w3tabs">
-      <button class="w3-tab sel" id="w3t0" onclick="selectWeatherCity(0)">🏠 Główne</button>
-      <button class="w3-tab" id="w3t1" onclick="selectWeatherCity(1)">📍 Miasto 2</button>
-      <button class="w3-tab" id="w3t2" onclick="selectWeatherCity(2)">📍 Miasto 3</button>
-    </div>
     <!-- V23: sub-tabs for weather views -->
     <div class="wx-sub-tabs" id="wxSubTabs">
       <button class="wx-sub-tab sel" onclick="selectWxSubTab('forecast')">📊 Prognoza</button>
@@ -1277,11 +1363,23 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     </div>
     <!-- Forecast tab (existing) -->
     <div id="wxTabForecast">
+      <!-- City tabs only inside forecast -->
+      <div class="w3-tabs" id="w3tabs">
+        <button class="w3-tab sel" id="w3t0" onclick="selectWeatherCity(0)">🏠 Główne</button>
+        <button class="w3-tab" id="w3t1" onclick="selectWeatherCity(1)">📍 Miasto 2</button>
+        <button class="w3-tab" id="w3t2" onclick="selectWeatherCity(2)">📍 Miasto 3</button>
+      </div>
       <div id="weatherFull"></div>
       <div id="weatherHourly" style="margin-top:8px;"></div>
+      <!-- Collapsible cities manager -->
       <div class="card" style="margin-top:8px;">
-        <div class="card-ttl">🏙️ Zarządzaj miastami</div>
-        <div id="weatherCitiesManager"></div>
+        <div class="card-ttl" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleWeatherCitiesPanel()">
+          <span>🏙️ Zarządzaj miastami</span>
+          <span id="weatherCitiesToggleIcon" style="font-size:11px;color:var(--soft);">▼ rozwiń</span>
+        </div>
+        <div id="weatherCitiesPanelBody" style="display:none;">
+          <div id="weatherCitiesManager"></div>
+        </div>
       </div>
     </div>
     <!-- V23 [18]: Meteorogram ICM tab -->
@@ -1309,6 +1407,96 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
         <div style="font-size:10px;font-weight:800;color:var(--soft);margin:8px 0 4px;">Inne pobliskie stacje</div>
         <div id="imgwAllStations" class="imgw-all"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANTRY MODAL [25] — autocomplete + kafelki kategorii -->
+<div class="overlay" id="pantryOverlay">
+  <div class="modal" style="max-height:90vh;overflow-y:auto;">
+    <div class="modal-ttl">🥫 Dodaj produkt <span class="modal-close" onclick="closeOverlay('pantryOverlay')">×</span></div>
+    <input type="hidden" id="pantryEditId">
+
+    <!-- Step 1: wybór kategorii kafelkami -->
+    <div id="pantryStep1">
+      <div class="f-lbl" style="margin-bottom:6px;">Wybierz kategorię</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;" id="pantryCatGrid"></div>
+    </div>
+
+    <!-- Step 2: kafelki produktów + autocomplete -->
+    <div id="pantryStep2" style="display:none;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <button onclick="pantryBackToStep1()" style="padding:4px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">← Wróć</button>
+        <span id="pantryChosenCatLabel" style="font-size:13px;font-weight:900;color:var(--g2);"></span>
+      </div>
+
+      <!-- Kafelki popularnych produktów -->
+      <div class="f-lbl" style="margin-bottom:5px;">Szybki wybór</div>
+      <div id="pantryQuickTiles" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+
+      <!-- Autocomplete input -->
+      <div class="f-lbl">Nazwa produktu *</div>
+      <div style="position:relative;">
+        <input class="f-inp" id="pantryName" placeholder="Wpisz nazwę…" maxlength="50" autocomplete="off"
+          oninput="pantryAutocomplete(this.value)" onfocus="pantryAutocomplete(this.value)">
+        <div id="pantryAcDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--card);border:2px solid var(--border);border-radius:10px;z-index:300;max-height:160px;overflow-y:auto;box-shadow:var(--sh);"></div>
+      </div>
+
+      <!-- Qty + Unit + Expiry -->
+      <div style="display:flex;gap:7px;margin-top:8px;">
+        <div style="flex:1;">
+          <div class="f-lbl">Ilość</div>
+          <input class="f-inp" id="pantryQty" type="number" min="0" step="0.1" placeholder="1">
+        </div>
+        <div style="flex:1;">
+          <div class="f-lbl">Jednostka</div>
+          <select class="f-inp" id="pantryUnit">
+            <option value="szt">szt</option>
+            <option value="g">g</option>
+            <option value="kg">kg</option>
+            <option value="ml">ml</option>
+            <option value="l">l</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-lbl" style="margin-top:6px;">Kategoria <span style="font-size:10px;color:var(--soft);">(możesz zmienić)</span></div>
+      <select class="f-inp" id="pantryCategory">
+        <option value="nabiał">🥛 Nabiał</option>
+        <option value="mięso">🥩 Mięso</option>
+        <option value="warzywa">🥦 Warzywa</option>
+        <option value="owoce">🍎 Owoce</option>
+        <option value="napoje">🥤 Napoje</option>
+        <option value="inne">📦 Inne</option>
+      </select>
+      <div class="f-lbl" style="margin-top:6px;">Data ważności (opcja)</div>
+      <input class="f-inp" id="pantryExpiry" type="date">
+      <button onclick="savePantryItem()" style="width:100%;margin-top:10px;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;">💾 Zapisz produkt</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEALDB POPUP [27] -->
+<div class="overlay" id="mealdbOverlay">
+  <div class="modal" style="max-height:85vh;overflow-y:auto;">
+    <div class="modal-ttl" id="mealdbTitle">🎲 Losowy przepis <span class="modal-close" onclick="closeOverlay('mealdbOverlay')">×</span></div>
+    <div id="mealdbContent" style="text-align:center;padding:10px;">
+      <div style="font-size:30px;animation:bob 1s infinite;">🍳</div>
+      <div style="font-size:12px;color:var(--soft);margin-top:6px;">Losowanie przepisu…</div>
+    </div>
+    <div id="mealdbActions" style="display:none;flex-direction:column;gap:6px;margin-top:10px;">
+      <div class="f-lbl">Wstaw do slotu:</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;" id="mealdbSlotSelect"></div>
+      <button onclick="insertMealToSlot()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">✅ Użyj przepisu</button>
+      <button onclick="openMealDBRandom()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--text);">🎲 Losuj ponownie</button>
+    </div>
+    <div id="mealdbWeekProgress" style="display:none;flex-direction:column;gap:6px;margin-top:10px;">
+      <div style="font-size:12px;font-weight:800;color:var(--text);" id="mealdbWeekStatus">Losuję menu na tydzień…</div>
+      <div style="background:var(--border);border-radius:6px;height:8px;overflow:hidden;">
+        <div id="mealdbWeekBar" style="height:100%;background:linear-gradient(90deg,#8b5cf6,var(--g2));width:0%;transition:width .4s;border-radius:6px;"></div>
+      </div>
+      <div id="mealdbWeekList" style="font-size:11px;color:var(--soft);"></div>
+      <button id="mealdbWeekSaveBtn" onclick="saveMealDBWeek()" style="display:none;width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">✅ Wstaw do menu</button>
+      <button onclick="closeOverlay('mealdbOverlay')" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--text);">✕ Anuluj</button>
     </div>
   </div>
 </div>
@@ -3372,16 +3560,18 @@ function fmtShopTs(ts){if(!ts)return'';const d=new Date(ts);return` ${DN_SHORT[d
 function makeShopItem(n,key){
   const membersOpts=Object.values(live.members).map(m=>`<option value="${esc(m.name)}">${m.avatar||'👤'} ${m.name}</option>`).join('');
   const willName=n.will&&!n.done&&n.willBy?n.willBy.split(' ')[0]:'';
+  const willTs=n.will&&!n.done&&n.willTs?fmtShopTs(n.willTs):'';
   const doneName=n.done&&n.doneBy?n.doneBy.split(' ')[0]:'';
-  const assignedLabel=n.assignedTo?` — ${n.assignedTo}${fmtShopTs(n.assignedTs)}`:'';
+  // assignedLabel: tylko gdy przypisane przez 👤, a nie przez samo kliknięcie "kupię"
+  const assignedLabel=n.assignedTo&&!(n.will&&n.willBy===n.assignedTo)?` — ${n.assignedTo}${fmtShopTs(n.assignedTs)}`:'';
   return`<div class="si ${n.done?'bought':''}" data-shop-id="${n.id}" data-shop-key="${key}" style="gap:3px;align-items:center;">
     <div class="si-swipe-hint">✓ Kupię</div>
     <div onclick="shopWill('${key}','${n.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:46px;cursor:pointer;padding:3px 2px;border-radius:6px;background:${n.will&&!n.done?'rgba(59,130,246,.08)':'transparent'};">
       <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${n.will&&!n.done?'var(--b)':'var(--border)'};background:${n.will&&!n.done?'var(--b)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${n.will&&!n.done?'✓':''}</div>
-      <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupię${willName?`<br>${willName}`:''}</div>
+      <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">${n.will&&!n.done?`kupię<br>${willName}${willTs}`:'kupię'}</div>
     </div>
     <div class="si-txt" style="flex:1;min-width:0;">${n.text}${assignedLabel?`<span style="font-size:9px;color:var(--b);">${assignedLabel}</span>`:''}</div>
-    <div style="position:relative;flex-shrink:0;width:20px;height:26px;">
+    <div style="position:relative;flex-shrink:0;width:26px;height:26px;margin-left:6px;">
       <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value=''" style="opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:2;">
         <option value="">—</option>${membersOpts}
       </select>
@@ -3492,16 +3682,29 @@ async function addShopItem(){
 window.addShopItem=addShopItem;
 async function shopWill(key,id){
   const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
+  const wasWill=n.will;
   n.will=!n.will;
   if(n.will){
+    // Zaznaczam — zapisuję poprzedni assignedTo żeby móc przywrócić
+    n._prevAssignedTo=n.assignedTo||'';
+    n._prevAssignedTs=n.assignedTs||null;
     n.done=false;
     n.willBy=myProfile.name;
-    // Zaktualizuj imię po myślniku i timestamp kliknięcia
+    n.willTs=Date.now();
     n.assignedTo=myProfile.name;
     n.assignedTs=Date.now();
   }else{
+    // Odznaczam — przywróć poprzednio zlecone (jeśli było inne)
+    const prev=n._prevAssignedTo||'';
     n.willBy='';
-    n.assignedTs=null;
+    n.willTs=null;
+    if(prev && prev!==myProfile.name){
+      n.assignedTo=prev;
+      n.assignedTs=n._prevAssignedTs||null;
+    }else{
+      n.assignedTo='';
+      n.assignedTs=null;
+    }
   }
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
   renderShoppingWeek();
@@ -3529,17 +3732,16 @@ window.shopDone=shopDone;
 window.shopAssignMember=async function(key,id,name){
   if(!name)return;
   const arr=live.notes[key]||[];const n=arr.find(x=>x.id===id);if(!n)return;
-  const prevAssigned=n.assignedTo;
+  // Jeśli wcześniej ktoś kliknął "kupię" i to ja — odznacz
+  if(n.will&&n.willBy===myProfile.name&&name!==myProfile.name){n.will=false;n.willBy='';n.willTs=null;}
   n.assignedTo=name;
-  // Ustaw willBy na wybraną osobę (zastępuje poprzednią)
-  n.will=true;
-  n.willBy=name;
   n.assignedTs=Date.now();
   if(n.done&&n.doneBy!==name){n.done=false;n.pointed=false;n.doneBy='';}
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
   renderShoppingWeek();
   if(todayShopOpen) renderTodayShop();
-  showToast(`👤 ${name}: kup ${n.text}`);
+  const ts=fmtShopTs(n.assignedTs);
+  showToast(`👤 ${name}, kup proszę ${n.text}${ts}`);
 };
 
 /* ── STICKY NOTES ── */
@@ -4262,7 +4464,7 @@ function goTab(id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   const sec=document.getElementById('sec-'+id);if(!sec) return;
   sec.classList.add('on');
-  const idx={today:0,tasks:1,family:2,scores:3,settings:4}[id];
+  const idx={today:0,tasks:1,family:2,scores:3,kitchen:4,settings:5}[id];
   if(idx!==undefined) document.querySelectorAll('.tab')[idx]?.classList.add('on');
   // v22: pokaż toggle widoku tylko na Dziś
   const hvt=document.getElementById('headerViewToggle');
@@ -4299,6 +4501,7 @@ function goTab(id){
     // Update city tab labels
     weatherCities.forEach((wc,i)=>{const el=document.getElementById('w3t'+i);if(el&&wc?.name)el.textContent=(i===0?'🏠 ':'')+wc.name.slice(0,8);});
   }
+  if(id==='kitchen'){renderPantry();renderWeekMenuGrid();}
 }
 
 /* ── SCORE PERIOD (dzień / tydzień / miesiąc) ── */
@@ -5378,30 +5581,34 @@ function renderTodayShop(){
   const dow=new Date().getDay();
   const key='shop_'+dow;
   const allItems=live.notes[key]||[];
-  const items=allItems.filter(n=>!n.done);
+  // Show ALL items: pending first, then bought (struck-through)
+  const pending=allItems.filter(n=>!n.done);
+  const bought=allItems.filter(n=>n.done);
+  const items=[...pending,...bought];
   const membersOpts=Object.values(live.members).map(m=>`<option value="${esc(m.name)}">${m.avatar||'👤'} ${m.name}</option>`).join('');
-  const listHtml=items.length?items.slice(0,10).map(n=>{
-    return`<div style="display:flex;align-items:center;gap:3px;padding:4px 0;border-bottom:1px solid var(--border);">
-      <div onclick="shopWill('${key}','${n.id}');renderTodayShop()" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:46px;cursor:pointer;padding:3px 2px;border-radius:6px;background:${n.will&&!n.done?'rgba(59,130,246,.08)':'transparent'};">
-        <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${n.will&&!n.done?'var(--b)':'var(--border)'};background:${n.will&&!n.done?'var(--b)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${n.will&&!n.done?'✓':''}</div>
-        <div style="font-size:7px;font-weight:800;color:${n.will&&!n.done?'var(--b)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupię${n.will&&!n.done&&n.willBy?`<br>${n.willBy.split(' ')[0]}`:''}</div>
+  const listHtml=items.length?items.slice(0,12).map(n=>{
+    const isDone=n.done;
+    return`<div style="display:flex;align-items:center;gap:3px;padding:4px 0;border-bottom:1px solid var(--border);${isDone?'opacity:.6;':''}">
+      <div onclick="shopWill('${key}','${n.id}');renderTodayShop()" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:46px;cursor:pointer;padding:3px 2px;border-radius:6px;background:${n.will&&!isDone?'rgba(59,130,246,.08)':'transparent'};">
+        <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${n.will&&!isDone?'var(--b)':'var(--border)'};background:${n.will&&!isDone?'var(--b)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${n.will&&!isDone?'✓':''}</div>
+        <div style="font-size:7px;font-weight:800;color:${n.will&&!isDone?'var(--b)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupię${n.will&&!isDone&&n.willBy?`<br>${n.willBy.split(' ')[0]}`:''}</div>
       </div>
-      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);"> — ${n.assignedTo}${fmtShopTs(n.assignedTs)}</span>`:''}</span>
-      <div style="position:relative;flex-shrink:0;width:20px;height:26px;">
+      <span style="font-size:12px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;${isDone?'text-decoration:line-through;color:var(--soft);':''}">${n.text}${n.assignedTo?`<span style="font-size:9px;color:var(--b);"> — ${n.assignedTo}${fmtShopTs(n.assignedTs)}</span>`:''}</span>
+      <div style="position:relative;flex-shrink:0;width:24px;height:26px;margin-left:2px;">
         <select onchange="shopAssignMember('${key}','${n.id}',this.value);this.value='';renderTodayShop()" style="opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:2;">
           <option value="">—</option>${membersOpts}
         </select>
         <span style="font-size:13px;pointer-events:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">👤</span>
       </div>
-      <div onclick="shopDone('${key}','${n.id}');renderTodayShop()" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:50px;cursor:pointer;padding:3px 2px;border-radius:6px;background:${n.done?'rgba(74,158,34,.08)':'transparent'};">
-        <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${n.done?'var(--g2)':'var(--border)'};background:${n.done?'var(--g2)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${n.done?'✓':''}</div>
-        <div style="font-size:7px;font-weight:800;color:${n.done?'var(--g2)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupione${n.done&&n.doneBy?`<br>${n.doneBy.split(' ')[0]}`:''}</div>
+      <div onclick="shopDone('${key}','${n.id}');renderTodayShop()" style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;min-width:52px;cursor:pointer;padding:3px 4px;border-radius:6px;background:${isDone?'rgba(74,158,34,.08)':'transparent'};">
+        <div style="width:20px;height:20px;border-radius:4px;border:2.5px solid ${isDone?'var(--g2)':'var(--border)'};background:${isDone?'var(--g2)':'var(--card)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;">${isDone?'✓':''}</div>
+        <div style="font-size:7px;font-weight:800;color:${isDone?'var(--g2)':'var(--soft)'};text-align:center;line-height:1.2;white-space:nowrap;">kupione${isDone&&n.doneBy?`<br>${n.doneBy.split(' ')[0]}`:''}</div>
       </div>
     </div>`;
   }).join(''):`<div style="text-align:center;padding:6px;color:var(--soft);font-size:11px;">Brak zakupów na dziś 🎉</div>`;
   el.innerHTML=`<div style="padding:8px 12px;">
     ${listHtml}
-    ${items.length>10?`<div style="font-size:10px;color:var(--soft);text-align:center;padding:4px 0;">...i ${items.length-10} więcej</div>`:''}
+    ${items.length>12?`<div style="font-size:10px;color:var(--soft);text-align:center;padding:4px 0;">...i ${items.length-12} więcej</div>`:''}
     <div style="display:flex;gap:6px;margin-top:8px;">
       <input id="todayShopInp" class="note-add-inp" style="flex:1;" placeholder="Dodaj zakup na dziś…" onkeydown="if(event.key==='Enter')addTodayShopItem()">
       <button class="note-add-btn" onclick="addTodayShopItem()">+</button>
@@ -5937,6 +6144,17 @@ window.selectWxSubTab = function (tab) {
   if (tab === 'imgw') fetchImgwData();
 };
 
+/* Toggle cities manager panel */
+window.toggleWeatherCitiesPanel = function () {
+  const body = document.getElementById('weatherCitiesPanelBody');
+  const icon = document.getElementById('weatherCitiesToggleIcon');
+  if (!body) return;
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : '';
+  if (icon) icon.textContent = open ? '▼ rozwiń' : '▲ schowaj';
+  if (!open) renderWeatherCitiesManager();
+};
+
 /* Oblicz kolumnę/rząd ICM z współrzędnych (siatka ~0.067° lon, 0.05° lat) */
 function coordsToIcmGrid(lat, lng) {
   // Siata UM: SW corner ~46.5N, 14.1E; krok ~2km
@@ -5948,7 +6166,6 @@ function coordsToIcmGrid(lat, lng) {
 async function renderMeteoram() {
   const el = document.getElementById('meteoramContent');
   if (!el) return;
-  // Najpierw spróbuj z aktywnego cache pogody (ma lat/lng)
   let lat = null, lng = null;
   if (weatherCaches[activeWeatherCity]?.lat) {
     lat = weatherCaches[activeWeatherCity].lat;
@@ -5963,13 +6180,20 @@ async function renderMeteoram() {
   }
   const { row, col } = coordsToIcmGrid(lat, lng);
   const url = `https://www.meteo.pl/meteorogram_map_um/meteorogram_map.php?ntype=0u&fdate=&row=${row}&col=${col}&lang=pl`;
-  el.innerHTML = `<div class="meteo-wrap">
-    <img src="${url}" alt="Meteorogram ICM" loading="lazy" onerror="this.parentElement.innerHTML='<div style=padding:12px;text-align:center;font-size:11px;color:var(--soft);>⚠️ Nie udało się załadować meteorogramu. Spróbuj za chwilę.</div>'">
-  </div>
-  <div class="meteo-note">📍 Punkt ${lat.toFixed(2)}°N ${lng.toFixed(2)}°E · Kliknij obraz aby powiększyć</div>`;
-  el.querySelector('img')?.addEventListener('click', () => {
-    window.open(url, '_blank');
-  });
+
+  // meteo.pl blokuje embedding — pokazujemy info z linkiem
+  el.innerHTML = `<div style="background:var(--inp);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-size:32px;margin-bottom:8px;">🌡️</div>
+    <div style="font-size:13px;font-weight:900;color:var(--text);margin-bottom:6px;">Meteorogram ICM dla Twojej lokalizacji</div>
+    <div style="font-size:10px;color:var(--soft);margin-bottom:12px;">📍 ${lat.toFixed(3)}°N ${lng.toFixed(3)}°E (grid: ${row}/${col})</div>
+    <a href="${url}" target="_blank" style="display:inline-block;padding:10px 18px;border-radius:10px;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;text-decoration:none;">
+      🔗 Otwórz meteorogram w przeglądarce
+    </a>
+    <div style="font-size:9px;color:var(--soft);margin-top:10px;line-height:1.5;">
+      ℹ️ meteo.pl nie pozwala na wbudowanie obrazu.<br>
+      Kliknij przycisk aby otworzyć w nowej karcie.
+    </div>
+  </div>`;
 }
 window.refreshMeteoram = renderMeteoram;
 
@@ -6085,135 +6309,191 @@ window.showImgwStation = function (s) {
 
 
 /* ─────────────────────────────────────────────────────────
-   [38] LICZNIK PRALKI / ZMYWARKI
+   [38] LICZNIK PRALKI / ZMYWARKI + WŁASNE URZĄDZENIA
    ───────────────────────────────────────────────────────── */
 
 let applianceState = JSON.parse(localStorage.getItem('dp-appliances') || '{}');
-// Format: { washer: { startTs, durationMin, startedBy }, dishwasher: { ... } }
+
+// Domyślne urządzenia + własne z localStorage
+const DEFAULT_APPLIANCES = [
+  { id: 'washer',      ico: '🫧', name: 'Pralka',    defaultMin: 120 },
+  { id: 'dishwasher',  ico: '🍽️', name: 'Zmywarka',  defaultMin: 90  },
+  { id: 'dryer',       ico: '♨️', name: 'Suszarka',   defaultMin: 60  },
+];
+let customAppliances = JSON.parse(localStorage.getItem('dp-custom-appliances') || '[]');
+
+function getAllAppliances() {
+  return [...DEFAULT_APPLIANCES, ...customAppliances];
+}
 
 function saveApplianceState() {
   localStorage.setItem('dp-appliances', JSON.stringify(applianceState));
-  if (!isDemo && fCode) {
-    set(ref(db, `families/${fCode}/appliances`), applianceState).catch(() => {});
-  }
+  if (!isDemo && fCode) set(ref(db, `families/${fCode}/appliances`), applianceState).catch(() => {});
 }
 
 window.saveApplianceDurations = function () {
-  const wd = parseInt(document.getElementById('washerDuration')?.value) || 120;
-  const dd = parseInt(document.getElementById('dishwasherDuration')?.value) || 90;
-  localStorage.setItem('dp-appl-durations', JSON.stringify({ washer: wd, dishwasher: dd }));
+  const durs = {};
+  getAllAppliances().forEach(a => {
+    const el = document.getElementById('applDur_' + a.id);
+    if (el) durs[a.id] = parseInt(el.value) || a.defaultMin || 60;
+  });
+  localStorage.setItem('dp-appl-durations', JSON.stringify(durs));
   showToast('✅ Czasy urządzeń zapisane!');
 };
 
-function getApplianceDurations() {
-  return JSON.parse(localStorage.getItem('dp-appl-durations') || '{"washer":120,"dishwasher":90}');
+function getApplianceDuration(id) {
+  const durs = JSON.parse(localStorage.getItem('dp-appl-durations') || '{}');
+  const appl = getAllAppliances().find(a => a.id === id);
+  return durs[id] || appl?.defaultMin || 60;
 }
 
-window.startAppliance = async function (type) {
-  const dur = getApplianceDurations();
-  const durationMin = type === 'washer' ? dur.washer : dur.dishwasher;
+window.startAppliance = async function (id) {
+  const appl = getAllAppliances().find(a => a.id === id);
+  if (!appl) return;
+  const durationMin = getApplianceDuration(id);
   const entry = { startTs: Date.now(), durationMin, startedBy: myProfile?.name || 'Ktoś', startedAvatar: myProfile?.avatar || '👤' };
-  applianceState[type] = entry;
+  applianceState[id] = entry;
   saveApplianceState();
   renderApplianceWidget();
-  showToast(`${type === 'washer' ? '🫧 Pralka' : '🍽️ Zmywarka'} uruchomiona! Koniec ~${getApplianceEndTime(entry)}`);
-  // Schedule notification
+  showToast(`${appl.ico} ${appl.name} uruchomiona! Koniec ~${getApplianceEndTime(entry)}`);
   const waitMs = entry.startTs + durationMin * 60000 - Date.now();
   if (waitMs > 0) setTimeout(() => {
-    const label = type === 'washer' ? '🫧 Pralka' : '🍽️ Zmywarka';
-    sendBrowserNotif(`${label} gotowa!`, 'Czas wyjąć pranie!');
-    sendExternalNotif(`${label} gotowa! 🏠 Domowy Patrol`, 'Czas wyjąć pranie!', 3);
-    showToast(`${label} skończyła! ✅`);
-    if (applianceState[type]) { applianceState[type].done = true; saveApplianceState(); renderApplianceWidget(); }
+    sendBrowserNotif(`${appl.ico} ${appl.name} gotowa!`, 'Czas wyjąć!');
+    sendExternalNotif(`${appl.ico} ${appl.name} gotowa! 🏠 Domowy Patrol`, 'Czas wyjąć!', 3);
+    showToast(`${appl.ico} ${appl.name} skończyła! ✅`);
+    if (applianceState[id]) { applianceState[id].done = true; saveApplianceState(); renderApplianceWidget(); }
   }, waitMs);
 };
 
-window.stopAppliance = function (type) {
-  delete applianceState[type];
+window.stopAppliance = function (id) {
+  const appl = getAllAppliances().find(a => a.id === id);
+  delete applianceState[id];
   saveApplianceState();
   renderApplianceWidget();
-  showToast(`${type === 'washer' ? '🫧 Pralka' : '🍽️ Zmywarka'} — zresetowano`);
+  showToast(`${appl?.ico || '🏠'} ${appl?.name || id} — zresetowano`);
 };
 
 function getApplianceEndTime(entry) {
   const end = new Date(entry.startTs + entry.durationMin * 60000);
   return `${d2(end.getHours())}:${d2(end.getMinutes())}`;
 }
-
 function getApplianceProgress(entry) {
-  const elapsed = Date.now() - entry.startTs;
-  const total = entry.durationMin * 60000;
-  return Math.min(100, Math.round(elapsed / total * 100));
+  return Math.min(100, Math.round((Date.now() - entry.startTs) / (entry.durationMin * 60000) * 100));
 }
-
 function getApplianceTimeLeft(entry) {
-  const endTs = entry.startTs + entry.durationMin * 60000;
-  const left = endTs - Date.now();
+  const left = entry.startTs + entry.durationMin * 60000 - Date.now();
   if (left <= 0) return '✅ Gotowe!';
   const m = Math.floor(left / 60000);
-  const h = Math.floor(m / 60);
-  return h > 0 ? `${h}h ${m % 60}min` : `${m} min`;
+  return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}min` : `${m} min`;
 }
 
 function renderApplianceWidget() {
   const el = document.getElementById('applianceWidget');
   if (!el) return;
+  const appliances = getAllAppliances();
+  const active = appliances.filter(a => applianceState[a.id]);
 
-  const types = [
-    { id: 'washer', ico: '🫧', name: 'Pralka' },
-    { id: 'dishwasher', ico: '🍽️', name: 'Zmywarka' }
-  ];
-
-  // Sprawdź czy cokolwiek jest aktywne lub niedawno skończyło
-  const active = types.filter(t => applianceState[t.id]);
   if (!active.length) {
+    // Compact idle view — just start buttons
+    const btns = appliances.map(a =>
+      `<button class="appl-btn" style="flex:1;padding:9px 4px;font-size:12px;text-align:center;" onclick="startAppliance('${a.id}')">
+        ${a.ico}<br><span style="font-size:9px;">${a.name}</span>
+      </button>`
+    ).join('');
     el.innerHTML = `<div class="appliance-widget">
-      <div class="appl-title">🏠 Urządzenia domowe</div>
-      <div style="display:flex;gap:8px;">
-        ${types.map(t => `<button class="appl-btn" style="flex:1;padding:10px;font-size:13px;" onclick="startAppliance('${t.id}')">
-          ${t.ico} Start ${t.name}
-        </button>`).join('')}
+      <div class="appl-title" style="display:flex;align-items:center;justify-content:space-between;">
+        🏠 Urządzenia domowe
+        <button onclick="openAddApplianceModal()" style="padding:3px 8px;border-radius:6px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;">+ Dodaj</button>
       </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${btns}</div>
     </div>`;
     return;
   }
 
-  const rows = types.map(t => {
-    const state = applianceState[t.id];
-    if (!state) {
-      return `<div class="appl-row" style="opacity:.6;">
-        <div class="appl-ico">${t.ico}</div>
-        <div class="appl-info"><div class="appl-name">${t.name}</div><div class="appl-detail">Nie działa</div></div>
-        <button class="appl-btn" onclick="startAppliance('${t.id}')">▶ Start</button>
-      </div>`;
-    }
+  const rows = appliances.map(a => {
+    const state = applianceState[a.id];
+    if (!state) return `<div class="appl-row" style="opacity:.55;">
+      <div class="appl-ico">${a.ico}</div>
+      <div class="appl-info"><div class="appl-name">${a.name}</div><div class="appl-detail">Nie działa</div></div>
+      <button class="appl-btn" onclick="startAppliance('${a.id}')">▶ Start</button>
+    </div>`;
     const done = state.done || Date.now() > state.startTs + state.durationMin * 60000;
     const prog = getApplianceProgress(state);
     const left = getApplianceTimeLeft(state);
     const end = getApplianceEndTime(state);
     return `<div class="appl-row">
-      <div class="appl-ico">${t.ico}</div>
+      <div class="appl-ico">${a.ico}</div>
       <div class="appl-info">
-        <div class="appl-name">${t.name} ${done ? '✅' : '⏳'}</div>
+        <div class="appl-name">${a.name} ${done ? '✅' : '⏳'}</div>
         <div class="appl-detail">${done ? 'Gotowe — wyjmij!' : `Koniec ~${end} · ${state.startedBy}`}</div>
         ${!done ? `<div class="appl-prog"><div class="appl-prog-fill" style="width:${prog}%"></div></div>` : ''}
       </div>
       <div class="appl-timer">${done ? '✅' : left}</div>
-      <button class="appl-btn ${done ? 'done' : 'running'}" onclick="stopAppliance('${t.id}')">${done ? '✓ Koniec' : '■ Stop'}</button>
+      <button class="appl-btn ${done ? 'done' : 'running'}" onclick="stopAppliance('${a.id}')">${done ? '✓ Koniec' : '■ Stop'}</button>
     </div>`;
   }).join('');
 
   el.innerHTML = `<div class="appliance-widget">
-    <div class="appl-title">🏠 Urządzenia domowe</div>
+    <div class="appl-title" style="display:flex;align-items:center;justify-content:space-between;">
+      🏠 Urządzenia domowe
+      <button onclick="openAddApplianceModal()" style="padding:3px 8px;border-radius:6px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-family:var(--font);font-size:9px;font-weight:800;cursor:pointer;">+ Dodaj</button>
+    </div>
     ${rows}
-    <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">Odśwież stronę aby zaktualizować timer</div>
   </div>`;
 }
 
-/* Aktualizuj timer urządzeń co 30 sekund */
+/* Modal — dodaj własne urządzenie */
+window.openAddApplianceModal = function () {
+  const existing = customAppliances.map((a, i) =>
+    `<div style="display:flex;align-items:center;gap:7px;padding:6px;background:var(--inp);border-radius:8px;margin-bottom:5px;">
+      <span style="font-size:18px;">${a.ico}</span>
+      <span style="flex:1;font-size:12px;font-weight:800;">${a.name}</span>
+      <span style="font-size:10px;color:var(--soft);">${a.defaultMin} min</span>
+      <button onclick="removeCustomAppliance(${i})" style="border:none;background:rgba(232,64,64,.1);color:var(--r);border-radius:5px;padding:2px 7px;cursor:pointer;font-size:11px;">✕</button>
+    </div>`
+  ).join('');
+
+  const ov = document.createElement('div');
+  ov.className = 'overlay show'; ov.id = 'applianceModalOv';
+  ov.innerHTML = `<div class="modal">
+    <div class="modal-ttl">🏠 Urządzenia <span class="modal-close" onclick="document.getElementById('applianceModalOv').remove()">×</span></div>
+    ${existing ? `<div style="margin-bottom:10px;">${existing}</div>` : ''}
+    <div class="f-lbl">Nowe urządzenie</div>
+    <div style="display:flex;gap:7px;align-items:center;margin-bottom:7px;">
+      <input id="newApplIco" class="f-inp" placeholder="🧺" maxlength="4" style="width:54px;font-size:18px;text-align:center;" readonly onclick="openEmojiPickerFor('newApplIco',event)">
+      <input id="newApplName" class="f-inp" placeholder="np. Suszarka bębnowa" style="flex:1;">
+    </div>
+    <div class="f-lbl">Domyślny czas cyklu (minuty)</div>
+    <input id="newApplMin" class="f-inp" type="number" value="60" min="5" max="480" style="margin-bottom:10px;">
+    <button onclick="addCustomAppliance()" style="width:100%;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">➕ Dodaj urządzenie</button>
+  </div>`;
+  document.body.appendChild(ov);
+};
+
+window.addCustomAppliance = function () {
+  const ico = document.getElementById('newApplIco')?.value?.trim() || '🏠';
+  const name = document.getElementById('newApplName')?.value?.trim();
+  const min = parseInt(document.getElementById('newApplMin')?.value) || 60;
+  if (!name) { showToast('⚠️ Wpisz nazwę urządzenia'); return; }
+  const id = 'custom_' + Date.now();
+  customAppliances.push({ id, ico, name, defaultMin: min });
+  localStorage.setItem('dp-custom-appliances', JSON.stringify(customAppliances));
+  document.getElementById('applianceModalOv')?.remove();
+  renderApplianceWidget();
+  initApplianceDurationsUI();
+  showToast(`✅ ${ico} ${name} dodane!`);
+};
+
+window.removeCustomAppliance = function (idx) {
+  customAppliances.splice(idx, 1);
+  localStorage.setItem('dp-custom-appliances', JSON.stringify(customAppliances));
+  document.getElementById('applianceModalOv')?.remove();
+  renderApplianceWidget();
+  showToast('🗑️ Urządzenie usunięte');
+};
+
 setInterval(() => { if (document.getElementById('applianceWidget')?.innerHTML) renderApplianceWidget(); }, 30000);
 
-/* Załaduj stan urządzeń z Firebase po zalogowaniu */
 function initApplianceFirebase() {
   if (isDemo || !fCode) return;
   onValue(ref(db, `families/${fCode}/appliances`), snap => {
@@ -6221,13 +6501,19 @@ function initApplianceFirebase() {
   });
 }
 
-/* Ustaw czasy w ustawieniach na zapamiętane */
 function initApplianceDurationsUI() {
-  const d = getApplianceDurations();
-  const wd = document.getElementById('washerDuration');
-  const dd = document.getElementById('dishwasherDuration');
-  if (wd) wd.value = d.washer;
-  if (dd) dd.value = d.dishwasher;
+  const durs = JSON.parse(localStorage.getItem('dp-appl-durations') || '{}');
+  const el = document.getElementById('applianceDurationsSettings');
+  if (el) {
+    el.innerHTML = getAllAppliances().map(a => `
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px;">
+        <span style="font-size:18px;">${a.ico}</span>
+        <span style="font-size:12px;font-weight:800;flex:1;color:var(--text);">${a.name}</span>
+        <input id="applDur_${a.id}" type="number" value="${durs[a.id] || a.defaultMin || 60}" min="5" max="480"
+          style="width:70px;padding:6px 8px;border-radius:7px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:800;color:var(--text);text-align:center;outline:none;">
+        <span style="font-size:9px;color:var(--soft);">min</span>
+      </div>`).join('');
+  }
 }
 
 
@@ -6414,6 +6700,12 @@ window.goTab = function (id) {
     document.getElementById('wxTabMeteoram').style.display = 'none';
     document.getElementById('wxTabImgw').style.display = 'none';
     document.querySelectorAll('.wx-sub-tab').forEach((b, i) => b.classList.toggle('sel', i === 0));
+    // Autoload miasto 0 jeśli nie ma jeszcze danych
+    setTimeout(() => {
+      if (!weatherCache && weatherCities?.[0]?.name) {
+        selectWeatherCity(0);
+      }
+    }, 150);
   }
   if (id === 'settings') {
     setTimeout(initNotifSettingsUI, 100);
@@ -6427,6 +6719,788 @@ window.goTab = function (id) {
 
 /* Auto-aktualizuj panel lokalizacji rodziców co 2 minuty */
 setInterval(renderChildLocPanel, 120000);
+
+/* ═══════════════════════════════════════════════════════════
+   V24 — KUCHNIA [25][26][27]
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Kitchen sub-tab switcher ── */
+window.selectKitchenTab = function(tab) {
+  document.getElementById('kitchenTabPantry').style.display = tab === 'pantry' ? '' : 'none';
+  document.getElementById('kitchenTabMenu').style.display   = tab === 'menu'   ? '' : 'none';
+  document.querySelectorAll('#kitchenSubTabs .wx-sub-tab').forEach((b,i) =>
+    b.classList.toggle('sel', (i===0&&tab==='pantry')||(i===1&&tab==='menu')));
+  if (tab === 'menu') renderWeekMenuGrid();
+};
+
+/* ── [25] SPIŻARNIA ── */
+let pantryItems = [];
+let pantryFilter = 'all';
+
+const PANTRY_CAT_ICONS = {nabiał:'🥛',mięso:'🥩',warzywa:'🥦',owoce:'🍎',napoje:'🥤',inne:'📦'};
+const PANTRY_CAT_LIST  = ['nabiał','mięso','warzywa','owoce','napoje','inne'];
+
+/* Popularne produkty na kafelkach — per kategoria */
+const PANTRY_POPULAR = {
+  nabiał:  ['Mleko','Jogurt','Ser żółty','Twaróg','Masło','Śmietana','Kefir','Jajka','Ser biały','Maślanka'],
+  mięso:   ['Pierś z kurczaka','Mielone wołowe','Boczek','Szynka','Kiełbasa','Schab','Łosoś','Tuńczyk','Salami','Pstrąg'],
+  warzywa: ['Pomidory','Ogórek','Marchew','Papryka','Cebula','Czosnek','Ziemniaki','Brokuł','Szpinak','Sałata'],
+  owoce:   ['Jabłka','Banany','Pomarańcze','Truskawki','Winogrona','Cytryna','Gruszki','Mandarynki','Borówki','Kiwi'],
+  napoje:  ['Woda niegazowana','Woda gazowana','Sok pomarańczowy','Mleko','Herbata','Kawa','Napój energetyczny','Kompot','Piwo','Wino'],
+  inne:    ['Makaron','Ryż','Mąka','Cukier','Sól','Olej','Chleb','Bułki','Płatki owsiane','Kasza'],
+};
+
+/* Słownik kategorii auto-przypisania po nazwie */
+const PANTRY_NAME_TO_CAT = {
+  mleko:'nabiał',jogurt:'nabiał',ser:'nabiał',twaróg:'nabiał',masło:'nabiał',śmietana:'nabiał',kefir:'nabiał',jajka:'nabiał',maślanka:'nabiał',
+  kurczak:'mięso',wołowina:'mięso',boczek:'mięso',szynka:'mięso',kiełbasa:'mięso',schab:'mięso',łosoś:'mięso',tuńczyk:'mięso',mielone:'mięso',pstrąg:'mięso',salami:'mięso',
+  pomidor:'warzywa',ogórek:'warzywa',marchew:'warzywa',papryka:'warzywa',cebula:'warzywa',czosnek:'warzywa',ziemniak:'warzywa',brokuł:'warzywa',szpinak:'warzywa',sałata:'warzywa',
+  jabłko:'owoce',jabłka:'owoce',banan:'owoce',banany:'owoce',pomarańcz:'owoce',truskawka:'owoce',truskawki:'owoce',winogrono:'owoce',winogrona:'owoce',cytryna:'owoce',gruszka:'owoce',gruszki:'owoce',borówka:'owoce',kiwi:'owoce',
+  woda:'napoje',sok:'napoje',herbata:'napoje',kawa:'napoje',napój:'napoje',kompot:'napoje',piwo:'napoje',wino:'napoje',
+  makaron:'inne',ryż:'inne',mąka:'inne',cukier:'inne',sól:'inne',olej:'inne',chleb:'inne',bułka:'inne',bułki:'inne',płatki:'inne',kasza:'inne',
+};
+
+/* Jednostka domyślna per kategoria */
+const PANTRY_DEFAULT_UNIT = {nabiał:'szt',mięso:'g',warzywa:'szt',owoce:'szt',napoje:'l',inne:'szt'};
+
+function guessCategoryFromName(name) {
+  const lower = name.toLowerCase();
+  for (const [keyword, cat] of Object.entries(PANTRY_NAME_TO_CAT)) {
+    if (lower.includes(keyword)) return cat;
+  }
+  return 'inne';
+}
+
+function loadPantryFirebase() {
+  if (isDemo || !fCode) return;
+  onValue(ref(db, `families/${fCode}/pantry`), snap => {
+    const raw = snap.val() || {};
+    pantryItems = Object.entries(raw).map(([k,v]) => ({...v, _fbKey: k}));
+    renderPantry();
+    checkPantryExpiry();
+  });
+}
+
+function deletePantryFromFirebase(fbKey) {
+  if (!isDemo && fCode && fbKey) remove(ref(db, `families/${fCode}/pantry/${fbKey}`));
+}
+
+window.filterPantry = function(cat) {
+  pantryFilter = cat;
+  document.querySelectorAll('#pantryFilters .vt-btn').forEach(b => b.classList.remove('sel'));
+  const idx = ['all','nabiał','mięso','warzywa','owoce','napoje','inne'].indexOf(cat);
+  document.querySelectorAll('#pantryFilters .vt-btn')[idx]?.classList.add('sel');
+  renderPantry();
+};
+
+function renderPantry() {
+  const list = document.getElementById('pantryList');
+  const empty = document.getElementById('pantryEmpty');
+  if (!list) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const items = pantryFilter === 'all' ? pantryItems : pantryItems.filter(i => i.category === pantryFilter);
+  if (!items.length) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  const sorted = [...items].sort((a,b) => {
+    const ea = a.expiry ? new Date(a.expiry).getTime() : 9e12;
+    const eb = b.expiry ? new Date(b.expiry).getTime() : 9e12;
+    return ea - eb;
+  });
+  list.innerHTML = sorted.map(item => {
+    let expiryHtml = '', bgColor = 'var(--card)';
+    if (item.expiry) {
+      const exp = new Date(item.expiry); exp.setHours(0,0,0,0);
+      const diff = Math.round((exp - today) / 86400000);
+      if (diff < 0) {
+        expiryHtml = `<span style="font-size:9px;font-weight:800;color:var(--r);background:rgba(232,64,64,.12);padding:2px 5px;border-radius:5px;">⚠️ Przeterminowany</span>`;
+        bgColor = 'rgba(232,64,64,.06)';
+      } else if (diff <= 3) {
+        expiryHtml = `<span style="font-size:9px;font-weight:800;color:var(--r);background:rgba(232,64,64,.1);padding:2px 5px;border-radius:5px;">🔴 Wygasa za ${diff} dni</span>`;
+        bgColor = 'rgba(232,64,64,.04)';
+      } else if (diff <= 7) {
+        expiryHtml = `<span style="font-size:9px;font-weight:800;color:var(--o);background:rgba(240,123,32,.1);padding:2px 5px;border-radius:5px;">🟡 Wygasa za ${diff} dni</span>`;
+        bgColor = 'rgba(240,123,32,.03)';
+      } else {
+        expiryHtml = `<span style="font-size:9px;color:var(--soft);">📅 ${item.expiry}</span>`;
+      }
+    }
+    const catIco = PANTRY_CAT_ICONS[item.category] || '📦';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${bgColor};border:1px solid var(--border);border-radius:10px;">
+      <span style="font-size:20px;">${catIco}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:800;color:var(--text);">${item.name}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap;">
+          <span style="font-size:11px;color:var(--soft);font-weight:700;">${item.qty||''} ${item.unit||''}</span>
+          ${expiryHtml}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <button onclick="movePantryToShop('${item.id}')" style="padding:3px 6px;border-radius:6px;border:none;background:var(--gp);color:var(--g2);font-size:9px;font-weight:800;cursor:pointer;">🛒</button>
+        <button onclick="editPantryItem('${item.id}')" style="padding:3px 6px;border-radius:6px;border:2px solid var(--border);background:var(--inp);color:var(--text);font-size:9px;font-weight:800;cursor:pointer;">✏️</button>
+        <button onclick="deletePantryItem('${item.id}')" style="padding:3px 6px;border-radius:6px;border:none;background:rgba(232,64,64,.1);color:var(--r);font-size:9px;font-weight:800;cursor:pointer;">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function checkPantryExpiry() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const expiring = pantryItems.filter(i => {
+    if (!i.expiry) return false;
+    const exp = new Date(i.expiry); exp.setHours(0,0,0,0);
+    return Math.round((exp - today) / 86400000) <= 3;
+  });
+  const ndot = document.getElementById('ndKitchen');
+  if (ndot) ndot.style.display = expiring.length ? '' : 'none';
+}
+
+/* ── Modal: step 1 — kategoria kafelkami ── */
+function renderPantryCatGrid() {
+  const grid = document.getElementById('pantryCatGrid');
+  if (!grid) return;
+  const cats = [
+    {key:'nabiał', ico:'🥛', label:'Nabiał'},
+    {key:'mięso',  ico:'🥩', label:'Mięso'},
+    {key:'warzywa',ico:'🥦', label:'Warzywa'},
+    {key:'owoce',  ico:'🍎', label:'Owoce'},
+    {key:'napoje', ico:'🥤', label:'Napoje'},
+    {key:'inne',   ico:'📦', label:'Inne'},
+  ];
+  grid.innerHTML = cats.map(c => `
+    <button onclick="pantrySelectCat('${c.key}')"
+      style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+             padding:12px 6px;border-radius:12px;border:2px solid var(--border);background:var(--inp);
+             cursor:pointer;font-family:var(--font);transition:all .15s;">
+      <span style="font-size:26px;">${c.ico}</span>
+      <span style="font-size:10px;font-weight:800;color:var(--text);">${c.label}</span>
+    </button>`).join('');
+}
+
+window.pantrySelectCat = function(cat) {
+  document.getElementById('pantryCategory').value = cat;
+  document.getElementById('pantryChosenCatLabel').textContent = PANTRY_CAT_ICONS[cat] + ' ' + cat.charAt(0).toUpperCase() + cat.slice(1);
+  renderPantryQuickTiles(cat);
+  document.getElementById('pantryStep1').style.display = 'none';
+  document.getElementById('pantryStep2').style.display = '';
+  document.getElementById('pantryUnit').value = PANTRY_DEFAULT_UNIT[cat] || 'szt';
+  document.getElementById('pantryName').value = '';
+  document.getElementById('pantryAcDropdown').style.display = 'none';
+  setTimeout(() => document.getElementById('pantryName').focus(), 100);
+};
+
+window.pantryBackToStep1 = function() {
+  document.getElementById('pantryStep1').style.display = '';
+  document.getElementById('pantryStep2').style.display = 'none';
+};
+
+/* ── Kafelki popularnych produktów ── */
+function renderPantryQuickTiles(cat) {
+  const container = document.getElementById('pantryQuickTiles');
+  if (!container) return;
+  const popular = PANTRY_POPULAR[cat] || [];
+  const customKey = `dp-pantry-custom-${cat}`;
+  const custom = JSON.parse(localStorage.getItem(customKey) || '[]');
+  const all = [...custom, ...popular];
+
+  // Kafelki: + dodaj własny + produkty
+  container.innerHTML = `
+    <button onclick="pantryTileAdd('${cat}')"
+      style="width:72px;height:56px;border-radius:10px;border:2px dashed var(--g2);background:var(--gp);
+             color:var(--g2);font-size:22px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
+    ${all.map(name => {
+      const exists = pantryItems.some(i => i.name.toLowerCase() === name.toLowerCase());
+      return `<button onclick="pantryTilePick('${name.replace(/'/g,"\\'")}','${cat}')"
+        id="pqt_${name.replace(/\s+/g,'_')}"
+        style="min-width:72px;height:56px;border-radius:10px;border:2px solid ${exists?'var(--g2)':'var(--border)'};
+               background:${exists?'var(--gp)':'var(--inp)'};color:${exists?'var(--g2)':'var(--text)'};
+               font-size:10px;font-weight:800;cursor:pointer;padding:4px 6px;line-height:1.2;
+               transition:all .15s;flex-shrink:0;">${name}</button>`;
+    }).join('')}`;
+}
+
+window.pantryTilePick = function(name, cat) {
+  const inp = document.getElementById('pantryName');
+  const alreadySelected = inp.value === name;
+  // Toggle: click selected → deselect
+  if (alreadySelected) {
+    inp.value = '';
+    document.querySelectorAll('#pantryQuickTiles button').forEach(b => {
+      if (b.textContent.trim() === name) {
+        b.style.borderColor = 'var(--border)';
+        b.style.background  = 'var(--inp)';
+        b.style.color       = 'var(--text)';
+      }
+    });
+    return;
+  }
+  inp.value = name;
+  document.getElementById('pantryCategory').value = cat;
+  document.getElementById('pantryAcDropdown').style.display = 'none';
+  // Highlight selected, reset others
+  document.querySelectorAll('#pantryQuickTiles button').forEach(b => {
+    const isMatch = b.textContent.trim() === name;
+    b.style.borderColor = isMatch ? 'var(--g2)' : 'var(--border)';
+    b.style.background  = isMatch ? 'var(--gp)'  : 'var(--inp)';
+    b.style.color       = isMatch ? 'var(--g2)' : 'var(--text)';
+  });
+  document.getElementById('pantryQty').focus();
+};
+
+window.pantryTileAdd = function(cat) {
+  const name = prompt('Nazwa własnego produktu:');
+  if (!name || !name.trim()) return;
+  const customKey = `dp-pantry-custom-${cat}`;
+  const custom = JSON.parse(localStorage.getItem(customKey) || '[]');
+  if (!custom.includes(name.trim())) {
+    custom.unshift(name.trim());
+    localStorage.setItem(customKey, JSON.stringify(custom.slice(0, 20)));
+  }
+  renderPantryQuickTiles(cat);
+  pantryTilePick(name.trim(), cat);
+};
+
+/* ── Autocomplete ── */
+window.pantryAutocomplete = function(val) {
+  const drop = document.getElementById('pantryAcDropdown');
+  if (!val || val.length < 1) { drop.style.display = 'none'; return; }
+  const lower = val.toLowerCase();
+  const cat = document.getElementById('pantryCategory').value || 'inne';
+  // Collect suggestions: from popular lists + existing pantry items
+  const allSuggestions = [
+    ...Object.values(PANTRY_POPULAR).flat(),
+    ...pantryItems.map(i => i.name),
+  ];
+  const unique = [...new Set(allSuggestions)];
+  const matches = unique.filter(s => s.toLowerCase().includes(lower) && s.toLowerCase() !== lower).slice(0, 8);
+  if (!matches.length) { drop.style.display = 'none'; return; }
+  drop.innerHTML = matches.map(m => {
+    const guessedCat = guessCategoryFromName(m);
+    return `<div onclick="pantryAcPick('${m.replace(/'/g,"\\'")}','${guessedCat}')"
+      style="padding:8px 12px;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;
+             border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;">
+      <span>${PANTRY_CAT_ICONS[guessedCat]||'📦'}</span>
+      <span style="flex:1;">${m}</span>
+      <span style="font-size:9px;color:var(--soft);">${guessedCat}</span>
+    </div>`;
+  }).join('');
+  drop.style.display = '';
+};
+
+window.pantryAcPick = function(name, cat) {
+  document.getElementById('pantryName').value = name;
+  document.getElementById('pantryCategory').value = cat;
+  document.getElementById('pantryUnit').value = PANTRY_DEFAULT_UNIT[cat] || 'szt';
+  document.getElementById('pantryAcDropdown').style.display = 'none';
+  document.getElementById('pantryQty').focus();
+};
+
+// Close dropdown on outside click
+document.addEventListener('click', e => {
+  const drop = document.getElementById('pantryAcDropdown');
+  if (drop && !drop.contains(e.target) && e.target.id !== 'pantryName') {
+    drop.style.display = 'none';
+  }
+});
+
+window.openPantryModal = function(id) {
+  const item = id ? pantryItems.find(i => i.id === id) : null;
+  document.getElementById('pantryEditId').value = item ? item.id : '';
+  document.getElementById('pantryName').value = item ? item.name : '';
+  document.getElementById('pantryQty').value = item ? (item.qty || '') : '';
+  document.getElementById('pantryUnit').value = item ? (item.unit || 'szt') : 'szt';
+  document.getElementById('pantryCategory').value = item ? (item.category || 'inne') : 'inne';
+  document.getElementById('pantryExpiry').value = item ? (item.expiry || '') : '';
+
+  if (item) {
+    // Edit mode: skip step 1, go straight to step 2
+    document.getElementById('pantryChosenCatLabel').textContent =
+      (PANTRY_CAT_ICONS[item.category]||'📦') + ' ' + (item.category||'inne');
+    renderPantryQuickTiles(item.category || 'inne');
+    document.getElementById('pantryStep1').style.display = 'none';
+    document.getElementById('pantryStep2').style.display = '';
+    document.querySelector('#pantryOverlay .modal-ttl').childNodes[0].textContent = '✏️ Edytuj produkt ';
+  } else {
+    // Add mode: show step 1
+    renderPantryCatGrid();
+    document.getElementById('pantryStep1').style.display = '';
+    document.getElementById('pantryStep2').style.display = 'none';
+    document.querySelector('#pantryOverlay .modal-ttl').childNodes[0].textContent = '🥫 Dodaj produkt ';
+  }
+  document.getElementById('pantryAcDropdown').style.display = 'none';
+  document.getElementById('pantryOverlay').classList.add('show');
+};
+
+window.editPantryItem = function(id) { openPantryModal(id); };
+
+window.savePantryItem = function() {
+  const name = document.getElementById('pantryName').value.trim();
+  if (!name) { showToast('⚠️ Wpisz nazwę produktu'); return; }
+  const editId = document.getElementById('pantryEditId').value;
+  let cat = document.getElementById('pantryCategory').value;
+  if (!cat) cat = guessCategoryFromName(name);
+  const item = {
+    id: editId || 'p_' + Date.now(),
+    name, cat,
+    qty: parseFloat(document.getElementById('pantryQty').value) || '',
+    unit: document.getElementById('pantryUnit').value,
+    category: cat,
+    expiry: document.getElementById('pantryExpiry').value || '',
+    ts: Date.now(),
+  };
+  if (editId) {
+    const idx = pantryItems.findIndex(i => i.id === editId);
+    const fbKey = idx >= 0 ? pantryItems[idx]._fbKey : null;
+    if (idx >= 0) pantryItems[idx] = {...item, _fbKey: fbKey};
+    if (!isDemo && fCode && fbKey) set(ref(db, `families/${fCode}/pantry/${fbKey}`), item);
+    showToast('✅ Zaktualizowano produkt');
+  } else {
+    if (isDemo) {
+      pantryItems.push(item);
+    } else if (fCode) {
+      const newRef = push(ref(db, `families/${fCode}/pantry`));
+      set(newRef, item);
+      item._fbKey = newRef.key;
+      pantryItems.push(item);
+    }
+    showToast('✅ Dodano produkt');
+  }
+  renderPantry();
+  checkPantryExpiry();
+  closeOverlay('pantryOverlay');
+};
+
+window.deletePantryItem = function(id) {
+  const idx = pantryItems.findIndex(i => i.id === id);
+  if (idx < 0) return;
+  const fbKey = pantryItems[idx]._fbKey;
+  pantryItems.splice(idx, 1);
+  deletePantryFromFirebase(fbKey);
+  renderPantry();
+  checkPantryExpiry();
+  showToast('🗑️ Usunięto produkt');
+};
+
+window.movePantryToShop = function(id) {
+  const item = pantryItems.find(i => i.id === id);
+  if (!item) return;
+  const shopItem = {id:'s_'+Date.now(), name: item.name, done: false, who:'', whoTime:'', note:''};
+  if (typeof shopItems !== 'undefined') {
+    const dayNames = ['nd','pn','wt','śr','cz','pt','sb'];
+    const dayKey = dayNames[new Date().getDay()] || 'pn';
+    if (!shopItems[dayKey]) shopItems[dayKey] = [];
+    shopItems[dayKey].push(shopItem);
+    if (typeof saveShop === 'function') saveShop();
+    showToast(`🛒 "${item.name}" dodano do zakupów!`);
+  } else {
+    showToast('⚠️ Nie można dodać — otwórz zakładkę Rodzina → Zakupy');
+  }
+};
+
+/* ── [26] MENU TYGODNIOWE ── */
+const WEEK_DAYS = ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'];
+const MEAL_TYPES = ['🌅 Śniadanie','🍽️ Obiad','🌙 Kolacja'];
+const MEAL_KEYS  = ['breakfast','lunch','dinner'];
+let weekMenu = {};
+const DAY_KEYS = ['mon','tue','wed','thu','fri','sat','sun'];
+
+/* Normalize slot: string or array -> array of 3 */
+function wmSlotArr(val) {
+  if (!val) return ['','',''];
+  if (Array.isArray(val)) {
+    const a = [...val];
+    while (a.length < 3) a.push('');
+    return a.slice(0,3);
+  }
+  return [String(val),'',''];
+}
+
+function loadWeekMenuFirebase() {
+  if (isDemo || !fCode) return;
+  onValue(ref(db, `families/${fCode}/weekMenu`), snap => {
+    weekMenu = snap.val() || {};
+    renderWeekMenuGrid();
+  });
+}
+
+function renderWeekMenuGrid() {
+  const grid = document.getElementById('weekMenuGrid');
+  if (!grid) return;
+  grid.innerHTML = WEEK_DAYS.map((day, di) => {
+    const dk = DAY_KEYS[di];
+    const mealRows = MEAL_KEYS.map((mk, mi) => {
+      const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
+      const label = MEAL_TYPES[mi];
+      const cells = arr.map((v, n) => {
+        const mealid = weekMenu[`${dk}_${mk}_mealid_${n}`] || '';
+        const linkBtn = mealid
+          ? `<button onclick="openMealById('${mealid}')" style="background:none;border:none;cursor:pointer;font-size:12px;padding:0;flex-shrink:0;" title="Pokaż przepis">🔗</button>`
+          : `<button onclick="quickRollWeekSlot('${dk}','${mk}',${n})" style="background:none;border:none;cursor:pointer;font-size:11px;padding:0;flex-shrink:0;" title="Losuj">🎲</button>`;
+        return `<div style="display:flex;align-items:center;gap:2px;flex:1;min-width:0;">
+          <input class="f-inp" style="flex:1;min-width:0;margin:0;height:26px;font-size:10px;padding:3px 5px;overflow:hidden;"
+            id="wm_${dk}_${mk}_${n}" value="${v.replace(/"/g,'&quot;')}"
+            placeholder="…"
+            onchange="wmSetVal('${dk}','${mk}',${n},this.value)">
+          ${linkBtn}
+        </div>`;
+      }).join('');
+      return `<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">
+        <span style="font-size:10px;min-width:66px;color:var(--soft);font-weight:700;flex-shrink:0;">${label}</span>
+        ${cells}
+      </div>`;
+    }).join('');
+    return `<div style="background:var(--inp);border-radius:10px;padding:9px;">
+      <div style="font-size:12px;font-weight:900;color:var(--g2);margin-bottom:6px;">${day}</div>
+      ${mealRows}
+    </div>`;
+  }).join('');
+}
+
+window.wmSetVal = function(dk, mk, n, val) {
+  const slot = `${dk}_${mk}`;
+  const arr = wmSlotArr(weekMenu[slot]);
+  arr[n] = val;
+  weekMenu[slot] = arr;
+};
+
+window.quickRollWeekSlot = async function(dk, mk, n) {
+  const inp = document.getElementById(`wm_${dk}_${mk}_${n}`);
+  if (inp) inp.value = '⏳…';
+  try {
+    const meal = await fetchMealByFilter();
+    if (!meal) throw new Error('brak');
+    const namePL = await translateText(meal.strMeal);
+    const slot = `${dk}_${mk}`;
+    const arr = wmSlotArr(weekMenu[slot]);
+    arr[n] = namePL;
+    weekMenu[slot] = arr;
+    weekMenu[`${slot}_mealid_${n}`] = meal.idMeal;
+    if (inp) inp.value = namePL;
+    if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+    showToast(`🎲 ${namePL}`);
+    renderWeekMenuGrid();
+  } catch(e) {
+    if (inp) inp.value = '';
+  }
+};
+
+window.openMealById = async function(mealId) {
+  document.getElementById('mealdbContent').style.display = '';
+  document.getElementById('mealdbContent').innerHTML = `<div style="font-size:30px;animation:bob 1s infinite;">🍳</div><div style="font-size:12px;color:var(--soft);margin-top:8px;">Wczytuję przepis…</div>`;
+  document.getElementById('mealdbActions').style.display = 'none';
+  document.getElementById('mealdbWeekProgress').style.display = 'none';
+  document.getElementById('mealdbTitle').childNodes[0].textContent = '🔗 Przepis ';
+  document.getElementById('mealdbOverlay').classList.add('show');
+  try {
+    const r = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
+    const d = await r.json();
+    const meal = d.meals?.[0];
+    if (!meal) throw new Error('brak');
+    const ingredientsEN = [];
+    for (let i = 1; i <= 20; i++) {
+      const ing = meal[`strIngredient${i}`];
+      const meas = meal[`strMeasure${i}`];
+      if (ing && ing.trim()) ingredientsEN.push(`${meas ? meas.trim()+' ' : ''}${ing.trim()}`);
+    }
+    const [namePL, ...ingredientsPL] = await Promise.all([
+      translateText(meal.strMeal),
+      ...ingredientsEN.slice(0,8).map(s => translateText(s)),
+    ]);
+    const catPL  = MEALDB_CAT_PL[meal.strCategory]  || meal.strCategory  || '';
+    const areaPL = MEALDB_AREA_PL[meal.strArea] || meal.strArea || '';
+    document.getElementById('mealdbContent').innerHTML = `
+      <img src="${meal.strMealThumb}/preview" alt="" style="width:100%;border-radius:10px;margin-bottom:8px;object-fit:cover;max-height:160px;">
+      <div style="font-size:15px;font-weight:900;color:var(--text);margin-bottom:2px;">${namePL}</div>
+      <div style="font-size:10px;color:var(--soft);font-weight:700;margin-bottom:4px;">${meal.strMeal}</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:6px;">${catPL}${areaPL ? ' · Kuchnia: '+areaPL : ''}</div>
+      <div style="font-size:11px;color:var(--text);background:var(--inp);border-radius:8px;padding:7px;text-align:left;">
+        <b style="font-size:10px;color:var(--soft);">Składniki:</b><br>
+        ${ingredientsPL.join(', ')}${ingredientsEN.length > 8 ? '…' : ''}
+      </div>`;
+  } catch(e) {
+    document.getElementById('mealdbContent').innerHTML = `<div style="font-size:12px;color:var(--r);padding:16px;">❌ Błąd pobierania przepisu.</div>`;
+  }
+};
+
+window.saveWeekMenu = function() {
+  WEEK_DAYS.forEach((_, di) => {
+    const dk = DAY_KEYS[di];
+    MEAL_KEYS.forEach(mk => {
+      const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
+      [0,1,2].forEach(n => {
+        const inp = document.getElementById(`wm_${dk}_${mk}_${n}`);
+        if (inp) arr[n] = inp.value.trim();
+      });
+      weekMenu[`${dk}_${mk}`] = arr;
+    });
+  });
+  if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+  showToast('✅ Menu zapisane!');
+};
+
+/* ── [27] MEALDB — tłumaczenie PL + filtry diety + losuj tydzień ── */
+let currentMealDBRecipe = null;
+let selectedMealSlot = null;
+let mealWeekResults = {};  // {slot_key: namePL}
+let activeMealFilters = new Set();
+
+const MEALDB_CAT_PL = {
+  Beef:'Wołowina',Chicken:'Kurczak',Dessert:'Deser',Lamb:'Jagnięcina',Miscellaneous:'Inne',
+  Pasta:'Makaron',Pork:'Wieprzowina',Seafood:'Owoce morza',Side:'Dodatek',Starter:'Przystawka',
+  Vegan:'Wegańskie',Vegetarian:'Wegetariańskie',Breakfast:'Śniadanie',Goat:'Koza',
+};
+const MEALDB_AREA_PL = {
+  American:'Amerykańska',British:'Brytyjska',Canadian:'Kanadyjska',Chinese:'Chińska',
+  Croatian:'Chorwacka',Dutch:'Holenderska',Egyptian:'Egipska',French:'Francuska',
+  Greek:'Grecka',Indian:'Indyjska',Irish:'Irlandzka',Italian:'Włoska',Jamaican:'Jamajska',
+  Japanese:'Japońska',Kenyan:'Kenijska',Malaysian:'Malezyjska',Mexican:'Meksykańska',
+  Moroccan:'Marokańska',Polish:'Polska',Portuguese:'Portugalska',Russian:'Rosyjska',
+  Spanish:'Hiszpańska',Thai:'Tajska',Tunisian:'Tunezyjska',Turkish:'Turecka',Vietnamese:'Wietnamska',
+  Unknown:'Nieznana',
+};
+
+/* Mapowanie filtrów UI → kategorie MealDB */
+const MEAL_FILTER_CATS = {
+  vegetarian:  ['Vegetarian'],
+  vegan:       ['Vegan'],
+  seafood:     ['Seafood'],
+  pasta:       ['Pasta'],
+  chicken:     ['Chicken'],
+  beef:        ['Beef'],
+  pork:        ['Pork'],
+  dessert:     ['Dessert'],
+  breakfast:   ['Breakfast'],
+  glutenfree:  ['Vegetarian','Vegan','Seafood'],
+  lactosefree: ['Seafood','Chicken','Beef','Pork','Vegetarian'],
+  lunchfilter: ['Chicken','Beef','Pork','Pasta','Lamb'],
+  dinnerfilter:['Chicken','Beef','Seafood','Miscellaneous','Lamb'],
+};
+
+window.toggleMealFilter = function(key) {
+  if (activeMealFilters.has(key)) activeMealFilters.delete(key);
+  else activeMealFilters.add(key);
+  document.getElementById('mf_' + key)?.classList.toggle('sel', activeMealFilters.has(key));
+};
+
+/* Pobierz losowy przepis z opcjonalnym filtrem kategorii */
+async function fetchMealByFilter() {
+  let cats = [];
+  activeMealFilters.forEach(f => { if (MEAL_FILTER_CATS[f]) cats.push(...MEAL_FILTER_CATS[f]); });
+  if (cats.length) {
+    const cat = cats[Math.floor(Math.random() * cats.length)];
+    try {
+      const r = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(cat)}`);
+      const d = await r.json();
+      const meals = d.meals || [];
+      if (meals.length) {
+        const pick = meals[Math.floor(Math.random() * meals.length)];
+        const full = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${pick.idMeal}`);
+        const fd = await full.json();
+        return fd.meals?.[0] || null;
+      }
+    } catch(e) {}
+  }
+  // Fallback: losowy bez filtra
+  const r = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+  const d = await r.json();
+  return d.meals?.[0] || null;
+}
+
+async function translateText(text) {
+  if (!text) return text;
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|pl`;
+    const r = await fetch(url);
+    const d = await r.json();
+    if (d.responseStatus === 200 && d.responseData?.translatedText) return d.responseData.translatedText;
+  } catch(e) {}
+  return text;
+}
+
+window.openMealDBRandom = function() {
+  currentMealDBRecipe = null;
+  selectedMealSlot = null;
+  const titleEl = document.getElementById('mealdbTitle');
+  if (titleEl) titleEl.childNodes[0].textContent = '🎲 Losowy przepis ';
+  document.getElementById('mealdbContent').style.display = '';
+  document.getElementById('mealdbContent').innerHTML = `<div style="font-size:30px;animation:bob 1s infinite;">🍳</div><div style="font-size:12px;color:var(--soft);margin-top:8px;">Losuję przepis i tłumaczę na polski…</div>`;
+  document.getElementById('mealdbActions').style.display = 'none';
+  document.getElementById('mealdbWeekProgress').style.display = 'none';
+  document.getElementById('mealdbOverlay').classList.add('show');
+  fetchRandomMeal();
+};
+
+window.openMealDBWeek = function() {
+  mealWeekResults = {};
+  const titleEl = document.getElementById('mealdbTitle');
+  if (titleEl) titleEl.childNodes[0].textContent = '📅 Menu na tydzień ';
+  document.getElementById('mealdbContent').style.display = 'none';
+  document.getElementById('mealdbActions').style.display = 'none';
+  document.getElementById('mealdbWeekProgress').style.display = 'flex';
+  document.getElementById('mealdbWeekStatus').textContent = 'Losuję menu na tydzień…';
+  document.getElementById('mealdbWeekBar').style.width = '0%';
+  document.getElementById('mealdbWeekList').innerHTML = '';
+  document.getElementById('mealdbWeekSaveBtn').style.display = 'none';
+  document.getElementById('mealdbOverlay').classList.add('show');
+  fetchWeekMeals();
+};
+
+async function fetchRandomMeal() {
+  try {
+    const meal = await fetchMealByFilter();
+    if (!meal) throw new Error('Brak danych');
+    currentMealDBRecipe = meal;
+    const ingredientsEN = [];
+    for (let i = 1; i <= 20; i++) {
+      const ing = meal[`strIngredient${i}`];
+      const meas = meal[`strMeasure${i}`];
+      if (ing && ing.trim()) ingredientsEN.push(`${meas ? meas.trim()+' ' : ''}${ing.trim()}`);
+    }
+    const [namePL, ...ingredientsPL] = await Promise.all([
+      translateText(meal.strMeal),
+      ...ingredientsEN.slice(0,8).map(s => translateText(s)),
+    ]);
+    currentMealDBRecipe._namePL = namePL;
+    const catPL  = MEALDB_CAT_PL[meal.strCategory] || meal.strCategory || '';
+    const areaPL = MEALDB_AREA_PL[meal.strArea]     || meal.strArea     || '';
+    document.getElementById('mealdbContent').innerHTML = `
+      <img src="${meal.strMealThumb}/preview" alt="" style="width:100%;border-radius:10px;margin-bottom:8px;object-fit:cover;max-height:160px;">
+      <div style="font-size:15px;font-weight:900;color:var(--text);margin-bottom:2px;">${namePL}</div>
+      <div style="font-size:10px;color:var(--soft);font-weight:700;margin-bottom:4px;">${meal.strMeal}</div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:6px;">${catPL}${areaPL ? ' · Kuchnia: '+areaPL : ''}</div>
+      <div style="font-size:11px;color:var(--text);background:var(--inp);border-radius:8px;padding:7px;text-align:left;">
+        <b style="font-size:10px;color:var(--soft);">Składniki:</b><br>
+        ${ingredientsPL.join(', ')}${ingredientsEN.length > 8 ? '…' : ''}
+      </div>`;
+    const slotSel = document.getElementById('mealdbSlotSelect');
+    slotSel.innerHTML = WEEK_DAYS.map((day, di) =>
+      MEAL_KEYS.map((mk, mi) =>
+        `<button class="vt-btn" style="font-size:9px;padding:3px 6px;" onclick="selectMealSlot('${DAY_KEYS[di]}_${mk}',this)">${day.slice(0,2)} ${MEAL_TYPES[mi].split(' ')[0]}</button>`
+      ).join('')
+    ).join('');
+    document.getElementById('mealdbActions').style.display = 'flex';
+  } catch(e) {
+    document.getElementById('mealdbContent').innerHTML = `<div style="font-size:12px;color:var(--r);padding:16px;">❌ Błąd pobierania przepisu.<br><small>${e.message}</small></div>`;
+  }
+}
+
+/* Losuj cały tydzień: śniadanie/obiad/kolacja × 7 dni × 3 propozycje */
+async function fetchWeekMeals() {
+  const slots = [];
+  DAY_KEYS.forEach(dk => {
+    MEAL_KEYS.forEach(mk => {
+      [0,1,2].forEach(n => slots.push({dk, mk, n}));
+    });
+  });
+  const total = slots.length; // 63
+  let done = 0;
+  const listEl = document.getElementById('mealdbWeekList');
+  const barEl  = document.getElementById('mealdbWeekBar');
+  const statEl = document.getElementById('mealdbWeekStatus');
+
+  for (const {dk, mk, n} of slots) {
+    const dayIdx = DAY_KEYS.indexOf(dk);
+    const mealIdx = MEAL_KEYS.indexOf(mk);
+    const dayName = WEEK_DAYS[dayIdx] || dk;
+    const mealType = MEAL_TYPES[mealIdx] || mk;
+
+    if (n === 0) statEl.textContent = `Losuję: ${dayName} — ${mealType}…`;
+    try {
+      const oldFilters = new Set(activeMealFilters);
+      if (mk === 'breakfast' && !activeMealFilters.size) {
+        activeMealFilters.add('breakfast');
+      }
+      const meal = await fetchMealByFilter();
+      activeMealFilters = oldFilters;
+
+      if (meal) {
+        const namePL = await translateText(meal.strMeal);
+        // key: dk_mk_n
+        mealWeekResults[`${dk}_${mk}_${n}`] = {name: namePL, mealid: meal.idMeal};
+        if (n === 0) {
+          listEl.innerHTML += `<div style="padding:2px 0;"><b style="color:var(--g2);">${dayName.slice(0,2)} ${mealType.split(' ')[0]}</b> ${namePL}…</div>`;
+        }
+      }
+    } catch(e) {}
+
+    done++;
+    barEl.style.width = `${Math.round(done/total*100)}%`;
+    await new Promise(r => setTimeout(r, 80));
+  }
+
+  statEl.textContent = `✅ Gotowe! Wylosowano ${Object.keys(mealWeekResults).length} propozycji`;
+  document.getElementById('mealdbWeekSaveBtn').style.display = '';
+}
+
+window.saveMealDBWeek = function() {
+  // mealWeekResults: { slot_N: {name, mealid} }
+  Object.entries(mealWeekResults).forEach(([key, val]) => {
+    // key format: dk_mk_N
+    const parts = key.split('_');
+    const n = parseInt(parts.pop());
+    const slot = parts.join('_');
+    const arr = wmSlotArr(weekMenu[slot]);
+    arr[n] = val.name || val;
+    weekMenu[slot] = arr;
+    if (val.mealid) weekMenu[`${slot}_mealid_${n}`] = val.mealid;
+  });
+  if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+  const count = Object.keys(mealWeekResults).length;
+  showToast(`✅ Menu tygodniowe wypełnione! (${count} dań)`);
+  closeOverlay('mealdbOverlay');
+  selectKitchenTab('menu');
+  renderWeekMenuGrid();
+};
+
+window.selectMealSlot = function(slotKey, btn) {
+  selectedMealSlot = slotKey;
+  document.querySelectorAll('#mealdbSlotSelect .vt-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+};
+
+window.insertMealToSlot = function() {
+  if (!currentMealDBRecipe) return;
+  if (!selectedMealSlot) { showToast('⚠️ Wybierz slot w menu'); return; }
+  const mealName = currentMealDBRecipe._namePL || currentMealDBRecipe.strMeal;
+  // selectedMealSlot format: dk_mk — insert into first empty slot or slot 0
+  const arr = wmSlotArr(weekMenu[selectedMealSlot]);
+  const emptyIdx = arr.findIndex(v => !v.trim());
+  const n = emptyIdx >= 0 ? emptyIdx : 0;
+  arr[n] = mealName;
+  weekMenu[selectedMealSlot] = arr;
+  weekMenu[`${selectedMealSlot}_mealid_${n}`] = currentMealDBRecipe.idMeal;
+  if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+  showToast(`✅ "${mealName}" wstawiono do menu!`);
+  closeOverlay('mealdbOverlay');
+  selectKitchenTab('menu');
+  renderWeekMenuGrid();
+};
+/* ── Patch launchApp v24 ── */
+const _origLaunchApp_v24 = window.launchApp;
+window.launchApp = function() {
+  _origLaunchApp_v24 && _origLaunchApp_v24();
+  setTimeout(() => {
+    loadPantryFirebase();
+    loadWeekMenuFirebase();
+    checkPantryExpiry();
+  }, 600);
+};
+
+/* ── Patch goTab v24 ── */
+const _origGoTab_v24 = window.goTab;
+window.goTab = function(id) {
+  _origGoTab_v24 && _origGoTab_v24(id);
+  if (id === 'kitchen') {
+    setTimeout(renderPantry, 50);
+    setTimeout(checkPantryExpiry, 50);
+  }
+};
+
+/* Sprawdzaj wygasanie spiżarni co 30 minut */
+setInterval(checkPantryExpiry, 1800000);
 
 </script>
 </body>
