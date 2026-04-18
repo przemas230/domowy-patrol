@@ -1414,6 +1414,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
         <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
           <span>📅 Menu tygodniowe</span>
           <div style="display:flex;gap:5px;">
+            <button onclick="saveWeekMenu()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
             <button onclick="window.clearMenuDay()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--o),#e84040);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🗑️ Dziś</button>
             <button onclick="window.clearMenuAll()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,#e84040,#9b1c1c);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🗑️ Tydzień</button>
           </div>
@@ -2598,7 +2599,9 @@ function launchApp(){
   applyWidgetConfig();
   setTimeout(function() { if (window.checkRecurringShop) window.checkRecurringShop(); }, 1500);
   if (window.renderRecurringShopList) window.renderRecurringShopList();
-  if (window.renderTodayMenu) window.renderTodayMenu();
+  // renderTodayMenu jest wywoływane przez loadWeekMenuFirebase po załadowaniu danych z Firebase
+  // Dla demo/offline — wywołaj po krótkim opóźnieniu
+  setTimeout(function() { if (window.renderTodayMenu) window.renderTodayMenu(); }, 600);
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();renderScorePeriodStats();}
 
@@ -6119,7 +6122,7 @@ window.openRecurringShopAdd = function() {
       return '<button id="rday_' + i + '" onclick="selectRecurringDay(' + i + ')" style="padding:6px 4px;border-radius:8px;border:2px solid ' + (i===1?'var(--g2)':'var(--border)') + ';background:' + (i===1?'var(--gp)':'transparent') + ';font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">' + d + '</button>';
     }).join('');
   }
-  document.getElementById('recurringShopOverlay').style.display = 'flex';
+  document.getElementById('recurringShopOverlay').classList.add('show');
 };
 
 window.selectRecurringDay = function(d) {
@@ -7799,23 +7802,53 @@ function renderWeekMenuGrid() {
 }
 
 let _wmSaveTimer = null;
+let _wmDirtyFields = new Set();
+
 function wmFirebaseSaveDebounced() {
   clearTimeout(_wmSaveTimer);
-  _wmSaveTimer = setTimeout(() => {
+  _wmSaveTimer = setTimeout(function() {
     if (!isDemo && fCode) {
       set(ref(db, 'families/' + fCode + '/weekMenu'), weekMenu)
-        .then(() => showToast('✅ Menu zapisane'))
-        .catch(e => showToast('❌ Błąd zapisu: ' + e.message));
+        .then(function() {
+          showToast('✅ Menu zapisane w chmurze');
+          // Zmień podświetlenie zapisanych pól na zielone, potem usuń
+          _wmDirtyFields.forEach(function(fieldId) {
+            var inp = document.getElementById(fieldId);
+            if (inp) {
+              inp.style.background = 'rgba(74,158,34,0.18)';
+              inp.style.borderColor = 'var(--g3)';
+              setTimeout(function() {
+                inp.style.background = '';
+                inp.style.borderColor = '';
+              }, 2000);
+            }
+          });
+          _wmDirtyFields.clear();
+        })
+        .catch(function(e) { showToast('❌ Błąd zapisu: ' + e.message); });
+    } else if (isDemo) {
+      showToast('✅ Menu zaktualizowane (tryb demo)');
+      _wmDirtyFields.clear();
+    } else {
+      showToast('⚠️ Brak kodu rodziny — zaloguj się ponownie');
     }
     if (window.renderTodayMenu && todayMenuOpen) window.renderTodayMenu();
-  }, 800);
+  }, 900);
 }
 
 window.wmSetVal = function(dk, mk, n, val) {
-  const slot = `${dk}_${mk}`;
-  const arr = wmSlotArr(weekMenu[slot]);
+  var slot = dk + '_' + mk;
+  var arr = wmSlotArr(weekMenu[slot]);
   arr[n] = val;
   weekMenu[slot] = arr;
+  // Podświetl pole jako niezapisane (żółte)
+  var fieldId = 'wm_' + dk + '_' + mk + '_' + n;
+  var inp = document.getElementById(fieldId);
+  if (inp) {
+    inp.style.background = 'rgba(245,197,24,0.22)';
+    inp.style.borderColor = 'var(--y)';
+  }
+  _wmDirtyFields.add(fieldId);
   wmFirebaseSaveDebounced();
 };
 
@@ -7969,7 +8002,7 @@ window.renderTodayMenu = function() {
   });
   if (!hasAny) {
     html += '<div style="font-size:11px;color:var(--soft);padding:8px 0;">Brak zaplanowanego menu. '
-      + '<span onclick="goTab(\'family\')" style="color:var(--g2);cursor:pointer;font-weight:800;">Przejdź do Kuchni →</span></div>';
+      + '<span onclick="goTab(\'kitchen\');setTimeout(function(){if(window.selectKitchenTab)window.selectKitchenTab(\'menu\');},80);" style="color:var(--g2);cursor:pointer;font-weight:800;">Przejdź do Menu →</span></div>';
   }
   html += '</div>';
   body.innerHTML = html;
@@ -8299,8 +8332,32 @@ window.saveWeekMenu = function() {
       weekMenu[`${dk}_${mk}`] = arr;
     });
   });
-  if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
-  showToast('✅ Menu zapisane!');
+  if (!isDemo && fCode) {
+    set(ref(db, `families/${fCode}/weekMenu`), weekMenu)
+      .then(() => {
+        showToast('✅ Menu zapisane w chmurze!');
+        // Podświetl wszystkie wypełnione pola na zielono
+        WEEK_DAYS.forEach((_, di) => {
+          const dk = DAY_KEYS[di];
+          MEAL_KEYS.forEach(mk => {
+            [0,1,2].forEach(n => {
+              const inp = document.getElementById(`wm_${dk}_${mk}_${n}`);
+              if (inp && inp.value.trim()) {
+                inp.style.background = 'rgba(74,158,34,0.18)';
+                inp.style.borderColor = 'var(--g3)';
+                setTimeout(() => { inp.style.background=''; inp.style.borderColor=''; }, 2500);
+              }
+            });
+          });
+        });
+      })
+      .catch(e => showToast('❌ Błąd zapisu: ' + e.message));
+  } else if (isDemo) {
+    showToast('✅ Menu zapisane (tryb demo)');
+  } else {
+    showToast('⚠️ Brak połączenia z bazą — sprawdź logowanie');
+  }
+  if (window.renderTodayMenu && todayMenuOpen) window.renderTodayMenu();
 };
 
 /* ── [27] MEALDB — tłumaczenie PL + filtry diety + losuj tydzień ── */
@@ -8767,53 +8824,78 @@ window.addCheckedToShop = async function() {
 ═══════════════════════════════════════════════════════════════ */
 function getClaudeKey() { return localStorage.getItem('dp-claude-api-key') || ''; }
 function getGroqKey()   { return localStorage.getItem('dp-groq-api-key')   || ''; }
+window.getClaudeKey = getClaudeKey;
+window.getGroqKey   = getGroqKey;
+
+function _dp_showMsg(msg) {
+  if (typeof window.showToast === 'function') { window.showToast(msg); return; }
+  var t = document.getElementById('toast');
+  if (t) { t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},2600); }
+}
 
 window.saveAiKeys = function() {
-  const ck = document.getElementById('claudeApiKeyInp')?.value?.trim();
-  const gk = document.getElementById('groqApiKeyInp')?.value?.trim();
-  // Zawsze zapisuj — puste pole = usuń klucz
-  if (ck) { localStorage.setItem('dp-claude-api-key', ck); }
-  else { localStorage.removeItem('dp-claude-api-key'); }
-  if (gk) { localStorage.setItem('dp-groq-api-key', gk); }
-  else { localStorage.removeItem('dp-groq-api-key'); }
-  // Show FAB
-  const fab = document.getElementById('groqFab');
-  if (fab) fab.style.display = getGroqKey() ? '' : 'none';
-  _dp_updateKeyStatus();
-  const msg = document.getElementById('aiKeysSavedMsg');
-  if (msg) { msg.style.display = ''; setTimeout(() => msg.style.display = 'none', 4000); }
-  showToast('✅ Klucze API zapisane!');
+  try {
+    var ckEl = document.getElementById('claudeApiKeyInp');
+    var gkEl = document.getElementById('groqApiKeyInp');
+    var ck = ckEl ? ckEl.value.trim() : '';
+    var gk = gkEl ? gkEl.value.trim() : '';
+    if (ck) { localStorage.setItem('dp-claude-api-key', ck); }
+    else    { localStorage.removeItem('dp-claude-api-key'); }
+    if (gk) { localStorage.setItem('dp-groq-api-key', gk); }
+    else    { localStorage.removeItem('dp-groq-api-key'); }
+    var fab = document.getElementById('groqFab');
+    if (fab) fab.style.display = getGroqKey() ? '' : 'none';
+    _dp_updateKeyStatus();
+    var msgEl = document.getElementById('aiKeysSavedMsg');
+    if (msgEl) { msgEl.style.display=''; setTimeout(function(){ msgEl.style.display='none'; }, 5000); }
+    _dp_showMsg('\u2705 Klucze API zapisane w przegladarce!');
+  } catch(e) {
+    alert('Blad zapisu kluczy: ' + e.message);
+  }
 };
 
 function _dp_updateKeyStatus() {
-  const ck = getClaudeKey(); const gk = getGroqKey();
-  const cs = document.getElementById('claudeKeyStatus');
-  const gs = document.getElementById('groqKeyStatus');
-  if (cs) cs.innerHTML = ck
-    ? '<span style="color:var(--g2);">✅ Klucz zapisany (' + ck.slice(0,8) + '…' + ck.slice(-4) + ')</span>'
-    : '<span style="color:var(--soft);">⚪ Brak zapisanego klucza</span>';
-  if (gs) gs.innerHTML = gk
-    ? '<span style="color:var(--g2);">✅ Klucz zapisany (' + gk.slice(0,8) + '…' + gk.slice(-4) + ')</span>'
-    : '<span style="color:var(--soft);">⚪ Brak zapisanego klucza</span>';
+  try {
+    var ck = getClaudeKey(); var gk = getGroqKey();
+    var cs = document.getElementById('claudeKeyStatus');
+    var gs = document.getElementById('groqKeyStatus');
+    if (cs) cs.innerHTML = ck
+      ? '<span style="color:var(--g2);">\u2705 Klucz zapisany (' + ck.slice(0,8) + '\u2026' + ck.slice(-4) + ')</span>'
+      : '<span style="color:var(--soft);">\u26aa Brak zapisanego klucza</span>';
+    if (gs) gs.innerHTML = gk
+      ? '<span style="color:var(--g2);">\u2705 Klucz zapisany (' + gk.slice(0,8) + '\u2026' + gk.slice(-4) + ')</span>'
+      : '<span style="color:var(--soft);">\u26aa Brak zapisanego klucza</span>';
+  } catch(e) { console.warn('[DP] updateKeyStatus err', e); }
 }
+window._dp_updateKeyStatus = _dp_updateKeyStatus;
 
+// Wczytaj klucze i status przy DOMContentLoaded (dziala nawet przed inicjalizacja modulu ES)
+document.addEventListener('DOMContentLoaded', function() {
+  _dp_updateKeyStatus();
+  var ck = getClaudeKey(); var gk = getGroqKey();
+  var ci = document.getElementById('claudeApiKeyInp');
+  var gi = document.getElementById('groqApiKeyInp');
+  if (ci && ck) ci.value = ck;
+  if (gi && gk) gi.value = gk;
+});
 // Populate key inputs on settings open
 const _origGoTab_v25 = window.goTab;
 window.goTab = function(id) {
   _origGoTab_v25 && _origGoTab_v25(id);
   if (id === 'settings') {
-    setTimeout(() => {
-      const ck = getClaudeKey();
-      const gk = getGroqKey();
-      const ci = document.getElementById('claudeApiKeyInp');
-      const gi = document.getElementById('groqApiKeyInp');
-      if (ci && ck) ci.value = ck;
-      if (gi && gk) gi.value = gk;
+    setTimeout(function() {
+      var ck = getClaudeKey();
+      var gk = getGroqKey();
+      var ci = document.getElementById('claudeApiKeyInp');
+      var gi = document.getElementById('groqApiKeyInp');
+      if (ci) ci.value = ck;
+      if (gi) gi.value = gk;
       _dp_updateKeyStatus();
+      if (window.renderRecurringShopList) window.renderRecurringShopList();
     }, 100);
   }
   // Show Groq FAB when app is running
-  const fab = document.getElementById('groqFab');
+  var fab = document.getElementById('groqFab');
   if (fab && getGroqKey()) fab.style.display = '';
 };
 
