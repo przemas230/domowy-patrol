@@ -435,6 +435,15 @@ img[src*="googleusercontent"]{image-rendering:auto;background:var(--border);obje
 .overlay.show .modal{transform:translateY(0);}
 .modal-ttl{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;color:var(--text);}
 .modal-close{font-size:22px;cursor:pointer;color:var(--soft);}
+/* ── COOKING MODE ── */
+.cook-step-box{background:var(--inp);border-radius:12px;padding:14px;margin-bottom:10px;font-size:13px;line-height:1.65;font-weight:600;color:var(--text);}
+.cook-progress-bar{background:var(--border);border-radius:6px;height:6px;overflow:hidden;margin-bottom:10px;}
+.cook-progress-fill{height:100%;background:linear-gradient(90deg,var(--g2),var(--g3));border-radius:6px;transition:width .4s;}
+.cook-nav{display:flex;gap:8px;margin-top:10px;}
+.cook-nav-btn{flex:1;padding:10px;border-radius:10px;border:none;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;}
+.cook-timer-row{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.cook-timer-btn{padding:5px 10px;border-radius:20px;border:1.5px solid var(--o);background:rgba(240,123,32,.08);font-size:11px;font-weight:800;color:var(--o);cursor:pointer;}
+.cook-timer-active{background:var(--o);color:#fff;}
 .f-lbl{font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.4px;margin:8px 0 4px;}
 .f-inp{width:100%;padding:10px 11px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:13px;font-weight:700;color:var(--text);outline:none;transition:border .2s;}
 .f-inp:focus{border-color:var(--g2);}
@@ -757,6 +766,11 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 .sticky-editor-body blockquote{border-left:3px solid var(--g2);padding-left:8px;color:var(--soft);margin:4px 0;}
 /* ── TODAY WIDGETS ── */
 #todayShopMini{background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;}
+#todayMenuMini{background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;}
+.shop-hist-panel{background:var(--card);border-radius:var(--rr);box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;padding:8px 12px;}
+.shop-hist-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.shop-hist-tag{padding:4px 9px;border-radius:20px;border:1.5px solid var(--g2);background:var(--gp);font-size:11px;font-weight:800;color:var(--g2);cursor:pointer;transition:background .15s;}
+.shop-hist-tag:hover{background:var(--g2);color:#fff;}
 .twm-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer;}
 .twm-body{padding:8px 12px;}
 /* ── EVENT LOCATION ── */
@@ -1005,6 +1019,13 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           <button class="tcm-send" onclick="sendTodayChat()">➤</button>
         </div>
       </div>
+    </div>
+    <div id="todayMenuMini">
+      <div class="twm-hdr" onclick="toggleTodayMenu()">
+        <span style="font-size:12px;font-weight:900;color:var(--text);">🍽️ Menu na dziś</span>
+        <span id="todayMenuToggle" style="font-size:10px;color:var(--soft);">▼ pokaż</span>
+      </div>
+      <div id="todayMenuBody" style="display:none;"></div>
     </div>
     <div id="todayShopMini">
       <div class="twm-hdr" onclick="toggleTodayShop()">
@@ -1608,6 +1629,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <button onclick="insertMealToSlot()" style="width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">✅ Użyj przepisu</button>
       <button onclick="openMealDBRandom()" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--text);">🎲 Losuj ponownie</button>
       <button onclick="openIngredientPicker()" id="mealdbIngBtn" style="width:100%;padding:9px;border-radius:9px;border:2px solid #3b82f6;background:rgba(59,130,246,.08);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:#3b82f6;">🛒 Dodaj składniki do zakupów / lodówki</button>
+      <button onclick="openCookingMode()" id="mealdbCookBtn" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--o);background:rgba(240,123,32,.08);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--o);">👨‍🍳 Tryb gotowania krok po kroku</button>
     </div>
     <div id="mealdbWeekProgress" style="display:none;flex-direction:column;gap:6px;margin-top:10px;">
       <div style="font-size:12px;font-weight:800;color:var(--text);" id="mealdbWeekStatus">Losuję menu na tydzień…</div>
@@ -1618,6 +1640,35 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <button id="mealdbWeekSaveBtn" onclick="saveMealDBWeek()" style="display:none;width:100%;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">✅ Wstaw do menu</button>
       <button onclick="closeOverlay('mealdbOverlay')" style="width:100%;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--text);">✕ Anuluj</button>
     </div>
+  </div>
+</div>
+
+<!-- COOKING MODE OVERLAY -->
+<div class="overlay" id="cookingModeOverlay" style="z-index:400;">
+  <div class="modal" style="max-height:90vh;overflow-y:auto;">
+    <div class="modal-ttl">👨‍🍳 Tryb gotowania <span class="modal-close" onclick="closeOverlay('cookingModeOverlay')">×</span></div>
+    <div id="cookingMealName" style="font-size:13px;font-weight:900;color:var(--g2);margin-bottom:10px;"></div>
+    <div class="cook-progress-bar"><div class="cook-progress-fill" id="cookProgressFill" style="width:0%;"></div></div>
+    <div id="cookStepCounter" style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:6px;text-align:center;"></div>
+    <div class="cook-step-box" id="cookStepText"></div>
+    <div class="cook-timer-row" id="cookTimerRow"></div>
+    <div id="cookTimerDisplay" style="display:none;font-size:22px;font-weight:900;color:var(--o);text-align:center;margin:8px 0;letter-spacing:2px;"></div>
+    <div class="cook-nav">
+      <button class="cook-nav-btn" id="cookPrevBtn" onclick="cookStep(-1)" style="background:var(--inp);color:var(--text);">◀ Poprzedni</button>
+      <button class="cook-nav-btn" id="cookNextBtn" onclick="cookStep(1)" style="background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;">Następny ▶</button>
+    </div>
+    <button onclick="closeOverlay('cookingModeOverlay')" style="width:100%;margin-top:8px;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);">✕ Zakończ gotowanie</button>
+  </div>
+</div>
+
+<!-- SHOP HISTORY MODAL -->
+<div class="overlay" id="shopHistOverlay" style="z-index:320;">
+  <div class="modal">
+    <div class="modal-ttl">🕐 Historia zakupów <span class="modal-close" onclick="closeOverlay('shopHistOverlay')">×</span></div>
+    <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Najczęściej kupowane — kliknij aby dodać do dziś</div>
+    <div class="shop-hist-tags" id="shopHistTagsList"></div>
+    <button onclick="clearShopHistory()" style="width:100%;margin-top:12px;padding:8px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.07);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--r);">🗑️ Wyczyść historię</button>
+    <button onclick="closeOverlay('shopHistOverlay')" style="width:100%;margin-top:6px;padding:8px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);">Zamknij</button>
   </div>
 </div>
 
@@ -2500,7 +2551,7 @@ function launchApp(){
     onValue(ref(db,`families/${fCode}/locations`),s=>{live.locations=s.val()||{};if(myProfile.role==='parent'){renderCurfewPanel();renderDistancePanel();}});
     onValue(ref(db,`families/${fCode}/joinRequests`),s=>{live.joinReqs=s.val()||{};renderJoinRequests();});
     onValue(ref(db,`families/${fCode}/chat`),s=>{const r=s.val()||{};live.chat=Object.values(r).sort((a,b)=>(a.ts||0)-(b.ts||0));if(activeFamilyTab==='chat')renderChatV2();if(todayChatOpen)renderTodayChatFeed();});
-    onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);if(todayShopOpen)renderTodayShop();if(todayNotesOpen)renderTodayNotes();});
+    onValue(ref(db,`families/${fCode}/notes`),s=>{live.notes=s.val()||{};if(['shopping','important','misc'].includes(activeFamilyTab))renderNotes(activeFamilyTab);if(todayShopOpen)renderTodayShop();if(todayNotesOpen)renderTodayNotes();if(todayMenuOpen)renderTodayMenu();});
     onValue(ref(db,`families/${fCode}/wishes`),s=>{const r=s.val()||{};live.wishes=Object.values(r).sort((a,b)=>(b.ts||0)-(a.ts||0));if(activeFamilyTab==='wishes')renderWishes();});
     onValue(ref(db,`families/${fCode}/birthdays`),s=>{live.birthdays=s.val()||{};renderBirthdays();renderBdayPanel();});
     onValue(ref(db,`families/${fCode}/events`),s=>{const r=s.val()||{};live.events=Object.values(r).sort((a,b)=>a.date>b.date?1:-1);renderEventsTopPanel();if(activeFamilyTab==='events')renderEventsTab();});
@@ -3758,7 +3809,22 @@ function renderShoppingWeek(){
   const todayDow=new Date().getDay();
   const days=[1,2,3,4,5,6,0].filter(d=>shopDaysVisibility[d]!==false);
   const todayKey2=todayDow===0?0:todayDow;
-  let html='';
+  // Historia zakupów — top bar
+  const histRaw=JSON.parse(localStorage.getItem('dp-shop-hist')||'{}');
+  const histTop=Object.entries(histRaw).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  let histBar='';
+  if(histTop.length){
+    histBar='<div class="shop-hist-panel" style="margin-bottom:8px;">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">'
+      +'<span style="font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.4px;">🕐 Najczęściej kupowane</span>'
+      +'<span onclick="openShopHistory()" style="font-size:10px;font-weight:800;color:var(--g2);cursor:pointer;">Pokaż wszystkie →</span>'
+      +'</div>'
+      +'<div class="shop-hist-tags">'
+      +histTop.map(e=>'<button class="shop-hist-tag" onclick="dpQuickAddToShop(\''+e[0].replace(/'/g,"\\'")+'\')">'
+        +e[0]+'</button>').join('')
+      +'</div></div>';
+  }
+  let html=histBar;
   days.forEach(d=>{
     const key='shop_'+d;
     const items=live.notes[key]||[];
@@ -3890,6 +3956,14 @@ async function shopDone(key,id){
       const uid=getMyUid();if(live.members[uid]) live.members[uid].points=(live.members[uid].points||0)+1;
       if(!isDemo){const cur=live.members[uid]?.points||0;await update(ref(db,`families/${fCode}/members/${uid}`),{points:cur+1});}
       showToast('+1⭐ zakupy!');
+    }
+    // Zapisz do historii zakupów
+    if(n.text){
+      try{
+        const hist=JSON.parse(localStorage.getItem('dp-shop-hist')||'{}');
+        hist[n.text.toLowerCase()]=(hist[n.text.toLowerCase()]||0)+1;
+        localStorage.setItem('dp-shop-hist',JSON.stringify(hist));
+      }catch(e){}
     }
   }else{n.doneBy='';}
   if(!isDemo) await set(ref(db,`families/${fCode}/notes/${key}`),arr);
@@ -5948,6 +6022,7 @@ const DEFAULT_WIDGETS=[
   {id:'distance',label:'📍 Lokalizacje',show:true},
   {id:'schedule',label:'📆 Harmonogram powrotów',show:true},
   {id:'chat',label:'💬 Czat mini',show:true},
+  {id:'menu',label:'🍽️ Menu na dziś',show:true},
   {id:'shop',label:'🛒 Zakupy dziś',show:true},
   {id:'notes',label:'📝 Notatki mini',show:true},
   {id:'week',label:'📅 Tydzień / Kalendarz',show:true},
@@ -5978,6 +6053,7 @@ function applyWidgetConfig(){
     distance:'distancePanel',
     schedule:'returnSchedulePanel',
     chat:'todayChatMini',
+    menu:'todayMenuMini',
     shop:'todayShopMini',
     notes:'todayNotesMini',
     week:'weekCard',
@@ -7660,7 +7736,244 @@ window._dp_firebaseSave = function(toSave) {
 };
 console.log('[DP] Slot editor exports registered OK');
 
-/* ── Przyciski wyszukiwania przepisu w serwisach ── */
+/* ══════════════════════════════════════════
+   WIDGET: MENU NA DZIŚ (funkcja 7)
+   ══════════════════════════════════════════ */
+let todayMenuOpen = false;
+
+window.toggleTodayMenu = function() {
+  todayMenuOpen = !todayMenuOpen;
+  const body = document.getElementById('todayMenuBody');
+  const tog  = document.getElementById('todayMenuToggle');
+  if (!body) return;
+  body.style.display = todayMenuOpen ? 'block' : 'none';
+  if (tog) tog.textContent = todayMenuOpen ? '▲ schowaj' : '▼ pokaż';
+  if (todayMenuOpen) renderTodayMenu();
+};
+
+window.renderTodayMenu = function() {
+  const body = document.getElementById('todayMenuBody');
+  if (!body) return;
+  const wm = window._dp_getWeekMenu ? window._dp_getWeekMenu() : {};
+  const DK  = window._dp_DAY_KEYS;
+  const WD  = window._dp_WEEK_DAYS;
+  const MK  = window._dp_MEAL_KEYS;
+  const MT  = window._dp_MEAL_TYPES;
+  if (!DK || !MK) { body.innerHTML = '<div style="padding:10px;font-size:11px;color:var(--soft);">Brak danych menu.</div>'; return; }
+  const d   = new Date().getDay(); // 0=nie, 1=pon ...
+  const jsToApp = [6,0,1,2,3,4,5]; // JS Sunday=0 → dp index 6
+  const di  = jsToApp[d];
+  const dk  = DK[di];
+  const dayLabel = WD[di];
+  const mealIcons = ['☀️','🍽️','🌙'];
+  let html = '<div style="padding:8px 12px 4px;">'
+    + '<div style="font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;">'
+    + dayLabel + '</div>';
+  let hasAny = false;
+  MK.forEach(function(mk, mi) {
+    const arr = window._dp_wmSlotArr ? window._dp_wmSlotArr(wm[dk+'_'+mk]) : [];
+    if (!arr || !arr.length) return;
+    hasAny = true;
+    const mealid0 = wm[dk+'_'+mk+'_mealid_0'];
+    html += '<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);">'
+      + '<span style="font-size:16px;flex-shrink:0;">' + (mealIcons[mi]||'🍴') + '</span>'
+      + '<div style="flex:1;">'
+      + '<div style="font-size:9px;font-weight:800;color:var(--soft);text-transform:uppercase;">' + (MT[mi]||mk) + '</div>'
+      + arr.map(function(name, ni) {
+          const mid = wm[dk+'_'+mk+'_mealid_'+ni];
+          return '<div style="font-size:12px;font-weight:700;color:var(--text);">'
+            + (mid ? '<span onclick="openMealById(\'' + mid + '\')" style="cursor:pointer;color:var(--g2);text-decoration:underline;">' + name + ' 🔗</span>' : name)
+            + '</div>';
+        }).join('')
+      + '</div></div>';
+  });
+  if (!hasAny) {
+    html += '<div style="font-size:11px;color:var(--soft);padding:8px 0;">Brak zaplanowanego menu. '
+      + '<span onclick="goTab(\'family\')" style="color:var(--g2);cursor:pointer;font-weight:800;">Przejdź do Kuchni →</span></div>';
+  }
+  html += '</div>';
+  body.innerHTML = html;
+};
+
+// Odśwież menu gdy weekMenu się zmieni
+const _origRenderWeekMenuGrid = window._dp_renderWeekMenuGrid;
+window._dp_renderWeekMenuGrid = function() {
+  _origRenderWeekMenuGrid && _origRenderWeekMenuGrid();
+  if (todayMenuOpen) window.renderTodayMenu();
+};
+
+/* ══════════════════════════════════════════
+   TRYB GOTOWANIA KROK PO KROKU (funkcja 8)
+   ══════════════════════════════════════════ */
+let _cookSteps = [];
+let _cookIdx   = 0;
+let _cookTimerInterval = null;
+let _cookTimerSec = 0;
+
+function parseCookSteps(instructions) {
+  if (!instructions) return [];
+  // Split po nowych liniach lub numeracji
+  let lines = instructions.split(/\r?\n/)
+    .map(function(l) { return l.replace(/^\s*\d+[\.\)]\s*/,'').trim(); })
+    .filter(function(l) { return l.length > 8; });
+  if (lines.length < 2) {
+    // Fallback: split po zdaniach
+    lines = instructions.split(/(?<=[.!?])\s+(?=[A-ZŁŚŹŻÓĄĘĆŃ])/)
+      .map(function(l) { return l.trim(); })
+      .filter(function(l) { return l.length > 8; });
+  }
+  return lines;
+}
+
+function detectTimerInStep(text) {
+  const m = text.match(/(\d+)\s*(minut|minute|min|sekund|second|sec|godzin|hour)/i);
+  if (!m) return null;
+  const num = parseInt(m[1]);
+  const unit = m[2].toLowerCase();
+  if (unit.startsWith('sek') || unit.startsWith('sec')) return num;
+  if (unit.startsWith('godzin') || unit.startsWith('hour')) return num * 3600;
+  return num * 60;
+}
+
+function cookRenderStep() {
+  const total = _cookSteps.length;
+  const step  = _cookSteps[_cookIdx] || '';
+  const pct   = total > 1 ? (_cookIdx / (total-1) * 100) : 100;
+
+  document.getElementById('cookProgressFill').style.width = pct + '%';
+  document.getElementById('cookStepCounter').textContent = 'Krok ' + (_cookIdx+1) + ' / ' + total;
+
+  const isLast = _cookIdx === total - 1;
+  document.getElementById('cookStepText').innerHTML = isLast
+    ? '<div style="text-align:center;font-size:28px;margin-bottom:8px;">✅</div><div style="text-align:center;font-weight:900;font-size:15px;">Gotowe! Smacznego!</div><div style="margin-top:8px;font-size:12px;color:var(--soft);">'+step+'</div>'
+    : step;
+
+  // Przyciski nav
+  document.getElementById('cookPrevBtn').disabled = _cookIdx === 0;
+  document.getElementById('cookPrevBtn').style.opacity = _cookIdx === 0 ? '.4' : '1';
+  document.getElementById('cookNextBtn').textContent = isLast ? '🏁 Zakończ' : 'Następny ▶';
+  document.getElementById('cookNextBtn').onclick = isLast
+    ? function(){ closeOverlay('cookingModeOverlay'); }
+    : function(){ cookStep(1); };
+
+  // Timer
+  cookClearTimer();
+  const timerRow = document.getElementById('cookTimerRow');
+  const autoSec = detectTimerInStep(step);
+  const quickTimers = [{l:'3 min',s:180},{l:'5 min',s:300},{l:'10 min',s:600}];
+  timerRow.innerHTML = '';
+  if (autoSec) {
+    const mins = autoSec >= 60 ? Math.round(autoSec/60)+'min' : autoSec+'s';
+    const btn = document.createElement('button');
+    btn.className = 'cook-timer-btn';
+    btn.textContent = '⏱️ Start ' + mins;
+    btn.onclick = function() { cookStartTimer(autoSec, btn); };
+    timerRow.appendChild(btn);
+  }
+  quickTimers.forEach(function(t) {
+    const btn = document.createElement('button');
+    btn.className = 'cook-timer-btn';
+    btn.textContent = '⏱️ ' + t.l;
+    btn.onclick = function() { cookStartTimer(t.s, btn); };
+    timerRow.appendChild(btn);
+  });
+  document.getElementById('cookTimerDisplay').style.display = 'none';
+}
+
+function cookStartTimer(sec, btn) {
+  cookClearTimer();
+  _cookTimerSec = sec;
+  document.getElementById('cookTimerDisplay').style.display = 'block';
+  if (btn) btn.classList.add('cook-timer-active');
+  _cookTimerInterval = setInterval(function() {
+    _cookTimerSec--;
+    if (_cookTimerSec <= 0) {
+      cookClearTimer();
+      document.getElementById('cookTimerDisplay').textContent = '✅ Czas!';
+      showToast('⏱️ Timer — gotowe!');
+      return;
+    }
+    const m = Math.floor(_cookTimerSec/60);
+    const s = _cookTimerSec % 60;
+    document.getElementById('cookTimerDisplay').textContent =
+      (m > 0 ? m + ':' + (s < 10 ? '0' : '') : '') + (m > 0 ? s : _cookTimerSec + 's');
+  }, 1000);
+}
+
+function cookClearTimer() {
+  if (_cookTimerInterval) { clearInterval(_cookTimerInterval); _cookTimerInterval = null; }
+}
+
+window.cookStep = function(dir) {
+  _cookIdx = Math.max(0, Math.min(_cookSteps.length-1, _cookIdx + dir));
+  cookRenderStep();
+};
+
+window.openCookingMode = function() {
+  const meal = window.currentMealDBRecipe;
+  if (!meal || !meal.strInstructions) {
+    showToast('⚠️ Brak instrukcji dla tego przepisu');
+    return;
+  }
+  _cookSteps = parseCookSteps(meal.strInstructions);
+  if (!_cookSteps.length) { showToast('⚠️ Nie można sparsować kroków'); return; }
+  _cookIdx = 0;
+  cookClearTimer();
+  const namePL = meal._namePL || meal.strMeal;
+  document.getElementById('cookingMealName').textContent = namePL;
+  document.getElementById('cookingModeOverlay').classList.add('show');
+  cookRenderStep();
+};
+
+/* ══════════════════════════════════════════
+   HISTORIA ZAKUPÓW (funkcja 9)
+   ══════════════════════════════════════════ */
+window.openShopHistory = function() {
+  const hist = JSON.parse(localStorage.getItem('dp-shop-hist') || '{}');
+  const sorted = Object.entries(hist)
+    .sort(function(a,b){ return b[1]-a[1]; })
+    .slice(0, 12);
+  const list = document.getElementById('shopHistTagsList');
+  if (!list) return;
+  if (!sorted.length) {
+    list.innerHTML = '<div style="font-size:11px;color:var(--soft);padding:4px 0;">Brak historii — zaznaczaj zakupione produkty żeby tu trafiły.</div>';
+  } else {
+    list.innerHTML = sorted.map(function(e) {
+      return '<button class="shop-hist-tag" onclick="dpQuickAddToShop(\'' + e[0].replace(/'/g,"\\'") + '\')">'
+        + e[0] + ' <span style="font-size:9px;opacity:.7;">×'+e[1]+'</span></button>';
+    }).join('');
+  }
+  document.getElementById('shopHistOverlay').classList.add('show');
+};
+
+window.clearShopHistory = function() {
+  if (!confirm('Wyczyścić całą historię zakupów?')) return;
+  localStorage.removeItem('dp-shop-hist');
+  openShopHistory();
+  showToast('🗑️ Historia wyczyszczona');
+};
+
+window.dpQuickAddToShop = function(name) {
+  if (!name) return;
+  const d = new Date().getDay();
+  const key = 'shop_' + d;
+  const item = { id: 's'+Date.now(), text: name, will: false, done: false, who: myProfile ? myProfile.name : '', ts: Date.now() };
+  if (isDemo) {
+    if (!live.notes[key]) live.notes[key] = [];
+    live.notes[key].push(item);
+    renderShoppingWeek();
+    showToast('🛒 "' + name + '" → zakupy dziś');
+    return;
+  }
+  if (!fCode) return;
+  const arr = (live.notes[key] || []).slice();
+  arr.push(item);
+  set(ref(db, 'families/' + fCode + '/notes/' + key), arr)
+    .then(function(){ showToast('🛒 "' + name + '" → zakupy dziś'); })
+    .catch(function(e){ showToast('❌ ' + e.message); });
+};
+
+
 window._dp_recipeSearchButtons = function(nameEN, namePL) {
   var qEN = encodeURIComponent(nameEN || '');
   var qPL = encodeURIComponent(namePL || nameEN || '');
