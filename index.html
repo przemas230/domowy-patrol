@@ -1023,9 +1023,9 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div id="todayMenuMini">
       <div class="twm-hdr" onclick="toggleTodayMenu()">
         <span style="font-size:12px;font-weight:900;color:var(--text);">🍽️ Menu na dziś</span>
-        <span id="todayMenuToggle" style="font-size:10px;color:var(--soft);">▼ pokaż</span>
+        <span id="todayMenuToggle" style="font-size:10px;color:var(--soft);">▲ schowaj</span>
       </div>
-      <div id="todayMenuBody" style="display:none;"></div>
+      <div id="todayMenuBody" style="display:block;"></div>
     </div>
     <div id="todayShopMini">
       <div class="twm-hdr" onclick="toggleTodayShop()">
@@ -1127,6 +1127,14 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div class="card-ttl">🛒 Widoczność dni zakupów</div>
       <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Zaznacz które dni mają być widoczne na liście zakupów</div>
       <div id="shopDaysVisSettings"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>🔄 Powtarzające się zakupy</span>
+        <button onclick="openRecurringShopAdd()" style="padding:4px 10px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">+ Dodaj</button>
+      </div>
+      <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Produkty automatycznie dodawane co tydzień w wybrany dzień</div>
+      <div id="recurringShopList"></div>
     </div>
     <div class="card">
       <div class="card-ttl">☑️ Widoczność zadań</div>
@@ -1406,7 +1414,8 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
         <div class="card-ttl" style="display:flex;align-items:center;justify-content:space-between;">
           <span>📅 Menu tygodniowe</span>
           <div style="display:flex;gap:5px;">
-            <button onclick="saveWeekMenu()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
+            <button onclick="window.clearMenuDay()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--o),#e84040);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🗑️ Dziś</button>
+            <button onclick="window.clearMenuAll()" style="padding:4px 9px;border-radius:7px;border:none;background:linear-gradient(135deg,#e84040,#9b1c1c);color:#fff;font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;">🗑️ Tydzień</button>
           </div>
         </div>
         <!-- Filtry diety -->
@@ -1669,6 +1678,19 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <div class="shop-hist-tags" id="shopHistTagsList"></div>
     <button onclick="clearShopHistory()" style="width:100%;margin-top:12px;padding:8px;border-radius:9px;border:2px solid var(--r);background:rgba(232,64,64,.07);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--r);">🗑️ Wyczyść historię</button>
     <button onclick="closeOverlay('shopHistOverlay')" style="width:100%;margin-top:6px;padding:8px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--soft);">Zamknij</button>
+  </div>
+</div>
+
+<!-- RECURRING SHOP MODAL -->
+<div class="overlay" id="recurringShopOverlay" style="z-index:320;">
+  <div class="modal">
+    <div class="modal-ttl">🔄 Powtarzający się zakup <span class="modal-close" onclick="closeOverlay('recurringShopOverlay')">×</span></div>
+    <div class="f-lbl">Nazwa produktu</div>
+    <input class="f-inp" id="recurringShopName" placeholder="np. Mleko, Chleb…">
+    <div class="f-lbl" style="margin-top:8px;">Dzień tygodnia</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px;" id="recurringShopDayPicker"></div>
+    <button onclick="saveRecurringShopItem()" style="width:100%;padding:10px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;margin-bottom:6px;">✅ Zapisz</button>
+    <button onclick="closeOverlay('recurringShopOverlay')" style="width:100%;padding:9px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--soft);font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;">Anuluj</button>
   </div>
 </div>
 
@@ -2055,6 +2077,7 @@ if(document.readyState!=='loading') applyLang();
 
 /* ── THEMES ── */
 const THEMES=[
+  {id:'auto',ico:'🌓',nm:'Auto'},
   {id:'light',ico:'☀️',nm:'Jasny'},
   {id:'dark',ico:'🌙',nm:'Ciemny'},
   {id:'win',ico:'🪟',nm:'Win'},
@@ -2063,19 +2086,27 @@ const THEMES=[
   {id:'xbox',ico:'🎮',nm:'Xbox'},
   {id:'ps5',ico:'🎮',nm:'PS5'},
 ];
-let curTheme=localStorage.getItem('dp-theme')||'light';
+let curTheme=localStorage.getItem('dp-theme')||'auto';
+function resolveAutoTheme() {
+  return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+}
 function applyTheme(t){
   curTheme=t;
-  document.documentElement.dataset.theme=t;
+  const effective = (t === 'auto') ? resolveAutoTheme() : t;
+  document.documentElement.dataset.theme=effective;
   localStorage.setItem('dp-theme',t);
   // Gaming themes: replace header logo
   const appName=document.querySelector('.app-name');
   if(appName){
-    if(t==='xbox') appName.innerHTML='<span style="color:#52b043;">⬛</span> Xbox Patrol';
-    else if(t==='ps5') appName.innerHTML='<span style="color:#0070cc;">🔷</span> PS Patrol';
+    if(effective==='xbox') appName.innerHTML='<span style="color:#52b043;">⬛</span> Xbox Patrol';
+    else if(effective==='ps5') appName.innerHTML='<span style="color:#0070cc;">🔷</span> PS Patrol';
     else appName.innerHTML='🏠 Domowy Patrol';
   }
   renderThemeGrid();
+}
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', () => { if (curTheme==='auto') applyTheme('auto'); });
 }
 applyTheme(curTheme);
 window.applyTheme=applyTheme;
@@ -2565,6 +2596,9 @@ function launchApp(){
   checkAfter19();updateReturnBanner();renderBdayPanel();renderEventsTopPanel();applyDesktopMode();requestNotifPermission();applyLang();
   setTimeout(loadTodayReturns,800);
   applyWidgetConfig();
+  setTimeout(function() { if (window.checkRecurringShop) window.checkRecurringShop(); }, 1500);
+  if (window.renderRecurringShopList) window.renderRecurringShopList();
+  if (window.renderTodayMenu) window.renderTodayMenu();
 }
 function renderAll(){renderOnline();renderChores();renderScores();renderStats();renderRewards();renderAssigned();renderSummary();renderHistory();renderCurfewPanel();renderDistancePanel();renderJoinRequests();updateProgress();renderWeek();renderQuickTiles();renderScorePeriodStats();}
 
@@ -6043,6 +6077,106 @@ function saveWidgetConfig(){
 }
 window.saveWidgetConfig=saveWidgetConfig;
 
+/* ══════════════════════════════════════════
+   POWTARZAJĄCE SIĘ ZAKUPY (funkcja 14)
+   ══════════════════════════════════════════ */
+const _REC_DAYS_PL = ['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+let _recurringSelDay = 1;
+
+function getRecurringItems() {
+  try { return JSON.parse(localStorage.getItem('dp-recurring-shop') || '[]'); } catch(e) { return []; }
+}
+function saveRecurringItems(arr) {
+  localStorage.setItem('dp-recurring-shop', JSON.stringify(arr));
+}
+
+window.renderRecurringShopList = function() {
+  const el = document.getElementById('recurringShopList');
+  if (!el) return;
+  const items = getRecurringItems();
+  if (!items.length) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--soft);padding:6px 0;">Brak powtarzających się zakupów.</div>';
+    return;
+  }
+  el.innerHTML = items.map(function(it, idx) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">'
+      + '<div>'
+      + '<span style="font-size:13px;font-weight:700;color:var(--text);">' + it.name + '</span>'
+      + '<span style="font-size:10px;color:var(--soft);margin-left:8px;">co ' + _REC_DAYS_PL[it.day] + '</span>'
+      + '</div>'
+      + '<button onclick="deleteRecurringItem(' + idx + ')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--r);padding:0 4px;">×</button>'
+      + '</div>';
+  }).join('');
+};
+
+window.openRecurringShopAdd = function() {
+  _recurringSelDay = 1;
+  const inp = document.getElementById('recurringShopName');
+  if (inp) inp.value = '';
+  const picker = document.getElementById('recurringShopDayPicker');
+  if (picker) {
+    picker.innerHTML = _REC_DAYS_PL.map(function(d, i) {
+      return '<button id="rday_' + i + '" onclick="selectRecurringDay(' + i + ')" style="padding:6px 4px;border-radius:8px;border:2px solid ' + (i===1?'var(--g2)':'var(--border)') + ';background:' + (i===1?'var(--gp)':'transparent') + ';font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;color:var(--text);">' + d + '</button>';
+    }).join('');
+  }
+  document.getElementById('recurringShopOverlay').style.display = 'flex';
+};
+
+window.selectRecurringDay = function(d) {
+  _recurringSelDay = d;
+  for (let i = 0; i < 7; i++) {
+    const btn = document.getElementById('rday_' + i);
+    if (!btn) continue;
+    btn.style.borderColor = (i === d) ? 'var(--g2)' : 'var(--border)';
+    btn.style.background  = (i === d) ? 'var(--gp)'  : 'transparent';
+  }
+};
+
+window.saveRecurringShopItem = function() {
+  const name = (document.getElementById('recurringShopName') || {}).value;
+  if (!name || !name.trim()) { showToast('⚠️ Wpisz nazwę produktu'); return; }
+  const items = getRecurringItems();
+  items.push({ id: 'rec_' + Date.now(), name: name.trim(), day: _recurringSelDay });
+  saveRecurringItems(items);
+  closeOverlay('recurringShopOverlay');
+  window.renderRecurringShopList();
+  showToast('✅ Dodano: ' + name.trim());
+};
+
+window.deleteRecurringItem = function(idx) {
+  const items = getRecurringItems();
+  const it = items[idx];
+  if (!it) return;
+  if (!confirm('Usunąć "' + it.name + '" z powtarzających się zakupów?')) return;
+  items.splice(idx, 1);
+  saveRecurringItems(items);
+  window.renderRecurringShopList();
+  showToast('🗑️ Usunięto');
+};
+
+window.checkRecurringShop = function() {
+  const items = getRecurringItems();
+  if (!items.length) return;
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+  const lastRun = localStorage.getItem('dp-recurring-last') || '';
+  if (lastRun === todayStr) return;
+  const todayDay = today.getDay(); // 0=Nd...6=Sb
+  const toAdd = items.filter(function(it) { return it.day === todayDay; });
+  if (!toAdd.length) { localStorage.setItem('dp-recurring-last', todayStr); return; }
+  const shopKey = 'shop_' + todayStr;
+  toAdd.forEach(function(it) {
+    const noteId = 'rec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    const noteObj = { id: noteId, text: it.name, done: false, ts: Date.now(), recurring: true };
+    if (!isDemo && fCode) {
+      set(ref(db, 'families/' + fCode + '/notes/' + shopKey + '_' + noteId), noteObj)
+        .catch(function(e) { console.warn('[DP] recurring shop error', e); });
+    }
+  });
+  localStorage.setItem('dp-recurring-last', todayStr);
+  showToast('🔄 Dodano ' + toAdd.length + ' powtarzających się zakupów');
+};
+
 function applyWidgetConfig(){
   const map={
     childTasks:'childTasksPanel',
@@ -7626,6 +7760,7 @@ function loadWeekMenuFirebase() {
   onValue(ref(db, `families/${fCode}/weekMenu`), snap => {
     weekMenu = snap.val() || {};
     renderWeekMenuGrid();
+    if (window.renderTodayMenu && todayMenuOpen) window.renderTodayMenu();
   });
 }
 
@@ -7646,7 +7781,7 @@ function renderWeekMenuGrid() {
           <input class="f-inp" style="flex:1;min-width:0;margin:0;height:26px;font-size:10px;padding:3px 5px;overflow:hidden;"
             id="wm_${dk}_${mk}_${n}" value="${v.replace(/"/g,'&quot;')}"
             placeholder="…"
-            onchange="wmSetVal('${dk}','${mk}',${n},this.value)">
+            oninput="wmSetVal('${dk}','${mk}',${n},this.value)">
           ${linkBtn}
         </div>`;
       }).join('');
@@ -7663,11 +7798,55 @@ function renderWeekMenuGrid() {
   }).join('');
 }
 
+let _wmSaveTimer = null;
+function wmFirebaseSaveDebounced() {
+  clearTimeout(_wmSaveTimer);
+  _wmSaveTimer = setTimeout(() => {
+    if (!isDemo && fCode) {
+      set(ref(db, 'families/' + fCode + '/weekMenu'), weekMenu)
+        .then(() => showToast('✅ Menu zapisane'))
+        .catch(e => showToast('❌ Błąd zapisu: ' + e.message));
+    }
+    if (window.renderTodayMenu && todayMenuOpen) window.renderTodayMenu();
+  }, 800);
+}
+
 window.wmSetVal = function(dk, mk, n, val) {
   const slot = `${dk}_${mk}`;
   const arr = wmSlotArr(weekMenu[slot]);
   arr[n] = val;
   weekMenu[slot] = arr;
+  wmFirebaseSaveDebounced();
+};
+
+window.clearMenuDay = function() {
+  const jsToApp = [6,0,1,2,3,4,5];
+  const dk = DAY_KEYS[jsToApp[new Date().getDay()]];
+  const dayName = WEEK_DAYS[jsToApp[new Date().getDay()]];
+  if (!confirm('Wyczyścić menu na ' + dayName + '?')) return;
+  MEAL_KEYS.forEach(function(mk) {
+    delete weekMenu[dk+'_'+mk];
+    for (let n = 0; n < 3; n++) delete weekMenu[dk+'_'+mk+'_mealid_'+n];
+  });
+  if (!isDemo && fCode) {
+    set(ref(db, 'families/' + fCode + '/weekMenu'), weekMenu)
+      .then(() => showToast('🗑️ Menu na ' + dayName + ' wyczyszczone'))
+      .catch(e => showToast('❌ Błąd: ' + e.message));
+  }
+  renderWeekMenuGrid();
+  if (window.renderTodayMenu && todayMenuOpen) window.renderTodayMenu();
+};
+
+window.clearMenuAll = function() {
+  if (!confirm('Wyczyścić CAŁE menu tygodniowe? Tej operacji nie można cofnąć.')) return;
+  weekMenu = {};
+  if (!isDemo && fCode) {
+    set(ref(db, 'families/' + fCode + '/weekMenu'), {})
+      .then(() => showToast('🗑️ Całe menu tygodniowe wyczyszczone'))
+      .catch(e => showToast('❌ Błąd: ' + e.message));
+  }
+  renderWeekMenuGrid();
+  if (window.renderTodayMenu && todayMenuOpen) window.renderTodayMenu();
 };
 
 window.quickRollWeekSlot = async function(dk, mk, n) {
@@ -7739,7 +7918,7 @@ console.log('[DP] Slot editor exports registered OK');
 /* ══════════════════════════════════════════
    WIDGET: MENU NA DZIŚ (funkcja 7)
    ══════════════════════════════════════════ */
-let todayMenuOpen = false;
+let todayMenuOpen = true;
 
 window.toggleTodayMenu = function() {
   todayMenuOpen = !todayMenuOpen;
@@ -7771,7 +7950,8 @@ window.renderTodayMenu = function() {
     + dayLabel + '</div>';
   let hasAny = false;
   MK.forEach(function(mk, mi) {
-    const arr = window._dp_wmSlotArr ? window._dp_wmSlotArr(wm[dk+'_'+mk]) : [];
+    const rawArr = window._dp_wmSlotArr ? window._dp_wmSlotArr(wm[dk+'_'+mk]) : [];
+    const arr = rawArr.filter(function(s) { return s && s.trim(); });
     if (!arr || !arr.length) return;
     hasAny = true;
     const mealid0 = wm[dk+'_'+mk+'_mealid_0'];
