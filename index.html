@@ -7468,10 +7468,16 @@ const DAY_KEYS = ['mon','tue','wed','thu','fri','sat','sun'];
 /* Normalize slot: string or array -> array of 3 */
 function wmSlotArr(val) {
   if (!val) return ['','',''];
+  // Firebase returns arrays as objects {0:'a',1:'b',2:'c'} — handle both
   if (Array.isArray(val)) {
     const a = [...val];
     while (a.length < 3) a.push('');
     return a.slice(0,3);
+  }
+  if (typeof val === 'object') {
+    // Firebase object keys are string numbers
+    const a = [val['0']||'', val['1']||'', val['2']||''];
+    return a;
   }
   return [String(val),'',''];
 }
@@ -7545,6 +7551,20 @@ window.quickRollWeekSlot = async function(dk, mk, n) {
     if (inp) inp.value = '';
   }
 };
+
+/* ── Eksporty dla Slot Editora (non-module script nie widzi zakresu modułu) ── */
+window._dp_wmSlotArr = function(val) { return wmSlotArr(val); };
+window._dp_getWeekMenu = function() { return weekMenu; };
+window._dp_setWeekMenu = function(k, v) { weekMenu[k] = v; };
+window._dp_deleteWeekMenuKey = function(k) { delete weekMenu[k]; };
+window._dp_DAY_KEYS = DAY_KEYS;
+window._dp_WEEK_DAYS = WEEK_DAYS;
+window._dp_MEAL_KEYS = MEAL_KEYS;
+window._dp_MEAL_TYPES = MEAL_TYPES;
+window._dp_fetchMealForType = fetchMealForType;
+window._dp_translateText = translateText;
+window._dp_renderWeekMenuGrid = function() { renderWeekMenuGrid(); };
+console.log('[DP] Slot editor exports registered OK');
 
 window.openMealById = async function(mealId) {
   document.getElementById('mealdbContent').style.display = '';
@@ -8531,12 +8551,23 @@ window.launchApp = function() {
 let _slotEdDk='',_slotEdMk='';
 
 window.openSlotEditor=function(dk,mk){
+  console.log('[DP] openSlotEditor called', dk, mk);
+  if(typeof window._dp_wmSlotArr!=='function'){
+    console.error('[DP] _dp_wmSlotArr nie jest dostepne — eksporty modulu nie zaladowane!');
+    alert('Błąd: moduł aplikacji nie załadował eksportów. Odśwież stronę.');
+    return;
+  }
   _slotEdDk=dk;_slotEdMk=mk;
+  var DAY_KEYS=window._dp_DAY_KEYS;
+  var WEEK_DAYS=window._dp_WEEK_DAYS;
+  var MEAL_KEYS=window._dp_MEAL_KEYS;
+  var MEAL_TYPES=window._dp_MEAL_TYPES;
+  var weekMenu=window._dp_getWeekMenu();
   var di=DAY_KEYS.indexOf(dk),mi=MEAL_KEYS.indexOf(mk);
   var dn=WEEK_DAYS[di]||dk,mn=MEAL_TYPES[mi]||mk;
   var t=document.getElementById('slotEditorTitle');
   if(t)t.childNodes[0].textContent='✏️ '+dn+' — '+mn+' ';
-  var arr=wmSlotArr(weekMenu[dk+'_'+mk]);
+  var arr=window._dp_wmSlotArr(weekMenu[dk+'_'+mk]);
   var rows=document.getElementById('slotEditorRows');
   if(!rows)return;
   var h='';
@@ -8579,15 +8610,16 @@ window.slotEdAutocomplete=function(val,n){
 };
 
 window.slotRollOne=async function(n){
+  console.log('[DP] slotRollOne', n, _slotEdDk, _slotEdMk);
   var inp=document.getElementById('se_inp_'+n);
   if(inp)inp.value='⏳…';
   try{
-    var meal=await fetchMealForType(_slotEdMk);
+    var meal=await window._dp_fetchMealForType(_slotEdMk);
     if(!meal)throw new Error('brak');
-    var namePL=await translateText(meal.strMeal);
+    var namePL=await window._dp_translateText(meal.strMeal);
     if(inp)inp.value=namePL;
-    weekMenu[_slotEdDk+'_'+_slotEdMk+'_mealid_'+n]=meal.idMeal;
-  }catch(e){if(inp)inp.value='';showToast('❌ Błąd losowania');}
+    window._dp_setWeekMenu(_slotEdDk+'_'+_slotEdMk+'_mealid_'+n, meal.idMeal);
+  }catch(e){console.error('[DP] slotRollOne error',e);if(inp)inp.value='';showToast('❌ Błąd losowania');}
 };
 
 window.slotRollAll=async function(){
@@ -8597,16 +8629,31 @@ window.slotRollAll=async function(){
 window.slotClearOne=function(n){
   var inp=document.getElementById('se_inp_'+n);
   if(inp)inp.value='';
-  delete weekMenu[_slotEdDk+'_'+_slotEdMk+'_mealid_'+n];
+  window._dp_deleteWeekMenuKey(_slotEdDk+'_'+_slotEdMk+'_mealid_'+n);
 };
 
 window.saveSlotEditor=function(){
+  console.log('[DP] saveSlotEditor', _slotEdDk, _slotEdMk);
   var slot=_slotEdDk+'_'+_slotEdMk;
   var arr=[0,1,2].map(function(n){var el=document.getElementById('se_inp_'+n);return el?el.value.trim():'';});
-  weekMenu[slot]=arr;
-  if(!isDemo&&fCode)set(ref(db,'families/'+fCode+'/weekMenu'),weekMenu);
+  // Write back to the module's weekMenu via proxy
+  window._dp_setWeekMenu(slot, arr);
+  var weekMenu=window._dp_getWeekMenu();
+  // Persist to Firebase — build flat object to avoid issues with array serialization
+  var toSave={};
+  Object.keys(weekMenu).forEach(function(k){ toSave[k]=weekMenu[k]; });
+  if(typeof isDemo!=='undefined'&&!isDemo&&typeof fCode!=='undefined'&&fCode){
+    if(typeof set==='function'&&typeof ref==='function'&&typeof db!=='undefined'){
+      set(ref(db,'families/'+fCode+'/weekMenu'),toSave).then(function(){
+        console.log('[DP] weekMenu saved to Firebase OK');
+      }).catch(function(e){
+        console.error('[DP] weekMenu save failed',e);
+        showToast('❌ Błąd zapisu: '+e.message);
+      });
+    }
+  }
   closeOverlay('slotEditorOverlay');
-  renderWeekMenuGrid();
+  window._dp_renderWeekMenuGrid();
   showToast('✅ Zapisano!');
 };
 </script>
