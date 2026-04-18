@@ -1164,7 +1164,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           3. Kliknij <b>API Keys → Create Key</b><br>
           4. Skopiuj klucz (zaczyna się od <b>sk-ant-</b>)
         </div>
-        <input class="f-inp" id="claudeApiKeyInp" type="password" placeholder="sk-ant-api03-..." style="font-size:11px;margin-bottom:4px;" autocomplete="off">
+        <input class="f-inp" id="claudeApiKeyInp" type="password" placeholder="sk-ant-api03-..." style="font-size:11px;margin-bottom:4px;" autocomplete="off" oninput="window._dpKeyLiveUpdate('claude',this)">
         <div id="claudeKeyStatus" style="font-size:10px;font-weight:800;margin-bottom:4px;"></div>
       </div>
 
@@ -1182,7 +1182,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           4. Skopiuj klucz (zaczyna się od <b>gsk_</b>)<br>
           <span style="color:var(--g2);">✅ Groq jest bezpłatny — 14 400 req/dzień</span>
         </div>
-        <input class="f-inp" id="groqApiKeyInp" type="password" placeholder="gsk_..." style="font-size:11px;margin-bottom:4px;" autocomplete="off">
+        <input class="f-inp" id="groqApiKeyInp" type="password" placeholder="gsk_..." style="font-size:11px;margin-bottom:4px;" autocomplete="off" oninput="window._dpKeyLiveUpdate('groq',this)">
         <div id="groqKeyStatus" style="font-size:10px;font-weight:800;margin-bottom:4px;"></div>
       </div>
 
@@ -6167,17 +6167,25 @@ window.checkRecurringShop = function() {
   const todayDay = today.getDay(); // 0=Nd...6=Sb
   const toAdd = items.filter(function(it) { return it.day === todayDay; });
   if (!toAdd.length) { localStorage.setItem('dp-recurring-last', todayStr); return; }
-  const shopKey = 'shop_' + todayStr;
+  // Użyj shop_DOW (dzień tygodnia) — taki sam klucz jak renderTodayShop i addTodayShopItem
+  const shopKey = 'shop_' + todayDay;
+  if (!live.notes[shopKey]) live.notes[shopKey] = [];
+  const existingTexts = live.notes[shopKey].map(function(n) { return (n.text || '').toLowerCase(); });
+  var added = 0;
   toAdd.forEach(function(it) {
+    // Nie dodawaj duplikatów jeśli już istnieje na liście
+    if (existingTexts.indexOf(it.name.toLowerCase()) !== -1) return;
     const noteId = 'rec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
-    const noteObj = { id: noteId, text: it.name, done: false, ts: Date.now(), recurring: true };
-    if (!isDemo && fCode) {
-      set(ref(db, 'families/' + fCode + '/notes/' + shopKey + '_' + noteId), noteObj)
-        .catch(function(e) { console.warn('[DP] recurring shop error', e); });
-    }
+    const noteObj = { id: noteId, text: it.name, will: false, done: false, ts: Date.now(), recurring: true };
+    live.notes[shopKey].push(noteObj);
+    added++;
   });
+  if (added > 0 && !isDemo && fCode) {
+    set(ref(db, 'families/' + fCode + '/notes/' + shopKey), live.notes[shopKey])
+      .catch(function(e) { console.warn('[DP] recurring shop error', e); });
+  }
   localStorage.setItem('dp-recurring-last', todayStr);
-  showToast('🔄 Dodano ' + toAdd.length + ' powtarzających się zakupów');
+  if (added > 0) showToast('🔄 Dodano ' + added + ' powtarzających się zakupów');
 };
 
 function applyWidgetConfig(){
@@ -8845,6 +8853,9 @@ window.saveAiKeys = function() {
     else    { localStorage.removeItem('dp-groq-api-key'); }
     var fab = document.getElementById('groqFab');
     if (fab) fab.style.display = getGroqKey() ? '' : 'none';
+    // Podświetl pola zielono po zapisie
+    if (ckEl && window._dpKeyLiveUpdate) window._dpKeyLiveUpdate('claude', ckEl);
+    if (gkEl && window._dpKeyLiveUpdate) window._dpKeyLiveUpdate('groq', gkEl);
     _dp_updateKeyStatus();
     var msgEl = document.getElementById('aiKeysSavedMsg');
     if (msgEl) { msgEl.style.display=''; setTimeout(function(){ msgEl.style.display='none'; }, 5000); }
@@ -8854,7 +8865,44 @@ window.saveAiKeys = function() {
   }
 };
 
-function _dp_updateKeyStatus() {
+// Live-save kluczy API przy wpisywaniu (żółte = niezapisane, zielone = zapisane)
+window._dpKeyLiveUpdate = function(which, inp) {
+  var val = inp.value.trim();
+  var storageKey = which === 'claude' ? 'dp-claude-api-key' : 'dp-groq-api-key';
+  var statusId   = which === 'claude' ? 'claudeKeyStatus' : 'groqKeyStatus';
+  var minLen     = which === 'claude' ? 20 : 10;
+  if (!val) {
+    // Pole puste — usuń z localStorage, styl neutralny
+    localStorage.removeItem(storageKey);
+    inp.style.background   = '';
+    inp.style.borderColor  = '';
+    var st = document.getElementById(statusId);
+    if (st) st.innerHTML = '<span style="color:var(--soft);">\u26aa Brak zapisanego klucza</span>';
+    return;
+  }
+  if (val.length < minLen) {
+    // Za krótki — żółty (niezapisany)
+    inp.style.background  = 'rgba(245,197,24,0.22)';
+    inp.style.borderColor = 'rgba(245,197,24,0.7)';
+    var st = document.getElementById(statusId);
+    if (st) st.innerHTML = '<span style="color:#b45309;">\u270f\ufe0f Wpisz pełny klucz...</span>';
+    return;
+  }
+  // Wyglada OK — zapisz natychmiast
+  localStorage.setItem(storageKey, val);
+  inp.style.background  = 'rgba(74,158,34,0.18)';
+  inp.style.borderColor = 'var(--g3)';
+  var st = document.getElementById(statusId);
+  if (st) st.innerHTML = '<span style="color:var(--g2);">\u2705 Klucz zapisany (' + val.slice(0,8) + '\u2026' + val.slice(-4) + ')</span>';
+  // Odśwież FAB Groq jeśli to klucz Groq
+  if (which === 'groq') {
+    var fab = document.getElementById('groqFab');
+    if (fab) fab.style.display = val ? '' : 'none';
+  }
+  // Skasuj żółty komunikat "Zapisano!" bo już auto-zapisane
+  var msgEl = document.getElementById('aiKeysSavedMsg');
+  if (msgEl) msgEl.style.display = 'none';
+};
   try {
     var ck = getClaudeKey(); var gk = getGroqKey();
     var cs = document.getElementById('claudeKeyStatus');
