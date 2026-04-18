@@ -1391,9 +1391,10 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
           </div>
         </div>
         <!-- Przyciski losowania -->
-        <div style="display:flex;gap:6px;margin-bottom:10px;">
-          <button onclick="openMealDBRandom()" style="flex:1;padding:7px;border-radius:8px;border:none;background:linear-gradient(135deg,#f07b20,#e84040);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🎲 Losuj 1 przepis</button>
-          <button onclick="openMealDBWeek()" style="flex:1;padding:7px;border-radius:8px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">📅 Losuj cały tydzień</button>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;">
+          <button onclick="openMealDBRandom()" style="flex:1;min-width:90px;padding:8px 5px;border-radius:8px;border:none;background:linear-gradient(135deg,#f07b20,#e84040);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🎲 Losuj przepis</button>
+          <button onclick="openMealDBDay()" style="flex:1;min-width:90px;padding:8px 5px;border-radius:8px;border:none;background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">📆 Losuj 1 dzień</button>
+          <button onclick="openMealDBWeek()" style="flex:1;min-width:90px;padding:8px 5px;border-radius:8px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">📅 Losuj cały tydzień</button>
         </div>
         <div id="weekMenuGrid" style="display:flex;flex-direction:column;gap:6px;"></div>
         <!-- [28] Generate shopping from menu -->
@@ -1673,8 +1674,8 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 <!-- CHILD TASK MODAL -->
 <div class="overlay" id="childTaskOverlay">
   <div class="modal">
-    <div class="modal-ttl">🧒 Zadanie dla dziecka <span class="modal-close" onclick="closeOverlay('childTaskOverlay')">×</span></div>
-    <div style="font-size:11px;color:var(--soft);margin-bottom:9px;">Zadanie z timerem — powiadomienie na telefonie rodzica</div>
+    <div class="modal-ttl">⏱️ Zadanie z timerem <span class="modal-close" onclick="closeOverlay('childTaskOverlay')">×</span></div>
+    <div style="font-size:11px;color:var(--soft);margin-bottom:9px;">Timer + powiadomienie na telefon po upływie czasu</div>
     <div class="f-lbl">Zadanie</div>
     <input class="f-inp" id="ctName" placeholder="np. Umyj zęby">
     <div class="f-lbl">Ikona</div>
@@ -1685,7 +1686,10 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
     <input class="f-inp" id="ctMinutes" type="number" value="10" min="1" max="120">
     <div class="f-lbl">Kiedy zacząć</div>
     <input class="f-inp" id="ctStartTime" type="time">
-    <button class="modal-btn" onclick="submitChildTask()">✅ Wyślij zadanie</button>
+    <div style="display:flex;gap:6px;margin-top:8px;">
+      <button class="modal-btn" onclick="submitChildTask()" style="flex:1;">✅ Wyślij zadanie</button>
+      <button onclick="closeOverlay('childTaskOverlay')" style="flex:0 0 80px;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--soft);">Anuluj</button>
+    </div>
   </div>
 </div>
 
@@ -3237,7 +3241,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap')) document
 const QUICK_TASKS=[{ico:'🧹',name:'Odkurzanie',pts:12},{ico:'🚿',name:'Mycie łazienki',pts:15},{ico:'🗑️',name:'Wyniesienie śmieci',pts:7},{ico:'🍽️',name:'Zmywarka',pts:8},{ico:'🧺',name:'Pranie/składanie',pts:8},{ico:'🛒',name:'Zakupy',pts:10},{ico:'🐕',name:'Spacer z psem',pts:10},{ico:'📖',name:'Praca domowa',pts:12},{ico:'🪴',name:'Kwiatki',pts:5},{ico:'🧼',name:'Załaduj zmywarkę',pts:6},{ico:'🍳',name:'Gotowanie',pts:8},{ico:'🧽',name:'Sprzątanie pokoju',pts:10}];
 function renderQuickTiles(){if(myProfile?.role!=='parent')return;rebuildAssignSelect();
   const ctBtn=document.getElementById('childTaskBtnContainer');
-  if(ctBtn) ctBtn.innerHTML=`<button onclick="openChildTaskModal()" style="width:100%;margin-bottom:9px;padding:9px;border-radius:9px;border:2px solid rgba(139,92,246,.4);background:rgba(139,92,246,.07);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--pu);">🧒 Zlec zadanie z timerem dla dziecka</button>`;document.getElementById('quickTilesContainer').innerHTML=`<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:6px;">⚡ Szybkie zlecenie — kliknij:</div><div class="quick-tiles">${QUICK_TASKS.map(t=>`<div class="qt" onclick="quickAssign('${esc(t.name)}','${t.ico}',${t.pts})"><span class="qt-ico">${t.ico}</span>${t.name}<div class="qt-pts">+${t.pts}⭐</div></div>`).join('')}</div>`;}
+  if(ctBtn) ctBtn.innerHTML=`<button onclick="openChildTaskModal()" style="width:100%;margin-bottom:9px;padding:9px;border-radius:9px;border:2px solid rgba(139,92,246,.4);background:rgba(139,92,246,.07);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--pu);">⏱️ Zlec zadanie z timerem</button>`;document.getElementById('quickTilesContainer').innerHTML=`<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:6px;">⚡ Szybkie zlecenie — kliknij:</div><div class="quick-tiles">${QUICK_TASKS.map(t=>`<div class="qt" onclick="quickAssign('${esc(t.name)}','${t.ico}',${t.pts})"><span class="qt-ico">${t.ico}</span>${t.name}<div class="qt-pts">+${t.pts}⭐</div></div>`).join('')}</div>`;}
 function quickAssign(name,ico,pts){document.getElementById('mName').value=name;document.getElementById('mIco').value=ico;document.getElementById('mPts').value=pts;rebuildAssignSelect();document.getElementById('assignOverlay').classList.add('show');}
 window.quickAssign=quickAssign;
 
@@ -4468,7 +4472,7 @@ function renderChildTasksPanel(){
 
 function openChildTaskModal(){
   const sel=document.getElementById('ctWho');
-  if(sel) sel.innerHTML=Object.entries(live.members).filter(([,m])=>m.role==='child').map(([uid,m])=>`<option value="${uid}">${m.avatar||'👤'} ${m.name}</option>`).join('');
+  if(sel) sel.innerHTML=Object.entries(live.members).map(([uid,m])=>`<option value="${uid}">${m.avatar||'👤'} ${m.name} ${m.role==='parent'?'(rodzic)':'(dziecko)'}</option>`).join('');
   const t=new Date();t.setMinutes(t.getMinutes()+1);
   const ti=document.getElementById('ctStartTime');if(ti)ti.value=`${d2(t.getHours())}:${d2(t.getMinutes())}`;
   document.getElementById('childTaskOverlay').classList.add('show');
@@ -4478,7 +4482,7 @@ window.openChildTaskModal=openChildTaskModal;
 async function submitChildTask(){
   const name=document.getElementById('ctName').value.trim();if(!name){showToast('⚠️ Wpisz nazwę');return;}
   const ico=document.getElementById('ctIco').value.trim()||'📋';
-  const forUid=document.getElementById('ctWho').value;if(!forUid){showToast('⚠️ Wybierz dziecko');return;}
+  const forUid=document.getElementById('ctWho').value;if(!forUid){showToast('⚠️ Wybierz osobę');return;}
   const minutes=parseInt(document.getElementById('ctMinutes').value)||10;
   const startStr=document.getElementById('ctStartTime').value;
   const startTs=startStr?new Date(todayKey+'T'+startStr).getTime():Date.now();
@@ -6091,10 +6095,18 @@ window.saveNtfyConfig = saveNtfyConfig;
 async function sendNtfy(title, body, priority = 3) {
   if (ntfyConfig.provider !== 'ntfy' || !ntfyConfig.topic) return false;
   try {
+    // Headers must be ISO-8859-1 — encode non-ASCII chars via encodeURIComponent
+    const safeTitle = encodeURIComponent(title || '');
+    const safeBody  = (body || title || '').replace(/[^\x00-\x7F]/g, c => encodeURIComponent(c));
     const r = await fetch(`https://ntfy.sh/${encodeURIComponent(ntfyConfig.topic)}`, {
       method: 'POST',
-      headers: { 'Title': title, 'Priority': String(priority), 'Content-Type': 'text/plain; charset=utf-8' },
-      body: body || title
+      headers: {
+        'Title':        safeTitle,
+        'Priority':     String(priority),
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Tags':         'house'
+      },
+      body: safeBody
     });
     return r.ok;
   } catch (e) { return false; }
@@ -6109,8 +6121,8 @@ window.testNtfy = async function () {
   try {
     const r = await fetch(`https://ntfy.sh/${encodeURIComponent(topic)}`, {
       method: 'POST',
-      headers: { 'Title': '🏠 Domowy Patrol — test', 'Priority': '3' },
-      body: 'Powiadomienia ntfy działają! ✅'
+      headers: { 'Title': encodeURIComponent('Domowy Patrol - test'), 'Priority': '3', 'Tags': 'white_check_mark' },
+      body: 'Powiadomienia ntfy dzialaja!'
     });
     if (r.ok) {
       if (st) { st.textContent = '✅ Wysłano!'; st.className = 'notif-status ok'; }
@@ -7349,22 +7361,15 @@ function renderWeekMenuGrid() {
     const mealRows = MEAL_KEYS.map((mk, mi) => {
       const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
       const label = MEAL_TYPES[mi];
-      const cells = arr.map((v, n) => {
+      // Show up to 3 chips — first non-empty ones or placeholder
+      const chips = arr.map((v, n) => {
         const mealid = weekMenu[`${dk}_${mk}_mealid_${n}`] || '';
-        const linkBtn = mealid
-          ? `<button onclick="openMealById('${mealid}')" style="background:none;border:none;cursor:pointer;font-size:12px;padding:0;flex-shrink:0;" title="Pokaż przepis">🔗</button>`
-          : `<button onclick="quickRollWeekSlot('${dk}','${mk}',${n})" style="background:none;border:none;cursor:pointer;font-size:11px;padding:0;flex-shrink:0;" title="Losuj">🎲</button>`;
-        return `<div style="display:flex;align-items:center;gap:2px;flex:1;min-width:0;">
-          <input class="f-inp" style="flex:1;min-width:0;margin:0;height:26px;font-size:10px;padding:3px 5px;overflow:hidden;"
-            id="wm_${dk}_${mk}_${n}" value="${v.replace(/"/g,'&quot;')}"
-            placeholder="…"
-            onchange="wmSetVal('${dk}','${mk}',${n},this.value)">
-          ${linkBtn}
-        </div>`;
+        if (!v) return `<span style="display:inline-flex;align-items:center;padding:2px 6px;border-radius:6px;border:1px dashed var(--border);font-size:9px;color:var(--soft);cursor:pointer;" onclick="openSlotEditor('${dk}','${mk}')">＋</span>`;
+        return `<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:6px;background:var(--gp);border:1px solid var(--g2);font-size:9px;font-weight:800;color:var(--g2);cursor:pointer;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" onclick="openSlotEditor('${dk}','${mk}')" title="${v}">${v}${mealid?'🔗':''}</span>`;
       }).join('');
-      return `<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">
-        <span style="font-size:10px;min-width:66px;color:var(--soft);font-weight:700;flex-shrink:0;">${label}</span>
-        ${cells}
+      return `<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap;">
+        <span onclick="openSlotEditor('${dk}','${mk}')" style="font-size:10px;min-width:66px;color:var(--soft);font-weight:700;flex-shrink:0;cursor:pointer;text-decoration:underline dotted;">${label}</span>
+        <div style="display:flex;flex-wrap:wrap;gap:3px;flex:1;">${chips}</div>
       </div>`;
     }).join('');
     return `<div style="background:var(--inp);border-radius:10px;padding:9px;">
@@ -7560,7 +7565,35 @@ window.openMealDBWeek = function() {
   document.getElementById('mealdbWeekList').innerHTML = '';
   document.getElementById('mealdbWeekSaveBtn').style.display = 'none';
   document.getElementById('mealdbOverlay').classList.add('show');
-  fetchWeekMeals();
+  fetchWeekMeals(null); // null = cały tydzień
+};
+
+window.openMealDBDay = function() {
+  // Show day picker popup inline
+  const days = WEEK_DAYS.map((d,i) => `<button onclick="startDayRoll('${DAY_KEYS[i]}')" style="flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--border);background:var(--inp);font-family:var(--font);font-size:10px;font-weight:800;cursor:pointer;color:var(--text);">${d.slice(0,3)}</button>`).join('');
+  const overlay = document.getElementById('mealdbOverlay');
+  document.getElementById('mealdbContent').style.display = '';
+  document.getElementById('mealdbContent').innerHTML = `
+    <div style="font-size:13px;font-weight:900;margin-bottom:10px;">Wybierz dzień:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;">${days}</div>`;
+  document.getElementById('mealdbActions').style.display = 'none';
+  document.getElementById('mealdbWeekProgress').style.display = 'none';
+  document.getElementById('mealdbTitle').childNodes[0].textContent = '📆 Losuj dzień ';
+  overlay.classList.add('show');
+};
+
+window.startDayRoll = function(dk) {
+  mealWeekResults = {};
+  const dayIdx = DAY_KEYS.indexOf(dk);
+  document.getElementById('mealdbTitle').childNodes[0].textContent = `📆 ${WEEK_DAYS[dayIdx]} `;
+  document.getElementById('mealdbContent').style.display = 'none';
+  document.getElementById('mealdbActions').style.display = 'none';
+  document.getElementById('mealdbWeekProgress').style.display = 'flex';
+  document.getElementById('mealdbWeekStatus').textContent = `Losuję menu na ${WEEK_DAYS[dayIdx]}…`;
+  document.getElementById('mealdbWeekBar').style.width = '0%';
+  document.getElementById('mealdbWeekList').innerHTML = '';
+  document.getElementById('mealdbWeekSaveBtn').style.display = 'none';
+  fetchWeekMeals(dk); // single day
 };
 
 async function fetchRandomMeal() {
@@ -7602,15 +7635,46 @@ async function fetchRandomMeal() {
   }
 }
 
-/* Losuj cały tydzień: śniadanie/obiad/kolacja × 7 dni × 3 propozycje */
-async function fetchWeekMeals() {
+/* Losuj cały tydzień/dzień: śniadanie/obiad/kolacja × 7 dni × 3 propozycje */
+/* MEAL TYPE → MealDB categories mapping */
+const MEAL_TYPE_CATS = {
+  breakfast: ['Breakfast'],
+  lunch:     ['Chicken','Beef','Pork','Pasta','Lamb','Vegetarian'],
+  dinner:    ['Chicken','Beef','Seafood','Lamb','Miscellaneous','Vegan'],
+};
+
+async function fetchMealForType(mk) {
+  // Respect active user filters first; if none, use meal-type defaults
+  let cats = [];
+  activeMealFilters.forEach(f => { if (MEAL_FILTER_CATS[f]) cats.push(...MEAL_FILTER_CATS[f]); });
+  if (!cats.length) cats = MEAL_TYPE_CATS[mk] || [];
+  const cat = cats[Math.floor(Math.random() * cats.length)];
+  try {
+    const r = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(cat)}`);
+    const d = await r.json();
+    const meals = d.meals || [];
+    if (meals.length) {
+      const pick = meals[Math.floor(Math.random() * meals.length)];
+      const full = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${pick.idMeal}`);
+      const fd = await full.json();
+      return fd.meals?.[0] || null;
+    }
+  } catch(e) {}
+  // fallback random
+  const r = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+  const d = await r.json();
+  return d.meals?.[0] || null;
+}
+
+async function fetchWeekMeals(dkFilter) {
   const slots = [];
-  DAY_KEYS.forEach(dk => {
+  const daysToFill = dkFilter ? [dkFilter] : DAY_KEYS;
+  daysToFill.forEach(dk => {
     MEAL_KEYS.forEach(mk => {
       [0,1,2].forEach(n => slots.push({dk, mk, n}));
     });
   });
-  const total = slots.length; // 63
+  const total = slots.length;
   let done = 0;
   const listEl = document.getElementById('mealdbWeekList');
   const barEl  = document.getElementById('mealdbWeekBar');
@@ -7624,19 +7688,12 @@ async function fetchWeekMeals() {
 
     if (n === 0) statEl.textContent = `Losuję: ${dayName} — ${mealType}…`;
     try {
-      const oldFilters = new Set(activeMealFilters);
-      if (mk === 'breakfast' && !activeMealFilters.size) {
-        activeMealFilters.add('breakfast');
-      }
-      const meal = await fetchMealByFilter();
-      activeMealFilters = oldFilters;
-
+      const meal = await fetchMealForType(mk);
       if (meal) {
         const namePL = await translateText(meal.strMeal);
-        // key: dk_mk_n
         mealWeekResults[`${dk}_${mk}_${n}`] = {name: namePL, mealid: meal.idMeal};
         if (n === 0) {
-          listEl.innerHTML += `<div style="padding:2px 0;"><b style="color:var(--g2);">${dayName.slice(0,2)} ${mealType.split(' ')[0]}</b> ${namePL}…</div>`;
+          listEl.innerHTML += `<div style="padding:2px 0;"><b style="color:var(--g2);">${dayName.slice(0,2)} ${mealType.split(' ')[0]}</b> ${namePL}</div>`;
         }
       }
     } catch(e) {}
@@ -8291,8 +8348,126 @@ window.launchApp = function() {
     // Show Groq FAB if key exists
     const fab = document.getElementById('groqFab');
     if (fab && getGroqKey()) fab.style.display = '';
+    // Pre-fill AI key inputs
+    const ck = getClaudeKey(); const gk = getGroqKey();
+    const ci = document.getElementById('claudeApiKeyInp');
+    const gi = document.getElementById('groqApiKeyInp');
+    if (ci && ck) ci.value = ck;
+    if (gi && gk) gi.value = gk;
+    // Pre-fill ntfy topic
+    if (ntfyConfig?.topic) {
+      const ni = document.getElementById('ntfyTopicInp');
+      if (ni) ni.value = ntfyConfig.topic;
+    }
   }, 800);
 };
+</script>
+
+<!-- SLOT EDITOR OVERLAY -->
+<div class="overlay" id="slotEditorOverlay">
+  <div class="modal-box" style="max-height:90vh;overflow-y:auto;">
+    <div class="modal-ttl" id="slotEditorTitle">✏️ Edytuj posiłek <span class="modal-close" onclick="closeOverlay('slotEditorOverlay')">×</span></div>
+    <div id="slotEditorRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;">
+      <button onclick="slotRollAll()" style="flex:1;padding:7px;border-radius:8px;border:none;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;">🎲 Losuj wszystkie 3</button>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="saveSlotEditor()" style="flex:1;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;">💾 Zapisz</button>
+      <button onclick="closeOverlay('slotEditorOverlay')" style="flex:0 0 80px;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--soft);">Anuluj</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   SLOT EDITOR
+══════════════════════════════════════════════ */
+let _slotEdDk = '', _slotEdMk = '';
+
+window.openSlotEditor = function(dk, mk) {
+  _slotEdDk = dk; _slotEdMk = mk;
+  const dayIdx  = DAY_KEYS.indexOf(dk);
+  const mealIdx = MEAL_KEYS.indexOf(mk);
+  const dayName  = WEEK_DAYS[dayIdx]  || dk;
+  const mealName = MEAL_TYPES[mealIdx] || mk;
+  document.getElementById('slotEditorTitle').childNodes[0].textContent = `✏️ ${dayName} — ${mealName} `;
+
+  const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
+  const rows = document.getElementById('slotEditorRows');
+  rows.innerHTML = arr.map((v, n) => {
+    const mealid = weekMenu[`${dk}_${mk}_mealid_${n}`] || '';
+    return `<div style="background:var(--inp);border-radius:10px;padding:8px;">
+      <div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">Propozycja ${n+1}</div>
+      <div style="display:flex;gap:5px;align-items:center;">
+        <input class="f-inp" id="se_inp_${n}" value="${v.replace(/"/g,'&quot;')}" placeholder="Wpisz lub wyszukaj…"
+          style="flex:1;margin:0;font-size:11px;"
+          oninput="slotEdAutocomplete(this.value,${n})">
+        <button onclick="slotRollOne(${n})" style="padding:6px 8px;border-radius:8px;border:none;background:linear-gradient(135deg,#f07b20,#e84040);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;" title="Losuj">🎲</button>
+        ${mealid ? `<button onclick="openMealById('${mealid}')" style="padding:6px 8px;border-radius:8px;border:none;background:var(--gp);color:var(--g2);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;" title="Przepis">🔗</button>` : ''}
+        <button onclick="slotClearOne(${n})" style="padding:6px 8px;border-radius:8px;border:none;background:rgba(232,64,64,.1);color:var(--r);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;" title="Usuń">✕</button>
+      </div>
+      <div id="se_ac_${n}" style="display:none;border:1.5px solid var(--border);border-radius:8px;margin-top:4px;background:var(--card);max-height:100px;overflow-y:auto;"></div>
+    </div>`;
+  }).join('');
+  document.getElementById('slotEditorOverlay').classList.add('show');
+};
+
+window.slotEdAutocomplete = function(val, n) {
+  const ac = document.getElementById(`se_ac_${n}`);
+  if (!ac) return;
+  if (!val || val.length < 2) { ac.style.display = 'none'; return; }
+  // Collect known meal names from weekMenu
+  const known = new Set();
+  Object.entries(weekMenu).forEach(([k, v]) => {
+    if (k.includes('_mealid')) return;
+    wmSlotArr(v).forEach(s => { if (s) known.add(s); });
+  });
+  // Also suggest from PANTRY_POPULAR values as ingredient hints
+  const suggestions = [...known].filter(s => s.toLowerCase().includes(val.toLowerCase())).slice(0, 6);
+  if (!suggestions.length) { ac.style.display = 'none'; return; }
+  ac.style.display = '';
+  ac.innerHTML = suggestions.map(s =>
+    `<div style="padding:5px 8px;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border);"
+      onclick="document.getElementById('se_inp_${n}').value='${s.replace(/'/g,"\'")}';document.getElementById('se_ac_${n}').style.display='none';">${s}</div>`
+  ).join('');
+};
+
+window.slotRollOne = async function(n) {
+  const inp = document.getElementById(`se_inp_${n}`);
+  if (inp) inp.value = '⏳…';
+  try {
+    const meal = await fetchMealForType(_slotEdMk);
+    if (!meal) throw new Error('brak');
+    const namePL = await translateText(meal.strMeal);
+    if (inp) inp.value = namePL;
+    // Store mealid temporarily
+    weekMenu[`${_slotEdDk}_${_slotEdMk}_mealid_${n}`] = meal.idMeal;
+  } catch(e) {
+    if (inp) inp.value = '';
+  }
+};
+
+window.slotRollAll = async function() {
+  for (let n = 0; n < 3; n++) await slotRollOne(n);
+};
+
+window.slotClearOne = function(n) {
+  const inp = document.getElementById(`se_inp_${n}`);
+  if (inp) inp.value = '';
+  delete weekMenu[`${_slotEdDk}_${_slotEdMk}_mealid_${n}`];
+};
+
+window.saveSlotEditor = function() {
+  const slot = `${_slotEdDk}_${_slotEdMk}`;
+  const arr = [0,1,2].map(n => (document.getElementById(`se_inp_${n}`)?.value?.trim() || ''));
+  weekMenu[slot] = arr;
+  if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+  closeOverlay('slotEditorOverlay');
+  renderWeekMenuGrid();
+  showToast('✅ Zapisano!');
+};
+
+/* Also update saveWeekMenu to read from chips/slots correctly */
 </script>
 
 </body>
