@@ -1566,7 +1566,7 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 </div>
 
 <!-- MEALDB POPUP [27] -->
-<div class="overlay" id="mealdbOverlay">
+<div class="overlay" id="mealdbOverlay" style="z-index:300;">
   <div class="modal" style="max-height:85vh;overflow-y:auto;">
     <div class="modal-ttl" id="mealdbTitle">🎲 Losowy przepis <span class="modal-close" onclick="closeOverlay('mealdbOverlay')">×</span></div>
     <div id="mealdbContent" style="text-align:center;padding:10px;">
@@ -7566,6 +7566,45 @@ window._dp_translateText = translateText;
 window._dp_renderWeekMenuGrid = function() { renderWeekMenuGrid(); };
 console.log('[DP] Slot editor exports registered OK');
 
+/* ── Przyciski wyszukiwania przepisu w serwisach ── */
+window._dp_recipeSearchButtons = function(nameEN, namePL) {
+  var qEN = encodeURIComponent(nameEN || '');
+  var qPL = encodeURIComponent(namePL || nameEN || '');
+  var sites = [
+    {
+      label: '🥘 Kwestia Smaku',
+      color: '#e8572a',
+      url: 'https://www.kwestiasmaku.com/szukaj?q=' + qPL
+    },
+    {
+      label: '🍽️ Przepisy.pl',
+      color: '#2e7d32',
+      url: 'https://www.przepisy.pl/przepisy?szukanie=1&search_phrase=' + qPL
+    },
+    {
+      label: '📺 YouTube',
+      color: '#ff0000',
+      url: 'https://www.youtube.com/results?search_query=' + qPL + '+przepis'
+    },
+    {
+      label: '🌍 TheMealDB',
+      color: '#8b5cf6',
+      url: 'https://www.themealdb.com/meal/' + qEN.replace(/%20/g,'-').toLowerCase()
+    }
+  ];
+  var btns = sites.map(function(s){
+    return '<a href="' + s.url + '" target="_blank" rel="noopener" style="'
+      + 'display:flex;align-items:center;justify-content:center;gap:5px;'
+      + 'padding:8px;border-radius:9px;text-decoration:none;color:#fff;'
+      + 'background:' + s.color + ';font-size:11px;font-weight:800;'
+      + 'font-family:var(--font);">' + s.label + '</a>';
+  }).join('');
+  return '<div style="margin-top:10px;">'
+    + '<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">🔍 Szukaj przepisu w serwisach:</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">' + btns + '</div>'
+    + '</div>';
+};
+
 window.openMealById = async function(mealId) {
   document.getElementById('mealdbContent').style.display = '';
   document.getElementById('mealdbContent').innerHTML = `<div style="font-size:30px;animation:bob 1s infinite;">🍳</div><div style="font-size:12px;color:var(--soft);margin-top:8px;">Wczytuję przepis…</div>`;
@@ -7591,14 +7630,15 @@ window.openMealById = async function(mealId) {
     const catPL  = MEALDB_CAT_PL[meal.strCategory]  || meal.strCategory  || '';
     const areaPL = MEALDB_AREA_PL[meal.strArea] || meal.strArea || '';
     document.getElementById('mealdbContent').innerHTML = `
-      <img src="${meal.strMealThumb}/preview" alt="" style="width:100%;border-radius:10px;margin-bottom:8px;object-fit:cover;max-height:160px;">
+      <img src="${meal.strMealThumb}/preview" alt="" onclick="window.open('${meal.strSource||meal.strYoutube||'https://www.themealdb.com/meal/'+encodeURIComponent(meal.strMeal.toLowerCase().replace(/ /g,'-'))}','_blank')" style="width:100%;border-radius:10px;margin-bottom:8px;object-fit:cover;max-height:160px;cursor:pointer;" title="Kliknij aby zobaczyć pełny przepis">
       <div style="font-size:15px;font-weight:900;color:var(--text);margin-bottom:2px;">${namePL}</div>
       <div style="font-size:10px;color:var(--soft);font-weight:700;margin-bottom:4px;">${meal.strMeal}</div>
       <div style="font-size:11px;color:var(--soft);margin-bottom:6px;">${catPL}${areaPL ? ' · Kuchnia: '+areaPL : ''}</div>
       <div style="font-size:11px;color:var(--text);background:var(--inp);border-radius:8px;padding:7px;text-align:left;">
         <b style="font-size:10px;color:var(--soft);">Składniki:</b><br>
         ${ingredientsPL.join(', ')}${ingredientsEN.length > 8 ? '…' : ''}
-      </div>`;
+      </div>
+      ${window._dp_recipeSearchButtons(meal.strMeal, namePL)}`;
   } catch(e) {
     document.getElementById('mealdbContent').innerHTML = `<div style="font-size:12px;color:var(--r);padding:16px;">❌ Błąd pobierania przepisu.</div>`;
   }
@@ -7774,14 +7814,15 @@ async function fetchRandomMeal() {
     const catPL  = MEALDB_CAT_PL[meal.strCategory] || meal.strCategory || '';
     const areaPL = MEALDB_AREA_PL[meal.strArea]     || meal.strArea     || '';
     document.getElementById('mealdbContent').innerHTML = `
-      <img src="${meal.strMealThumb}/preview" alt="" style="width:100%;border-radius:10px;margin-bottom:8px;object-fit:cover;max-height:160px;">
+      <img src="${meal.strMealThumb}/preview" alt="" onclick="window.open('${meal.strSource||meal.strYoutube||'https://www.themealdb.com/meal/'+encodeURIComponent(meal.strMeal.toLowerCase().replace(/ /g,'-'))}','_blank')" style="width:100%;border-radius:10px;margin-bottom:8px;object-fit:cover;max-height:160px;cursor:pointer;" title="Kliknij aby zobaczyć pełny przepis">
       <div style="font-size:15px;font-weight:900;color:var(--text);margin-bottom:2px;">${namePL}</div>
       <div style="font-size:10px;color:var(--soft);font-weight:700;margin-bottom:4px;">${meal.strMeal}</div>
       <div style="font-size:11px;color:var(--soft);margin-bottom:6px;">${catPL}${areaPL ? ' · Kuchnia: '+areaPL : ''}</div>
       <div style="font-size:11px;color:var(--text);background:var(--inp);border-radius:8px;padding:7px;text-align:left;">
         <b style="font-size:10px;color:var(--soft);">Składniki:</b><br>
         ${ingredientsPL.join(', ')}${ingredientsEN.length > 8 ? '…' : ''}
-      </div>`;
+      </div>
+      ${window._dp_recipeSearchButtons(meal.strMeal, namePL)}`;
     const slotSel = document.getElementById('mealdbSlotSelect');
     slotSel.innerHTML = WEEK_DAYS.map((day, di) =>
       MEAL_KEYS.map((mk, mi) =>
@@ -8532,7 +8573,7 @@ window.launchApp = function() {
 </script>
 
 <!-- SLOT EDITOR OVERLAY -->
-<div class="overlay" id="slotEditorOverlay">
+<div class="overlay" id="slotEditorOverlay" style="z-index:250;">
   <div class="modal" style="max-height:90vh;overflow-y:auto;">
     <div class="modal-ttl" id="slotEditorTitle">✏️ Edytuj posiłek <span class="modal-close" onclick="closeOverlay('slotEditorOverlay')">×</span></div>
     <div id="slotEditorRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
@@ -8619,6 +8660,7 @@ window.slotRollOne=async function(n){
     var namePL=await window._dp_translateText(meal.strMeal);
     if(inp)inp.value=namePL;
     window._dp_setWeekMenu(_slotEdDk+'_'+_slotEdMk+'_mealid_'+n, meal.idMeal);
+    window.slotEdRefreshLinkBtn(n, meal.idMeal);
   }catch(e){console.error('[DP] slotRollOne error',e);if(inp)inp.value='';showToast('❌ Błąd losowania');}
 };
 
@@ -8630,16 +8672,32 @@ window.slotClearOne=function(n){
   var inp=document.getElementById('se_inp_'+n);
   if(inp)inp.value='';
   window._dp_deleteWeekMenuKey(_slotEdDk+'_'+_slotEdMk+'_mealid_'+n);
+  window.slotEdRefreshLinkBtn(n, '');
+};
+
+window.slotEdRefreshLinkBtn=function(n, mealId){
+  var row=document.getElementById('se_inp_'+n);
+  if(!row)return;
+  var container=row.parentNode;
+  var existing=container.querySelector('.se-link-btn-'+n);
+  if(existing)existing.remove();
+  if(mealId){
+    var btn=document.createElement('button');
+    btn.className='se-link-btn-'+n;
+    btn.style.cssText='padding:6px 8px;border-radius:8px;border:none;background:var(--gp);color:var(--g2);font-size:11px;font-weight:800;cursor:pointer;';
+    btn.textContent='🔗';
+    btn.title='Pokaż przepis';
+    btn.onclick=function(){window.openMealById(mealId);};
+    container.insertBefore(btn, row.nextSibling);
+  }
 };
 
 window.saveSlotEditor=function(){
   console.log('[DP] saveSlotEditor', _slotEdDk, _slotEdMk);
   var slot=_slotEdDk+'_'+_slotEdMk;
   var arr=[0,1,2].map(function(n){var el=document.getElementById('se_inp_'+n);return el?el.value.trim():'';});
-  // Write back to the module's weekMenu via proxy
   window._dp_setWeekMenu(slot, arr);
   var weekMenu=window._dp_getWeekMenu();
-  // Persist to Firebase — build flat object to avoid issues with array serialization
   var toSave={};
   Object.keys(weekMenu).forEach(function(k){ toSave[k]=weekMenu[k]; });
   if(typeof isDemo!=='undefined'&&!isDemo&&typeof fCode!=='undefined'&&fCode){
