@@ -960,6 +960,9 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <div class="prog-lbl" id="progLbl">0/0</div>
     </div>
     <div class="weather-strip" id="weatherStrip" style="display:none;" onclick="goTab('weather')"></div>
+    <div id="offlineBanner" style="display:none;background:#f59e0b;color:#1a1a1a;font-size:11px;font-weight:800;text-align:center;padding:4px 8px;letter-spacing:.3px;">
+      📴 Tryb offline — zmiany zostaną zsynchronizowane po połączeniu
+    </div>
   </div>
 
   <div id="returnBanner"></div>
@@ -1777,13 +1780,30 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
 <!-- WISHLIST ADD MODAL -->
 <div class="overlay" id="wishOverlay">
   <div class="modal">
-    <div class="modal-ttl">🎁 Dodaj marzenie <span class="modal-close" onclick="closeOverlay('wishOverlay')">×</span></div>
-    <div class="f-lbl">Ikona</div>
-    <input class="f-inp" id="wishIco" placeholder="🎮" maxlength="4" style="font-size:20px;width:68px;" readonly onclick="openEmojiPickerFor('wishIco',event)">
-    <div class="f-lbl">Nazwa prezentu / życzenia</div>
-    <input class="f-inp" id="wishName" placeholder="np. Nowa gra PS5">
-    <div class="f-lbl">Szacowana cena (opcja)</div>
-    <input class="f-inp" id="wishPrice" placeholder="np. 299 zł">
+    <div class="modal-ttl">🎁 <span id="wishModalTitle">Dodaj życzenie</span> <span class="modal-close" onclick="closeOverlay('wishOverlay')">×</span></div>
+    <input type="hidden" id="wishEditId">
+    <div style="display:flex;gap:8px;align-items:flex-start;">
+      <div>
+        <div class="f-lbl">Ikona</div>
+        <input class="f-inp" id="wishIco" placeholder="🎮" maxlength="4" style="font-size:20px;width:68px;" readonly onclick="openEmojiPickerFor('wishIco',event)">
+      </div>
+      <div style="flex:1;">
+        <div class="f-lbl">Nazwa prezentu / życzenia</div>
+        <input class="f-inp" id="wishName" placeholder="np. Nowa gra PS5">
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <div style="flex:1;"><div class="f-lbl">Cena (opcja)</div><input class="f-inp" id="wishPrice" placeholder="np. 299 zł"></div>
+      <div style="flex:1;"><div class="f-lbl">Priorytet</div>
+        <select class="f-inp" id="wishPriority">
+          <option value="3">🔥 Bardzo chcę</option>
+          <option value="2" selected>⭐ Chcę</option>
+          <option value="1">💭 Może kiedyś</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-lbl">🔗 Link do produktu (opcja)</div>
+    <input class="f-inp" id="wishUrl" placeholder="https://allegro.pl/..." type="url">
     <div class="f-lbl">Dla kogo</div>
     <select class="f-inp" id="wishWho"></select>
     <div class="f-lbl">Okazja (opcjonalnie)</div>
@@ -1792,7 +1812,10 @@ body.dp-desktop .dp-col-full{grid-column:span 2;}
       <input type="checkbox" id="wishHidden" style="width:18px;height:18px;cursor:pointer;">
       <label for="wishHidden" style="font-size:12px;font-weight:800;color:var(--pu);cursor:pointer;">🤫 Ukryty pomysł (niewidoczny dla obdarowywanego)</label>
     </div>
-    <button class="modal-btn" onclick="submitWishV2()">💾 Zapisz</button>
+    <div style="display:flex;gap:6px;margin-top:8px;">
+      <button class="modal-btn" onclick="submitWishV2()" style="flex:1;margin:0;">💾 Zapisz</button>
+      <button onclick="closeOverlay('wishOverlay')" style="flex:0 0 80px;padding:9px;border-radius:9px;border:2px solid var(--border);background:var(--inp);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;color:var(--soft);">Anuluj</button>
+    </div>
   </div>
 </div>
 
@@ -1867,8 +1890,34 @@ function saveState(){
 }
 
 /* ── PWA MANIFEST ── */
-const mb=new Blob([JSON.stringify({name:"Domowy Patrol",short_name:"Patrol",start_url:".",display:"standalone",background_color:"#f2f6ee",theme_color:"#2d6a10",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"512x512",type:"image/svg+xml"}]})],{type:"application/json"});
+const _manifestData = {
+  name:"Domowy Patrol",short_name:"Patrol",
+  start_url:".",display:"standalone",
+  background_color:"#f2f6ee",theme_color:"#2d6a10",
+  orientation:"portrait",
+  icons:[
+    {src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"512x512",type:"image/svg+xml"},
+    {src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='12'>🏠</text></svg>",sizes:"192x192",type:"image/svg+xml"}
+  ],
+  shortcuts:[
+    {name:"+ Zadanie",short_name:"Zadanie",description:"Dodaj nowe zadanie",url:".?action=task",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='14'>📋</text></svg>",sizes:"96x96"}]},
+    {name:"+ Zakupy",short_name:"Zakupy",description:"Dodaj do listy zakupów",url:".?action=shop",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='14'>🛒</text></svg>",sizes:"96x96"}]},
+    {name:"Kuchnia",short_name:"Kuchnia",description:"Menu tygodniowe",url:".?action=kitchen",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232d6a10'/><text y='.9em' font-size='72' x='14'>🍽️</text></svg>",sizes:"96x96"}]}
+  ],
+  categories:["lifestyle","utilities"]
+};
+const mb=new Blob([JSON.stringify(_manifestData)],{type:"application/json"});
 const ml=document.createElement("link");ml.rel="manifest";ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
+// Handle PWA shortcuts on launch
+(function(){
+  const p=new URLSearchParams(location.search);
+  const action=p.get('action');
+  if(action){
+    window._pwaStartAction=action;
+    // Remove param from URL without reload
+    history.replaceState(null,'',location.pathname);
+  }
+})();
 
 /* ── I18N — pełna naprawiona wersja ── */
 const LANGS=[['pl','🇵🇱 PL'],['en','🇬🇧 EN'],['de','🇩🇪 DE'],['fr','🇫🇷 FR'],['pt','🇧🇷 PT'],['zh','🇨🇳 中']];
@@ -4021,13 +4070,23 @@ function renderWishesV2(){
   const isMe=activeGiftPerson===myUid;
   const target=live.members[activeGiftPerson];
   let rows='';
-  pub.forEach(w=>{
+  const WISH_PRIO = ['','💭','⭐','🔥'];
+  pub.sort((a,b)=>(b.priority||2)-(a.priority||2)).forEach(w=>{
+    const prioIco = WISH_PRIO[w.priority||2]||'⭐';
+    const urlBtn = w.url ? `<a href="${w.url}" target="_blank" rel="noopener" style="font-size:11px;padding:2px 7px;border-radius:6px;background:rgba(59,130,246,.12);color:var(--b);text-decoration:none;font-weight:800;flex-shrink:0;">🔗 Kup</a>` : '';
     rows+=`<div class="wish-item">
       <div class="wish-ico">${w.ico||'🎁'}</div>
-      <div class="wish-info"><div class="wish-name">${w.name}</div><div class="wish-who">${w.price||''}${w.occ?' · '+w.occ:''}</div></div>
+      <div class="wish-info" style="flex:1;min-width:0;">
+        <div class="wish-name">${prioIco} ${w.name}</div>
+        <div class="wish-who">${w.price||''}${w.occ?' · '+w.occ:''}</div>
+        ${urlBtn}
+      </div>
       ${w.reserved&&myProfile?.role==='parent'?`<div class="wish-reserved">🤫 ${w.reservedBy}</div>`:''}
       ${!w.reserved&&myProfile?.role==='parent'&&!isMe?`<button class="wish-reserved" style="background:rgba(59,130,246,.1);color:var(--b);border-radius:5px;border:none;cursor:pointer;font-family:var(--font);font-size:9px;font-weight:800;" onclick="reserveWish('${w.id}')">🤫 Rezerwuję</button>`:''}
-      <div onclick="deleteWish('${w.id}')" class="wish-del">✕</div>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div onclick="editWish('${w.id}')" style="font-size:11px;cursor:pointer;padding:2px 5px;border-radius:5px;background:var(--inp);border:1px solid var(--border);">✏️</div>
+        <div onclick="deleteWish('${w.id}')" class="wish-del" style="font-size:11px;padding:2px 5px;">✕</div>
+      </div>
     </div>`;
   });
   if(!pub.length) rows=`<div class="empty"><div class="big">🎁</div><p>${isMe?'Dodaj swoje życzenia!':'Brak życzeń'}</p></div>`;
@@ -4035,11 +4094,14 @@ function renderWishesV2(){
   if(!isMe&&(hid.length||myProfile?.role==='parent')){
     hidHtml=`<div class="gift-hid">
       <div style="font-size:11px;font-weight:800;color:var(--pu);margin-bottom:7px;">🤫 Pomysły na prezent (ukryte przed ${target?.name||''})</div>
-      ${hid.map(w=>`<div class="wish-item" style="background:transparent;border:none;padding:4px 0;">
+      ${hid.map(w=>{
+        const urlBtn2 = w.url ? `<a href="${w.url}" target="_blank" rel="noopener" style="font-size:10px;padding:1px 5px;border-radius:5px;background:rgba(59,130,246,.1);color:var(--b);text-decoration:none;font-weight:800;">🔗</a>` : '';
+        return `<div class="wish-item" style="background:transparent;border:none;padding:4px 0;">
         <div class="wish-ico">${w.ico||'💡'}</div>
-        <div class="wish-info"><div class="wish-name">${w.name}</div><div class="wish-who">${w.price||''}${w.occ?' · '+w.occ:''}</div></div>
+        <div class="wish-info" style="flex:1;"><div class="wish-name">${w.name}</div><div class="wish-who">${w.price||''}${w.occ?' · '+w.occ:''} ${urlBtn2}</div></div>
+        <div onclick="editWish('${w.id}')" style="font-size:11px;cursor:pointer;padding:2px 5px;border-radius:5px;background:var(--inp);border:1px solid var(--border);margin-right:3px;">✏️</div>
         <div onclick="deleteWish('${w.id}')" class="wish-del">✕</div>
-      </div>`).join('')}
+      </div>`;}).join('')}
     </div>`;
   }
   document.getElementById('familyTabContent').innerHTML=`
@@ -4055,19 +4117,42 @@ function renderWishesV2(){
 function setGiftPerson(uid){activeGiftPerson=uid;renderWishesV2();}
 window.setGiftPerson=setGiftPerson;
 function openWishForPerson(){
+  rebuildWishSelect();
   const sel=document.getElementById('wishWho');
   if(sel&&activeGiftPerson){sel.value=activeGiftPerson;}
   const hid=document.getElementById('wishHidden');if(hid)hid.checked=false;
+  document.getElementById('wishEditId').value='';
+  document.getElementById('wishModalTitle').textContent='Dodaj życzenie';
+  document.getElementById('wishName').value='';
+  document.getElementById('wishPrice').value='';
+  document.getElementById('wishUrl').value='';
+  document.getElementById('wishOcc').value='';
+  document.getElementById('wishIco').value='';
+  if(document.getElementById('wishPriority')) document.getElementById('wishPriority').value='2';
   document.getElementById('wishOverlay').classList.add('show');
 }
 window.openWishForPerson=openWishForPerson;
 function openHiddenWish(){
-  const sel=document.getElementById('wishWho');
-  if(sel&&activeGiftPerson){sel.value=activeGiftPerson;}
+  openWishForPerson();
   const hid=document.getElementById('wishHidden');if(hid)hid.checked=true;
-  document.getElementById('wishOverlay').classList.add('show');
 }
 window.openHiddenWish=openHiddenWish;
+window.editWish=function(id){
+  const w=(live.wishes||[]).find(x=>x.id===id);
+  if(!w)return;
+  rebuildWishSelect();
+  document.getElementById('wishEditId').value=id;
+  document.getElementById('wishModalTitle').textContent='Edytuj życzenie';
+  document.getElementById('wishIco').value=w.ico||'🎁';
+  document.getElementById('wishName').value=w.name||'';
+  document.getElementById('wishPrice').value=w.price||'';
+  document.getElementById('wishUrl').value=w.url||'';
+  document.getElementById('wishOcc').value=w.occ||'';
+  const ps=document.getElementById('wishPriority');if(ps)ps.value=String(w.priority||2);
+  const hw=document.getElementById('wishWho');if(hw)hw.value=w.forUid||'';
+  const hid=document.getElementById('wishHidden');if(hid)hid.checked=!!w.hidden;
+  document.getElementById('wishOverlay').classList.add('show');
+};
 
 /* ── renderEventsTopPanel wywołaj przy starcie ── */
 
@@ -4079,15 +4164,30 @@ async function submitWishV2(){
   const occ=(document.getElementById('wishOcc')?.value||'').trim();
   const hidden=document.getElementById('wishHidden')?.checked||false;
   const forUid=document.getElementById('wishWho').value||getMyUid();
-  const fm=live.members[forUid]||{};
-  const w={id:'w'+Date.now(),ico,name,price,occ,who:myProfile.name,forUid,hidden,reserved:false,ts:Date.now()};
-  if(isDemo){live.wishes=[...(live.wishes||[]),w];renderWishesV2();}
-  else await push(ref(db,`families/${fCode}/wishes`),w);
-  showToast(hidden?'🤫 Pomysł dodany!':'🎁 Dodano!');
+  const url=(document.getElementById('wishUrl')?.value||'').trim();
+  const priority=parseInt(document.getElementById('wishPriority')?.value||'2');
+  const editId=document.getElementById('wishEditId')?.value||'';
+  const w={id:editId||('w'+Date.now()),ico,name,price,occ,url,priority,who:myProfile.name,forUid,hidden,reserved:false,ts:editId?(live.wishes||[]).find(x=>x.id===editId)?.ts||Date.now():Date.now()};
+  if(editId){
+    const idx=(live.wishes||[]).findIndex(x=>x.id===editId);
+    if(idx>=0) live.wishes[idx]={...live.wishes[idx],...w};
+    if(!isDemo&&fCode){
+      const snap=await get(ref(db,`families/${fCode}/wishes`));
+      const kv=Object.entries(snap.val()||{}).find(([,v])=>v.id===editId);
+      if(kv) await set(ref(db,`families/${fCode}/wishes/${kv[0]}`),w);
+    }
+  } else {
+    if(isDemo){live.wishes=[...(live.wishes||[]),w];}
+    else await push(ref(db,`families/${fCode}/wishes`),w);
+  }
+  renderWishesV2();
+  showToast(hidden?'🤫 Pomysł dodany!':'🎁 Zapisano!');
   closeOverlay('wishOverlay');
   document.getElementById('wishName').value='';
   if(document.getElementById('wishOcc')) document.getElementById('wishOcc').value='';
   if(document.getElementById('wishHidden')) document.getElementById('wishHidden').checked=false;
+  if(document.getElementById('wishUrl')) document.getElementById('wishUrl').value='';
+  if(document.getElementById('wishEditId')) document.getElementById('wishEditId').value='';
 }
 window.submitWishV2=submitWishV2;
 
@@ -4134,10 +4234,41 @@ self.addEventListener('notificationclick', e => {
 });
 
 self.addEventListener('notificationclose', e => {
-  // Notify app that notification was dismissed
   clients.matchAll({type:'window'}).then(cs => {
     cs.forEach(c => c.postMessage({type:'DP_NOTIF_CLOSED', tag: e.notification.tag}));
   });
+});
+
+/* ── OFFLINE CACHE ── */
+const DP_CACHE = 'dp-shell-v1';
+const CACHE_URLS = [self.location.href]; // cache the HTML file itself
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(DP_CACHE).then(cache => cache.addAll(CACHE_URLS)).catch(()=>{})
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== DP_CACHE).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  // Only cache same-origin navigation requests (the app HTML)
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).catch(() => caches.match(e.request).then(r => r || caches.match(self.location.href)))
+    );
+    return;
+  }
+  // For external APIs (Firebase, MealDB etc) — network first, no cache
+  e.respondWith(fetch(e.request).catch(() => new Response('', {status: 503})));
 });
 `;
 
@@ -7361,15 +7492,23 @@ function renderWeekMenuGrid() {
     const mealRows = MEAL_KEYS.map((mk, mi) => {
       const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
       const label = MEAL_TYPES[mi];
-      // Show up to 3 chips — first non-empty ones or placeholder
-      const chips = arr.map((v, n) => {
+      const cells = arr.map((v, n) => {
         const mealid = weekMenu[`${dk}_${mk}_mealid_${n}`] || '';
-        if (!v) return `<span style="display:inline-flex;align-items:center;padding:2px 6px;border-radius:6px;border:1px dashed var(--border);font-size:9px;color:var(--soft);cursor:pointer;" onclick="openSlotEditor('${dk}','${mk}')">＋</span>`;
-        return `<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:6px;background:var(--gp);border:1px solid var(--g2);font-size:9px;font-weight:800;color:var(--g2);cursor:pointer;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" onclick="openSlotEditor('${dk}','${mk}')" title="${v}">${v}${mealid?'🔗':''}</span>`;
+        const linkBtn = mealid
+          ? `<button onclick="openMealById('${mealid}')" style="background:none;border:none;cursor:pointer;font-size:12px;padding:0;flex-shrink:0;" title="Pokaż przepis">🔗</button>`
+          : `<button onclick="quickRollWeekSlot('${dk}','${mk}',${n})" style="background:none;border:none;cursor:pointer;font-size:11px;padding:0;flex-shrink:0;" title="Losuj">🎲</button>`;
+        return `<div style="display:flex;align-items:center;gap:2px;flex:1;min-width:0;">
+          <input class="f-inp" style="flex:1;min-width:0;margin:0;height:26px;font-size:10px;padding:3px 5px;overflow:hidden;"
+            id="wm_${dk}_${mk}_${n}" value="${v.replace(/"/g,'&quot;')}"
+            placeholder="…"
+            onchange="wmSetVal('${dk}','${mk}',${n},this.value)">
+          ${linkBtn}
+        </div>`;
       }).join('');
-      return `<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap;">
-        <span onclick="openSlotEditor('${dk}','${mk}')" style="font-size:10px;min-width:66px;color:var(--soft);font-weight:700;flex-shrink:0;cursor:pointer;text-decoration:underline dotted;">${label}</span>
-        <div style="display:flex;flex-wrap:wrap;gap:3px;flex:1;">${chips}</div>
+      return `<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">
+        <span onclick="openSlotEditor('${dk}','${mk}')" title="Edytuj wszystkie 3 propozycje"
+          style="font-size:10px;min-width:66px;color:var(--soft);font-weight:700;flex-shrink:0;cursor:pointer;text-decoration:underline dotted var(--soft);">${label}</span>
+        ${cells}
       </div>`;
     }).join('');
     return `<div style="background:var(--inp);border-radius:10px;padding:9px;">
@@ -7777,7 +7916,7 @@ setInterval(checkPantryExpiry, 1800000);
 </script>
 <!-- [28] SHOP FROM MENU OVERLAY -->
 <div class="overlay" id="shopFromMenuOverlay">
-  <div class="modal-box">
+  <div class="modal">
     <div class="modal-ttl">🛒 Zakupy z menu <span class="modal-close" onclick="closeOverlay('shopFromMenuOverlay')">×</span></div>
     <div style="font-size:11px;color:var(--soft);margin-bottom:8px;">Zaznacz pozycje do dodania do listy zakupów:</div>
     <div style="display:flex;gap:5px;margin-bottom:8px;">
@@ -7798,7 +7937,7 @@ setInterval(checkPantryExpiry, 1800000);
 
 <!-- [40] SUBSCRIPTION MODAL -->
 <div class="overlay" id="subOverlay">
-  <div class="modal-box">
+  <div class="modal">
     <div class="modal-ttl">💳 <span id="subModalTitle">Nowa subskrypcja</span> <span class="modal-close" onclick="closeOverlay('subOverlay')">×</span></div>
     <input type="hidden" id="subEditId">
     <div class="f-lbl">Nazwa</div>
@@ -8359,13 +8498,22 @@ window.launchApp = function() {
       const ni = document.getElementById('ntfyTopicInp');
       if (ni) ni.value = ntfyConfig.topic;
     }
+    // Handle PWA shortcut launch actions
+    if (window._pwaStartAction) {
+      const a = window._pwaStartAction; delete window._pwaStartAction;
+      setTimeout(() => {
+        if (a === 'task')    { goTab('tasks'); setTimeout(()=>document.getElementById('fabBtn')?.click(),300); }
+        if (a === 'shop')    { goTab('family'); setTimeout(()=>switchFamilyTab('shopping'),300); }
+        if (a === 'kitchen') { goTab('kitchen'); }
+      }, 600);
+    }
   }, 800);
 };
 </script>
 
 <!-- SLOT EDITOR OVERLAY -->
 <div class="overlay" id="slotEditorOverlay">
-  <div class="modal-box" style="max-height:90vh;overflow-y:auto;">
+  <div class="modal" style="max-height:90vh;overflow-y:auto;">
     <div class="modal-ttl" id="slotEditorTitle">✏️ Edytuj posiłek <span class="modal-close" onclick="closeOverlay('slotEditorOverlay')">×</span></div>
     <div id="slotEditorRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
     <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;">
@@ -8379,96 +8527,155 @@ window.launchApp = function() {
 </div>
 
 <script>
-/* ══════════════════════════════════════════════
-   SLOT EDITOR
-══════════════════════════════════════════════ */
-let _slotEdDk = '', _slotEdMk = '';
+/* SLOT EDITOR */
+let _slotEdDk='',_slotEdMk='';
 
-window.openSlotEditor = function(dk, mk) {
-  _slotEdDk = dk; _slotEdMk = mk;
-  const dayIdx  = DAY_KEYS.indexOf(dk);
-  const mealIdx = MEAL_KEYS.indexOf(mk);
-  const dayName  = WEEK_DAYS[dayIdx]  || dk;
-  const mealName = MEAL_TYPES[mealIdx] || mk;
-  document.getElementById('slotEditorTitle').childNodes[0].textContent = `✏️ ${dayName} — ${mealName} `;
-
-  const arr = wmSlotArr(weekMenu[`${dk}_${mk}`]);
-  const rows = document.getElementById('slotEditorRows');
-  rows.innerHTML = arr.map((v, n) => {
-    const mealid = weekMenu[`${dk}_${mk}_mealid_${n}`] || '';
-    return `<div style="background:var(--inp);border-radius:10px;padding:8px;">
-      <div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">Propozycja ${n+1}</div>
-      <div style="display:flex;gap:5px;align-items:center;">
-        <input class="f-inp" id="se_inp_${n}" value="${v.replace(/"/g,'&quot;')}" placeholder="Wpisz lub wyszukaj…"
-          style="flex:1;margin:0;font-size:11px;"
-          oninput="slotEdAutocomplete(this.value,${n})">
-        <button onclick="slotRollOne(${n})" style="padding:6px 8px;border-radius:8px;border:none;background:linear-gradient(135deg,#f07b20,#e84040);color:#fff;font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;" title="Losuj">🎲</button>
-        ${mealid ? `<button onclick="openMealById('${mealid}')" style="padding:6px 8px;border-radius:8px;border:none;background:var(--gp);color:var(--g2);font-family:var(--font);font-size:11px;font-weight:800;cursor:pointer;" title="Przepis">🔗</button>` : ''}
-        <button onclick="slotClearOne(${n})" style="padding:6px 8px;border-radius:8px;border:none;background:rgba(232,64,64,.1);color:var(--r);font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;" title="Usuń">✕</button>
-      </div>
-      <div id="se_ac_${n}" style="display:none;border:1.5px solid var(--border);border-radius:8px;margin-top:4px;background:var(--card);max-height:100px;overflow-y:auto;"></div>
-    </div>`;
-  }).join('');
+window.openSlotEditor=function(dk,mk){
+  _slotEdDk=dk;_slotEdMk=mk;
+  var di=DAY_KEYS.indexOf(dk),mi=MEAL_KEYS.indexOf(mk);
+  var dn=WEEK_DAYS[di]||dk,mn=MEAL_TYPES[mi]||mk;
+  var t=document.getElementById('slotEditorTitle');
+  if(t)t.childNodes[0].textContent='✏️ '+dn+' — '+mn+' ';
+  var arr=wmSlotArr(weekMenu[dk+'_'+mk]);
+  var rows=document.getElementById('slotEditorRows');
+  if(!rows)return;
+  var h='';
+  for(var n=0;n<3;n++){
+    var v=arr[n]||'';
+    var mid=weekMenu[dk+'_'+mk+'_mealid_'+n]||'';
+    var sv=v.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    var lb=mid?'<button onclick="openMealById(\''+mid+'\')" style="padding:6px 8px;border-radius:8px;border:none;background:var(--gp);color:var(--g2);font-size:11px;font-weight:800;cursor:pointer;">🔗</button>':'';
+    h+='<div style="background:var(--inp);border-radius:10px;padding:8px;">'
+     +'<div style="font-size:10px;font-weight:800;color:var(--soft);margin-bottom:5px;">Propozycja '+(n+1)+'</div>'
+     +'<div style="display:flex;gap:5px;align-items:center;">'
+     +'<input class="f-inp" id="se_inp_'+n+'" value="'+sv+'" placeholder="Wpisz lub losuj…" style="flex:1;margin:0;font-size:11px;" oninput="slotEdAutocomplete(this.value,'+n+')">'
+     +lb
+     +'<button onclick="slotRollOne('+n+')" style="padding:6px 8px;border-radius:8px;border:none;background:linear-gradient(135deg,#f07b20,#e84040);color:#fff;font-size:11px;font-weight:800;cursor:pointer;">🎲</button>'
+     +'<button onclick="slotClearOne('+n+')" style="padding:6px 8px;border-radius:8px;border:none;background:rgba(232,64,64,.1);color:var(--r);font-size:12px;font-weight:800;cursor:pointer;">✕</button>'
+     +'</div>'
+     +'<div id="se_ac_'+n+'" style="display:none;border:1.5px solid var(--border);border-radius:8px;margin-top:4px;background:var(--card);max-height:100px;overflow-y:auto;"></div>'
+     +'</div>';
+  }
+  rows.innerHTML=h;
   document.getElementById('slotEditorOverlay').classList.add('show');
 };
 
-window.slotEdAutocomplete = function(val, n) {
-  const ac = document.getElementById(`se_ac_${n}`);
-  if (!ac) return;
-  if (!val || val.length < 2) { ac.style.display = 'none'; return; }
-  // Collect known meal names from weekMenu
-  const known = new Set();
-  Object.entries(weekMenu).forEach(([k, v]) => {
-    if (k.includes('_mealid')) return;
-    wmSlotArr(v).forEach(s => { if (s) known.add(s); });
+window.slotEdAutocomplete=function(val,n){
+  var ac=document.getElementById('se_ac_'+n);
+  if(!ac)return;
+  if(!val||val.length<2){ac.style.display='none';return;}
+  var known=new Set();
+  Object.entries(weekMenu).forEach(function(e){
+    if(e[0].indexOf('_mealid')>=0)return;
+    wmSlotArr(e[1]).forEach(function(s){if(s)known.add(s);});
   });
-  // Also suggest from PANTRY_POPULAR values as ingredient hints
-  const suggestions = [...known].filter(s => s.toLowerCase().includes(val.toLowerCase())).slice(0, 6);
-  if (!suggestions.length) { ac.style.display = 'none'; return; }
-  ac.style.display = '';
-  ac.innerHTML = suggestions.map(s =>
-    `<div style="padding:5px 8px;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border);"
-      onclick="document.getElementById('se_inp_${n}').value='${s.replace(/'/g,"\'")}';document.getElementById('se_ac_${n}').style.display='none';">${s}</div>`
-  ).join('');
+  var sug=Array.from(known).filter(function(s){return s.toLowerCase().indexOf(val.toLowerCase())>=0;}).slice(0,6);
+  if(!sug.length){ac.style.display='none';return;}
+  ac.style.display='';
+  ac.innerHTML=sug.map(function(s){
+    var sf=s.replace(/'/g,'&#39;');
+    return '<div style="padding:5px 8px;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="document.getElementById(\'se_inp_'+n+'\').value=\''+sf+'\';document.getElementById(\'se_ac_'+n+'\').style.display=\'none\';">'+s+'</div>';
+  }).join('');
 };
 
-window.slotRollOne = async function(n) {
-  const inp = document.getElementById(`se_inp_${n}`);
-  if (inp) inp.value = '⏳…';
-  try {
-    const meal = await fetchMealForType(_slotEdMk);
-    if (!meal) throw new Error('brak');
-    const namePL = await translateText(meal.strMeal);
-    if (inp) inp.value = namePL;
-    // Store mealid temporarily
-    weekMenu[`${_slotEdDk}_${_slotEdMk}_mealid_${n}`] = meal.idMeal;
-  } catch(e) {
-    if (inp) inp.value = '';
-  }
+window.slotRollOne=async function(n){
+  var inp=document.getElementById('se_inp_'+n);
+  if(inp)inp.value='⏳…';
+  try{
+    var meal=await fetchMealForType(_slotEdMk);
+    if(!meal)throw new Error('brak');
+    var namePL=await translateText(meal.strMeal);
+    if(inp)inp.value=namePL;
+    weekMenu[_slotEdDk+'_'+_slotEdMk+'_mealid_'+n]=meal.idMeal;
+  }catch(e){if(inp)inp.value='';showToast('❌ Błąd losowania');}
 };
 
-window.slotRollAll = async function() {
-  for (let n = 0; n < 3; n++) await slotRollOne(n);
+window.slotRollAll=async function(){
+  for(var n=0;n<3;n++)await window.slotRollOne(n);
 };
 
-window.slotClearOne = function(n) {
-  const inp = document.getElementById(`se_inp_${n}`);
-  if (inp) inp.value = '';
-  delete weekMenu[`${_slotEdDk}_${_slotEdMk}_mealid_${n}`];
+window.slotClearOne=function(n){
+  var inp=document.getElementById('se_inp_'+n);
+  if(inp)inp.value='';
+  delete weekMenu[_slotEdDk+'_'+_slotEdMk+'_mealid_'+n];
 };
 
-window.saveSlotEditor = function() {
-  const slot = `${_slotEdDk}_${_slotEdMk}`;
-  const arr = [0,1,2].map(n => (document.getElementById(`se_inp_${n}`)?.value?.trim() || ''));
-  weekMenu[slot] = arr;
-  if (!isDemo && fCode) set(ref(db, `families/${fCode}/weekMenu`), weekMenu);
+window.saveSlotEditor=function(){
+  var slot=_slotEdDk+'_'+_slotEdMk;
+  var arr=[0,1,2].map(function(n){var el=document.getElementById('se_inp_'+n);return el?el.value.trim():'';});
+  weekMenu[slot]=arr;
+  if(!isDemo&&fCode)set(ref(db,'families/'+fCode+'/weekMenu'),weekMenu);
   closeOverlay('slotEditorOverlay');
   renderWeekMenuGrid();
   showToast('✅ Zapisano!');
 };
-
-/* Also update saveWeekMenu to read from chips/slots correctly */
 </script>
 
+
+
+<script>
+/* ══════════════════════════════════════════
+   OFFLINE DETECTION + SYNC QUEUE
+══════════════════════════════════════════ */
+let _dpOfflineQueue = JSON.parse(localStorage.getItem('dp-offline-queue') || '[]');
+
+function _updateOfflineBanner() {
+  const banner = document.getElementById('offlineBanner');
+  if (!banner) return;
+  const offline = !navigator.onLine;
+  banner.style.display = offline ? '' : 'none';
+  if (!offline && _dpOfflineQueue.length) {
+    _flushOfflineQueue();
+  }
+}
+
+async function _flushOfflineQueue() {
+  if (!_dpOfflineQueue.length) return;
+  const q = [..._dpOfflineQueue];
+  _dpOfflineQueue = [];
+  localStorage.removeItem('dp-offline-queue');
+  showToast(`🔄 Synchronizuję ${q.length} zmian offline…`);
+  for (const item of q) {
+    try {
+      if (item.type === 'set')    await set(ref(db, item.path), item.data);
+      if (item.type === 'push')   await push(ref(db, item.path), item.data);
+      if (item.type === 'remove') await remove(ref(db, item.path));
+    } catch(e) {
+      // Re-queue on failure
+      _dpOfflineQueue.push(item);
+    }
+  }
+  if (_dpOfflineQueue.length) {
+    localStorage.setItem('dp-offline-queue', JSON.stringify(_dpOfflineQueue));
+    showToast('⚠️ Część zmian nie zsynchronizowana');
+  } else {
+    showToast('✅ Wszystkie zmiany zsynchronizowane!');
+  }
+}
+
+window.addEventListener('online',  _updateOfflineBanner);
+window.addEventListener('offline', _updateOfflineBanner);
+document.addEventListener('DOMContentLoaded', _updateOfflineBanner);
+
+/* Offline-aware Firebase helpers (used by pantry, weekMenu, etc.) */
+window.dpSet = async function(path, data) {
+  if (!navigator.onLine) {
+    _dpOfflineQueue.push({type:'set', path, data, ts: Date.now()});
+    localStorage.setItem('dp-offline-queue', JSON.stringify(_dpOfflineQueue));
+    showToast('📴 Zapisano lokalnie — zsync po połączeniu');
+    return;
+  }
+  await set(ref(db, path), data);
+};
+window.dpPush = async function(path, data) {
+  if (!navigator.onLine) {
+    _dpOfflineQueue.push({type:'push', path, data, ts: Date.now()});
+    localStorage.setItem('dp-offline-queue', JSON.stringify(_dpOfflineQueue));
+    showToast('📴 Zapisano lokalnie');
+    return;
+  }
+  await push(ref(db, path), data);
+};
+</script>
 </body>
 </html>
